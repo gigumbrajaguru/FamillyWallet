@@ -32,7 +32,7 @@ import ccpe001.familywallet.R;
 import ccpe001.familywallet.Validate;
 
 public class AddTransaction extends AppCompatActivity {
-
+//bitbucket test
 
     private TextView txtLocation,txtCategory;
     private Spinner spinCurrency, spinAccount;
