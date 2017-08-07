@@ -123,7 +123,7 @@ public class AddTransaction extends AppCompatActivity {
             }
 
         }
-
+//
         txtCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
