@@ -35,6 +35,7 @@ public class UserData {
         this.firstName = f;
         this.userId = u;
         this.proPic = p;
+        this.familyId = u;
     }
 
 
@@ -48,6 +49,10 @@ public class UserData {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getFamilyId() {
+        return familyId;
     }
 
     public void setLastName(String lastName) {

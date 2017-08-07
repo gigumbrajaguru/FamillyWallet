@@ -65,7 +65,7 @@ public class Splash extends PinActivity {
         noti.statusIcon(getApplication());
 
         //add .err before .apply to set cutom image
-        CaocConfig.Builder.create().apply();
+        //CaocConfig.Builder.create().apply();
                 //.errorDrawable(R.drawable.ic_custom_drawable) //default: bug image
 
         noti.dailyReminder(getApplication());

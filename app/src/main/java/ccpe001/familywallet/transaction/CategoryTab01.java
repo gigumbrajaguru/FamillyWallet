@@ -21,7 +21,7 @@ public class CategoryTab01 extends Fragment {
 
     GridView grid;
     TextView txtCategory;
-    String  categoryName, title, date, time, amount, location, type, update, key;
+    String  categoryName, title, date, time, amount, location, type, update, key, eUserID, eFamilyID;
     int currencyIndex, accountIndex, categoryID;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,6 +65,8 @@ public class CategoryTab01 extends Fragment {
                 type = extras.getString("transactionType");
                 update = extras.getString("Update");
                 key = extras.getString("key");
+                eUserID = extras.getString("userID");
+                eFamilyID = extras.getString("familyID");
 
                 categoryName = itemname[+position];
                 categoryID = imgid[+position];
@@ -81,6 +83,8 @@ public class CategoryTab01 extends Fragment {
                 intent.putExtra("transactionType",type);
                 intent.putExtra("Update",update);
                 intent.putExtra("key",key);
+                intent.putExtra("userID",eUserID);
+                intent.putExtra("familyID",eFamilyID);
                 getActivity().finish();
                 startActivity(intent);
 

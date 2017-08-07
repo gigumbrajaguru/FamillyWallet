@@ -20,8 +20,13 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -32,15 +37,19 @@ import ccpe001.familywallet.R;
 import ccpe001.familywallet.Validate;
 
 public class AddTransaction extends AppCompatActivity {
-//bitbucket test
 
+    /*Initializing */
     private TextView txtLocation,txtCategory;
     private Spinner spinCurrency, spinAccount;
     int PLACE_PICKER_REQUEST=1;
     private EditText txtAmount, txtDate, txtTime, txtTitle;
-    String categoryName,  title, date, amount,currency,time,location, account,type,update,key;
+    /*Initializing String and Integer variables to store data from input values*/
+    String categoryName,  title, date, amount, currency, time, location, account, type, update, key, userID, familyID, eUserID, eFamilyID;
     Integer currencyIndex, accountIndex, categoryID;
+    /*Initializing variable firebase reference */
     private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser;
 
 
     @SuppressLint("WrongViewCast")
@@ -67,7 +76,20 @@ public class AddTransaction extends AppCompatActivity {
             }
         });
 
+        mAuth = FirebaseAuth.getInstance();
+        firebaseUser = mAuth.getCurrentUser();
+        userID = firebaseUser.getUid();
+        FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                familyID=dataSnapshot.getValue().toString();
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         if (savedInstanceState == null) {
             Bundle extras = this.getIntent().getExtras();
             if(extras == null) {
@@ -85,6 +107,10 @@ public class AddTransaction extends AppCompatActivity {
                 type = extras.getString("transactionType");
                 update = extras.getString("Update");
                 key = extras.getString("key");
+                eUserID = extras.getString("userID");
+                eFamilyID = extras.getString("familyID");
+
+
 
                 txtTitle.setText(title);
                 txtAmount.setText(amount);
@@ -119,6 +145,8 @@ public class AddTransaction extends AppCompatActivity {
                 intent.putExtra("transactionType",type);
                 intent.putExtra("Update",update);
                 intent.putExtra("key",key);
+                intent.putExtra("userID",eUserID);
+                intent.putExtra("familyID",eFamilyID);
                 startActivity(intent);
             }
         });
@@ -279,13 +307,13 @@ public class AddTransaction extends AppCompatActivity {
                try {
                    if (update.equals("False")){
                        mDatabase = FirebaseDatabase.getInstance().getReference();
-                       td = new TransactionDetails("uid",amount, title, categoryName, date, categoryID, time, account, location, type, currency);
+                       td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID);
                        mDatabase.child("Transactions").push().setValue(td);
                        Toast.makeText(this, "New Transaction Successfully Added", Toast.LENGTH_LONG).show();
                    }
                    else if (update.equals("True")){
                        mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
-                       td = new TransactionDetails("uid",amount, title, categoryName, date, categoryID, time, account, location, type, currency);
+                       td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
                        Map<String, Object> postValues = td.toMap();
                        mDatabase.child(key).updateChildren(postValues);
                        Toast.makeText(this, "Successfully Updated", Toast.LENGTH_LONG).show();

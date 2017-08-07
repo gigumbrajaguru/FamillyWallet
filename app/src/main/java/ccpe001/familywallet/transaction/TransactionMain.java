@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -24,6 +25,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +52,8 @@ public class TransactionMain extends Fragment {
     TextView txtIncome,txtExpense;
     boolean isOpen = false;
     private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser;
 
     public TransactionMain() {
         // Required empty public constructor
@@ -58,6 +63,8 @@ public class TransactionMain extends Fragment {
         List<String> keys;
         List<String> checkedPosition;
         TransactionListAdapter adapter;
+        String userID;
+        String familyID;
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,19 +73,41 @@ public class TransactionMain extends Fragment {
         tdList = new ArrayList<>();
         keys = new ArrayList<>();
         checkedPosition = new ArrayList<>();
+        mAuth = FirebaseAuth.getInstance();
+        firebaseUser = mAuth.getCurrentUser();
+        userID = firebaseUser.getUid();
+        FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                familyID=dataSnapshot.getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         Query query = FirebaseDatabase.getInstance().getReference("Transactions").orderByChild("date");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 tdList.clear();
-                ///keys.clear();
+                //keys.clear();
                 for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
                     TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
-                    tdList.add(td);
-                    keys.add(tdSnapshot.getKey());
+                    Toast.makeText(getActivity(), familyID+"  "+userID, Toast.LENGTH_LONG).show();
+                    if (familyID.equals(td.getFamilyID())){
+                        tdList.add(td);
+                        keys.add(tdSnapshot.getKey());
+                    }
+
+
 
                 }
                 Collections.reverse(tdList);
+                Collections.reverse(keys);
                 adapter = new TransactionListAdapter(getActivity(),tdList);
                 list.setAdapter(adapter);
             }
@@ -88,15 +117,13 @@ public class TransactionMain extends Fragment {
 
             }
         });
+
         mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
         mDatabase.keepSynced(true);
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-
             }
 
             @Override
@@ -292,6 +319,8 @@ public class TransactionMain extends Fragment {
                 intent.putExtra("currencyIndex",td.getCurrency());
                 intent.putExtra("accountIndex",td.getAccount());
                 intent.putExtra("transactionType",td.getType());
+                intent.putExtra("userID",td.getUserID());
+                intent.putExtra("familyID",td.getFamilyID());
                 startActivity(intent);
             }
 

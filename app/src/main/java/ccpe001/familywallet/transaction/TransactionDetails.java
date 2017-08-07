@@ -12,6 +12,7 @@ import java.util.Map;
 public class TransactionDetails {
 
     public String userID;
+    public String familyID;
     public String amount;
     public String title;
     public String categoryName;
@@ -25,12 +26,14 @@ public class TransactionDetails {
 
 
 
+
     public TransactionDetails() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public TransactionDetails(String userID, String amount, String title, String categoryName, String date, Integer categoryID, String time, String account, String location, String type, String currency) {
+    public TransactionDetails(String userID, String amount, String title, String categoryName, String date, Integer categoryID, String time, String account, String location, String type, String currency, String familyID) {
         this.userID = userID;
+        this.familyID = familyID;
         this.amount = amount;
         this.title = title;
         this.categoryName = categoryName;
@@ -44,10 +47,12 @@ public class TransactionDetails {
     }
 
 
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("userID", userID);
+        result.put("familyID", familyID);
         result.put("amount", amount);
         result.put("title", title);
         result.put("categoryName", categoryName);
@@ -64,6 +69,10 @@ public class TransactionDetails {
 
     public String getUserID() {
         return userID;
+    }
+
+    public String getFamilyID() {
+        return familyID;
     }
 
     public String getAmount() {
@@ -96,6 +105,10 @@ public class TransactionDetails {
 
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    public void setFamilyID(String familyID) {
+        this.familyID = familyID;
     }
 
     public void setAmount(String amount) {
