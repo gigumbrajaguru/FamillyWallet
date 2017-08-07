@@ -210,7 +210,6 @@
                     android:value=".ccpe001.familywallet.transaction.AddTransaction" />
             </intent-filter>
         </activity>
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDwIsPHS1-FJer8-92cEOyZ9VERehechRg" />
