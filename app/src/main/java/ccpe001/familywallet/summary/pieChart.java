@@ -1,7 +1,12 @@
 package ccpe001.familywallet.summary;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -16,19 +21,22 @@ import ccpe001.familywallet.R;
 
 //added library
 //Not working
-public class pieChart extends AppCompatActivity {
+public class pieChart extends Fragment{
 
     float transaction[]={150.0f,235.50f,187.50f};
     String category[]={"food","fuel","other"};
     int i;
-
+    private PieChart chart;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pie_chart);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.activity_pie_chart, container, false);
+        chart = (PieChart) view.findViewById(R.id.chart);
         setupPieChart();
+        return  view;
+
     }
 
     private void setupPieChart(){
@@ -40,9 +48,8 @@ public class pieChart extends AppCompatActivity {
         PieDataSet dataSet = new PieDataSet(pieEntries,"Transaction of Categories");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData data=new PieData(dataSet);
-
-        PieChart chart = (PieChart) findViewById(R.id.chart);
         chart.setData(data);
+        chart.animateY(1000);
         chart.invalidate();
 
     }
