@@ -42,9 +42,10 @@ public class pieChart extends Fragment{
     private void setupPieChart(){
         List<PieEntry> pieEntries=new ArrayList<>();
 
-        for( i = 0; i < transaction.length; i++){}
-        pieEntries.add(new PieEntry(transaction[i], category[i]));
-
+        for( i = 0; i < transaction.length; i++)
+        {
+            pieEntries.add(new PieEntry(transaction[i], category[i]));
+        }
         PieDataSet dataSet = new PieDataSet(pieEntries,"Transaction of Categories");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData data=new PieData(dataSet);
