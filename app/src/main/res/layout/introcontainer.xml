@@ -12,7 +12,7 @@
 
 
         <Button
-                android:text="Next"
+                android:text="@string/intropage_onPageSelected_else_setext"
                 android:layout_width="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
@@ -25,7 +25,7 @@
 
 
         <Button
-                android:text="Skip"
+                android:text="@string/xmlintrocontainer_skipBtn_text"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"

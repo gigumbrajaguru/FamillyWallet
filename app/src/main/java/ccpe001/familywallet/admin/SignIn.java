@@ -30,7 +30,7 @@ import ccpe001.familywallet.Validate;
  */
 public class SignIn extends PinActivity implements View.OnClickListener{
 
-    private Button signIn,scannerBtn;
+    private Button signIn;
     private TextView toSignUp,forgotTxt;
     private EditText emailTxt,passTxt;
     private ProgressDialog progressDialog;
@@ -46,14 +46,12 @@ public class SignIn extends PinActivity implements View.OnClickListener{
     private void init() {
         setTitle(R.string.signin_title);
         signIn= (Button)findViewById(R.id.signInBtn);
-        scannerBtn= (Button)findViewById(R.id.qrscannerBtn);
         toSignUp = (TextView)findViewById(R.id.textView2);
         forgotTxt = (TextView)findViewById(R.id.textView);
         emailTxt = (EditText)findViewById(R.id.emailTxt);
         passTxt = (EditText)findViewById(R.id.passwordTxt);
 
         signIn.setOnClickListener(this);
-        scannerBtn.setOnClickListener(this);
         toSignUp.setOnClickListener(this);
         forgotTxt.setOnClickListener(this);
         progressDialog = new ProgressDialog(this);
@@ -67,14 +65,12 @@ public class SignIn extends PinActivity implements View.OnClickListener{
     }
 
 
-
-
     @Override
     public void onClick(View view) {
         if(view.getId()== R.id.signInBtn){
             if(Validate.anyValidMail(emailTxt.getText().toString().trim())) {
                 if(Validate.anyValidPass(passTxt.getText().toString().trim())){
-                    progressDialog.setMessage("Wait..");
+                    progressDialog.setMessage(getString(R.string.signin_waitmsg));
                     progressDialog.show();
                     mAuth.signInWithEmailAndPassword(emailTxt.getText().toString().trim(),
                             passTxt.getText().toString().trim())
@@ -88,7 +84,7 @@ public class SignIn extends PinActivity implements View.OnClickListener{
                                         Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
                                         startActivity(intent);
                                     }else{
-                                        Toast.makeText(SignIn.this,"Sign In Error",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignIn.this,R.string.common_error,Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -98,15 +94,6 @@ public class SignIn extends PinActivity implements View.OnClickListener{
             }else {
                 emailTxt.setError(getString(R.string.signup_onclick_emailerr));
             }
-        }else if(view.getId()== R.id.qrscannerBtn){
-            IntentIntegrator intentIntegrator = new IntentIntegrator(this);
-            intentIntegrator.setDesiredBarcodeFormats(intentIntegrator.QR_CODE_TYPES);
-            intentIntegrator.setPrompt(getString(R.string.signin_scan_setpromt));
-            intentIntegrator.setCameraId(0);
-            intentIntegrator.setOrientationLocked(true);
-            intentIntegrator.setBeepEnabled(false);
-            intentIntegrator.setBarcodeImageEnabled(false);
-            intentIntegrator.initiateScan();
         }else if(view.getId()== R.id.textView2){
             startActivity(new Intent(this,SignUp.class));
         }else if(view.getId()== R.id.textView){
@@ -122,17 +109,7 @@ public class SignIn extends PinActivity implements View.OnClickListener{
         editor.commit();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
-        if(result != null){
-            if (result.getContents()== null){
-                Toast.makeText(this,R.string.signup_cancel_toast,Toast.LENGTH_LONG).show();
-            }else {
-                Toast.makeText(this,result.getContents(),Toast.LENGTH_LONG).show();
-            }
-        }
-    }
+
 
     
 }

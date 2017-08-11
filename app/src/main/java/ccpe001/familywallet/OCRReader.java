@@ -152,17 +152,17 @@ public class OCRReader extends AppCompatActivity {
                 referenceTransId.putFile(billImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(getApplicationContext(),"Upload success",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),R.string.ocrreader_onactivityresult_uploaddone,Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),R.string.common_error,Toast.LENGTH_SHORT).show();
                     }
                 });
 
             } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Toast.makeText(this,result.getError().getMessage().toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,R.string.common_error,Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -185,7 +185,7 @@ public class OCRReader extends AppCompatActivity {
         }*/
         if(requestCode == EXTERNAL_READ_PERMIT||requestCode == EXTERNAL_WRITE_PERMIT||requestCode==CAMERA_PERMIT){
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED||grantResults[1]==PackageManager.PERMISSION_GRANTED||grantResults[2]==PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getApplicationContext(),"Permission granted",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.permitgranted,Toast.LENGTH_SHORT).show();
             }else {
                 checkPermit();
             }

@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import ccpe001.familywallet.admin.SignIn;
 import ccpe001.familywallet.admin.SignUp;
 import com.github.orangegangsters.lollipin.lib.PinActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.kobakei.ratethisapp.RateThisApp;
 
 import java.util.Calendar;
@@ -32,6 +33,8 @@ import static java.lang.Thread.sleep;
 public class Splash extends PinActivity {
 
     private SharedPreferences prefs;
+    private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class Splash extends PinActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
+        mAuth = FirebaseAuth.getInstance();
 
         prefs = getSharedPreferences("App Settings",Context.MODE_PRIVATE);
 
@@ -53,35 +57,34 @@ public class Splash extends PinActivity {
                 }
                 Intent intent = new Intent("ccpe001.familywallet.INTRODUCTIONPAGE");
                 startActivity(intent);
-                overridePendingTransition(R.animator.transition1,R.animator.transition2);//for animations(shoul have 2 files)
+                overridePendingTransition(R.animator.transition1,R.animator.transition2);
                 finish();
             }
         });
         t1.start();
 
-        //check user looger in befor these
-        ccpe001.familywallet.admin.Notification noti = new ccpe001.familywallet.admin.Notification();
-        noti.statusIcon(getApplication());
+        //if user logged in only
+        if(mAuth.getCurrentUser() != null){
+            ccpe001.familywallet.admin.Notification noti = new ccpe001.familywallet.admin.Notification();
+            noti.statusIcon(getApplication());
 
-        //add .err before .apply to set cutom image
-        //CaocConfig.Builder.create().apply();
-                //.errorDrawable(R.drawable.ic_custom_drawable) //default: bug image
-
-        noti.dailyReminder(getApplication());
-        rateApi();
+            noti.dailyReminder(getApplication());
+            rateApi();
 
 
-        //localisation
-        Locale locale = null;
-        if(prefs.getString("appLang","English").equals("English")){
-            locale = new Locale("en");
-        }else {
-            locale = new Locale("sin");
+            //localisation
+            Locale locale = null;
+            if(prefs.getString("appLang","English").equals("English")){
+                locale = new Locale("en");
+            }else {
+                locale = new Locale("sin");
+            }
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
         }
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+
 
     }
 

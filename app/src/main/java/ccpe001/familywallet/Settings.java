@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +58,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     private Switch localMode,statusIcon,autoSync,appNotySwitch,enDisPinSwitch;
     private Button signOutBtn,setPinBtn;
     private TextView langText,currText,dateForText,dailyRemText,backupLocText,appPwText,backupRemText;
-    private AlertDialog.Builder langBuilder,currBuilder,dateForBuilder,enterPinBuilder;
+    private AlertDialog.Builder langBuilder,currBuilder,dateForBuilder,enterPinBuilder,langBuilderOpener;
     private TableRow langRow,currRow,dateForRow,dailyRemRow,backupLocRow,appPassRow,feedBackRow,rateRow,backupRemRow;
     private Calendar c;
     private DirectoryChooserFragment mDialog;
@@ -82,7 +83,9 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.setting, container, false);
         FacebookSdk.sdkInitialize(getActivity());
+        prefs = getContext().getSharedPreferences("App Settings",Context.MODE_PRIVATE);
         init(view);
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -140,58 +143,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         rateRow = (TableRow) v.findViewById(R.id.rateRow);
         rateRow.setOnClickListener(this);
 
-        langBuilder = new AlertDialog.Builder(getContext());
-        langBuilder.setTitle(R.string.setting_langbuilder_settitle);
-        langBuilder.setSingleChoiceItems(R.array.spinnerLanguage, 1, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                preferedLang = langArr[i];
-                storePWSharedPref();
-                langText.setText(langArr[i]);
-                dialogInterface.dismiss();
-
-                Locale locale = null;
-
-                switch (i){
-                    case 0:
-                        locale = new Locale("sin");
-                        break;
-                    case 1:
-                        locale = new Locale("en");
-                        break;
-                }
-
-                setLanguage(locale);
-                getActivity().finish();
-                startActivity(new Intent(getActivity(),Splash.class));
-            }
-        });
-        currBuilder = new AlertDialog.Builder(getContext());
-        currBuilder.setTitle(R.string.setting_currbuilder_settitle);
-        currBuilder.setSingleChoiceItems(R.array.spinnerCurrency, 0, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                preferedCurr = currArr[i];
-                storePWSharedPref();
-                currText.setText(currArr[i]);
-                dialogInterface.dismiss();
-
-            }
-        });
-        dateForBuilder = new AlertDialog.Builder(getContext());
-        dateForBuilder.setTitle(R.string.setting_datebuilder_settitle);
-        dateForBuilder.setSingleChoiceItems(R.array.spinnerDateFor, 0, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                preferedDateFor = dateForArr[i];
-                storePWSharedPref();
-                dateForText.setText(dateForArr[i]);
-                dialogInterface.dismiss();
-            }
-        });
-
         retrievePWSharedPref();
-
     }
 
     public void setLanguage(Locale locale) {
@@ -217,8 +169,10 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
 
 
     private boolean checkPermit(){
-        return ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED&&
-                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED&&
+                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
@@ -242,7 +196,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     @Override
     public void onClick(View view) {
         if(view.getId()==R.id.signOutBtn){
-            //sign out
+            //sign out & del daily rem,auto backups,noti icon,clear session
             if(mAuth.getCurrentUser().getProviders().toString().equals("[facebook.com]")){
                 LoginManager.getInstance().logOut();
             }else if(mAuth.getCurrentUser().getProviders().toString().equals("[google.com]")){
@@ -250,18 +204,64 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
             }
             mAuth.signOut();
 
-            //delete notification if available)(TO DO)
+            NotificationManager mNotificationManager = (NotificationManager)getActivity().getSystemService(Context
+                    .NOTIFICATION_SERVICE);
+            mNotificationManager.cancel(PERMENT_NOT);
+
+            PeriodicBackupCaller.backupRunner(getActivity(),"No Auto Backups");
+
+            //off noti here
 
 
             getActivity().finish();
             sessionClear();
-            Intent intent = new Intent("ccpe001.familywallet.SIGNIN");
-            startActivity(intent);
+            startActivity(new Intent("ccpe001.familywallet.SIGNIN"));
         }else if(view.getId()==R.id.selectLangRow){
-            langBuilder.show();
+            langBuilderOpener = new AlertDialog.Builder(getContext());
+            langBuilderOpener.setTitle(R.string.setting_langBuilderOpener_settitle);
+            langBuilderOpener.setMessage(R.string.setting_langBuilderOpener_setmsg);
+            langBuilderOpener.setPositiveButton(R.string.setting_setlangBuilderOpener_positive, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    showLangChanger();
+                }
+            }).setNegativeButton(R.string.setting_setNegativeButton, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            }).setIcon(android.R.drawable.ic_dialog_alert).show();
         }else if(view.getId()==R.id.selectCurrRow){
+            currBuilder = new AlertDialog.Builder(getContext());
+            currBuilder.setTitle(R.string.setting_currbuilder_settitle);
+            int z
+                    =  prefs.getString("appCurr",currArr[0]).equals("Rs.") ? 0
+                    : prefs.getString("appCurr",currArr[0]).equals("US $") ? 1
+                    : 2;
+            currBuilder.setSingleChoiceItems(R.array.spinnerCurrency, z, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    preferedCurr = currArr[i];
+                    storePWSharedPref();
+                    currText.setText(currArr[i]);
+                    dialogInterface.dismiss();
+                }
+            });
             currBuilder.show();
         }else if(view.getId()==R.id.selectDateRow){
+            dateForBuilder = new AlertDialog.Builder(getContext());
+            dateForBuilder.setTitle(R.string.setting_datebuilder_settitle);
+            int z
+                    =  prefs.getString("appDateFor",dateForArr[0]).equals("2001/03/14") ? 0
+                    : prefs.getString("appDateFor",dateForArr[0]).equals("14/03/2001") ? 1
+                    : 2;
+            dateForBuilder.setSingleChoiceItems(R.array.spinnerDateFor, z, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    preferedDateFor = dateForArr[i];
+                    storePWSharedPref();
+                    dateForText.setText(dateForArr[i]);
+                    dialogInterface.dismiss();
+                }
+            });
             dateForBuilder.show();
         }else if(view.getId()==R.id.remTimeRow){
             new TimePickerDialog(getContext(),new TimePickerDialog.OnTimeSetListener() {
@@ -362,6 +362,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 builder.setTitle(R.string.setting_reminderbuilder_settitle);
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
+                        PeriodicBackupCaller.backupRunner(getActivity(),items[item]);
                         backupRemText.setText(items[item]);
                         appBackUp = items[item];
                         storePWSharedPref();
@@ -374,6 +375,36 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         }
     }
 
+    private void showLangChanger(){
+        langBuilder = new AlertDialog.Builder(getContext());
+        langBuilder.setTitle(R.string.setting_langbuilder_settitle);
+        int i = prefs.getString("appLang",langArr[1]).equals("Sinhala") ? 0 : 1;
+        langBuilder.setSingleChoiceItems(R.array.spinnerLanguage, i, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                preferedLang = langArr[i];
+                storePWSharedPref();
+                langText.setText(langArr[i]);
+                dialogInterface.dismiss();
+
+                Locale locale = null;
+
+                switch (i){
+                    case 0:
+                        locale = new Locale("sin");
+                        break;
+                    case 1:
+                        locale = new Locale("en");
+                        break;
+                }
+
+                setLanguage(locale);
+                getActivity().finish();
+                startActivity(new Intent(getActivity(),Splash.class));
+            }
+        });
+        langBuilder.show();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -392,10 +423,29 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     @Override
     public void onCheckedChanged(CompoundButton switchs, boolean b) {
         if(switchs.getId()==R.id.localModeSwitch){
+
             if(b) {
-                mode = true;
-                localMode();
-                storePWSharedPref();
+                langBuilderOpener = new AlertDialog.Builder(getContext());
+                langBuilderOpener.setTitle(R.string.setting_langBuilderOpener_settitle);
+                langBuilderOpener.setMessage(R.string.setting_onCheckedChanged_langBuilderOpener_setmsg);
+                langBuilderOpener.setPositiveButton(R.string.setting_setlangBuilderOpener_positive, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        mode = true;
+                        localMode();
+                        storePWSharedPref();
+
+                        Locale locale = new Locale("sin");
+                        setLanguage(locale);
+                        getActivity().finish();
+                        startActivity(new Intent(getActivity(),Splash.class));
+                    }
+                }).setNegativeButton(R.string.setting_setNegativeButton, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        mode = false;
+                        setDefaults();
+                        storePWSharedPref();
+                    }
+                }).setIcon(android.R.drawable.ic_dialog_alert).show();
             }else{
                 mode = false;
                 setDefaults();
@@ -403,9 +453,13 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
             }
         }else if(switchs.getId()==R.id.appNotySwitch){
             if(b) {
+                Toast.makeText(getActivity(),R.string.setting_appnotiswitch_on_toast,Toast.LENGTH_SHORT).show();
+                dailyRemRow.setVisibility(View.VISIBLE);
                 appNoty = true;
                 storePWSharedPref();
             }else{
+                dailyRemRow.setVisibility(View.GONE);
+                //off noti here
                 appNoty = false;
                 storePWSharedPref();
             }
@@ -437,8 +491,6 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     }
 
     private void retrievePWSharedPref(){
-        prefs = getContext().getSharedPreferences("App Settings",Context.MODE_PRIVATE);
-
         pin = prefs.getString("appPass","123");
         pinStatus = prefs.getBoolean("appPinStatus",false);
 
@@ -468,9 +520,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     }
 
     private void storePWSharedPref(){
-        prefs = getContext().getSharedPreferences("App Settings",Context.MODE_PRIVATE);
         editor = prefs.edit();
-
         editor.putString("appPass",pin);
         editor.putBoolean("appPinStatus",pinStatus);
 

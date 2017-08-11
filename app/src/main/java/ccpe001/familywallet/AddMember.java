@@ -16,6 +16,8 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.Random;
@@ -70,6 +72,29 @@ public class AddMember extends Fragment  implements View.OnClickListener{
             qrImage.setImageBitmap(bitmap);
         } catch (WriterException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void qrReader(){
+        IntentIntegrator intentIntegrator = new IntentIntegrator(getActivity());
+        intentIntegrator.setDesiredBarcodeFormats(intentIntegrator.QR_CODE_TYPES);
+        intentIntegrator.setPrompt(getString(R.string.signin_scan_setpromt));
+        intentIntegrator.setCameraId(0);
+        intentIntegrator.setOrientationLocked(true);
+        intentIntegrator.setBeepEnabled(false);
+        intentIntegrator.setBarcodeImageEnabled(false);
+        intentIntegrator.initiateScan();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        if(result != null){
+            if (result.getContents()== null){
+                Toast.makeText(getActivity(),R.string.signup_cancel_toast,Toast.LENGTH_LONG).show();
+            }else {
+                Toast.makeText(getActivity(),result.getContents(),Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

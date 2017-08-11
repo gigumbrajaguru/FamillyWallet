@@ -47,13 +47,14 @@ public class Forgot extends PinActivity implements View.OnClickListener {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
-                                    Toast.makeText(getApplicationContext(),textForTxt.getText().toString().trim()+R.string.forgot_oncomplete_toast,Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),textForTxt.getText().toString().trim()
+                                            +R.string.forgot_oncomplete_toast,Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),R.string.common_error,Toast.LENGTH_SHORT).show();
                     }
                 });
             }else {

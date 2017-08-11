@@ -45,7 +45,7 @@
                     android:layout_height="match_parent"
                     android:padding="10dp">
                 <TextView
-                        android:text="Language and formatting"
+                        android:text="@string/xmlsetting_head1"
                         android:textColor="#CC3"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
                       android:padding="10dp" >
 
                 <Switch
-                        android:text="Local mode"
+                        android:text="@string/xmlsetting_localModeSwitch_text"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" android:id="@+id/localModeSwitch"/>
@@ -84,7 +84,7 @@
                       android:padding="10dp">
 
                 <TextView
-                        android:text="Select language"
+                        android:text="@string/xmlsetting_selectLang_text"
                         android:clickable="true"
                         android:layout_weight="12"
                         android:id="@+id/selectLang"
@@ -115,7 +115,7 @@
                           android:clickable="true">
 
                     <TextView
-                            android:text="Select date format"
+                            android:text="@string/xmlsetting_selectDateRow_text"
                             android:clickable="true"
                             android:layout_weight="12"
 
@@ -145,7 +145,7 @@
                            android:id="@+id/selectCurrRow"
                            android:clickable="true">
                     <TextView
-                            android:text="Select currency"
+                            android:text="@string/xmlsetting_selectCurrRow_text"
                             android:clickable="true"
                             android:layout_weight="12"
 
@@ -173,7 +173,7 @@
                     android:layout_height="match_parent"
                     android:padding="10dp">
                 <TextView
-                        android:text="Notification"
+                        android:text="@string/xmlsetting_statusCurrLay_text"
                         android:textColor="#CC3"
 
                         android:textStyle="bold"
@@ -192,7 +192,7 @@
                           android:layout_height="match_parent"
                           android:padding="10dp">
                     <Switch
-                            android:text="App notifications"
+                            android:text="@string/xmlsetting_appNotySwitch_text"
                             android:layout_weight="1"
 
                             android:layout_width="match_parent"
@@ -212,7 +212,7 @@
                           android:layout_height="match_parent"
                           android:padding="10dp">
                     <Switch
-                            android:text="Show widget in status bar"
+                            android:text="@string/xmlsetting_statusIconSwitch_text"
                             android:layout_weight="1"
 
                             android:layout_width="match_parent"
@@ -235,7 +235,7 @@
 
 
                     <TextView
-                            android:text="Daily reminder time (24 Hour)"
+                            android:text="@string/xmlsetting_remTimeRow_text"
                             android:clickable="true"
                             android:layout_weight="12"
 
@@ -263,11 +263,9 @@
                         android:layout_height="match_parent"
                         android:padding="10dp">
                     <TextView
-                            android:text="System"
+                            android:text="@string/xmlsetting_head5_text"
                             android:textColor="#CC3"
                             android:layout_marginBottom="10dp"
-
-
                             android:gravity="center"
                             android:textStyle="bold"
                             android:layout_width="wrap_content"
@@ -286,7 +284,7 @@
                           android:padding="10dp" >
 
                     <Switch
-                            android:text="Auto sync"
+                            android:text="@string/xmlsetting_autoSyncSwitch_text"
                             android:layout_weight="1"
 
                             android:layout_width="match_parent"
@@ -306,7 +304,7 @@
                           android:padding="10dp" >
 
                     <TextView
-                            android:text="Auto backups"
+                            android:text="@string/xmlsetting_backupRemRow_text"
                             android:clickable="true"
                             android:layout_weight="12"
 
@@ -335,7 +333,7 @@
                            android:id="@+id/backupLocRow"
                            android:clickable="true">
                     <TextView
-                            android:text="Backup location"
+                            android:text="@string/xmlsetting_backupLocRow_text"
                             android:clickable="true"
                             android:layout_weight="12"
                             android:layout_width="match_parent"
@@ -366,7 +364,7 @@
                         android:clickable="true">
 
                     <TextView
-                            android:text="App password"
+                            android:text="@string/xmlsetting_checkBox_text"
                             android:clickable="true"
                             android:layout_weight="12"
                             android:id="@+id/checkBox"
@@ -395,7 +393,7 @@
                         android:layout_height="match_parent"
                         android:padding="10dp">
                     <TextView
-                            android:text="About"
+                            android:text="@string/xmlsetting_head9_text"
                             android:textColor="#CC3"
                             android:textStyle="bold"
                             android:layout_width="wrap_content"
@@ -416,7 +414,7 @@
                         android:layout_height="match_parent"
                         android:padding="10dp">
                     <TextView
-                            android:text="Send feedback"
+                            android:text="@string/xmlsetting_feedbackRow_text"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent" />
                 </TableRow>
@@ -435,7 +433,7 @@
                         android:layout_height="match_parent"
                         android:padding="10dp">
                     <TextView
-                            android:text="Rate"
+                            android:text="@string/xmlsetting_rateRow_text"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent" />
                 </TableRow>
@@ -454,7 +452,7 @@
                     <Button
                             android:layout_weight="1"
 
-                            android:text="Sign out"
+                            android:text="@string/xmlsetting_signOutBtn_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/signOutBtn"/>
