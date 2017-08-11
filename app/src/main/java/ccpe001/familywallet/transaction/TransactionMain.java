@@ -97,7 +97,6 @@ public class TransactionMain extends Fragment {
                 //keys.clear();
                 for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
                     TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
-                    Toast.makeText(getActivity(), familyID+"  "+userID, Toast.LENGTH_LONG).show();
                     if (familyID.equals(td.getFamilyID())){
                         tdList.add(td);
                         keys.add(tdSnapshot.getKey());

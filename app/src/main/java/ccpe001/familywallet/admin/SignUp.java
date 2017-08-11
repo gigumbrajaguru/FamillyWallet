@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
-import cat.ereza.customactivityoncrash.config.CaocConfig;
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Validate;
 import com.facebook.*;

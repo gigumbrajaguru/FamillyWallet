@@ -16,7 +16,6 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-import cat.ereza.customactivityoncrash.config.CaocConfig;
 import ccpe001.familywallet.admin.SignIn;
 import ccpe001.familywallet.admin.SignUp;
 import com.github.orangegangsters.lollipin.lib.PinActivity;

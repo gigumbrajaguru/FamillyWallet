@@ -308,7 +308,7 @@
                     android:padding="10dp">
 
                     <CheckBox
-                        android:id="@+id/checkBox6"
+                        android:id="@+id/chTemplate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Save As Template" />
@@ -321,8 +321,17 @@
                     android:gravity="right"
                     android:padding="10dp">
 
+                    <TextView
+                        android:id="@+id/txtRecurring"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:text="Hello"
+                        android:textSize="18sp"
+                        android:visibility="invisible" />
+
                     <CheckBox
-                        android:id="@+id/checkBox7"
+                        android:id="@+id/chRecurring"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Recurring Payment" />

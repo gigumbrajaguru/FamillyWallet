@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,16 +35,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ccpe001.familywallet.ExportData;
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Validate;
 
 public class AddTransaction extends AppCompatActivity {
 
     /*Initializing */
-    private TextView txtLocation,txtCategory;
+    private TextView txtLocation,txtCategory, txtRecurring;
     private Spinner spinCurrency, spinAccount;
     int PLACE_PICKER_REQUEST=1;
     private EditText txtAmount, txtDate, txtTime, txtTitle;
+    private CheckBox checkRecurring;
     /*Initializing String and Integer variables to store data from input values*/
     String categoryName,  title, date, amount, currency, time, location, account, type, update, key, userID, familyID, eUserID, eFamilyID;
     Integer currencyIndex, accountIndex, categoryID;
@@ -64,6 +69,7 @@ public class AddTransaction extends AppCompatActivity {
         txtTitle = (EditText) findViewById(R.id.txtTitle);
         txtLocation = (TextView) findViewById(R.id.txtLocation);
         txtCategory = (TextView) findViewById(R.id.txtCategory);
+        txtRecurring = (TextView) findViewById(R.id.txtRecurring);
         spinCurrency = (Spinner) findViewById(R.id.spinCurrency);
         spinAccount = (Spinner) findViewById(R.id.spinAccount);
 
@@ -75,7 +81,16 @@ public class AddTransaction extends AppCompatActivity {
                 startPlacePickerActivity();
             }
         });
-
+        checkRecurring =(CheckBox) findViewById(R.id.chRecurring);
+        checkRecurring.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                txtRecurring.setVisibility(View.VISIBLE);
+                else
+                    txtRecurring.setVisibility(View.INVISIBLE);
+            }
+        });
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         userID = firebaseUser.getUid();
@@ -123,7 +138,7 @@ public class AddTransaction extends AppCompatActivity {
             }
 
         }
-//
+
         txtCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
