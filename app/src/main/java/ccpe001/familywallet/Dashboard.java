@@ -110,11 +110,8 @@ public class Dashboard extends AppCompatActivity
         databaseReference = FirebaseDatabase.getInstance().getReference().child("UserInfo").child(firebaseUser.getUid());
         databaseReference.keepSynced(true);
 
-
-        //getting backup reminder data ###########put in a goog position(not working after setting change)
         prefs = getSharedPreferences("App Settings", Context.MODE_PRIVATE);
         PeriodicBackupCaller.backupRunner(getApplication(),prefs.getString("appBackUp","No Auto Backups"));
-
 
         storageReference = FirebaseStorage.getInstance().getReference();
 

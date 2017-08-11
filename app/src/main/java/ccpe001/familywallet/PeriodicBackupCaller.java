@@ -47,7 +47,7 @@ public class PeriodicBackupCaller extends GcmTaskService {
     }
 
     public static void backupRunner(Context c,String runTime){
-        if(timeConverter(runTime)==0){
+        if(timeConverter(runTime,c)==0){
             if(gcmNetworkManager!=null) {
                 gcmNetworkManager.cancelTask("backupTask", PeriodicBackupCaller.class);
             }
@@ -58,7 +58,7 @@ public class PeriodicBackupCaller extends GcmTaskService {
             gcmNetworkManager = GcmNetworkManager.getInstance(c);
             PeriodicTask task = new PeriodicTask.Builder()
                     .setService(PeriodicBackupCaller.class)
-                    .setPeriod(timeConverter(runTime))
+                    .setPeriod(timeConverter(runTime,c))
                     .setFlex(30)
                     .setRequiresCharging(true)//save battery
                     .setTag("backupTask")
@@ -67,13 +67,13 @@ public class PeriodicBackupCaller extends GcmTaskService {
         }
     }
 
-    private static long timeConverter(String time){
+    private static long timeConverter(String time,Context c){
         switch (time){
-            case "Daily": return 86400;
-            case "Weekly": return 30;//604800;
-            case "Monthly": return 2628003;
-            case "Annually": return 31536000;
-            case "No Auto Backups": return 0;
+            /*case c.getString(R.string.daily): return 86400;
+            case c.getString(R.string.weekly): return 30;//604800;
+            case c.getString(R.string.monthly): return 2628003;
+            case c.getString(R.string.annualy): return 31536000;
+            case c.getString(R.string.nobackup): return 0;*/
         }
         return 0;
     }
@@ -97,7 +97,10 @@ public class PeriodicBackupCaller extends GcmTaskService {
 
                         //for csv file
                         if(writer ==null) {
-                            String[] nameArr = {"Id", "Type", "UserId", "DateTime", "Category", "Amount", "Account", "Currency", "Location"};
+                            String[] nameArr = {getString(R.string.id), getString(R.string.type),
+                                    getString(R.string.userid), getString(R.string.datetime), getString(R.string.category),
+                                    getString(R.string.amount), getString(R.string.account), getString(R.string.currency),
+                                    getString(R.string.location)};
                             try {
                                 writer = new CSVWriter(new FileWriter(finalLoc + ".csv"));
                             } catch (IOException e) {
@@ -117,16 +120,16 @@ public class PeriodicBackupCaller extends GcmTaskService {
                                 WorkbookSettings wbSettings = new WorkbookSettings();
                                 wbSettings.setLocale(new Locale("en", "EN"));
                                 workbook = jxl.Workbook.createWorkbook(file, wbSettings);
-                                sheet = workbook.createSheet("Transaction Backup", 0);
-                                sheet.addCell(new Label(0, 0, "Id"));
-                                sheet.addCell(new Label(1, 0, "Type"));
-                                sheet.addCell(new Label(2, 0, "UserId"));
-                                sheet.addCell(new Label(3, 0, "DateTime"));
-                                sheet.addCell(new Label(4, 0, "Category"));
-                                sheet.addCell(new Label(5, 0, "Amount"));
-                                sheet.addCell(new Label(6, 0, "Account"));
-                                sheet.addCell(new Label(7, 0, "Currency"));
-                                sheet.addCell(new Label(8, 0, "Location"));
+                                sheet = workbook.createSheet(getString(R.string.periodicbackupcaller_createsheet), 0);
+                                sheet.addCell(new Label(0, 0, getString(R.string.id)));
+                                sheet.addCell(new Label(1, 0, getString(R.string.type)));
+                                sheet.addCell(new Label(2, 0, getString(R.string.userid)));
+                                sheet.addCell(new Label(3, 0, getString(R.string.datetime)));
+                                sheet.addCell(new Label(4, 0, getString(R.string.category)));
+                                sheet.addCell(new Label(5, 0, getString(R.string.amount)));
+                                sheet.addCell(new Label(6, 0, getString(R.string.account)));
+                                sheet.addCell(new Label(7, 0, getString(R.string.currency)));
+                                sheet.addCell(new Label(8, 0, getString(R.string.location)));
                             }
 
                             countRow++;

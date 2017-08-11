@@ -14,7 +14,7 @@
             android:layout_height="match_parent"
     />
 
-    <TextView android:text="NO TEXT"
+    <TextView android:text="@string/xmlocrreader_billdata_text"
               android:textColor="@android:color/white"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"

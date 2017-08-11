@@ -1,66 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single" >
 
         <item
                 android:id="@+id/transactionFrag"
                 android:icon="@drawable/ic_menu_camera"
-                android:title="Overview"/>
+                android:title="@string/xmlmenu_transactionFrag_title"/>
         <item
                 android:id="@+id/reportsFrag"
                 android:icon="@drawable/ic_menu_gallery"
-                android:title="Reports"/>
+                android:title="@string/xmlmenu_reportsFrag_title"/>
 
         <item
                 android:id="@+id/recurringFrag"
                 android:icon="@drawable/ic_menu_slideshow"
-                android:title="Recurring transactions"/>
+                android:title="@string/xmlmenu_recurringFrag_title"/>
 
         <item
                 android:id="@+id/categoryFrag"
                 android:icon="@drawable/ic_menu_slideshow"
-                android:title="Categories"/>
-
-
+                android:title="@string/xmlmenu_categoryFrag_title"/>
 
         <item
                 android:id="@+id/transferFrag"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Transfer money"/>
+                android:title="@string/xmlmenu_transferFrag_title"/>
 
     </group>
 
-    <item android:title="Preferences">
+    <item android:title="@string/xmlmenu_item2_title">
         <menu>
             <item
                     android:id="@+id/budgetFrag"
                     android:icon="@drawable/ic_menu_share"
-                    android:title="Budgets"/>
+                    android:title="@string/xmlmenu_budgetFrag_title"/>
 
             <item
                     android:id="@+id/walletFrag"
                     android:icon="@drawable/ic_menu_slideshow"
-                    android:title="Add Wallet"/>
+                    android:title="@string/xmlmenu_walletFrag_title"/>
 
             <item
                     android:id="@+id/settingFrag"
                     android:icon="@drawable/ic_menu_send"
-                    android:title="Settings"/>
+                    android:title="@string/xmlmenu_settingFrag_title"/>
 
             <item
                     android:id="@+id/helpFrag"
                     android:icon="@drawable/ic_menu_send"
-                    android:title="Help and Manual"/>
+                    android:title="@string/xmlmenu_helpFrag_title"/>
         </menu>
     </item>
 
-    <item android:title="Preferences">
+    <item android:title="@string/xmlmenu_item3_title">
         <menu>
             <item
                     android:id="@+id/backupFrag"
                     android:icon="@drawable/ic_menu_send"
-                    android:title="Backup"/>
+                    android:title="@string/xmlmenu_backupFrag_title"/>
         </menu>
     </item>
 

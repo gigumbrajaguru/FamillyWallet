@@ -42,7 +42,8 @@ public class Notification {
 
     public void statusIcon(Context c){
         //displaing status icon
-        PendingIntent addExpense = PendingIntent.getActivity(c,STATUS_ICON,new Intent(c, AddTransaction.class).putExtra("transactionType","Expense"),STATUS_ICON);//update here
+        PendingIntent addExpense = PendingIntent.getActivity(c,STATUS_ICON,new Intent(c, AddTransaction.class).
+                putExtra("transactionType",R.string.transaction_expense_settitle),STATUS_ICON);//update here
         PendingIntent scanBill = PendingIntent.getActivity(c,STATUS_ICON,new Intent(c, OCRReader.class),STATUS_ICON);//update here
         notification = new android.app.Notification.Builder(c)
                 .setContentTitle(c.getString(R.string.noti_statusicon_setcontenttitle))
@@ -67,7 +68,8 @@ public class Notification {
 
         nm = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(NOTI_PPROTOTYPE,notiBuilder.build());
-        new SQLiteHelper(context).addNoti(title,new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(GregorianCalendar.getInstance().getTime()),body);
+        new SQLiteHelper(context).addNoti(title,new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").
+                format(GregorianCalendar.getInstance().getTime()),body);
         badgeCount++;
         return true;
     }
@@ -110,7 +112,8 @@ public class Notification {
                     .setContentTitle(context.getString(R.string.noti_onrecieve_setcontenttitle))
                     .setContentText(context.getString(R.string.noti_onrecieve_setcontenttext));
             notificationManager.notify(DAILY_REMINDER,builder.build());
-            new SQLiteHelper(context).addNoti(context.getString(R.string.noti_onrecieve_setcontenttitle),new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(GregorianCalendar.getInstance().getTime()),context.getString(R.string.noti_onrecieve_setcontenttext));
+            new SQLiteHelper(context).addNoti(context.getString(R.string.noti_onrecieve_setcontenttitle),new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").
+                    format(GregorianCalendar.getInstance().getTime()),context.getString(R.string.noti_onrecieve_setcontenttext));
             badgeCount++;
             Log.d("badcount","add on noti rec"+badgeCount);
 

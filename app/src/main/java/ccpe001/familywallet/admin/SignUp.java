@@ -118,7 +118,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
         }).addOnFailureListener(this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(SignUp.this,getString(R.string.signup_fbhandle_onfail_toast)+,Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignUp.this,getString(R.string.common_error),Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -144,7 +144,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
                                         Intent intent = new Intent("ccpe001.familywallet.GETINFO");
                                         startActivity(intent);
                                     }else{
-                                        Toast.makeText(SignUp.this,R.string.signin_onclick_elsetoast,Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignUp.this,getString(R.string.common_error),Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -172,7 +172,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
 
                 @Override
                 public void onError(FacebookException error) {
-                    Toast.makeText(getApplicationContext(), "Error "+ error.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.common_error, Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -186,13 +186,13 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this,"Connection failed.",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,R.string.connectionfailed,Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);//what is the facebooks requestCode
+        callbackManager.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == RC_SIGN_IN){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -202,7 +202,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
                 firebaseAuthWithGoogle(account);//once it auth with google it does others
             }
             else
-                Toast.makeText(this, "Google Login Failed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.common_error,Toast.LENGTH_SHORT).show();
 
         }
     }

@@ -33,7 +33,7 @@
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="First name"
+                android:hint="@string/xmlgetinfo_editText_hint"
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:maxLines="1"
@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
         >
         <EditText
-                android:hint="Last name"
+                android:hint="@string/xmlgetinfo_editText4_hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"

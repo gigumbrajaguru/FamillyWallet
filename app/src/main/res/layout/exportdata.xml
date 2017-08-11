@@ -12,7 +12,7 @@
     >
 
         <EditText
-                android:hint="Backup filenames"
+                android:hint="@string/xmlexportdata_filename_hint"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
 
@@ -25,20 +25,20 @@
     </android.support.design.widget.TextInputLayout>
 
     <CheckBox
-            android:text="CSV format"
+            android:text="@string/xmlexportdata_csvCheck_text"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/csvCheck"/>
     <CheckBox
-            android:text="Excel format"
+            android:text="@string/xmlexportdata_exelCheck_text"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/exelCheck" />
 
     <Switch
-            android:text="Send files via mail?"
+            android:text="@string/xmlexportdata_sendBackMail_text"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"
@@ -47,12 +47,11 @@
             android:layout_height="wrap_content" android:id="@+id/sendBackMail"/>
 
     <Button
-            android:text="Create files"
+            android:text="@string/xmlexportdata_createBtn_text"
             android:textAllCaps="false"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="30dp"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/createBtn"/>
 

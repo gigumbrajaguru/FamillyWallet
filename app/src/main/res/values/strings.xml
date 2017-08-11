@@ -14,7 +14,7 @@
 
     <string-array name="spinnerCurrency">
         <item>Rs.</item>
-        <item>US $ </item>
+        <item>US $</item>
         <item>Rs(Convert)</item>
     </string-array>
     <string name="fb_APP_ID">1505482392855831</string>
@@ -124,16 +124,104 @@
     <string name="signup_onclick_emailerr">Invalid email</string>
     <string name="signup_onclickprogressbar_msg">Registering user</string>
     <string name="signup_oncomplete_sucesstoast">Registration successful</string>
-    <string name="signin_onclick_elsetoast">Registration Error</string>
     <string name="signup_cancel_toast">You cancelled</string>
     <string name="signin_scan_setpromt">Scan</string>
-    <string name="signup_fbhandle_onfail_toast">Error</string>
+    <string name="common_error">Error occured,try again</string>
+
     <string name="noti_statusicon_setcontenttitle">Family Wallet</string>
     <string name="noti_statusicon_setaction_expense">Add expense</string>
     <string name="noti_statusicon_setaction_scanbill">Scan Bill</string>
     <string name="noti_onrecieve_setticker">Daily reminder</string>
     <string name="noti_onrecieve_setcontenttitle">We missing you</string>
     <string name="noti_onrecieve_setcontenttext">Add your daily transactions to the wallet..</string>
+    <string name="setting_setlangBuilderOpener_positive">Yes</string>
+    <string name="setting_langBuilderOpener_setmsg">This will restart your app. Sure you want to continue?</string>
+    <string name="setting_langBuilderOpener_settitle">Alert</string>
+    <string name="setting_setNegativeButton">No</string>
+    <string name="setting_onCheckedChanged_langBuilderOpener_setmsg">This will change your applications
+        dateformat,language and currency to local. It will restart your app. Sure you want to continue?
+    </string>
+    <string name="setting_appnotiswitch_on_toast">All app notifications are turned on including daily reminders.
+    </string>
+    <string name="id">Id</string>
+    <string name="type">Type</string>
+    <string name="userid">UserId</string>
+    <string name="datetime">DateTime</string>
+    <string name="category">Category</string>
+    <string name="amount">Amount</string>
+    <string name="account">Account</string>
+    <string name="currency">Currency</string>
+    <string name="location">Location</string>
+    <string name="periodicbackupcaller_createsheet">Transaction Backup</string>
+    <string name="transaction_expense_settitle">Expense</string>
+    <string name="signin_waitmsg">Wait..</string>
+    <string name="connectionfailed">Please check your connection.</string>
+    <string name="exportdata_onclick_invalidfilename">Invalid filename</string>
+    <string name="exportdata_onclick_checkticks">Check at least one option</string>
+    <string name="exportdata_onclick_backupdone">Backups created</string>
+    <string name="exportdata_ismailcreator_createchooser">Send email</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="annualy">Annually</string>
+    <string name="nobackup">No Auto Backups</string>
+    <string name="ocrreader_onactivityresult_uploaddone">Upload success</string>
+    <string name="xmlsignup_emailTxt_hint">Email address</string>
+    <string name="xmlsignup_passwordTxt_hint">Password</string>
+    <string name="xmlsignup_signupBtn_text">Sign up via Email</string>
+    <string name="xmlsignup_googleOptBtn_text">Sign up via Google</string>
+    <string name="xmlsignup_fbOptBtn_text">Sign up via Facebook</string>
+    <string name="xmlsignin_textView_text">Forgot?</string>
+    <string name="xmlsignin_textView2_text">Not a member?</string>
+    <string name="xmlsignin_signInBtn_text">Login</string>
+    <string name="xmlsetting_head1">Language and formatting</string>
+    <string name="xmlsetting_localModeSwitch_text">Local mode</string>
+    <string name="xmlsetting_selectLang_text">Select language</string>
+    <string name="xmlsetting_selectDateRow_text">Select date format</string>
+    <string name="xmlsetting_selectCurrRow_text">Select currency</string>
+    <string name="xmlsetting_statusCurrLay_text">Notification</string>
+    <string name="xmlsetting_appNotySwitch_text">App notifications</string>
+    <string name="xmlsetting_statusIconSwitch_text">Show widget in status bar</string>
+    <string name="xmlsetting_remTimeRow_text">Daily reminder time (24 Hour)</string>
+    <string name="xmlsetting_head5_text">System</string>
+    <string name="xmlsetting_autoSyncSwitch_text">Auto sync</string>
+    <string name="xmlsetting_backupRemRow_text">Auto backups</string>
+    <string name="xmlsetting_backupLocRow_text">Backup location</string>
+    <string name="xmlsetting_checkBox_text">App password</string>
+    <string name="xmlsetting_head9_text">About</string>
+    <string name="xmlsetting_feedbackRow_text">Send feedback</string>
+    <string name="xmlsetting_rateRow_text">Rate</string>
+    <string name="xmlsetting_signOutBtn_text">Sign out</string>
+    <string name="xmlpasswordsetter_setPinBtn_text">Set PIN</string>
+    <string name="xmlpasswordsetter_enDisPinSwitch_text">Enable PIN</string>
+    <string name="xmlocrreader_billdata_text">NO TEXT</string>
+    <string name="xmlintrocontainer_skipBtn_text">Skip</string>
+    <string name="xmlgetinfo_editText4_hint">Last name</string>
+    <string name="xmlgetinfo_editText_hint">First name</string>
+    <string name="xmlforgot_textView3_text">Enter your email, we\'ll mail you reset password.</string>
+    <string name="xmlforgot_sendMail_text">Send</string>
+    <string name="xmlexportdata_filename_hint">Backup filenames</string>
+    <string name="xmlexportdata_csvCheck_text">CSV format</string>
+    <string name="xmlexportdata_exelCheck_text">Excel format</string>
+    <string name="xmlexportdata_sendBackMail_text">Send files via mail?</string>
+    <string name="xmlexportdata_createBtn_text">Create files</string>
+    <string name="xmladdmember_editText2_text">Can\'t scan QR code?</string>
+    <string name="xmladdmember_editText10_text">Go to other members mobile and scan the QR code..!</string>
+    <string name="xmlactscreen3_textView4_text">Description String</string>
+    <string name="xmlactscreen2_textView4_text">Description String</string>
+    <string name="xmlactscreen1_textView4_text">Description String</string>
+    <string name="xmlmenu_transactionFrag_title">Overview</string>
+    <string name="xmlmenu_reportsFrag_title">Reports</string>
+    <string name="xmlmenu_transferFrag_title">Transfer money</string>
+    <string name="xmlmenu_categoryFrag_title">Categories</string>
+    <string name="xmlmenu_recurringFrag_title">Recurring transactions</string>
+    <string name="xmlmenu_item2_title">Preferences</string>
+    <string name="xmlmenu_item3_title">Preferences</string>
+    <string name="xmlmenu_backupFrag_title">Backup</string>
+    <string name="xmlmenu_helpFrag_title">Help and Manual</string>
+    <string name="xmlmenu_settingFrag_title">Settings</string>
+    <string name="xmlmenu_walletFrag_title">Add Wallet</string>
+    <string name="xmlmenu_budgetFrag_title">Budgets</string>
 
 
 </resources>

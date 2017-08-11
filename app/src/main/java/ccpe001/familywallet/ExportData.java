@@ -82,7 +82,7 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == EXTERNAL_READ_PERMIT||requestCode == EXTERNAL_WRITE_PERMIT){
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED||grantResults[1]==PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getActivity(),"Permission granted",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),R.string.permitgranted,Toast.LENGTH_SHORT).show();
             }else {
                 checkPermitBackup(getActivity());
             }
@@ -90,8 +90,10 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
     }
 
     protected static boolean checkPermitBackup(Context c){
-        return ActivityCompat.checkSelfPermission(c, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED&&
-                ActivityCompat.checkSelfPermission(c, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(c, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED&&
+                ActivityCompat.checkSelfPermission(c, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
@@ -108,10 +110,10 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
 
                     try {
                         if ((!csvChecked) && (!exelChecked)) {
-                            Toast.makeText(getContext(), "Check at least one option", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getString(R.string.exportdata_onclick_checkticks), Toast.LENGTH_SHORT).show();
                         } else {
                             export();
-                            Toast.makeText(getContext(), "Backups created", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getString(R.string.exportdata_onclick_backupdone), Toast.LENGTH_SHORT).show();
                             if (mailChecked) {
                                 isMailCreator();
                             }
@@ -121,7 +123,7 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
                     }
                 }
             }else{
-                fileName.setError("Invalid filename");
+                fileName.setError(getString(R.string.exportdata_onclick_invalidfilename));
             }
         }
     }
@@ -140,7 +142,10 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
                         if (csvChecked) {
 
                             if(writer ==null) {
-                                String[] nameArr = {"Id", "Type", "UserId", "DateTime", "Category", "Amount", "Account", "Currency", "Location"};
+                                String[] nameArr = {getString(R.string.id), getString(R.string.type),
+                                        getString(R.string.userid), getString(R.string.datetime), getString(R.string.category),
+                                        getString(R.string.amount), getString(R.string.account), getString(R.string.currency),
+                                        getString(R.string.location)};
                                 try {
                                     writer = new CSVWriter(new FileWriter(finalLoc + ".csv"));
                                 } catch (IOException e) {
@@ -161,16 +166,16 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
                                     WorkbookSettings wbSettings = new WorkbookSettings();
                                     wbSettings.setLocale(new Locale("en", "EN"));
                                     workbook = jxl.Workbook.createWorkbook(file, wbSettings);
-                                    sheet = workbook.createSheet("Transaction Backup", 0);
-                                    sheet.addCell(new Label(0, 0, "Id"));
-                                    sheet.addCell(new Label(1, 0, "Type"));
-                                    sheet.addCell(new Label(2, 0, "UserId"));
-                                    sheet.addCell(new Label(3, 0, "DateTime"));
-                                    sheet.addCell(new Label(4, 0, "Category"));
-                                    sheet.addCell(new Label(5, 0, "Amount"));
-                                    sheet.addCell(new Label(6, 0, "Account"));
-                                    sheet.addCell(new Label(7, 0, "Currency"));
-                                    sheet.addCell(new Label(8, 0, "Location"));
+                                    sheet = workbook.createSheet(getString(R.string.periodicbackupcaller_createsheet), 0);
+                                    sheet.addCell(new Label(0, 0, getString(R.string.id)));
+                                    sheet.addCell(new Label(1, 0, getString(R.string.type)));
+                                    sheet.addCell(new Label(2, 0, getString(R.string.userid)));
+                                    sheet.addCell(new Label(3, 0, getString(R.string.datetime)));
+                                    sheet.addCell(new Label(4, 0, getString(R.string.category)));
+                                    sheet.addCell(new Label(5, 0, getString(R.string.amount)));
+                                    sheet.addCell(new Label(6, 0, getString(R.string.account)));
+                                    sheet.addCell(new Label(7, 0, getString(R.string.currency)));
+                                    sheet.addCell(new Label(8, 0, getString(R.string.location)));
                                 }
 
                                 countRow++;
@@ -217,7 +222,6 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
         ArrayList<Uri> uriArr = new ArrayList<>();
         for(String file : attchArr){
             File fIn = new File(file);
-            Log.d("sdf",finalLoc+".csv"+" "+fIn.exists());
             if(fIn.exists()) {
                 Uri uri = Uri.fromFile(fIn);
                 uriArr.add(uri);
@@ -229,7 +233,7 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
         intent.setType("message/rfc882");
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM,uriArr);
         intent.putExtra(Intent.EXTRA_SUBJECT,"Family Wallet Backup");
-        intent.createChooser(intent,"Send email");
+        intent.createChooser(intent,getString(R.string.exportdata_ismailcreator_createchooser));
         startActivity(intent);
     }
 

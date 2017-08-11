@@ -5,7 +5,7 @@
               android:layout_height="match_parent">
 
     <TextView
-            android:text="Enter your email, we'll mail you reset password."
+            android:text="@string/xmlforgot_textView3_text"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="30dp"
             android:layout_gravity="center"
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
     >
         <EditText
-                android:hint="Email address"
+                android:hint="@string/xmlsignup_emailTxt_hint"
                 android:drawableStart="@mipmap/email"
                 android:drawablePadding="15dp"
                 android:layout_marginLeft="10dp"
@@ -30,7 +30,7 @@
 
 
     <Button
-            android:text="Send"
+            android:text="@string/xmlforgot_sendMail_text"
             android:gravity="center_vertical"
             android:layout_marginTop="10dp"
             android:background="@drawable/roundbutton"
