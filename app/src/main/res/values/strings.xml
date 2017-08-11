@@ -12,12 +12,15 @@
     <string name="signin_title">Sign in Account</string>
     <string name="title_activity_get_info">GetInfo</string>
 
+
+    <string name="fb_APP_ID">1505482392855831</string>
+
+
     <string-array name="spinnerCurrency">
         <item>Rs.</item>
         <item>US $</item>
         <item>Rs(Convert)</item>
     </string-array>
-    <string name="fb_APP_ID">1505482392855831</string>
 
     <string-array name="IncomeCategory">
         <item>Car</item>
@@ -51,6 +54,18 @@
         <item>Other</item>
     </string-array>
 
+    <string-array name="spinnerRecurring">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Annual</item>
+    </string-array>
+
+    <string-array name="spinnerAccount">
+        <item>Account 1</item>
+        <item>Account 2</item>
+    </string-array>
+
     <string-array name="spinnerDateFor">
         <item>2001/03/14</item>
         <item>14/03/2001</item>
@@ -72,10 +87,7 @@
     </string-array>
 
 
-    <string-array name="spinnerAccount">
-        <item>Account 1</item>
-        <item>Account 2</item>
-    </string-array>
+
     <string name="title_activity_transaction_main">transaction_main</string>
     <string name="hello_round">Hello Round World!</string>
     <string name="hello_square">Hello Square World!</string>

@@ -90,7 +90,7 @@ public class TransactionMain extends Fragment {
 
 
         Query query = FirebaseDatabase.getInstance().getReference("Transactions").orderByChild("date");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 tdList.clear();
@@ -189,21 +189,12 @@ public class TransactionMain extends Fragment {
 
                         mode.finish();
                         return true;
-                    case R.id.edit_id:new AlertDialog.Builder(getActivity())
-                            .setTitle("Edit")
-                            .setMessage("Do you really want to Edit this?")
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                                public void onClick(DialogInterface dialog, int whichButton) {
+                    case R.id.edit_id:
                                     for (String checkedKey : checkedPosition){
                                         editTransaction(keys.get(Integer.parseInt(checkedKey)));
                                     }
 
-                                }})
-                            .setNegativeButton(android.R.string.no, null).show();
 
-                        mode.finish();
                         return true;
                     default:
                         return false;

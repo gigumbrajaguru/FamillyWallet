@@ -3,6 +3,7 @@ package ccpe001.familywallet.transaction;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -43,7 +45,8 @@ import ccpe001.familywallet.Validate;
 public class AddTransaction extends AppCompatActivity {
 
     /*Initializing */
-    private TextView txtLocation,txtCategory, txtRecurring;
+    private TextView txtLocation,txtCategory;
+    private Button btnRecurring;
     private Spinner spinCurrency, spinAccount;
     int PLACE_PICKER_REQUEST=1;
     private EditText txtAmount, txtDate, txtTime, txtTitle;
@@ -55,7 +58,8 @@ public class AddTransaction extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
-
+    Integer count=1;
+    Resources resources;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -69,7 +73,7 @@ public class AddTransaction extends AppCompatActivity {
         txtTitle = (EditText) findViewById(R.id.txtTitle);
         txtLocation = (TextView) findViewById(R.id.txtLocation);
         txtCategory = (TextView) findViewById(R.id.txtCategory);
-        txtRecurring = (TextView) findViewById(R.id.txtRecurring);
+        btnRecurring = (Button) findViewById(R.id.btnRecurring);
         spinCurrency = (Spinner) findViewById(R.id.spinCurrency);
         spinAccount = (Spinner) findViewById(R.id.spinAccount);
 
@@ -82,15 +86,42 @@ public class AddTransaction extends AppCompatActivity {
             }
         });
         checkRecurring =(CheckBox) findViewById(R.id.chRecurring);
+        resources=getResources();
+        final String[] recurringPeriod = resources.getStringArray(R.array.spinnerRecurring);
+        btnRecurring.setText(recurringPeriod[0]);
+
         checkRecurring.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                txtRecurring.setVisibility(View.VISIBLE);
+                if (isChecked) {
+                    btnRecurring.setVisibility(View.VISIBLE);
+
+                }
                 else
-                    txtRecurring.setVisibility(View.INVISIBLE);
+                    btnRecurring.setVisibility(View.INVISIBLE);
             }
         });
+
+        btnRecurring.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if (count==4)
+                    count=0;
+                switch (count){
+                    case 0 :btnRecurring.setText(recurringPeriod[0]);break;
+                    case 1 :btnRecurring.setText(recurringPeriod[1]);break;
+                    case 2 :btnRecurring.setText(recurringPeriod[2]);break;
+                    case 3 :btnRecurring.setText(recurringPeriod[3]);break;
+
+                }
+                count++;
+
+
+            }
+        });
+
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         userID = firebaseUser.getUid();
@@ -309,39 +340,73 @@ public class AddTransaction extends AppCompatActivity {
             categoryID = (R.drawable.cat_other);
         }
 
+        if (checkRecurring.isChecked()) {
+//            if (amount.isEmpty()) {
+//                Toast.makeText(this, " Set the Amount first", Toast.LENGTH_SHORT).show();
+//            }
+//            else {
+//                TransactionDetails td;
+//                try {
+//                    if (update.equals("False")){
+//                        mDatabase = FirebaseDatabase.getInstance().getReference();
+//                        td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID);
+//                        mDatabase.child("Transactions").push().setValue(td);
+//                        Toast.makeText(this, "New Transaction Successfully Added", Toast.LENGTH_LONG).show();
+//                    }
+//                    else if (update.equals("True")){
+//                        mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
+//                        td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
+//                        Map<String, Object> postValues = td.toMap();
+//                        mDatabase.child(key).updateChildren(postValues);
+//                        Toast.makeText(this, "Successfully Updated", Toast.LENGTH_LONG).show();
+//                    }
+//                }catch (Exception e){
+//
+//                }
+//
+//                Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
+//                startActivity(intent);
+//            }
+        }
+
+        else {
         if (amount.isEmpty()) {
-            Toast.makeText(this, "Set the Amount first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, " Set the Amount first", Toast.LENGTH_SHORT).show();
         }
         else {
             //DatabaseOps dbOp = new DatabaseOps(cnt);
             //dbOp.addData(amount, title, categoryName, date, Integer.parseInt(categoryID), time, account, location, type, currency, "uID");
             //Toast.makeText(this, "Success", Toast.LENGTH_LONG).show();
 
-                //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
             TransactionDetails td;
-               try {
-                   if (update.equals("False")){
-                       mDatabase = FirebaseDatabase.getInstance().getReference();
-                       td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID);
-                       mDatabase.child("Transactions").push().setValue(td);
-                       Toast.makeText(this, "New Transaction Successfully Added", Toast.LENGTH_LONG).show();
-                   }
-                   else if (update.equals("True")){
-                       mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
-                       td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
-                       Map<String, Object> postValues = td.toMap();
-                       mDatabase.child(key).updateChildren(postValues);
-                       Toast.makeText(this, "Successfully Updated", Toast.LENGTH_LONG).show();
-                   }
-               }catch (Exception e){
+            try {
+                if (update.equals("False")){
+                    mDatabase = FirebaseDatabase.getInstance().getReference();
+                    td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID);
+                    mDatabase.child("Transactions").push().setValue(td);
+                    Toast.makeText(this, "Successfully Added", Toast.LENGTH_LONG).show();
+                }
+                else if (update.equals("True")){
+                    mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
+                    td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
+                    Map<String, Object> postValues = td.toMap();
+                    mDatabase.child(key).updateChildren(postValues);
+                    Toast.makeText(this, "Successfully Updated", Toast.LENGTH_LONG).show();
+                }
+            }catch (Exception e){
 
-               }
+            }
 
 
 
             Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
             startActivity(intent);
         }
+
+        }
+
+
     }
 
 

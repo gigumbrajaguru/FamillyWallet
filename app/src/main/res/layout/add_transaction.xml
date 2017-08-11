@@ -25,6 +25,10 @@
 
                 <TableRow
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TableRow
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="10dp">
 
@@ -52,10 +56,6 @@
                         android:textSize="13dp" />
 
                 </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
 
             </TableLayout>
 
@@ -123,7 +123,8 @@
                         android:layout_y="280dp"
                         android:gravity="center"
                         android:text="Tap to Set Category"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                 </TableRow>
 
@@ -156,7 +157,8 @@
                         android:hint="Title"
                         android:inputType="textPersonName"
                         android:textAlignment="center"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                 </TableRow>
 
@@ -225,6 +227,7 @@
                         android:hint="Amount"
                         android:inputType="numberDecimal"
                         android:textAlignment="center"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
 
                 </TableRow>
@@ -271,10 +274,11 @@
                         android:layout_x="201dp"
                         android:layout_y="345dp"
                         android:editable="false"
+                        android:focusable="false"
                         android:hint="Set Time"
                         android:textAlignment="center"
                         android:textSize="18sp"
-                        android:focusable="false"/>
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/txtDate"
@@ -286,10 +290,11 @@
                         android:layout_x="84dp"
                         android:layout_y="341dp"
                         android:editable="false"
+                        android:focusable="false"
                         android:hint="Set Date"
                         android:textAlignment="center"
                         android:textSize="18sp"
-                        android:focusable="false"/>
+                        android:textStyle="bold" />
                 </TableRow>
 
             </TableLayout>
@@ -307,20 +312,6 @@
                     android:gravity="right"
                     android:padding="10dp">
 
-                    <CheckBox
-                        android:id="@+id/chTemplate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Save As Template" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="right"
-                    android:gravity="right"
-                    android:padding="10dp">
-
                     <TextView
                         android:id="@+id/txtRecurring"
                         android:layout_width="match_parent"
@@ -331,10 +322,35 @@
                         android:visibility="invisible" />
 
                     <CheckBox
+                        android:id="@+id/chTemplate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Save As Template"
+                        android:textStyle="bold|italic" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:padding="10dp">
+
+                    <Button
+                        android:id="@+id/btnRecurring"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:textSize="18sp"
+                        android:visibility="invisible" />
+
+                    <CheckBox
                         android:id="@+id/chRecurring"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Recurring Payment" />
+                        android:text="Recurring Payment"
+                        android:textStyle="bold|italic" />
                 </TableRow>
             </TableLayout>
 
@@ -344,14 +360,14 @@
                 android:layout_alignStart="@+id/tableLayout5"
                 android:layout_below="@+id/tableLayout5"
                 android:layout_marginTop="8dp"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/btnSave"
-                    android:layout_width="match_parent"
+                    android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:background="@null"
-                    android:clickable="true"
+                    android:background="@drawable/transaction_save"
                     android:onClick="saveTransaction"
                     android:scaleType="fitCenter"
                     app:srcCompat="@mipmap/check" />
