@@ -44,7 +44,6 @@ dependencies {
         transitive = true
     }
 
-
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
     compile files('libs/jxl.jar')
     compile files('libs/opencsv-3.9.jar')

@@ -10,157 +10,180 @@
     <TextView
         android:id="@+id/accId"
         android:layout_width="116dp"
-        android:layout_height="45dp"
-        android:layout_alignBaseline="@+id/textView7"
-        android:layout_alignBottom="@+id/textView7"
-        android:layout_alignEnd="@+id/spinner"
-        android:layout_alignStart="@+id/spinner"
+        android:layout_height="30dp"
         android:layout_x="40dp"
         android:layout_y="174dp"
         android:text="19190026"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_marginTop="17dp"
+        android:layout_below="@+id/textView7"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="116dp"
-        android:layout_height="45dp"
+        android:layout_height="30dp"
         android:layout_x="41dp"
         android:layout_y="47dp"
         android:text="Account ID"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textStyle="bold"
-        android:layout_below="@+id/accName"
-        android:layout_alignStart="@+id/accName"
-        android:layout_marginTop="26dp"/>
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/spinner"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="116dp"
-        android:layout_height="45dp"
+        android:layout_height="30dp"
         android:layout_x="41dp"
         android:layout_y="113dp"
         android:text="Available Amount"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textStyle="bold"
-        android:layout_below="@+id/textView7"
-        android:layout_alignStart="@+id/textView7"
-        android:layout_marginTop="19dp"/>
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/textView8"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:id="@+id/textView11"
         android:layout_width="116dp"
-        android:layout_height="45dp"
+        android:layout_height="30dp"
         android:layout_x="194dp"
         android:layout_y="237dp"
         android:text="Status"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textStyle="bold"
-        android:layout_marginEnd="32dp"
-        android:layout_below="@+id/textView9"
-        android:layout_toStartOf="@+id/accStat"
-        android:layout_marginTop="40dp"/>
+        android:layout_below="@+id/accAmount"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="17dp"
+        android:layout_alignEnd="@+id/accAmount"/>
 
     <TextView
         android:id="@+id/textView10"
         android:layout_width="116dp"
-        android:layout_height="45dp"
+        android:layout_height="30dp"
         android:layout_x="191dp"
         android:layout_y="180dp"
         android:text="Add Date"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textStyle="bold"
-        android:layout_alignBaseline="@+id/accDate"
-        android:layout_alignBottom="@+id/accDate"
-        android:layout_alignStart="@+id/textView11"/>
+        android:layout_below="@+id/accStat"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="14dp"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:id="@+id/accStat"
         android:layout_width="116dp"
-        android:layout_height="45dp"
-        android:layout_alignEnd="@+id/accAmount"
-        android:layout_alignStart="@+id/accAmount"
-        android:layout_alignTop="@+id/textView11"
-        android:layout_marginTop="13dp"
+        android:layout_height="30dp"
         android:layout_x="187dp"
         android:layout_y="48dp"
-        android:text="Reserved"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/textView11"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:id="@+id/accDate"
         android:layout_width="116dp"
-        android:layout_height="45dp"
-        android:layout_alignEnd="@+id/accAmount"
-        android:layout_alignStart="@+id/accStat"
-        android:layout_below="@+id/accStat"
-        android:layout_marginTop="19dp"
+        android:layout_height="30dp"
         android:layout_x="188dp"
         android:layout_y="116dp"
-        android:text="2017/05/05"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_marginTop="9dp"
+        android:layout_below="@+id/textView10"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 
     <Button
         android:id="@+id/btnDel"
         android:layout_width="120dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:background="@color/colorAccent"
         android:text="Delete"
-        android:layout_marginTop="26dp"
-        android:layout_below="@+id/accDate"
-        android:layout_alignEnd="@+id/accDate"/>
+        android:layout_below="@+id/btnUpdate"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:id="@+id/accName"
         android:layout_width="116dp"
-        android:layout_height="45dp"
+        android:layout_height="30dp"
         android:text="Account Name"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textStyle="bold"
+        android:layout_marginTop="15dp"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/textView11"
-        android:layout_marginTop="43dp"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="150dp"
-        android:layout_height="45dp"
-        android:layout_alignTop="@+id/accName"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="37dp"/>
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/accName"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 
     <EditText
         android:id="@+id/accAmount"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView9"
-        android:layout_alignEnd="@+id/accId"
-        android:layout_alignStart="@+id/accId"
+        android:layout_height="45dp"
         android:ems="10"
         android:inputType="number"
         android:text="8000.00"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/textView9"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 
     <Button
         android:id="@+id/btnUpdate"
         android:layout_width="120dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:background="@color/success_color"
         android:text="Update"
-        android:layout_alignBaseline="@+id/btnDel"
-        android:layout_alignBottom="@+id/btnDel"
-        android:layout_alignStart="@+id/textView10"
-        android:layout_marginStart="20dp"/>
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/accDate"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="500dp"
+        android:layout_height="30dp"
+        android:text="Currency Type"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/accId"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/curType"
+        android:layout_width="500dp"
+        android:layout_height="30dp"
+        android:layout_above="@+id/textView9"
+        android:layout_alignEnd="@+id/accAmount"/>
 
 
 </RelativeLayout>
