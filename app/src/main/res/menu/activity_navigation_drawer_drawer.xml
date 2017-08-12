@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single" >
-
-        <item
-                android:id="@+id/transactionFrag"
-                android:icon="@drawable/ic_menu_camera"
-                android:title="@string/xmlmenu_transactionFrag_title"/>
-        <item
-                android:id="@+id/reportsFrag"
-                android:icon="@drawable/ic_menu_gallery"
-                android:title="@string/xmlmenu_reportsFrag_title"/>
+    <group android:checkableBehavior="single">
 
         <item
-                android:id="@+id/recurringFrag"
-                android:icon="@drawable/ic_menu_slideshow"
-                android:title="@string/xmlmenu_recurringFrag_title"/>
+            android:id="@+id/transactionFrag"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/xmlmenu_transactionFrag_title" />
+        <item
+            android:id="@+id/reportsFrag"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/xmlmenu_reportsFrag_title" />
 
         <item
-                android:id="@+id/categoryFrag"
-                android:icon="@drawable/ic_menu_slideshow"
-                android:title="@string/xmlmenu_categoryFrag_title"/>
+            android:id="@+id/recurringFrag"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/xmlmenu_recurringFrag_title" />
 
         <item
-                android:id="@+id/transferFrag"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/xmlmenu_transferFrag_title"/>
+            android:id="@+id/categoryFrag"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/xmlmenu_categoryFrag_title" />
+
+        <item
+            android:id="@+id/transferFrag"
+            android:icon="@drawable/ic_menu_share"
+            android:title="@string/xmlmenu_transferFrag_title" />
 
     </group>
 

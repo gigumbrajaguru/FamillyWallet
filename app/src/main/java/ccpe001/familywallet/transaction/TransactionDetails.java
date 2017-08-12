@@ -23,6 +23,7 @@ public class TransactionDetails {
     public String location;
     public String type;
     public String currency;
+    public String recurringPeriod;
 
 
 
@@ -46,6 +47,22 @@ public class TransactionDetails {
         this.currency = currency;
     }
 
+    public TransactionDetails(String userID, String amount, String title, String categoryName, String date, Integer categoryID, String time, String account, String location, String type, String currency, String familyID, String recurringPeriod) {
+        this.userID = userID;
+        this.familyID = familyID;
+        this.amount = amount;
+        this.title = title;
+        this.categoryName = categoryName;
+        this.date = date;
+        this.categoryID = categoryID;
+        this.time = time;
+        this.account = account;
+        this.location = location;
+        this.type = type;
+        this.currency = currency;
+        this.recurringPeriod = recurringPeriod;
+    }
+
 
 
     @Exclude
@@ -63,6 +80,7 @@ public class TransactionDetails {
         result.put("location", location);
         result.put("type", type);
         result.put("currency", currency);
+        result.put("recurringPeriod", recurringPeriod);
 
         return result;
     }

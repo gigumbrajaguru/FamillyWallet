@@ -4,18 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,19 +24,17 @@ import android.widget.Spinner;
 
 import android.widget.TextView;
 import ccpe001.familywallet.admin.CircleTransform;
-import ccpe001.familywallet.admin.Notification;
 import ccpe001.familywallet.admin.UserData;
 import ccpe001.familywallet.budget.accUpdate;
 import ccpe001.familywallet.budget.addAccount;
 import ccpe001.familywallet.budget.budgetList;
 import ccpe001.familywallet.summary.sumMain;
 import ccpe001.familywallet.transaction.TransactionMain;
+import ccpe001.familywallet.transaction.TransactionRecurring;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.Target;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
-import com.google.android.gms.gcm.GcmNetworkManager;
-import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,10 +42,7 @@ import com.google.firebase.database.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.joanzapata.iconify.widget.IconButton;
-import com.kobakei.ratethisapp.RateThisApp;
 import com.squareup.picasso.Picasso;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class Dashboard extends AppCompatActivity
@@ -275,6 +267,12 @@ public class Dashboard extends AppCompatActivity
             android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             accUpdate transmoney = new accUpdate();
             fragmentTransaction.replace(R.id.fragmentContainer1,transmoney);
+            fragmentTransaction.commit();
+        }else if (id == R.id.recurringFrag) {
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            TransactionRecurring transRecur = new TransactionRecurring();
+            fragmentTransaction.replace(R.id.fragmentContainer1,transRecur);
             fragmentTransaction.commit();
         }else if (id == R.id.budgetFrag) {
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();

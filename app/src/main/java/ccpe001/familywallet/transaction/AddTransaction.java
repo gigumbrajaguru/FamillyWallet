@@ -334,6 +334,7 @@ public class AddTransaction extends AppCompatActivity {
         currency = spinCurrency.getSelectedItem().toString();
         location = txtLocation.getText().toString();
         account = spinAccount.getSelectedItem().toString();
+        String recurringPeriod = btnRecurring.getText().toString();
 
         if (categoryName==null){
             categoryName = "Other";
@@ -341,18 +342,18 @@ public class AddTransaction extends AppCompatActivity {
         }
 
         if (checkRecurring.isChecked()) {
-//            if (amount.isEmpty()) {
-//                Toast.makeText(this, " Set the Amount first", Toast.LENGTH_SHORT).show();
-//            }
-//            else {
-//                TransactionDetails td;
-//                try {
-//                    if (update.equals("False")){
-//                        mDatabase = FirebaseDatabase.getInstance().getReference();
-//                        td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID);
-//                        mDatabase.child("Transactions").push().setValue(td);
-//                        Toast.makeText(this, "New Transaction Successfully Added", Toast.LENGTH_LONG).show();
-//                    }
+            if (amount.isEmpty()) {
+                Toast.makeText(this, " Set the Amount first", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                TransactionDetails td;
+                try {
+                    if (update.equals("False")){
+                        mDatabase = FirebaseDatabase.getInstance().getReference();
+                        td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID, recurringPeriod);
+                        mDatabase.child("RecurringTransactions").push().setValue(td);
+                        Toast.makeText(this, "Transaction Added", Toast.LENGTH_LONG).show();
+                    }
 //                    else if (update.equals("True")){
 //                        mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
 //                        td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
@@ -360,13 +361,13 @@ public class AddTransaction extends AppCompatActivity {
 //                        mDatabase.child(key).updateChildren(postValues);
 //                        Toast.makeText(this, "Successfully Updated", Toast.LENGTH_LONG).show();
 //                    }
-//                }catch (Exception e){
-//
-//                }
-//
-//                Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
-//                startActivity(intent);
-//            }
+                }catch (Exception e){
+
+                }
+
+                Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
+                startActivity(intent);
+            }
         }
 
         else {
@@ -385,7 +386,7 @@ public class AddTransaction extends AppCompatActivity {
                     mDatabase = FirebaseDatabase.getInstance().getReference();
                     td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID);
                     mDatabase.child("Transactions").push().setValue(td);
-                    Toast.makeText(this, "Successfully Added", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Transaction Added", Toast.LENGTH_LONG).show();
                 }
                 else if (update.equals("True")){
                     mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
