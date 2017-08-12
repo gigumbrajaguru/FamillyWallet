@@ -18,8 +18,8 @@
         android:textStyle="bold"
         android:layout_marginTop="65dp"
         android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/accOwn"
-        android:layout_marginEnd="24dp"/>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"/>
 
     <EditText
         android:id="@+id/accAmount"
@@ -45,8 +45,9 @@
         android:textAllCaps="true"
         android:textStyle="bold"
         android:layout_below="@+id/accAmount"
-        android:layout_alignStart="@+id/accOther"
-        android:layout_marginTop="14dp"/>
+        android:layout_marginTop="14dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:id="@+id/accOther"
@@ -58,9 +59,10 @@
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textStyle="bold"
-        android:layout_marginStart="16dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_below="@+id/transFrom"
+        android:layout_marginTop="31dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 
     <Spinner
         android:id="@+id/transTo"
@@ -82,10 +84,10 @@
         android:layout_y="468dp"
         android:background="@color/success_color"
         android:text="Transfer"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="34dp"
         android:layout_below="@+id/transTo"
-        android:layout_alignStart="@+id/accOther"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 
     <Spinner
         android:id="@+id/transFrom"
@@ -95,9 +97,9 @@
         android:layout_y="275dp"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="42dp"
+        android:layout_marginTop="14dp"
         android:layout_below="@+id/accOwn"
-        android:layout_alignStart="@+id/accOwn"
-        android:layout_marginTop="14dp"/>
+        android:layout_alignParentStart="true"/>
 
     <Button
         android:id="@+id/btnDtl"
@@ -105,9 +107,10 @@
         android:layout_height="wrap_content"
         android:layout_x="190dp"
         android:layout_y="468dp"
+        android:layout_marginTop="20dp"
         android:background="@color/colorAccent"
         android:text="Update"
-        android:layout_alignTop="@+id/transfer"
-        android:layout_toEndOf="@+id/transfer"
-        android:layout_marginStart="19dp"/>
+        android:layout_below="@+id/transfer"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 </RelativeLayout>
