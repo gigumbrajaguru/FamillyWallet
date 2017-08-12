@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,32 +9,9 @@
     tools:context="ccpe001.familywallet.summary.sumMain">
 
 
-    <EditText
-        android:id="@+id/startdt"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="date"
-        android:hint="Start Date"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="22dp" />
-
-    <EditText
-        android:id="@+id/enddt"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:hint="End Date"
-        android:ems="10"
-        android:inputType="date"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
-
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="350dp"/>
 
-
-
-</>
+</AbsoluteLayout>
