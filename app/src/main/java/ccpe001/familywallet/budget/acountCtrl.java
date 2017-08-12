@@ -16,7 +16,7 @@ public class acountCtrl {
     public DatabaseReference databaseReference;
     public FirebaseAuth firebaseAuth;
 
-    public void addDataAcc(String user,String accountName,Double amount,String types,String bankID,String isPrivate,String Notify,String curType,String family){
+    public void addDataAcc(String user,String accountName,Double amount,String types,String bankID,String isPrivate,String Notify,String curType,String familyId){
 
         databaseReference= FirebaseDatabase.getInstance().getReference();
         firebaseAuth= FirebaseAuth.getInstance();
@@ -24,7 +24,7 @@ public class acountCtrl {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String addDate = df.format(c.getTime());
         lastUpdated="Not Updated";
-        DataStores insertData=new DataStores(user,accountName,amount,types,bankID,addDate,lastUpdated,isPrivate,Notify,curType,family);
+        DataStores insertData=new DataStores(user,accountName,amount,types,bankID,addDate,lastUpdated,isPrivate,Notify,curType,familyId);
         DatabaseReference childD=databaseReference.child("Account");
         childD.push().setValue(insertData);
 

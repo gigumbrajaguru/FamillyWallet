@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -13,6 +15,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +35,7 @@ public class accDetail extends AppCompatActivity {
     String keys,accountNames,typess,bankIDs,addDates,lastUpdateds,isPrivates,Notifys,curTypess;
     TextView accId,curType,accStat,accDate;
     EditText amounts;
-    Double amoun;
+    int amoun;
     private DatabaseReference mDatabase,mDatabases;
     public String getUserEmail() {
         SharedPreferences sharedPreferences = getSharedPreferences("Session", Context.MODE_PRIVATE);
@@ -43,6 +47,7 @@ public class accDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acc_detail);
         this.arraySpinner = new String[]{""};
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         Spinner s = (Spinner) findViewById(R.id.spinner);
         mDatabase = FirebaseDatabase.getInstance().getReference();
             mDatabase.child("Account").addValueEventListener(new ValueEventListener() {
@@ -51,17 +56,23 @@ public class accDetail extends AppCompatActivity {
                 final List<String> areas = new ArrayList<String>();
                 Spinner s = (Spinner) findViewById(R.id.spinner);
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
-                    if((String) child.child("user").getValue()==getUserEmail()) {
                         String xy = (String) child.child("accountName").getValue();
                         areas.add(xy);
-                    }
-
-
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(accDetail.this,android.R.layout.simple_dropdown_item_1line, areas);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(accDetail.this,android.R.layout.simple_dropdown_item_1line, areas){
+                    public View getDropDownView(int position, View convertView,ViewGroup parent) {
+
+                        View v = super.getDropDownView(position, convertView,parent);
+
+                        ((TextView) v).setGravity(Gravity.CENTER);
+
+                        return v;
+
+                    }
+                };
+
                 s.setAdapter(adapter);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -88,7 +99,6 @@ public class accDetail extends AppCompatActivity {
                                 typess = (String) child.child("types").getValue();
                                 bankIDs = (String) child.child("bankID").getValue();
                                 addDates = (String) child.child("addDate").getValue();
-                                amoun=(Double) child.child("amount").getValue();
                                 lastUpdateds = (String) child.child("lastUpdated").getValue();
                                 isPrivates = (String) child.child("isPrivate").getValue();
                                 Notifys = (String) child.child("Notify").getValue();
@@ -103,7 +113,7 @@ public class accDetail extends AppCompatActivity {
                     }
                 });
                 accId.setText(bankIDs);
-                curType.setText(typess);
+                curType.setText(curTypess);
                 accStat.setText(isPrivates);
                 accDate.setText(addDates);
             }

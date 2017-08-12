@@ -152,8 +152,7 @@ public class addAccount extends Fragment  {
         else {
             isPrivate="False";
         }
-        final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         editTxt=(EditText)v.findViewById(R.id.editText5);
         editTxt1=(EditText)v.findViewById(R.id.editText7);
         btnSubmit=(Button)v.findViewById(R.id.btnAdd);
@@ -164,9 +163,9 @@ public class addAccount extends Fragment  {
                 String accountName = editTxt.getText().toString();
                 Double amount = Double.parseDouble(editTxt1.getText().toString());
                 if (check) {
-                    Ctrl.addDataAcc(currentFirebaseUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, Notify,currtype,familyId);
+                    Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, Notify,currtype,familyId);
                 } else {
-                    Ctrl.addDataAcc(getUserEmail(), accountName, amount, "Wallet", "Wallet", isPrivate, Notify,currtype,familyId);
+                    Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Wallet", "Wallet", isPrivate, Notify,currtype,familyId);
 
                 }
             }
