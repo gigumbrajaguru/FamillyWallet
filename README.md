@@ -1,2 +1,2 @@
 # FamilyWallet
-Curtin Software engineering project
+Curtin Capstone Computing Project
