@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import cat.ereza.customactivityoncrash.config.CaocConfig;
 import com.github.orangegangsters.lollipin.lib.PinActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kobakei.ratethisapp.RateThisApp;
@@ -35,6 +36,9 @@ public class Splash extends PinActivity {
 
         prefs = getSharedPreferences("App Settings",Context.MODE_PRIVATE);
 
+        CaocConfig.Builder.create()
+                //.errorDrawable(R.drawable.ic_custom_drawable) //default: bug image
+                .apply();
 
         Thread t1 = new Thread(new Runnable() {
             @Override

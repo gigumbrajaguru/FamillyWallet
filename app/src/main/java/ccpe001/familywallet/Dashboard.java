@@ -28,6 +28,7 @@ import ccpe001.familywallet.admin.UserData;
 import ccpe001.familywallet.budget.accUpdate;
 import ccpe001.familywallet.budget.addAccount;
 import ccpe001.familywallet.budget.budgetList;
+import ccpe001.familywallet.summary.SummaryTab;
 import ccpe001.familywallet.summary.sumMain;
 import ccpe001.familywallet.transaction.TransactionMain;
 import ccpe001.familywallet.transaction.TransactionRecurring;
@@ -259,7 +260,7 @@ public class Dashboard extends AppCompatActivity
         } else if (id == R.id.reportsFrag) {
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            sumMain summary = new sumMain();
+            SummaryTab summary = new SummaryTab();
             fragmentTransaction.replace(R.id.fragmentContainer1,summary);
             fragmentTransaction.commit();
         } else if (id == R.id.transferFrag) {
