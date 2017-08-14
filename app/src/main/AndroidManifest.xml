@@ -95,7 +95,6 @@
                 android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="ccpe001.familywallet.budget.forecast"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -171,6 +170,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+
         <activity
                 android:name=".transaction.AddTransaction"
                 android:parentActivityName=".Dashboard"
@@ -218,12 +218,6 @@
         <meta-data
                 android:name="com.google.android.gms.vision.DEPENDENCIES"
                 android:value="ocr"/>
-
-        <activity
-                android:name=".summary.Test2"
-                android:label="@string/title_activity_test2"
-                android:theme="@style/AppTheme.NoActionBar">
-        </activity>
     </application>
 
 </manifest>

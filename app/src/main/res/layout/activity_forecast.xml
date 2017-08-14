@@ -8,23 +8,23 @@
               tools:context="ccpe001.familywallet.budget.forecast"
               android:weightSum="1">
 
-    <com.github.mikephil.charting.charts.LineChart
+    <com.github.mikephil.charting.charts.CombinedChart
         android:id="@+id/forecastChart"
         android:layout_width="match_parent"
-        android:layout_height="333dp">
+        android:layout_height="333dp"
+        android:layout_marginTop="40dp">
 
-    </com.github.mikephil.charting.charts.LineChart>
+    </com.github.mikephil.charting.charts.CombinedChart>
 
     <TextView
         android:id="@+id/viAvg"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:layout_x="25dp"
-        android:layout_y="414dp"
         android:text="Average Spend"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textStyle="bold"
+        android:layout_marginTop="10dp"
         />
 
     <TextView
