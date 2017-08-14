@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -88,6 +89,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
         signUpBtn.setOnClickListener(this);
         googleBtn.setOnClickListener(this);
         fbBtn.setOnClickListener(this);
+        TextView textView = (TextView) googleBtn.getChildAt(0);
+        textView.setText(R.string.xmlsignup_googleOptBtn_text);
+        googleBtn.setBackgroundResource(R.drawable.roundbutton);
+
+
 
 
         callbackManager = CallbackManager.Factory.create();
