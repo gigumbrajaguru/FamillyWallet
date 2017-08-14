@@ -7,111 +7,148 @@
     tools:context="ccpe001.familywallet.budget.accUpdate">
     <ScrollView
         android:layout_width="match_parent"
+        android:layout_marginTop="65dp"
+        android:layout_marginBottom="15dp"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="70dp">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="1">
-
-        <TextView
-            android:id="@+id/tranAmount"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="Amount"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textStyle="bold"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <EditText
-        android:id="@+id/accAmount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tranAmount"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        android:textAlignment="textStart"/>
+            <TextView
+                android:id="@+id/accName"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="15dp"
+                android:text="Account Name"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:layout_weight="0.07"/>
 
-    <TextView
-        android:id="@+id/accOwn"
-        android:layout_width="227dp"
-        android:layout_height="31dp"
-        android:text="Transfer From"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        android:layout_below="@+id/accAmount"
-        android:layout_marginTop="14dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"/>
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="12dp"
+                android:textAlignment="center"/>
 
-        <Spinner
-            android:id="@+id/transFrom"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/accOwn"
-            android:layout_marginTop="14dp"
-            android:layout_x="0dp"
-            android:layout_y="275dp"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="42dp"/>
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginTop="12dp"
+                android:text="Account ID"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                />
 
-        <TextView
-        android:id="@+id/accOther"
-        android:layout_width="227dp"
-        android:layout_height="31dp"
-        android:layout_x="36dp"
-        android:layout_y="349dp"
-        android:text="Transfer to"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        android:layout_below="@+id/transFrom"
-        android:layout_marginTop="31dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"/>
+            <TextView
+                android:id="@+id/accId"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:layout_marginTop="17dp"
+                android:layout_weight="0.07"/>
 
-    <Spinner
-        android:id="@+id/transTo"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_x="0dp"
-        android:layout_y="391dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="42dp"
-        android:layout_below="@+id/accOther"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="15dp"/>
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:text="Available Amount"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="10dp"/>
 
-    <Button
-        android:id="@+id/transfer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_x="39dp"
-        android:layout_y="468dp"
-        android:background="@color/success_color"
-        android:text="Transfer"
-        android:layout_marginTop="34dp"
-        android:layout_below="@+id/transTo"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"/>
+            <EditText
+                android:id="@+id/accAmount"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="0.07"
+                android:ems="10"
+                android:inputType="number"/>
 
-        <Button
-            android:id="@+id/btnDtl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/transfer"
-            android:layout_marginTop="20dp"
-            android:layout_x="190dp"
-            android:layout_y="468dp"
-            android:background="@color/colorAccent"
-            android:text="Update Account"/>
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="Status"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:layout_marginTop="17dp"/>
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/accStat"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+
+                android:layout_marginTop="12dp"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="Add Date"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:layout_marginTop="14dp"/>
+
+            <TextView
+                android:id="@+id/accDate"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:layout_marginTop="9dp"/>
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="12dp"
+                android:text="Currency Type"
+                android:textAlignment="center"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/curType"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/success_color"
+                android:text="Update"/>
+
+            <Button
+                android:id="@+id/btnDel"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/colorAccent"
+                android:text="Delete"
+                android:layout_marginTop="12dp"/>
+
+        </LinearLayout>
     </ScrollView>
 </RelativeLayout>
