@@ -17,9 +17,12 @@
 
 
     <string-array name="spinnerCurrency">
-        <item>Rs.</item>
-        <item>US $</item>
-        <item>Rs(Convert)</item>
+        <item>LKR </item>
+        <item>USD </item>
+        <item>EUR </item>
+        <item>GBP </item>
+        <item>INR </item>
+
     </string-array>
 
     <string-array name="IncomeCategory">
@@ -58,7 +61,7 @@
         <item>Daily</item>
         <item>Weekly</item>
         <item>Monthly</item>
-        <item>Annual</item>
+        <item>Annually</item>
     </string-array>
 
     <string-array name="spinnerAccount">

@@ -57,13 +57,8 @@ public class TransactionCategory extends AppCompatActivity {
 
 
         categoryToolbar = (Toolbar) findViewById(R.id.categoryToolbar);
-        if (type.equals("Income")) {
+        categoryToolbar.setTitle("Categories");
 
-            categoryToolbar.setTitle("Income Categories");
-        } else if (type.equals("Expense")) {
-
-            categoryToolbar.setTitle("Expense Categories");
-        }
         setSupportActionBar(categoryToolbar);
         ActionBar ab = getSupportActionBar();
 
@@ -112,7 +107,10 @@ public class TransactionCategory extends AppCompatActivity {
 
             if (type.equals("Income")) {
                 switch (position) {
-                    case 0:
+                    case 0 :
+                        CategoryTab02 tab2 = new CategoryTab02();
+                        return tab2;
+                    case 1:
                         CategoryTab01 tab1 = new CategoryTab01();
                         return tab1;
                     default:
@@ -120,9 +118,13 @@ public class TransactionCategory extends AppCompatActivity {
                 }
             } else if (type.equals("Expense")) {
                 switch (position) {
-                    case 0:
+                    case 0 :
+                        CategoryTab01 tab1 = new CategoryTab01();
+                        return tab1;
+                    case 1:
                         CategoryTab02 tab2 = new CategoryTab02();
                         return tab2;
+
                     default:
                         return null;
                 }
@@ -133,17 +135,29 @@ public class TransactionCategory extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 1 total pages.
-            return 1;
+            // Show 2 total tabs
+            return 2;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
 
-            switch (position) {
-                case 0:
-                    return "ALL";
+            if (type.equals("Income")) {
+                switch (position) {
+                    case 0:
+                        return "Income";
+                    case 1:
+                        return "Expense";
+                }
+            } else if (type.equals("Expense")) {
+                switch (position) {
+                    case 0:
+                        return "Expense";
+                    case 1:
+                        return "Income";
+                }
             }
+
             return null;
         }
     }

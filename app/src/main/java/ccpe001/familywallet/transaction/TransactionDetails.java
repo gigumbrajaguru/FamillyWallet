@@ -89,6 +89,10 @@ public class TransactionDetails {
         return userID;
     }
 
+    public String getRecurringPeriod() {
+        return recurringPeriod;
+    }
+
     public String getFamilyID() {
         return familyID;
     }

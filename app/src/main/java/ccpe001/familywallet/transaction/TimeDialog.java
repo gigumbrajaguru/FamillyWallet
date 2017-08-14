@@ -54,7 +54,7 @@ public class TimeDialog extends DialogFragment implements TimePickerDialog.OnTim
 
         String str = "";
 
-        if (input > 10) {
+        if (input >= 10) {
 
             str = Integer.toString(input);
         } else {

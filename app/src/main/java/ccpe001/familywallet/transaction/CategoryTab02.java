@@ -67,8 +67,8 @@ public class CategoryTab02 extends Fragment {
                 eUserID = extras.getString("userID");
                 eFamilyID = extras.getString("familyID");
 
-                String category = itemname[+position];
-                String categoryID = Integer.toString(imgid[+position]);
+                categoryName = itemname[+position];
+                categoryID = imgid[+position];
                 Intent intent = new Intent("ccpe001.familywallet.AddTransaction");
                 intent.putExtra("categoryName",categoryName);
                 intent.putExtra("categoryID",categoryID);

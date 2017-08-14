@@ -1,6 +1,7 @@
 package ccpe001.familywallet.transaction;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -14,12 +15,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +39,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,7 +68,7 @@ public class AddTransaction extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     Integer count=1;
     Resources resources;
-
+    final Context context = this;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +88,7 @@ public class AddTransaction extends AppCompatActivity {
         ImageView imgAccount = (ImageView) findViewById(R.id.imgAccount);
         ImageView imgCategory = (ImageView) findViewById(R.id.imgCategory);
         ImageView imgNote = (ImageView) findViewById(R.id.imgNote);
-        ImageView imgCalander = (ImageView) findViewById(R.id.imgCalender);
+        ImageView imgCalender = (ImageView) findViewById(R.id.imgCalender);
         ImageView imgLocation = (ImageView) findViewById(R.id.imgLocation);
         ImageButton imgSave = (ImageButton) findViewById(R.id.btnSave);
 
@@ -146,6 +152,7 @@ public class AddTransaction extends AppCompatActivity {
 
             }
         });
+
         if (savedInstanceState == null) {
             Bundle extras = this.getIntent().getExtras();
             if(extras == null) {
@@ -240,7 +247,7 @@ public class AddTransaction extends AppCompatActivity {
                     imgAccount.setColorFilter(getResources().getColor(R.color.income));
                     imgCategory.setColorFilter(getResources().getColor(R.color.income));
                     imgNote.setColorFilter(getResources().getColor(R.color.income));
-                    imgCalander.setColorFilter(getResources().getColor(R.color.income));
+                    imgCalender.setColorFilter(getResources().getColor(R.color.income));
                     imgLocation.setColorFilter(getResources().getColor(R.color.income));
                     imgSave.setImageResource(R.mipmap.check_income);
                 }
@@ -255,12 +262,58 @@ public class AddTransaction extends AppCompatActivity {
                     imgAccount.setColorFilter(getResources().getColor(R.color.expense));
                     imgCategory.setColorFilter(getResources().getColor(R.color.expense));
                     imgNote.setColorFilter(getResources().getColor(R.color.expense));
-                    imgCalander.setColorFilter(getResources().getColor(R.color.expense));
+                    imgCalender.setColorFilter(getResources().getColor(R.color.expense));
                     imgLocation.setColorFilter(getResources().getColor(R.color.expense));
                     imgSave.setImageResource(R.mipmap.check_expense);
                 }
             }
         }
+
+        TextView txtDate = (TextView) findViewById(R.id.txtDate);
+        txtDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DateDialog dialog = new DateDialog(v);
+                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                dialog.show(ft,"DatePicker");
+
+            }
+        });
+
+        TextView txtTime = (TextView) findViewById(R.id.txtTime);
+        txtTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimeDialog dialog = new TimeDialog(v);
+                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                dialog.show(ft,"TimePicker");
+
+            }
+        });
+        final String[] cur = resources.getStringArray(R.array.spinnerCurrency);
+
+        final TextView txttest = (TextView) findViewById(R.id.txttest);
+        txttest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.currency_list);
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,
+                        android.R.layout.simple_list_item_1,cur );
+                ListView lv = (ListView) dialog.findViewById(R.id.listCurrency);
+                lv.setAdapter(arrayAdapter);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        txttest.setText(cur[position]);
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
     }
 
 
@@ -315,35 +368,6 @@ public class AddTransaction extends AppCompatActivity {
     }
 
 
-
-    public void onStart(){
-        super.onStart();
-        TextView txtDate = (TextView) findViewById(R.id.txtDate);
-        txtDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                DateDialog dialog = new DateDialog(v);
-                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-                dialog.show(ft,"DatePicker");
-
-            }
-        });
-
-        TextView txtTime = (TextView) findViewById(R.id.txtTime);
-        txtTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimeDialog dialog = new TimeDialog(v);
-                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-                dialog.show(ft,"TimePicker");
-
-            }
-        });
-
-
-
-    }
 
 
 

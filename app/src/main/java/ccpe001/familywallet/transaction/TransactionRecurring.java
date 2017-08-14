@@ -43,7 +43,7 @@ public class TransactionRecurring extends Fragment {
     List<TransactionDetails> tdList;
     List<String> keys;
     List<String> checkedPosition;
-    TransactionListAdapter adapter;
+    TransactionRecurListAdapter adapter;
     String userID;
     String familyID;
 
@@ -100,7 +100,7 @@ public class TransactionRecurring extends Fragment {
                 }
                 Collections.reverse(tdList);
                 Collections.reverse(keys);
-                adapter = new TransactionListAdapter(getActivity(),tdList);
+                adapter = new TransactionRecurListAdapter(getActivity(),tdList);
                 list.setAdapter(adapter);
             }
 
