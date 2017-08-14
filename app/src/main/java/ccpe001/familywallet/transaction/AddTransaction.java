@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,6 +78,14 @@ public class AddTransaction extends AppCompatActivity {
         btnRecurring = (Button) findViewById(R.id.btnRecurring);
         spinCurrency = (Spinner) findViewById(R.id.spinCurrency);
         spinAccount = (Spinner) findViewById(R.id.spinAccount);
+        ImageView imgValue = (ImageView) findViewById(R.id.imgValue);
+        ImageView imgAccount = (ImageView) findViewById(R.id.imgAccount);
+        ImageView imgCategory = (ImageView) findViewById(R.id.imgCategory);
+        ImageView imgNote = (ImageView) findViewById(R.id.imgNote);
+        ImageView imgCalander = (ImageView) findViewById(R.id.imgCalender);
+        ImageView imgLocation = (ImageView) findViewById(R.id.imgLocation);
+        ImageButton imgSave = (ImageButton) findViewById(R.id.btnSave);
+
 
 
 
@@ -226,6 +236,13 @@ public class AddTransaction extends AppCompatActivity {
                     Window window = getWindow();
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                     window.setStatusBarColor(getResources().getColor(R.color.incomeDark));
+                    imgValue.setColorFilter(getResources().getColor(R.color.income));
+                    imgAccount.setColorFilter(getResources().getColor(R.color.income));
+                    imgCategory.setColorFilter(getResources().getColor(R.color.income));
+                    imgNote.setColorFilter(getResources().getColor(R.color.income));
+                    imgCalander.setColorFilter(getResources().getColor(R.color.income));
+                    imgLocation.setColorFilter(getResources().getColor(R.color.income));
+                    imgSave.setImageResource(R.mipmap.check_income);
                 }
             }
             else if(type.equals("Expense")){
@@ -234,6 +251,13 @@ public class AddTransaction extends AppCompatActivity {
                     Window window = getWindow();
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                     window.setStatusBarColor(getResources().getColor(R.color.expenseDark));
+                    imgValue.setColorFilter(getResources().getColor(R.color.expense));
+                    imgAccount.setColorFilter(getResources().getColor(R.color.expense));
+                    imgCategory.setColorFilter(getResources().getColor(R.color.expense));
+                    imgNote.setColorFilter(getResources().getColor(R.color.expense));
+                    imgCalander.setColorFilter(getResources().getColor(R.color.expense));
+                    imgLocation.setColorFilter(getResources().getColor(R.color.expense));
+                    imgSave.setImageResource(R.mipmap.check_expense);
                 }
             }
         }

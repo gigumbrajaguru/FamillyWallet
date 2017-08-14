@@ -1,6 +1,7 @@
 package ccpe001.familywallet.transaction;
 
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -10,6 +11,7 @@ import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +22,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -54,7 +58,7 @@ public class TransactionMain extends Fragment {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
-
+    Validate v = new Validate();
     List<TransactionDetails> tdList;
     List<String> keys;
     List<String> checkedPosition;
@@ -135,8 +139,16 @@ public class TransactionMain extends Fragment {
 
 
         list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                viewTransaction(keys.get(position));
+            }
+        });
         list.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             MenuItem deleteIcon, editIcon;
+
 
 
             @Override
@@ -286,13 +298,69 @@ public class TransactionMain extends Fragment {
 
         return view;
     }
+    String amt;
+    private void viewTransaction(final String key) {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.transaction_view);
+        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
+
+        transaction.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TransactionDetails td = dataSnapshot.getValue(TransactionDetails.class);
+                TextView vTitle = (TextView) dialog.findViewById(R.id.vTxtTitle);
+                TextView vAmount = (TextView) dialog.findViewById(R.id.vTxtAmount);
+                TextView vCategory = (TextView) dialog.findViewById(R.id.vTxtCategory);
+                TextView vAccount = (TextView) dialog.findViewById(R.id.vTxtAccount);
+                TextView vDate = (TextView) dialog.findViewById(R.id.vTxtDate);
+                TextView vTime = (TextView) dialog.findViewById(R.id.vTxtTime);
+                TextView vLocation = (TextView) dialog.findViewById(R.id.vTxtLocation);
+                Button vEdit = (Button) dialog.findViewById(R.id.btnEdit);
+                Button vCancel = (Button) dialog.findViewById(R.id.btnCancel);
+                if (td.getTitle().isEmpty())
+                    vTitle.setText("Title Not Available");
+                else
+                    vTitle.setText("Title - "+td.getTitle());
+                vAmount.setText(td.getCurrency()+td.getAmount());
+                vCategory.setText(td.getCategoryName());
+                vAccount.setText(td.getAccount());
+                vDate.setText(td.getDate());
+                vTime.setText(td.getTime());
+                vLocation.setText(td.getLocation());
+
+                vEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        editTransaction(key);
+                    }
+                });
+
+                vCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+
+
+    }
 
     private void deleteTransaction(String key){
         DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
         transaction.removeValue();
     }
     private void editTransaction(final String key){
-        final Validate v = new Validate();
         DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
         transaction.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
