@@ -7,96 +7,137 @@
     android:orientation="vertical"
     tools:context="ccpe001.familywallet.budget.budgetUpdate"
     android:weightSum="1">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
 
-    <EditText
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Budget name"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <EditText
         android:id="@+id/txtBname"
-        android:layout_width="360dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Budget Name"
-        android:inputType="textPersonName"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="19dp" />
+        android:layout_marginTop="15dp"
+        android:inputType="textPersonName" />
 
-    <EditText
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="StartDate"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <EditText
         android:id="@+id/startDate"
-        android:layout_width="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Start Date"
         android:inputType="text"
-        android:focusableInTouchMode="false"
-        android:layout_below="@+id/txtAmount"
-        android:layout_alignStart="@+id/txtAmount"
-        android:layout_marginTop="12dp"
-        android:layout_alignEnd="@+id/txtAmount" />
+        android:focusableInTouchMode="false" />
 
-    <EditText
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="End date"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:layout_marginTop="15dp"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <EditText
         android:id="@+id/endDate"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:hint="End Date"
+        android:layout_marginTop="15dp"
         android:inputType="text"
-        android:focusableInTouchMode="false"
-        android:layout_below="@+id/startDate"
-        android:layout_marginTop="21dp"
-        android:layout_alignEnd="@+id/startDate"
-        android:layout_alignStart="@+id/startDate" />
+        android:focusableInTouchMode="false" />
 
-    <Spinner
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <Spinner
         android:id="@+id/catSelect"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_below="@+id/endDate"
-        android:layout_alignStart="@+id/endDate"
-        android:layout_alignEnd="@+id/endDate" />
+        android:layout_marginTop="15dp"
+        android:layout_height="36dp" />
 
-    <EditText
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Amount"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <EditText
         android:id="@+id/txtAmount"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="Amount"
-        android:inputType="number"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/txtBname"
-        android:layout_alignStart="@+id/txtBname"
-        android:layout_alignEnd="@+id/txtBname" />
+        android:inputType="number" />
 
-    <Button
-        android:id="@+id/btnForecast"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:background="@color/colorPrimary"
-        android:text="Forecast"
-        android:layout_below="@+id/switch4"
-        android:layout_alignStart="@+id/catSelect"
-        android:layout_marginTop="12dp"
-        android:onClick="toForecast"/>
+        <Switch
+            android:id="@+id/switch4"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:text="Notification"
+            />
 
-    <Button
+        <Button
+            android:id="@+id/btnForecast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:onClick="toForecast"
+            android:text="Forecast"/>
+
+        <Button
         android:id="@+id/btnSubmit"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="15dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:text="Submit"
-        android:layout_marginEnd="11dp"
-        android:layout_alignBaseline="@+id/btnForecast"
-        android:layout_alignBottom="@+id/btnForecast"
-        android:layout_alignEnd="@+id/switch4"/>
+        android:text="Submit"/>
 
-    <Switch
-        android:id="@+id/switch4"
-        android:layout_width="wrap_content"
-        android:layout_height="55dp"
-        android:text="Notification"
-        android:layout_below="@+id/catSelect"
-        android:layout_alignStart="@+id/catSelect"
-        android:layout_marginTop="14dp"
-        android:layout_alignEnd="@+id/catSelect"
-        />
-
+    </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

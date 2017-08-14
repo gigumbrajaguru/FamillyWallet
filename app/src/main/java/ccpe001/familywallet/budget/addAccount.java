@@ -32,7 +32,7 @@ import ccpe001.familywallet.R;
 
 public class addAccount extends Fragment  {
     String m_txt="",validbank,isPrivate="Flase",Notify="False",currtype,familyId="Not assigned";
-    boolean check=false;
+    boolean check=false,msgBoxOut=false;
     private DatabaseReference database;
     Button btnSubmit;
     EditText editTxt,editTxt1;
@@ -163,10 +163,13 @@ public class addAccount extends Fragment  {
                 String accountName = editTxt.getText().toString();
                 Double amount = Double.parseDouble(editTxt1.getText().toString());
                 if (check) {
-                    Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, Notify,currtype,familyId);
+                    msgBoxOut=(Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, Notify,currtype,familyId));
                 } else {
-                    Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Wallet", "Wallet", isPrivate, Notify,currtype,familyId);
+                    msgBoxOut=(Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Wallet", "Wallet", isPrivate, Notify,currtype,familyId));
 
+                }
+                if(msgBoxOut){
+                    alertBox.alertBoxOut(getContext(),"Data Stored","Succeed");
                 }
             }
         });

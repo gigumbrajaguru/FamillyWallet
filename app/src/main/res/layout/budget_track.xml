@@ -6,131 +6,97 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="ccpe001.familywallet.budget.budgetTrack">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
 
-
-    <TextView
-        android:id="@+id/budName"
-        android:layout_width="244dp"
-        android:layout_height="32dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/textView12"
-        android:layout_marginTop="24dp"
-        android:layout_x="20dp"
-        android:layout_y="38dp"
-        android:text="Travel"
-        android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/budName"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:text="Category : Travel"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
     <ProgressBar
         android:id="@+id/progressBar3"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="347dp"
-        android:layout_height="49dp"
-        android:layout_x="23dp"
-        android:layout_y="102dp"
-        android:layout_below="@+id/textView12"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="11dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"/>
 
-    <Switch
-        android:id="@+id/switch1"
-        android:layout_width="294dp"
-        android:layout_height="58dp"
-        android:layout_x="45dp"
-        android:layout_y="300dp"
-        android:text="Notification"
-        android:layout_below="@+id/strDate"
-        android:layout_alignStart="@+id/textView12"
-        android:layout_marginTop="16dp"
-        android:layout_alignEnd="@+id/endDate"/>
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginTop="15dp"
+            android:text="Percentage"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="133dp"
-        android:layout_height="31dp"
-        android:layout_x="41dp"
-        android:layout_y="218dp"
-        android:text="Spent so far"
-        android:layout_alignBottom="@+id/spentNum"
-        android:layout_alignEnd="@+id/strDate"/>
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginTop="15dp"
+            android:text="Transaction"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="134dp"
-        android:layout_height="26dp"
-        android:layout_x="39dp"
-        android:layout_y="252dp"
-        android:text="Transcation"
-        android:layout_alignBottom="@+id/budAmount"
-        android:layout_alignStart="@+id/budName"/>
 
-    <TextView
-        android:id="@+id/spentNum"
-        android:layout_width="144dp"
-        android:layout_height="28dp"
-        android:layout_alignStart="@+id/budAmount"
-        android:layout_below="@+id/budAmount"
-        android:layout_marginTop="19dp"
-        android:layout_x="196dp"
-        android:layout_y="220dp"
-        android:text="7200"/>
+        <TextView
+            android:id="@+id/strDate"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginTop="15dp"
+            android:text="Start Date"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/budAmount"
-        android:layout_width="144dp"
-        android:layout_height="28dp"
-        android:layout_alignEnd="@+id/switch1"
-        android:layout_below="@+id/budName"
-        android:layout_marginTop="44dp"
-        android:layout_x="199dp"
-        android:layout_y="254dp"
-        android:text="9000"/>
+        <TextView
+            android:id="@+id/endDate"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginTop="15dp"
+            android:text="End Date"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/strDate"
-        android:layout_width="138dp"
-        android:layout_height="36dp"
-        android:layout_x="27dp"
-        android:layout_y="154dp"
-        android:text="Start Date"
-        android:layout_below="@+id/progressBar3"
-        android:layout_alignStart="@+id/progressBar3"
-        android:layout_marginTop="14dp"/>
+        <Switch
 
-    <TextView
-        android:id="@+id/endDate"
-        android:layout_width="140dp"
-        android:layout_height="37dp"
-        android:layout_x="233dp"
-        android:layout_y="156dp"
-        android:text="End Date"
-        android:layout_alignBottom="@+id/strDate"
-        android:layout_alignEnd="@+id/progressBar3"/>
+            android:id="@+id/switch1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Notification"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
-    <Button
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="updateBudget"
+            android:text="Update"/>
+
+        <Button
+
+        android:layout_marginTop="10dp"
         android:id="@+id/btnDudDel"
-        android:layout_width="136dp"
-        android:layout_height="50dp"
-        android:layout_x="206dp"
-        android:layout_y="375dp"
-        android:background="@color/colorAccent"
-        android:elevation="0dp"
-        android:text="Delete"
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/switch1"
-        android:layout_toStartOf="@+id/btnUpdate"
-        android:layout_marginEnd="23dp"/>
-
-    <Button
-        android:id="@+id/btnUpdate"
-        android:layout_width="136dp"
-        android:layout_height="50dp"
-        android:layout_x="100dp"
-        android:layout_y="437dp"
-        android:text="Update"
-        android:onClick="updateBudget"
-        android:layout_alignBaseline="@+id/btnDudDel"
-        android:layout_alignBottom="@+id/btnDudDel"
-        android:layout_alignEnd="@+id/switch1"
-        android:layout_marginEnd="23dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete"/>
+    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

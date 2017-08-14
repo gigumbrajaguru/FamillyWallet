@@ -16,8 +16,7 @@ public class acountCtrl {
     public DatabaseReference databaseReference;
     public FirebaseAuth firebaseAuth;
 
-    public void addDataAcc(String user,String accountName,Double amount,String types,String bankID,String isPrivate,String Notify,String curType,String familyId){
-
+    public boolean addDataAcc(String user,String accountName,Double amount,String types,String bankID,String isPrivate,String Notify,String curType,String familyId){
         databaseReference= FirebaseDatabase.getInstance().getReference();
         firebaseAuth= FirebaseAuth.getInstance();
         Calendar c = Calendar.getInstance();
@@ -28,6 +27,7 @@ public class acountCtrl {
         DatabaseReference childD=databaseReference.child("Account");
         childD.push().setValue(insertData);
 
+        return true;
     }
 
 }

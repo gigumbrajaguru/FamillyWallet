@@ -223,7 +223,7 @@
     <string name="xmlactscreen1_textView4_text">Description String</string>
     <string name="xmlmenu_transactionFrag_title">Overview</string>
     <string name="xmlmenu_reportsFrag_title">Reports</string>
-    <string name="xmlmenu_transferFrag_title">Transfer money</string>
+    <string name="xmlmenu_transferFrag_title">View Accounts</string>
     <string name="xmlmenu_categoryFrag_title">Categories</string>
     <string name="xmlmenu_recurringFrag_title">Recurring transactions</string>
     <string name="xmlmenu_item2_title">Preferences</string>

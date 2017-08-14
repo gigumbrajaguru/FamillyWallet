@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
@@ -17,35 +17,39 @@
 
     <TextView
         android:id="@+id/viAvg"
-        android:layout_width="144dp"
-        android:layout_height="65dp"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
         android:layout_x="25dp"
         android:layout_y="414dp"
         android:text="Average Spend"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        />
 
     <TextView
         android:id="@+id/viAvg1"
-        android:layout_width="164dp"
-        android:layout_height="69dp"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
         android:layout_x="189dp"
         android:layout_y="413dp"
         android:text="8000.00"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        />
 
     <TextView
         android:id="@+id/viCat"
-        android:layout_width="159dp"
-        android:layout_height="39dp"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
         android:layout_x="99dp"
         android:layout_y="364dp"
         android:text="Catagory"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        />
 
-</AbsoluteLayout>
+
+</LinearLayout>

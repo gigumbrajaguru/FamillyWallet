@@ -35,7 +35,6 @@ public class accDetail extends AppCompatActivity {
     String keys,accountNames,typess,bankIDs,addDates,lastUpdateds,isPrivates,Notifys,curTypess;
     TextView accId,curType,accStat,accDate;
     EditText amounts;
-    int amoun;
     private DatabaseReference mDatabase,mDatabases;
     public String getUserEmail() {
         SharedPreferences sharedPreferences = getSharedPreferences("Session", Context.MODE_PRIVATE);
