@@ -238,6 +238,7 @@
     <string name="title_activity_test2">Test2</string>
     <string name="summarytab_settitle_1">Income</string>
     <string name="summarytab_settitle_2">Expense</string>
+    <string name="xmladdmember_scanqrbtn_text">Scan QR Code</string>
 
 
 </resources>

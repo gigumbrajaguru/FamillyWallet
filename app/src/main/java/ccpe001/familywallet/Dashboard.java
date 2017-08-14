@@ -332,46 +332,47 @@ public class Dashboard extends AppCompatActivity
             drawerLayout.closeDrawer(GravityCompat.START);
         }
 
+        if (showcaseView!=null) {
+            //for each click on btn
+            ViewTarget navigationButtonViewTarget = null;
+            try {
+                navigationButtonViewTarget = ViewTargets.navigationButtonViewTarget(toolbar);
+            } catch (ViewTargets.MissingViewException e) {
+                e.printStackTrace();
+            }
+            switch (animateCounter) {
+                case 0:
+                    showcaseView.setShowcase(navigationButtonViewTarget, true);
+                    showcaseView.setContentTitle(getString(R.string.dashboard_onclick_0_setcontitle));
+                    showcaseView.setContentText(getString(R.string.dashboard_onclick_0_setconttext));
+                    break;
 
-        //for each click on btn
-        ViewTarget navigationButtonViewTarget = null;
-        try {
-            navigationButtonViewTarget = ViewTargets.navigationButtonViewTarget(toolbar);
-        } catch (ViewTargets.MissingViewException e) {
-            e.printStackTrace();
+                case 1:
+                    showcaseView.setShowcase(new ViewTarget(findViewById(R.id.action_notification)), true);
+                    showcaseView.setContentTitle(getString(R.string.dashboard_onclick_1_setcontitle));
+                    showcaseView.setContentText(getString(R.string.dashboard_onclick_1_setconttext));
+                    break;
+
+                case 2:
+                    showcaseView.setShowcase(new ViewTarget(findViewById(R.id.action_search)), true);
+                    showcaseView.setContentTitle(getString(R.string.dashboard_onclick_2_setcontitle));
+                    showcaseView.setContentText(getString(R.string.dashboard_onclick_2_setconttext));
+                    break;
+
+                case 3:
+                    showcaseView.setShowcase(new ViewTarget(findViewById(R.id.fabMain)), true);
+                    showcaseView.setContentTitle(getString(R.string.dashboard_onclick_3_setcontitle));
+                    showcaseView.setContentText(getString(R.string.dashboard_onclick_3_setconttext));
+                    showcaseView.setButtonText(getString(R.string.dashboard_onclick_3_setbtntext));
+                    break;
+
+                case 4:
+                    showcaseView.hide();
+                    animateCounter = 0;
+                    break;
+            }
+            animateCounter++;
         }
-        switch (animateCounter) {
-            case 0:
-                showcaseView.setShowcase(navigationButtonViewTarget, true);
-                showcaseView.setContentTitle(getString(R.string.dashboard_onclick_0_setcontitle));
-                showcaseView.setContentText(getString(R.string.dashboard_onclick_0_setconttext));
-                break;
-
-            case 1:
-                showcaseView.setShowcase(new ViewTarget(findViewById(R.id.action_notification)), true);
-                showcaseView.setContentTitle(getString(R.string.dashboard_onclick_1_setcontitle));
-                showcaseView.setContentText(getString(R.string.dashboard_onclick_1_setconttext));
-                break;
-
-            case 2:
-                showcaseView.setShowcase(new ViewTarget(findViewById(R.id.action_search)), true);
-                showcaseView.setContentTitle(getString(R.string.dashboard_onclick_2_setcontitle));
-                showcaseView.setContentText(getString(R.string.dashboard_onclick_2_setconttext));
-                break;
-
-            case 3:
-                showcaseView.setShowcase(new ViewTarget(findViewById(R.id.fabMain)), true);
-                showcaseView.setContentTitle(getString(R.string.dashboard_onclick_3_setcontitle));
-                showcaseView.setContentText(getString(R.string.dashboard_onclick_3_setconttext));
-                showcaseView.setButtonText(getString(R.string.dashboard_onclick_3_setbtntext));
-                break;
-
-            case 4:
-                showcaseView.hide();
-                animateCounter = 0;
-                break;
-        }
-        animateCounter++;
     }
 
     private void setFirst(boolean isFirst){
