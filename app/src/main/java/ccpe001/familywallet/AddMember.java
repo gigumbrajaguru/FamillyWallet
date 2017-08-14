@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ public class AddMember extends Fragment  implements View.OnClickListener{
     private TextView cautionText,regenerateQr;
     private Random random;
     private String randomNo;
+    private Button scanqrbtn;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class AddMember extends Fragment  implements View.OnClickListener{
         random = new Random();//security problems
         randomNo = String.valueOf(random.nextInt(1000000));
         cautionText = (TextView) v.findViewById(R.id.editText10);
+        scanqrbtn = (Button) v.findViewById(R.id.scanqrbtn);
+        scanqrbtn.setOnClickListener(this);
         regenerateQr = (TextView) v.findViewById(R.id.editText2);
         regenerateQr.setOnClickListener(this);
         qrImage = (ImageView) v.findViewById(R.id.qrCodeImage);
@@ -60,6 +64,8 @@ public class AddMember extends Fragment  implements View.OnClickListener{
             random = new Random();
             randomNo = String.valueOf(random.nextInt(1000000));
             setQr();
+        }else if(view.getId() == R.id.scanqrbtn){
+            qrReader();
         }
     }
 
@@ -80,9 +86,9 @@ public class AddMember extends Fragment  implements View.OnClickListener{
         intentIntegrator.setDesiredBarcodeFormats(intentIntegrator.QR_CODE_TYPES);
         intentIntegrator.setPrompt(getString(R.string.signin_scan_setpromt));
         intentIntegrator.setCameraId(0);
-        intentIntegrator.setOrientationLocked(true);
-        intentIntegrator.setBeepEnabled(false);
-        intentIntegrator.setBarcodeImageEnabled(false);
+        intentIntegrator.setOrientationLocked(false);
+        intentIntegrator.setBeepEnabled(true);
+        intentIntegrator.setBarcodeImageEnabled(true);
         intentIntegrator.initiateScan();
     }
 

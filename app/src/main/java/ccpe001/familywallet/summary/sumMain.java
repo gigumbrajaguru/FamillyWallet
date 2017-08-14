@@ -31,7 +31,6 @@ import static ccpe001.familywallet.R.mipmap.category;
 
 public class sumMain extends Fragment {
 
-    //meeka athule charts tika karapn gihan, navigation drawer eka 'Reports' walin meekaai display weene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
             View view = inflater.inflate(R.layout.sum_main, container, false);

@@ -35,6 +35,9 @@ public class Splash extends PinActivity {
 
         prefs = getSharedPreferences("App Settings",Context.MODE_PRIVATE);
 
+        /*CaocConfig.Builder.create()
+                //.errorDrawable(R.drawable.ic_custom_drawable) //default: bug image
+                .apply();*/
 
         Thread t1 = new Thread(new Runnable() {
             @Override

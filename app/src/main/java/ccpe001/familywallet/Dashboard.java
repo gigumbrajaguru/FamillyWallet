@@ -28,6 +28,7 @@ import ccpe001.familywallet.admin.UserData;
 import ccpe001.familywallet.budget.accUpdate;
 import ccpe001.familywallet.budget.addAccount;
 import ccpe001.familywallet.budget.budgetList;
+import ccpe001.familywallet.summary.SummaryTab;
 import ccpe001.familywallet.summary.sumMain;
 import ccpe001.familywallet.transaction.TransactionMain;
 import ccpe001.familywallet.transaction.TransactionRecurring;
@@ -259,7 +260,7 @@ public class Dashboard extends AppCompatActivity
         } else if (id == R.id.reportsFrag) {
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            sumMain summary = new sumMain();
+            SummaryTab summary = new SummaryTab();
             fragmentTransaction.replace(R.id.fragmentContainer1,summary);
             fragmentTransaction.commit();
         } else if (id == R.id.transferFrag) {
@@ -331,46 +332,47 @@ public class Dashboard extends AppCompatActivity
             drawerLayout.closeDrawer(GravityCompat.START);
         }
 
+        if (showcaseView!=null) {
+            //for each click on btn
+            ViewTarget navigationButtonViewTarget = null;
+            try {
+                navigationButtonViewTarget = ViewTargets.navigationButtonViewTarget(toolbar);
+            } catch (ViewTargets.MissingViewException e) {
+                e.printStackTrace();
+            }
+            switch (animateCounter) {
+                case 0:
+                    showcaseView.setShowcase(navigationButtonViewTarget, true);
+                    showcaseView.setContentTitle(getString(R.string.dashboard_onclick_0_setcontitle));
+                    showcaseView.setContentText(getString(R.string.dashboard_onclick_0_setconttext));
+                    break;
 
-        //for each click on btn
-        ViewTarget navigationButtonViewTarget = null;
-        try {
-            navigationButtonViewTarget = ViewTargets.navigationButtonViewTarget(toolbar);
-        } catch (ViewTargets.MissingViewException e) {
-            e.printStackTrace();
+                case 1:
+                    showcaseView.setShowcase(new ViewTarget(findViewById(R.id.action_notification)), true);
+                    showcaseView.setContentTitle(getString(R.string.dashboard_onclick_1_setcontitle));
+                    showcaseView.setContentText(getString(R.string.dashboard_onclick_1_setconttext));
+                    break;
+
+                case 2:
+                    showcaseView.setShowcase(new ViewTarget(findViewById(R.id.action_search)), true);
+                    showcaseView.setContentTitle(getString(R.string.dashboard_onclick_2_setcontitle));
+                    showcaseView.setContentText(getString(R.string.dashboard_onclick_2_setconttext));
+                    break;
+
+                case 3:
+                    showcaseView.setShowcase(new ViewTarget(findViewById(R.id.fabMain)), true);
+                    showcaseView.setContentTitle(getString(R.string.dashboard_onclick_3_setcontitle));
+                    showcaseView.setContentText(getString(R.string.dashboard_onclick_3_setconttext));
+                    showcaseView.setButtonText(getString(R.string.dashboard_onclick_3_setbtntext));
+                    break;
+
+                case 4:
+                    showcaseView.hide();
+                    animateCounter = 0;
+                    break;
+            }
+            animateCounter++;
         }
-        switch (animateCounter) {
-            case 0:
-                showcaseView.setShowcase(navigationButtonViewTarget, true);
-                showcaseView.setContentTitle(getString(R.string.dashboard_onclick_0_setcontitle));
-                showcaseView.setContentText(getString(R.string.dashboard_onclick_0_setconttext));
-                break;
-
-            case 1:
-                showcaseView.setShowcase(new ViewTarget(findViewById(R.id.action_notification)), true);
-                showcaseView.setContentTitle(getString(R.string.dashboard_onclick_1_setcontitle));
-                showcaseView.setContentText(getString(R.string.dashboard_onclick_1_setconttext));
-                break;
-
-            case 2:
-                showcaseView.setShowcase(new ViewTarget(findViewById(R.id.action_search)), true);
-                showcaseView.setContentTitle(getString(R.string.dashboard_onclick_2_setcontitle));
-                showcaseView.setContentText(getString(R.string.dashboard_onclick_2_setconttext));
-                break;
-
-            case 3:
-                showcaseView.setShowcase(new ViewTarget(findViewById(R.id.fabMain)), true);
-                showcaseView.setContentTitle(getString(R.string.dashboard_onclick_3_setcontitle));
-                showcaseView.setContentText(getString(R.string.dashboard_onclick_3_setconttext));
-                showcaseView.setButtonText(getString(R.string.dashboard_onclick_3_setbtntext));
-                break;
-
-            case 4:
-                showcaseView.hide();
-                animateCounter = 0;
-                break;
-        }
-        animateCounter++;
     }
 
     private void setFirst(boolean isFirst){
