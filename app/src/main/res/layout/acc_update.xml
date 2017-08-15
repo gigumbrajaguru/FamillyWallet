@@ -137,16 +137,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="12dp"
-                android:background="@color/success_color"
-                android:text="Update"/>
+                android:text="Update"
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/btnDel"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@color/colorAccent"
+                android:layout_marginTop="12dp"
                 android:text="Delete"
-                android:layout_marginTop="12dp"/>
+                android:textStyle="bold"/>
 
         </LinearLayout>
     </ScrollView>

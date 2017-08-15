@@ -29,13 +29,14 @@
             android:textStyle="bold"/>
 
         <EditText
-        android:id="@+id/txtBname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Budget Name"
-        android:layout_marginTop="15dp"
-        android:inputType="textPersonName" />
+            android:id="@+id/txtBname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:ems="10"
+            android:hint="Budget Name"
+            android:inputType="textPersonName"
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/textView20"
@@ -49,14 +50,15 @@
             android:textStyle="bold"/>
 
         <EditText
-        android:id="@+id/startDate"
-        android:layout_marginTop="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Start Date"
-        android:inputType="text"
-        android:focusableInTouchMode="false" />
+            android:id="@+id/startDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:ems="10"
+            android:focusableInTouchMode="false"
+            android:hint="Start Date"
+            android:inputType="text"
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/textView21"
@@ -70,13 +72,14 @@
             android:textStyle="bold"/>
 
         <EditText
-        android:id="@+id/endDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="End Date"
-        android:layout_marginTop="15dp"
-        android:inputType="text"
-        android:focusableInTouchMode="false" />
+            android:id="@+id/endDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:focusableInTouchMode="false"
+            android:hint="End Date"
+            android:inputType="text"
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/textView22"
@@ -107,13 +110,14 @@
             android:textStyle="bold"/>
 
         <EditText
-        android:id="@+id/txtAmount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:ems="10"
-        android:hint="Amount"
-        android:inputType="number" />
+            android:id="@+id/txtAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:ems="10"
+            android:hint="Amount"
+            android:inputType="number"
+            android:textSize="14sp"/>
 
         <Switch
             android:id="@+id/switch4"
@@ -129,14 +133,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:onClick="toForecast"
-            android:text="Forecast"/>
+            android:text="Forecast"
+            android:textStyle="bold"/>
 
         <Button
-        android:id="@+id/btnSubmit"
-        android:layout_width="match_parent"
-        android:layout_marginTop="15dp"
-        android:layout_height="wrap_content"
-        android:text="Submit"/>
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Submit"
+            android:textStyle="bold"/>
 
     </LinearLayout>
     </ScrollView>

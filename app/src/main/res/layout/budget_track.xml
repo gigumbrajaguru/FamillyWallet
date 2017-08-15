@@ -85,18 +85,20 @@
 
         <Button
             android:id="@+id/btnUpdate"
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:onClick="updateBudget"
-            android:text="Update"/>
+            android:text="Update"
+            android:textStyle="bold"/>
 
         <Button
-        android:layout_marginTop="10dp"
-        android:id="@+id/btnDudDel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete"/>
+            android:id="@+id/btnDudDel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Delete"
+            android:textStyle="bold"/>
     </LinearLayout>
     </ScrollView>
 
