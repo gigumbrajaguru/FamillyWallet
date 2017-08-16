@@ -38,10 +38,12 @@ import static ccpe001.familywallet.R.mipmap.category;
 public class sumMain extends Fragment {
 
     public  PieChart charts;
-    float transac[] = {750.0f, 150.0f, 200.0f};
+   // float transac[] = {750.0f, 150.0f, 200.0f};
     String category[] = {"food", "other", "fees"};
+
     private DatabaseReference rtrvdata; // creating database referrence to read data
     public List<Double> transacval = new ArrayList<Double>(); // List to add transaction data
+    public List<String> dbcat = new ArrayList<String>(); // List to add category
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
             rtrvdata= FirebaseDatabase.getInstance().getReference();
@@ -50,8 +52,12 @@ public class sumMain extends Fragment {
                 public void onDataChange(DataSnapshot dataSnapshot) { // Data retrieving method
 
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                        //Assigning database values to variables
                         Double transacdt = (Double) child.child("amount").getValue();
+                        String catdata = (String) child.child("categoryName").getValue();
                         transacval.add(transacdt);
+                        dbcat.add(catdata);
                     }
                 }
 
@@ -60,17 +66,21 @@ public class sumMain extends Fragment {
 
                 }
             });
+
             View view = inflater.inflate(R.layout.sum_main, container, false);
             charts = (PieChart) view.findViewById(R.id.chart);
             //Pie chart method to populate
             SetupChart();
             return view;
         }
-        private void SetupChart()
+        private void SetupChart() //ref : https://www.youtube.com/watch?v=iS7EgKnyDeY
         {
+
+            Float testtransac[] = (Float[]) transacval.toArray(); //Covert Double List to float array
+            String testcat[] = (String[]) dbcat.toArray();        //Convert String List to String array
             List<PieEntry> pieEntries = new ArrayList<>();
-            for (int i = 0; i < transac.length; i++) {
-                pieEntries.add(new PieEntry(transac[i], category[i]));
+            for (int i = 0; i < testtransac.length; i++) {
+                pieEntries.add(new PieEntry(testtransac[i], testcat[i]));
             }
 
             PieDataSet dataSet = new PieDataSet(pieEntries, "Transactions Done");
