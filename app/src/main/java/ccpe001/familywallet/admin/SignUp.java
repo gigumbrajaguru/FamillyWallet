@@ -1,5 +1,6 @@
 package ccpe001.familywallet.admin;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.*;
 import ccpe001.familywallet.R;
@@ -91,8 +93,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
         fbBtn.setOnClickListener(this);
         TextView textView = (TextView) googleBtn.getChildAt(0);
         textView.setText(R.string.xmlsignup_googleOptBtn_text);
-        googleBtn.setBackgroundResource(R.drawable.roundbutton);
-
+        textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 
 
 
@@ -102,7 +103,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
 
     }
 
-    private void handleFacebookAccessToken(AccessToken accessToken) {
+    public void handleFacebookAccessToken(AccessToken accessToken) {
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -132,7 +133,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
     @Override
     public void onClick(View view) {
         if(view.getId()== R.id.signupBtn){
-
             if(Validate.anyValidMail(emailTxt.getText().toString().trim())) {
                 if(Validate.anyValidPass(passTxt.getText().toString().trim())){
                     progressBar.setMessage(getString(R.string.signup_onclickprogressbar_msg));
@@ -149,7 +149,14 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
                                         Intent intent = new Intent("ccpe001.familywallet.GETINFO");
                                         startActivity(intent);
                                     }else{
-                                        Toast.makeText(SignUp.this,getString(R.string.common_error),Toast.LENGTH_SHORT).show();
+                                        try {
+                                            throw task.getException();
+                                        }catch (FirebaseAuthUserCollisionException invalidEmail) {
+                                            emailTxt.setError(getString(R.string.signup_already_email_text));
+                                            Toast.makeText(SignUp.this,R.string.signup_already_email_text,Toast.LENGTH_SHORT).show();
+                                        } catch (Exception e) {
+                                            Log.d("rror", ""+e.getMessage());
+                                        }
                                     }
                                 }
                             });
@@ -213,7 +220,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
     }
 
 
-    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct){
+    public void firebaseAuthWithGoogle(final GoogleSignInAccount acct){
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -239,7 +246,5 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
         UserData userData = new UserData(fname,lname, mAuth.getCurrentUser().getUid(),proPic);
         databaseReference.child("UserInfo").child(mAuth.getCurrentUser().getUid()).setValue(userData);
     }
-
-
 
 }

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/lib/ccpe001.familywallet"
+              xmlns:facebook="http://schemas.android.com/apk/res-auto" xmlns:google="http://schemas.android.com/tools"
 
-                android:focusable="true"
+              android:focusable="true"
               android:focusableInTouchMode="true"
               android:orientation="vertical"
               android:fitsSystemWindows="true"
@@ -52,23 +53,25 @@
     <Button
             android:text="@string/xmlsignup_signupBtn_text"
             android:gravity="center_vertical"
-
-            android:background="@drawable/roundbutton"
+            android:drawableStart="@mipmap/email2"
+            android:drawablePadding="15dp"
             android:layout_width="match_parent"
             android:textAllCaps="false"
             android:textAlignment="center"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="5dp"
         android:layout_marginTop="10dp"
             android:layout_height="47dp"
             android:id="@+id/signupBtn"/>
 
     <TextView
-            android:text="--Or--"
-            android:textSize="24dp"
+            android:text="@string/xmlsignup_or_text"
+            android:textSize="22dp"
             android:textAlignment="center"
             android:textStyle="italic|bold"
+            android:layout_marginBottom="27dp"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/textView8"/>
 
@@ -84,9 +87,8 @@
 
     <com.facebook.login.widget.LoginButton
             android:id="@+id/fbOptBtn"
-            android:background="@drawable/roundbutton"
-
-            android:layout_marginLeft="10dp"
+            facebook:login_text="@string/xmlsignup_fbOptBtn_text"
+            android:layout_marginLeft="12dp"
             android:layout_marginRight="10dp"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"

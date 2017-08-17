@@ -187,7 +187,7 @@
     <string name="xmlsignup_fbOptBtn_text">Sign up via Facebook</string>
     <string name="xmlsignin_textView_text">Forgot?</string>
     <string name="xmlsignin_textView2_text">Not a member?</string>
-    <string name="xmlsignin_signInBtn_text">Login</string>
+    <string name="xmlsignin_signInBtn_text">Sign in via Email</string>
     <string name="xmlsetting_head1">Language and formatting</string>
     <string name="xmlsetting_localModeSwitch_text">Local mode</string>
     <string name="xmlsetting_selectLang_text">Select language</string>
@@ -250,6 +250,12 @@
     <string name="dashboard_settitle_wallet">Wallet</string>
     <string name="dashboard_settitle_backup">Backups</string>
     <string name="dashboard_settitle_setting">Settings</string>
+    <string name="xmlsignup_or_text">-----------------\tor\t-----------------</string>
+    <string name="signup_incorrect_email_text">Incorrect email</string>
+    <string name="signup_incorrect_pw_text">Incorrect password</string>
+    <string name="signup_already_email_text">User already registered</string>
+    <string name="xmlsignin_googleOptBtn_text">Sign in via Google</string>
+    <string name="xmlsignin_fbOptBtn_text">Sign in via Facebook</string>
 
 
 </resources>

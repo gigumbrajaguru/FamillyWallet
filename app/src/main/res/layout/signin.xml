@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/lib/ccpe001.familywallet"
+              xmlns:facebook="http://schemas.android.com/apk/res-auto"
               android:focusable="true"
               android:focusableInTouchMode="true"
               android:orientation="vertical"
@@ -74,9 +75,10 @@
     <Button
             android:text="@string/xmlsignin_signInBtn_text"
             android:gravity="center_vertical"
-            android:background="@drawable/roundbutton"
             android:layout_width="match_parent"
             android:textAllCaps="false"
+            android:drawableStart="@mipmap/email2"
+            android:drawablePadding="15dp"
             android:textAlignment="center"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -84,4 +86,23 @@
             android:layout_marginTop="20dp"
             android:layout_height="47dp"
             android:id="@+id/signInBtn"/>
+    <com.google.android.gms.common.SignInButton
+            android:id="@+id/googleOptBtn"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+
+    <com.facebook.login.widget.LoginButton
+            android:id="@+id/fbOptBtn"
+            facebook:login_text="@string/xmlsignin_fbOptBtn_text"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+
 </LinearLayout>
