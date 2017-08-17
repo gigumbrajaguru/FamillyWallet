@@ -16,6 +16,7 @@ public class actionValidater {
     static boolean y=true, c=true;
     static double availableAmount,newValue;
     static String key;
+    static int check=0;
 
 
     public static boolean amountCheck(final String AccountName, final double amount) {
@@ -61,17 +62,20 @@ public class actionValidater {
         });
         return c;
     }
-    public boolean addIncome(final String accountName, final Double income) {
+    public static boolean addIncome(final String accountName, final Double income) {
         c=false;
+        check=0;
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference mDatabases;
         mDatabase.child("Account").orderByChild("accountName").equalTo(accountName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     availableAmount=Double.parseDouble(child.child("amount").getValue().toString());
                     newValue=availableAmount+income;
-
+                    if(check==0) {
+                        child.getRef().child("amount").setValue(newValue);
+                        check=1;
+                    }
                 }
 
                 c=true;
@@ -86,15 +90,18 @@ public class actionValidater {
     }
     public static boolean getAmount(final String AccountName, final double getamount){
         if(amountCheck(AccountName,getamount)){
+            check=0;
             mDatabase = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference mDatabases = mDatabase.child("Account");
             mDatabase.child("Account").orderByChild("accountName").equalTo(AccountName).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot child: dataSnapshot.getChildren()) {
                         availableAmount=Double.parseDouble(child.child("amount").getValue().toString());
                         newValue=availableAmount-getamount;
-                        key=child.getRef().getKey();
+                        if(check==0) {
+                            child.getRef().child("amount").setValue(newValue);
+                            check=1;
+                        }
                     }
                     c=true;
                 }

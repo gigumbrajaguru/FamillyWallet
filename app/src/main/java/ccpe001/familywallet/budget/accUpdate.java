@@ -30,14 +30,14 @@ import ccpe001.familywallet.R;
 public class accUpdate extends Fragment {
     private String[] arraySpinner;
     Button btUpdate, btDelete;
-    int h=220;
+    double h=220;
     String keys,accountNames,typess,bankIDs,addDates,lastUpdateds,isPrivates,Notifys,curTypess;
     TextView accId,curType,accStat,accDate;
     EditText amounts;
     private DatabaseReference mDatabase,mDatabases;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        actionValidater.getAmount("eee",h);
+        actionValidater.addIncome("eee",h);
         View v = inflater.inflate(R.layout.acc_update, container, false);
         this.arraySpinner = new String[]{""};
         Spinner s = (Spinner)v.findViewById(R.id.spinner);
