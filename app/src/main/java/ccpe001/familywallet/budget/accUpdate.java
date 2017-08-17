@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,14 +30,14 @@ import ccpe001.familywallet.R;
 public class accUpdate extends Fragment {
     private String[] arraySpinner;
     Button btUpdate, btDelete;
-    int h=0;
+    int h=220;
     String keys,accountNames,typess,bankIDs,addDates,lastUpdateds,isPrivates,Notifys,curTypess;
     TextView accId,curType,accStat,accDate;
     EditText amounts;
     private DatabaseReference mDatabase,mDatabases;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Toast.makeText(getContext(),"transfer money",Toast.LENGTH_LONG).show();
+        actionValidater.getAmount("eee",h);
         View v = inflater.inflate(R.layout.acc_update, container, false);
         this.arraySpinner = new String[]{""};
         Spinner s = (Spinner)v.findViewById(R.id.spinner);
@@ -68,6 +67,7 @@ public class accUpdate extends Fragment {
                 return v;
             }
         };
+
         s.setAdapter(adapter);
         btUpdate = (Button)v.findViewById(R.id.btnUpdate);
         btDelete = (Button)v.findViewById(R.id.btnDel);
