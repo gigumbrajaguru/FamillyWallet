@@ -61,7 +61,7 @@ public class Splash extends PinActivity {
             noti.statusIcon(getApplication());
 
             noti.dailyReminder(getApplication());
- //           rateApi();
+            rateApi();
 
 
             //localisation

@@ -44,7 +44,7 @@ public class Notification {
         //displaing status icon
         PendingIntent addExpense = PendingIntent.getActivity(c,STATUS_ICON,new Intent(c, AddTransaction.class).
                 putExtra("transactionType",R.string.transaction_expense_settitle),STATUS_ICON);//update here
-        PendingIntent scanBill = PendingIntent.getActivity(c,STATUS_ICON,new Intent(c, OCRReader.class),STATUS_ICON);//update here
+        PendingIntent scanBill = PendingIntent.getActivity(c,STATUS_ICON,new Intent(c, OCRReader2.class),STATUS_ICON);//update here
         notification = new android.app.Notification.Builder(c)
                 .setContentTitle(c.getString(R.string.noti_statusicon_setcontenttitle))
                 .setSmallIcon(R.mipmap.ic_launcher)

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -74,12 +75,11 @@ public class Dashboard extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //getSupportActionBar().setTitle("Dashboard");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        toolbar.setTitle(R.string.dashboard_settitle_overview);
         setSupportActionBar(toolbar);
         signUpIntent = getIntent();
 
@@ -251,55 +251,74 @@ public class Dashboard extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                .beginTransaction();
         if (id == R.id.transactionFrag) {
-             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-             android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            toolbar.setTitle(R.string.dashboard_settitle_overview);
+
+
              TransactionMain dashboard = new TransactionMain();
              fragmentTransaction.replace(R.id.fragmentContainer1,dashboard);
              fragmentTransaction.commit();
         } else if (id == R.id.reportsFrag) {
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            toolbar.setTitle(R.string.dashboard_settitle_summary);
+
+
+
             SummaryTab summary = new SummaryTab();
             fragmentTransaction.replace(R.id.fragmentContainer1,summary);
             fragmentTransaction.commit();
         } else if (id == R.id.transferFrag) {
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            toolbar.setTitle(R.string.dashboard_settitle_tranfer);
+
+
+
             accUpdate transmoney = new accUpdate();
             fragmentTransaction.replace(R.id.fragmentContainer1,transmoney);
             fragmentTransaction.commit();
         }else if (id == R.id.recurringFrag) {
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            toolbar.setTitle(R.string.dashboard_settitle_recurring);
+
+
             TransactionRecurring transRecur = new TransactionRecurring();
             fragmentTransaction.replace(R.id.fragmentContainer1,transRecur);
             fragmentTransaction.commit();
         }else if (id == R.id.budgetFrag) {
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            toolbar.setTitle(R.string.dashboard_settitle_budget);
+
+
             budgetList budget = new budgetList();
             fragmentTransaction.replace(R.id.fragmentContainer1,budget);
             fragmentTransaction.commit();
         }else if (id == R.id.walletFrag) {
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            toolbar.setTitle(R.string.dashboard_settitle_wallet);
+
+
             addAccount addwallet = new addAccount();
             fragmentTransaction.replace(R.id.fragmentContainer1,addwallet);
             fragmentTransaction.commit();
         }else if (id == R.id.settingFrag) {
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            toolbar.setTitle(R.string.dashboard_settitle_setting);
+
+
             Settings setting = new Settings();
             fragmentTransaction.replace(R.id.fragmentContainer1,setting);
             fragmentTransaction.commit();
         }else if (id == R.id.backupFrag) {
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            toolbar.setTitle(R.string.dashboard_settitle_backup);
+
+
             ExportData backup = new ExportData();
             fragmentTransaction.replace(R.id.fragmentContainer1,backup);
             fragmentTransaction.commit();
         }else if(id == R.id.helpFrag){
+            TransactionMain dashboard = new TransactionMain();
+
+            if(!dashboard.isVisible()){
+                toolbar.setTitle(R.string.dashboard_settitle_overview);
+                fragmentTransaction.replace(R.id.fragmentContainer1,dashboard);
+                fragmentTransaction.commit();
+            }
             animateMenu();
         }
 

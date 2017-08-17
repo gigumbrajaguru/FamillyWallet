@@ -99,7 +99,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     }
 
     private void init(View v){
-        //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Settings");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Settings");
 
         c = Calendar.getInstance();
         langArr = getActivity().getResources().getStringArray(R.array.spinnerLanguage);

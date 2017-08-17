@@ -242,6 +242,14 @@
     <string name="summarytab_settitle_1">Income</string>
     <string name="summarytab_settitle_2">Expense</string>
     <string name="xmladdmember_scanqrbtn_text">Scan QR Code</string>
+    <string name="dashboard_settitle_overview">Overview</string>
+    <string name="dashboard_settitle_summary">Reports</string>
+    <string name="dashboard_settitle_recurring">Rec. Transactions</string>
+    <string name="dashboard_settitle_tranfer">Tranfers</string>
+    <string name="dashboard_settitle_budget">Budget</string>
+    <string name="dashboard_settitle_wallet">Wallet</string>
+    <string name="dashboard_settitle_backup">Backups</string>
+    <string name="dashboard_settitle_setting">Settings</string>
 
 
 </resources>
