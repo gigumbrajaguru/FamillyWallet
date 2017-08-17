@@ -93,7 +93,7 @@
             android:id="@+id/swcPrivate"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="Private Account"/>
+            android:text="Saving Account"/>
 
         <Button
             android:id="@+id/btnAdd"
