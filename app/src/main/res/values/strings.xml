@@ -245,7 +245,7 @@
     <string name="dashboard_settitle_overview">Overview</string>
     <string name="dashboard_settitle_summary">Reports</string>
     <string name="dashboard_settitle_recurring">Rec. Transactions</string>
-    <string name="dashboard_settitle_tranfer">Tranfers</string>
+    <string name="dashboard_settitle_tranfer">Accounts</string>
     <string name="dashboard_settitle_budget">Budget</string>
     <string name="dashboard_settitle_wallet">Wallet</string>
     <string name="dashboard_settitle_backup">Backups</string>

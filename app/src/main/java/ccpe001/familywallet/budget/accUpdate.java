@@ -2,6 +2,7 @@ package ccpe001.familywallet.budget;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,6 @@ public class accUpdate extends Fragment {
     private DatabaseReference mDatabase,mDatabases;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        actionValidater.addIncome("eee",h);
         View v = inflater.inflate(R.layout.acc_update, container, false);
         this.arraySpinner = new String[]{""};
         Spinner s = (Spinner)v.findViewById(R.id.spinner);
@@ -67,7 +67,6 @@ public class accUpdate extends Fragment {
                 return v;
             }
         };
-
         s.setAdapter(adapter);
         btUpdate = (Button)v.findViewById(R.id.btnUpdate);
         btDelete = (Button)v.findViewById(R.id.btnDel);
@@ -80,11 +79,13 @@ public class accUpdate extends Fragment {
         s.setOnItemSelectedListener(new OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 final String selected = parent.getItemAtPosition(pos).toString();
+                Log.i("aaa","bbb");
                 mDatabases.child("Account").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            if (selected == (String)child.child("accountName").getValue()) {
+                            if ((child.child("accountName").getValue().toString().equals(selected)))
+                            {
                                 keys = child.getKey();
                                 accountNames = (String) child.child("accountName").getValue();
                                 typess = (String) child.child("types").getValue();
@@ -103,7 +104,7 @@ public class accUpdate extends Fragment {
 
                     }
                 });
-                accId.setText(bankIDs);
+                accId.setText("gogog");
                 curType.setText(curTypess);
                 accStat.setText(isPrivates);
                 accDate.setText(addDates);
