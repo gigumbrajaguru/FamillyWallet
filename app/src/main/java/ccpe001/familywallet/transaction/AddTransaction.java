@@ -51,7 +51,7 @@ import ccpe001.familywallet.R;
 import ccpe001.familywallet.Validate;
 
 public class AddTransaction extends AppCompatActivity {
-
+//Testing new bitbucket connection
     /*Initializing */
     private TextView txtLocation,txtCategory;
     private Button btnRecurring;
