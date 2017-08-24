@@ -1,6 +1,8 @@
 package ccpe001.familywallet.budget;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -13,7 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class actionValidater {
     private static DatabaseReference mDatabase;
-    static boolean y=true, c=true;
+    static boolean y, c;
     static double availableAmount,newValue;
     static String key;
     static int check=0;
@@ -21,7 +23,8 @@ public class actionValidater {
 
     public static boolean amountCheck(final String AccountName, final double amount) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("Account").addValueEventListener(new ValueEventListener() {
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -44,7 +47,8 @@ public class actionValidater {
     }
     public static boolean isSaving(final String AccountName) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("Account").addValueEventListener(new ValueEventListener() {
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -63,23 +67,25 @@ public class actionValidater {
         return c;
     }
     public static boolean addIncome(final String accountName, final Double income) {
-
+        c=false;
         check=0;
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("Account").orderByChild("accountName").equalTo(accountName).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
-                    availableAmount=Double.parseDouble(child.child("amount").getValue().toString());
-                    newValue=availableAmount+income;
-                    if(check==0) {
-                        child.getRef().child("amount").setValue(newValue);
-                        check=1;
-                        c=true;
+                    if(child.child("accountName").getValue().toString().equals(accountName)) {
+                        availableAmount = Double.parseDouble(child.child("amount").getValue().toString());
+                        newValue = availableAmount + income;
+                        if (check == 0) {
+                            child.getRef().child("amount").setValue(newValue);
+                            check = 1;
+                        }
                     }
                 }
 
-
+                c=true;
             }
 
             @Override
@@ -92,16 +98,21 @@ public class actionValidater {
     public static boolean getAmount(final String AccountName, final double getamount){
         if(amountCheck(AccountName,getamount)){
             check=0;
+            final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
             mDatabase = FirebaseDatabase.getInstance().getReference();
-            mDatabase.child("Account").orderByChild("accountName").equalTo(AccountName).addValueEventListener(new ValueEventListener() {
+            mDatabase.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot child: dataSnapshot.getChildren()) {
-                        availableAmount=Double.parseDouble(child.child("amount").getValue().toString());
-                        newValue=availableAmount-getamount;
-                        if(check==0) {
-                            child.getRef().child("amount").setValue(newValue);
-                            check=1;
+                        if (child.child("accountName").getValue().toString().equals(AccountName)) {
+                            {
+                                availableAmount = Double.parseDouble(child.child("amount").getValue().toString());
+                                newValue = availableAmount - getamount;
+                                if (check == 0) {
+                                    child.getRef().child("amount").setValue(newValue);
+                                    check = 1;
+                                }
+                            }
                         }
                     }
                     c=true;
@@ -111,6 +122,7 @@ public class actionValidater {
                 }
             });
         }
+
         else {
             c=false;
         }

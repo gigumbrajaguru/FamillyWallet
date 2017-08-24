@@ -44,10 +44,11 @@ dependencies {
         transitive = true
     }
 
-    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
     compile files('libs/jxl.jar')
     compile files('libs/opencsv-3.9.jar')
     compile files('libs/poi-3.7.jar')
+
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.+'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -75,7 +76,6 @@ dependencies {
     compile 'com.kila.apprater_dialog.lars:apprater-dialog:1.0.5'
     compile 'com.google.android.gms:play-services-auth:10.2.0'
     compile 'com.google.android.gms:play-services-vision:10.2.0'
-
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.loopj.android:android-async-http:1.4.9'
     testCompile 'junit:junit:4.12'
