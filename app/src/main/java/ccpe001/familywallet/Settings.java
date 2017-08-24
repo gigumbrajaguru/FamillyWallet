@@ -86,7 +86,6 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         prefs = getContext().getSharedPreferences("App Settings",Context.MODE_PRIVATE);
         init(view);
 
-
         mAuth = FirebaseAuth.getInstance();
 
         if(mAuth.getCurrentUser() == null){

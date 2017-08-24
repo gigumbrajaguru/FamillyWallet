@@ -9,15 +9,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.*;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.vision.CameraSource;
@@ -49,7 +50,8 @@ public class OCRReader2 extends AppCompatActivity {
     private StorageReference storageReference;
     private Uri billImageUri;
     private FirebaseAuth mAuth;
-
+    private RelativeLayout layout;
+    private Snackbar snackbar;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -57,19 +59,29 @@ public class OCRReader2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ocrreader);
         cropImageView = (ImageView) findViewById(R.id.cropImageView);
+        layout = (RelativeLayout) findViewById(R.id.layout);
 
-        /*if(!checkPermit()){
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},EXTERNAL_READ_PERMIT);
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},EXTERNAL_WRITE_PERMIT);
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},CAMERA_PERMIT);
-        }else {
-            CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .start(this);
-        }
+        snackbar = Snackbar
+                .make(layout, R.string.ocrreader_snackbar_takepic, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.ocrreader_snackbar_takepicbtn, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mAuth = FirebaseAuth.getInstance();
+                        storageReference = FirebaseStorage.getInstance().getReference().child("ScannedBills").child(mAuth.getCurrentUser().getUid());
+                        cropImageView = (ImageView) view.findViewById(R.id.cropImageView);
 
-        mAuth = FirebaseAuth.getInstance();
-        storageReference = FirebaseStorage.getInstance().getReference().child("ScannedBills").child(mAuth.getCurrentUser().getUid());*/
+                        if(!checkPermit()){
+                            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},EXTERNAL_READ_PERMIT);
+                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},EXTERNAL_WRITE_PERMIT);
+                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},CAMERA_PERMIT);
+                        }else {
+                            CropImage.activity()
+                                    .setGuidelines(CropImageView.Guidelines.ON)
+                                    .start(OCRReader2.this);
+                        }
+                    }
+                });
+        snackbar.show();
 
         camera_view = (SurfaceView) findViewById(R.id.camera_view);
         bill_data = (TextView)  findViewById(R.id.bill_data);
@@ -87,15 +99,15 @@ public class OCRReader2 extends AppCompatActivity {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void surfaceCreated(SurfaceHolder surfaceHolder) {
-                    try {
-                        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                            try {
+                                cameraSource.start(camera_view.getHolder());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }else {
                             requestPermissions(new String[]{Manifest.permission.CAMERA},CAMERA_PERMIT);
                         }
-                        cameraSource.start(camera_view.getHolder());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
                 }
 
                 @Override
@@ -107,7 +119,8 @@ public class OCRReader2 extends AppCompatActivity {
                 public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
                     cameraSource.stop();
                 }
-            });
+                });
+
 
             textRecognizer.setProcessor(new Detector.Processor<TextBlock>() {
                 @Override
@@ -142,7 +155,7 @@ public class OCRReader2 extends AppCompatActivity {
         }
     }
 
-    /*@Override
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -166,7 +179,7 @@ public class OCRReader2 extends AppCompatActivity {
                 Toast.makeText(this,R.string.common_error,Toast.LENGTH_SHORT).show();
             }
         }
-    }*/
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -174,25 +187,18 @@ public class OCRReader2 extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode==CAMERA_PERMIT){
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA},CAMERA_PERMIT);
-                }
-                try {
-                    cameraSource.start(camera_view.getHolder());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Toast.makeText(getApplicationContext(),R.string.permitgranted,Toast.LENGTH_SHORT).show();
+            }else{
+                checkCamPermit();
             }
-        }
-        /*if(requestCode == EXTERNAL_READ_PERMIT||requestCode == EXTERNAL_WRITE_PERMIT||requestCode==CAMERA_PERMIT){
+        }else if(requestCode == EXTERNAL_READ_PERMIT||requestCode == EXTERNAL_WRITE_PERMIT||requestCode==CAMERA_PERMIT){
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED||grantResults[1]==PackageManager.PERMISSION_GRANTED||grantResults[2]==PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(getApplicationContext(),R.string.permitgranted,Toast.LENGTH_SHORT).show();
             }else {
                 checkPermit();
             }
-        }*/
+        }
     }
-
 
 
     protected  boolean checkPermit(){
@@ -200,4 +206,9 @@ public class OCRReader2 extends AppCompatActivity {
                 ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED&&
                 ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
+
+    protected  boolean checkCamPermit(){
+        return ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    }
 }
+

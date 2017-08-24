@@ -260,6 +260,7 @@
     <string name="signup_already_email_text">User already registered</string>
     <string name="xmlsignin_googleOptBtn_text">Sign in via Google</string>
     <string name="xmlsignin_fbOptBtn_text">Sign in via Facebook</string>
-
+    <string name="ocrreader_snackbar_takepicbtn">Take Picture</string>
+    <string name="ocrreader_snackbar_takepic">Would you like to store the bill?</string>
 
 </resources>
