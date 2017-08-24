@@ -63,8 +63,7 @@ public class TransactionMain extends Fragment {
     List<String> keys;
     List<String> checkedPosition;
     TransactionListAdapter adapter;
-    String userID;
-    String familyID;
+    String userID, familyID;
 
     public TransactionMain() {
         // Required empty public constructor
@@ -79,21 +78,28 @@ public class TransactionMain extends Fragment {
         tdList = new ArrayList<>();
         keys = new ArrayList<>();
         checkedPosition = new ArrayList<>();
-        mAuth = FirebaseAuth.getInstance();
-        firebaseUser = mAuth.getCurrentUser();
-        userID = firebaseUser.getUid();
-        FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                familyID=dataSnapshot.getValue().toString();
-            }
+        try {
+            mAuth = FirebaseAuth.getInstance();
+            firebaseUser = mAuth.getCurrentUser();
+            userID = firebaseUser.getUid();
+            FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    familyID=dataSnapshot.getValue().toString();
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+        catch (Exception e){
 
+        }
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
+        mDatabase.keepSynced(true);
 
         Query query = FirebaseDatabase.getInstance().getReference("Transactions").orderByChild("date");
         query.addValueEventListener(new ValueEventListener() {
@@ -103,13 +109,14 @@ public class TransactionMain extends Fragment {
                 //keys.clear();
                 for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
                     TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
-                    if (familyID.equals(td.getFamilyID())){
-                        tdList.add(td);
-                        keys.add(tdSnapshot.getKey());
+                    try {
+                        if (familyID.equals(td.getFamilyID())){
+                            tdList.add(td);
+                            keys.add(tdSnapshot.getKey());
+                        }
+                    }catch (Exception e){
+
                     }
-
-
-
                 }
                 Collections.reverse(tdList);
                 Collections.reverse(keys);
@@ -123,19 +130,8 @@ public class TransactionMain extends Fragment {
             }
         });
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
-        mDatabase.keepSynced(true);
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
         list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -376,11 +372,12 @@ public class TransactionMain extends Fragment {
                 intent.putExtra("categoryName",td.getCategoryName());
                 intent.putExtra("categoryID",td.getCategoryID());
                 intent.putExtra("location",td.getLocation());
-                intent.putExtra("currencyIndex",td.getCurrency());
-                intent.putExtra("accountIndex",td.getAccount());
+                intent.putExtra("currency",td.getCurrency());
+                intent.putExtra("account",td.getAccount());
                 intent.putExtra("transactionType",td.getType());
                 intent.putExtra("userID",td.getUserID());
                 intent.putExtra("familyID",td.getFamilyID());
+                intent.putExtra("previousAmount",td.getAmount());
                 startActivity(intent);
             }
 

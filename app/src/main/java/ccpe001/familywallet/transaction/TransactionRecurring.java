@@ -216,6 +216,8 @@ public class TransactionRecurring extends Fragment {
                 intent.putExtra("transactionType",td.getType());
                 intent.putExtra("userID",td.getUserID());
                 intent.putExtra("familyID",td.getFamilyID());
+                intent.putExtra("templateChecked",true);
+                intent.putExtra("recurrPeriod",td.getRecurringPeriod());
                 startActivity(intent);
             }
 

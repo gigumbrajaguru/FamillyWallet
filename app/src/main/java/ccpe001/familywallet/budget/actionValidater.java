@@ -63,7 +63,7 @@ public class actionValidater {
         return c;
     }
     public static boolean addIncome(final String accountName, final Double income) {
-        c=false;
+
         check=0;
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Account").orderByChild("accountName").equalTo(accountName).addValueEventListener(new ValueEventListener() {
@@ -75,10 +75,11 @@ public class actionValidater {
                     if(check==0) {
                         child.getRef().child("amount").setValue(newValue);
                         check=1;
+                        c=true;
                     }
                 }
 
-                c=true;
+
             }
 
             @Override

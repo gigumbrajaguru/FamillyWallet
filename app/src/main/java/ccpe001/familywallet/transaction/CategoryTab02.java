@@ -20,18 +20,25 @@ import ccpe001.familywallet.R;
 
 public class CategoryTab02 extends Fragment {
 
+    /*Initializing variables to hold layout items */
     GridView grid;
     TextView txtCategory;
-    String  categoryName, title, date, time, amount, location, type, update, key, eUserID, eFamilyID;
-    int currencyIndex, accountIndex, categoryID;
+    /*Initializing variables to hold Extra values passed with intent */
+    String  categoryName, account, currency, title, date, time, amount, location, type, update, key,
+            eUserID, eFamilyID, currencyIndex, previousAmount, recurrPeriod;
+    int  accountIndex, categoryID;
+    Boolean templateChecked;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.category_tab02, container, false);
 
         Resources res = getResources();
+
+        /*populating itemname array with income category list */
         final String[] itemname = res.getStringArray(R.array.ExpenseCategory);
 
+         /*populating imgid array with income category images ID's */
         final Integer[] imgid = {
                 R.drawable.cat100,R.drawable.cat101,R.drawable.cat102,R.drawable.cat103,
                 R.drawable.cat104,R.drawable.cat_other,
@@ -41,6 +48,7 @@ public class CategoryTab02 extends Fragment {
         grid = (GridView) view.findViewById(R.id.tab02_list);
         grid.setAdapter(adapter);
 
+        /*Send saved data back after category selected*/
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -59,13 +67,16 @@ public class CategoryTab02 extends Fragment {
                 time = extras.getString("time");
                 amount = extras.getString("amount");
                 location = extras.getString("location");
-                currencyIndex = extras.getInt("currencyIndex");
-                accountIndex = extras.getInt("accountIndex");
+                currency = extras.getString("currency");
+                account = extras.getString("account");
                 type = extras.getString("transactionType");
                 update = extras.getString("Update");
                 key = extras.getString("key");
                 eUserID = extras.getString("userID");
                 eFamilyID = extras.getString("familyID");
+                previousAmount = extras.getString("previousAmount");
+                templateChecked = extras.getBoolean("templateChecked");
+                recurrPeriod = extras.getString("recurrPeriod");
 
                 categoryName = itemname[+position];
                 categoryID = imgid[+position];
@@ -77,13 +88,16 @@ public class CategoryTab02 extends Fragment {
                 intent.putExtra("date",date);
                 intent.putExtra("time",time);
                 intent.putExtra("location",location);
-                intent.putExtra("currencyIndex",currencyIndex);
-                intent.putExtra("accountIndex",accountIndex);
+                intent.putExtra("currency",currency);
+                intent.putExtra("account",account);
                 intent.putExtra("transactionType",type);
                 intent.putExtra("Update",update);
                 intent.putExtra("key",key);
                 intent.putExtra("userID",eUserID);
                 intent.putExtra("familyID",eFamilyID);
+                intent.putExtra("previousAmount",previousAmount);
+                intent.putExtra("templateChecked",templateChecked);
+                intent.putExtra("recurrPeriod",recurrPeriod);
                 getActivity().finish();
                 startActivity(intent);
 

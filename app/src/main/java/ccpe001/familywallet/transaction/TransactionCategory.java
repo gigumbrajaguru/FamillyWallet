@@ -23,8 +23,6 @@ public class TransactionCategory extends AppCompatActivity {
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
-
     private ViewPager mViewPager;
     private Toolbar categoryToolbar;
     String type;
@@ -43,18 +41,12 @@ public class TransactionCategory extends AppCompatActivity {
             }
         }
 
-
-
-
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-
 
         categoryToolbar = (Toolbar) findViewById(R.id.categoryToolbar);
         categoryToolbar.setTitle("Categories");
@@ -91,20 +83,15 @@ public class TransactionCategory extends AppCompatActivity {
     }
 
 
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
+        /*Setting the tab fragments according to the selection(Income/Expense)*/
         @Override
         public Fragment getItem(int position) {
-
             if (type.equals("Income")) {
                 switch (position) {
                     case 0 :
@@ -130,18 +117,17 @@ public class TransactionCategory extends AppCompatActivity {
                 }
             }
             return null;
-
         }
 
+        /*Setting total no of tabs*/
         @Override
         public int getCount() {
-            // Show 2 total tabs
             return 2;
         }
 
+        /*Setting the tab titles according to the selection(Income/Expense)*/
         @Override
         public CharSequence getPageTitle(int position) {
-
             if (type.equals("Income")) {
                 switch (position) {
                     case 0:
@@ -157,7 +143,6 @@ public class TransactionCategory extends AppCompatActivity {
                         return "Income";
                 }
             }
-
             return null;
         }
     }

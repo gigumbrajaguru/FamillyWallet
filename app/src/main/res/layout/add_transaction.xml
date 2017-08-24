@@ -42,16 +42,20 @@
                         android:layout_y="408dp"
                         app:srcCompat="@mipmap/location" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/txtLocation"
                         android:layout_width="256dp"
                         android:layout_height="42dp"
                         android:layout_alignStart="@+id/txtTime"
                         android:layout_alignTop="@+id/imgLocation"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:layout_x="84dp"
                         android:layout_y="408dp"
                         android:gravity="center"
+                        android:editable="false"
+                        android:focusable="false"
                         android:hint="Tap To Set Location"
                         android:textSize="13dp" />
 
@@ -86,17 +90,19 @@
                         android:layout_y="216dp"
                         app:srcCompat="@mipmap/account" />
 
-                    <Spinner
-                        android:id="@+id/spinAccount"
-                        android:layout_width="263dp"
-                        android:layout_height="41dp"
-                        android:layout_alignTop="@+id/imgAccount"
-                        android:layout_weight="1"
-                        android:layout_x="72dp"
-                        android:layout_y="221dp"
-                        android:entries="@array/spinnerAccount"
+                    <EditText
+                        android:id="@+id/txtAccount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="5"
+                        android:editable="false"
+                        android:ems="10"
+                        android:focusable="false"
                         android:gravity="center"
-                        android:textAlignment="center" />
+                        android:inputType="textPersonName" />
+
                 </TableRow>
 
                 <TableRow
@@ -114,15 +120,19 @@
                         android:layout_y="280dp"
                         app:srcCompat="@mipmap/category" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/txtCategory"
-                        android:layout_width="263dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="3"
-                        android:layout_x="72dp"
-                        android:layout_y="280dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="5"
+                        android:ems="10"
+                        android:editable="false"
+                        android:focusable="false"
                         android:gravity="center"
-                        android:text="Tap to Set Category"
+                        android:hint="Tap to Set Category"
+                        android:inputType="textPersonName"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -150,6 +160,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="41dp"
                         android:layout_alignTop="@+id/imgNote"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="5"
                         android:layout_x="96dp"
                         android:layout_y="146dp"
@@ -196,19 +208,20 @@
                         android:layout_y="12dp"
                         app:srcCompat="@mipmap/price" />
 
-                    <Spinner
-                        android:id="@+id/spinCurrency"
-                        android:layout_width="0dp"
+                    <EditText
+                        android:id="@+id/txtCurrency"
+                        android:layout_width="20dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/txtAmount"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignTop="@+id/txtAmount"
-                        android:layout_span="1"
-                        android:layout_weight=".6"
-                        android:layout_x="275dp"
-                        android:layout_y="14dp"
-                        android:entries="@array/spinnerCurrency"
-                        android:textAlignment="textEnd" />
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="0dp"
+                        android:layout_weight="3"
+                        android:editable="false"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:inputType="textPersonName"
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/txtAmount"
@@ -216,10 +229,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/imgValue"
                         android:layout_column="0"
+                        android:layout_marginRight="10dp"
                         android:layout_row="1"
                         android:layout_span="0"
                         android:layout_toEndOf="@+id/imgValue"
-                        android:layout_weight="1"
+                        android:layout_weight="6"
                         android:layout_x="75dp"
                         android:layout_y="14dp"
                         android:ems="10"
@@ -270,6 +284,7 @@
                         android:layout_alignBottom="@+id/txtTime"
                         android:layout_alignEnd="@+id/txtCategory"
                         android:layout_alignTop="@+id/txtTime"
+                        android:layout_marginLeft="15dp"
                         android:layout_weight="1"
                         android:layout_x="201dp"
                         android:layout_y="345dp"
@@ -286,6 +301,7 @@
                         android:layout_height="40dp"
                         android:layout_alignStart="@+id/spinAccount"
                         android:layout_alignTop="@+id/imgCalender"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:layout_x="84dp"
                         android:layout_y="341dp"
@@ -312,14 +328,20 @@
                     android:gravity="right"
                     android:padding="10dp">
 
-                    <TextView
-                        android:id="@+id/txttest"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="10dp"
-                        android:text="Hello"
-                        android:textSize="18sp"
-                        android:visibility="invisible" />
+                    <Spinner
+                        android:id="@+id/spinCurrency"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/txtAmount"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignTop="@+id/txtAmount"
+                        android:layout_span="1"
+                        android:layout_weight=".6"
+                        android:layout_x="275dp"
+                        android:layout_y="14dp"
+                        android:entries="@array/spinnerCurrency"
+                        android:textAlignment="textEnd"
+                        android:visibility="gone" />
 
                     <CheckBox
                         android:id="@+id/chTemplate"
@@ -336,13 +358,20 @@
                     android:gravity="right"
                     android:padding="10dp">
 
-                    <Button
-                        android:id="@+id/btnRecurring"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:id="@+id/txtRecurring"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="0"
+                        android:editable="false"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:gravity="center"
+                        android:inputType="textPersonName"
+                        android:text="Name"
                         android:textSize="18sp"
+                        android:textStyle="bold"
                         android:visibility="invisible" />
 
                     <CheckBox

@@ -4,4 +4,25 @@
     <string name="noti_statusicon_setaction_scanbill">්පප්ාිො</string>
     <string name="dashboard_animatemenu_setcontitle">sadasdasssssssssssssssssa sdsdsda</string>
 
+
+    <string-array name="spinnerRecurring">
+        <item>දිනපතා</item>
+        <item>සතිපතා</item>
+        <item>මාසිකව</item>
+        <item>වාර්ෂිකව</item>
+    </string-array>
+
+    <string-array name="spinnerCurrency">
+        <item>LKR(රු).</item>
+        <item>USD(ඩොලර්).</item>
+        <item>EUR(යුරෝ).</item>
+        <item>GBP(පවුම්).</item>
+        <item>INR(ඉන්දීය රු).</item>
+    </string-array>
+
+    <string name="transactionAmount">මුදල</string>
+    <string name="transactionCategory">කාන්ඩය තෝරන්න</string>
+    <string name="transactionTitle">ශීර්ෂය</string>
+    <string name="transactionLocation">ස්ථානය තෝරන්න</string>ගිණුම
+    <string name="transactionAccount">ගිණුම තෝරන්න</string>
 </resources>

@@ -17,13 +17,17 @@
 
 
     <string-array name="spinnerCurrency">
-        <item>LKR </item>
-        <item>USD </item>
-        <item>EUR </item>
-        <item>GBP </item>
-        <item>INR </item>
-
+        <item>LKR.</item>
+        <item>USD.</item>
+        <item>EUR.</item>
+        <item>GBP.</item>
+        <item>INR.</item>
     </string-array>
+    <string name="transactionAmount">Amount</string>
+    <string name="transactionCategory">Tap to Set Category</string>
+    <string name="transactionTitle">Title</string>
+    <string name="transactionLocation">Tap to Set Location</string>
+    <string name="transactionAccount">Tap to Set Account</string>
 
     <string-array name="IncomeCategory">
         <item>Car</item>

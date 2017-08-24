@@ -11,20 +11,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,108 +33,79 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ccpe001.familywallet.ExportData;
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Validate;
+import ccpe001.familywallet.budget.actionValidater;
 
 public class AddTransaction extends AppCompatActivity {
-//Testing new bitbucket connection
-    /*Initializing */
-    private TextView txtLocation,txtCategory;
-    private Button btnRecurring;
-    private Spinner spinCurrency, spinAccount;
-    int PLACE_PICKER_REQUEST=1;
-    private EditText txtAmount, txtDate, txtTime, txtTitle;
+
+
+    /*Initializing layout items*/
+    private TextView txtLocation;
+    private EditText txtAmount, txtDate, txtTime, txtTitle,txtCurrency, txtCategory, txtRecurring, txtAccount;
     private CheckBox checkRecurring;
-    /*Initializing String and Integer variables to store data from input values*/
-    String categoryName,  title, date, amount, currency, time, location, account, type, update, key, userID, familyID, eUserID, eFamilyID;
-    Integer currencyIndex, accountIndex, categoryID;
-    /*Initializing variable firebase reference */
+    private ImageView imgValue, imgAccount, imgCategory, imgNote, imgCalender, imgLocation, imgSave;
+    /*Initializing variables to hold Extra values passed with intent or values from input fields */
+    String categoryName,  title, date, amount, currency, time, location, account, type, update, key,
+            userID, familyID, eUserID, eFamilyID, previousAmount, recurrPeriod;
+    Integer   categoryID;
+    Boolean templateChecked;
+    List<String> accountsList;
+    /*Initializing firebase variables */
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
     Integer count=1;
     Resources resources;
+    int PLACE_PICKER_REQUEST=1;
     final Context context = this;
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_transaction);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        /*Setting references to layout items*/
         txtAmount =(EditText)findViewById(R.id.txtAmount);
         txtDate = (EditText) findViewById(R.id.txtDate);
         txtTime = (EditText) findViewById(R.id.txtTime);
         txtTitle = (EditText) findViewById(R.id.txtTitle);
         txtLocation = (TextView) findViewById(R.id.txtLocation);
-        txtCategory = (TextView) findViewById(R.id.txtCategory);
-        btnRecurring = (Button) findViewById(R.id.btnRecurring);
-        spinCurrency = (Spinner) findViewById(R.id.spinCurrency);
-        spinAccount = (Spinner) findViewById(R.id.spinAccount);
-        ImageView imgValue = (ImageView) findViewById(R.id.imgValue);
-        ImageView imgAccount = (ImageView) findViewById(R.id.imgAccount);
-        ImageView imgCategory = (ImageView) findViewById(R.id.imgCategory);
-        ImageView imgNote = (ImageView) findViewById(R.id.imgNote);
-        ImageView imgCalender = (ImageView) findViewById(R.id.imgCalender);
-        ImageView imgLocation = (ImageView) findViewById(R.id.imgLocation);
-        ImageButton imgSave = (ImageButton) findViewById(R.id.btnSave);
-
-
-
-
-        txtLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startPlacePickerActivity();
-            }
-        });
+        txtCategory = (EditText) findViewById(R.id.txtCategory);
+        txtRecurring = (EditText) findViewById(R.id.txtRecurring);
+        txtCurrency = (EditText) findViewById(R.id.txtCurrency);
+        txtAccount = (EditText) findViewById(R.id.txtAccount);
+        imgValue = (ImageView) findViewById(R.id.imgValue);
+        imgAccount = (ImageView) findViewById(R.id.imgAccount);
+        imgCategory = (ImageView) findViewById(R.id.imgCategory);
+        imgNote = (ImageView) findViewById(R.id.imgNote);
+        imgCalender = (ImageView) findViewById(R.id.imgCalender);
+        imgLocation = (ImageView) findViewById(R.id.imgLocation);
+        imgSave = (ImageButton) findViewById(R.id.btnSave);
         checkRecurring =(CheckBox) findViewById(R.id.chRecurring);
         resources=getResources();
-        final String[] recurringPeriod = resources.getStringArray(R.array.spinnerRecurring);
-        btnRecurring.setText(recurringPeriod[0]);
-
-        checkRecurring.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    btnRecurring.setVisibility(View.VISIBLE);
-
-                }
-                else
-                    btnRecurring.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        btnRecurring.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                if (count==4)
-                    count=0;
-                switch (count){
-                    case 0 :btnRecurring.setText(recurringPeriod[0]);break;
-                    case 1 :btnRecurring.setText(recurringPeriod[1]);break;
-                    case 2 :btnRecurring.setText(recurringPeriod[2]);break;
-                    case 3 :btnRecurring.setText(recurringPeriod[3]);break;
-
-                }
-                count++;
 
 
-            }
-        });
+        /**/
+        txtAmount.setHint(resources.getString(R.string.transactionAmount));
+        txtCategory.setHint(resources.getString(R.string.transactionCategory));
+        txtTime.setHint(resources.getString(R.string.transactionTitle));
+        txtLocation.setHint(resources.getString(R.string.transactionLocation));
+        txtAccount.setHint(resources.getString(R.string.transactionAccount));
 
+
+        /*Getting firebase authentication to get users info*/
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         userID = firebaseUser.getUid();
@@ -153,6 +121,110 @@ public class AddTransaction extends AppCompatActivity {
             }
         });
 
+        accountsList = new ArrayList<>();
+
+        Query query = FirebaseDatabase.getInstance().getReference("Account").orderByChild("user").equalTo(userID);
+        query.addValueEventListener(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot dataSnapshot) {
+                 for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                    accountsList.add(tdSnapshot.child("accountName").getValue().toString());
+                 }
+             }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        /*when Location field click*/
+                txtLocation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startPlacePickerActivity();
+                    }
+                });
+
+
+        final String[] recurringPeriod = resources.getStringArray(R.array.spinnerRecurring);   //get recurring time periods from string.xml
+
+        checkRecurring.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    txtRecurring.setVisibility(View.VISIBLE);
+                }
+                else
+                    txtRecurring.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
+        txtRecurring.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (count==4)
+                    count=0;
+                switch (count){
+                    case 0 :
+                        txtRecurring.setText(recurringPeriod[0]);break;
+                    case 1 :
+                        txtRecurring.setText(recurringPeriod[1]);break;
+                    case 2 :
+                        txtRecurring.setText(recurringPeriod[2]);break;
+                    case 3 :
+                        txtRecurring.setText(recurringPeriod[3]);break;
+                }
+                count++;
+            }
+        });
+
+        final String[] cur = resources.getStringArray(R.array.spinnerCurrency);
+        txtCurrency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.dialogbox_list);
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,
+                        android.R.layout.simple_list_item_1,cur );
+                ListView lv = (ListView) dialog.findViewById(R.id.dialogList);
+                lv.setAdapter(arrayAdapter);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        txtCurrency.setText(cur[position]);
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
+
+        txtAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.dialogbox_list);
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,
+                        android.R.layout.simple_list_item_1,accountsList);
+                ListView lv = (ListView) dialog.findViewById(R.id.dialogList);
+                lv.setAdapter(arrayAdapter);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        txtAccount.setText(accountsList.get(position));
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
+
+
+
+        /*Getting */
         if (savedInstanceState == null) {
             Bundle extras = this.getIntent().getExtras();
             if(extras == null) {
@@ -165,23 +237,26 @@ public class AddTransaction extends AppCompatActivity {
                 time = extras.getString("time");
                 amount = extras.getString("amount");
                 location = extras.getString("location");
-                currencyIndex = extras.getInt("currencyIndex");
-                accountIndex = extras.getInt("accountIndex");
+                currency = extras.getString("currency");
+                account = extras.getString("account");
                 type = extras.getString("transactionType");
                 update = extras.getString("Update");
                 key = extras.getString("key");
                 eUserID = extras.getString("userID");
                 eFamilyID = extras.getString("familyID");
-
-
+                previousAmount = extras.getString("previousAmount");
+                templateChecked = extras.getBoolean("templateChecked");
+                recurrPeriod = extras.getString("recurrPeriod");
 
                 txtTitle.setText(title);
                 txtAmount.setText(amount);
                 txtDate.setText(date);
                 txtTime.setText(time);
                 txtLocation.setText(location);
-                spinAccount.setSelection(accountIndex);
-                spinCurrency.setSelection(currencyIndex);
+                txtAccount.setText(account);
+                txtCurrency.setText(currency);
+                checkRecurring.setChecked(templateChecked);
+                txtRecurring.setText(recurrPeriod);
 
             }
 
@@ -194,31 +269,40 @@ public class AddTransaction extends AppCompatActivity {
                 date = txtDate.getText().toString();
                 time = txtTime.getText().toString();
                 title = txtTitle.getText().toString();
-                currencyIndex = spinCurrency.getSelectedItemPosition();
-                accountIndex = spinCurrency.getSelectedItemPosition();
+                currency = txtCurrency.getText().toString();
+                account = txtAccount.getText().toString();
                 location = txtLocation.getText().toString();
+                templateChecked = checkRecurring.isChecked();
+                recurrPeriod = txtRecurring.getText().toString();
                 Intent intent = new Intent(AddTransaction.this,TransactionCategory.class);
                 intent.putExtra("title",title);
                 intent.putExtra("amount",amount);
                 intent.putExtra("date",date);
                 intent.putExtra("time",time);
                 intent.putExtra("location",location);
-                intent.putExtra("currencyIndex",currencyIndex);
-                intent.putExtra("accountIndex",accountIndex);
+                intent.putExtra("currency",currency);
+                intent.putExtra("account",account);
                 intent.putExtra("transactionType",type);
                 intent.putExtra("Update",update);
                 intent.putExtra("key",key);
                 intent.putExtra("userID",eUserID);
                 intent.putExtra("familyID",eFamilyID);
+                intent.putExtra("previousAmount",previousAmount);
+                intent.putExtra("templateChecked",templateChecked);
+                intent.putExtra("recurrPeriod",recurrPeriod);
                 startActivity(intent);
             }
         });
 
-
-        if (categoryName!=null){
+        if (recurrPeriod==null){
+            txtRecurring.setText(recurringPeriod[0]);
+        }
+        if (currency==null) {
+            txtCurrency.setText(cur[0]);
+        }
+        if (categoryName !=null){
             txtCategory.setText(categoryName);
         }
-
 
         txtAmount.setFilters(new InputFilter[] {new CurrencyFormatInputFilter()});
 
@@ -291,36 +375,13 @@ public class AddTransaction extends AppCompatActivity {
 
             }
         });
-        final String[] cur = resources.getStringArray(R.array.spinnerCurrency);
 
-        final TextView txttest = (TextView) findViewById(R.id.txttest);
-        txttest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(context);
-                dialog.setContentView(R.layout.currency_list);
-
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,
-                        android.R.layout.simple_list_item_1,cur );
-                ListView lv = (ListView) dialog.findViewById(R.id.listCurrency);
-                lv.setAdapter(arrayAdapter);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        txttest.setText(cur[position]);
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-            }
-        });
     }
 
 
-
+    /*launches the place picker activity*/
     private void startPlacePickerActivity() {
         PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-
         try {
             Intent intent = intentBuilder.build(this);
             startActivityForResult(intent, PLACE_PICKER_REQUEST);
@@ -329,25 +390,24 @@ public class AddTransaction extends AppCompatActivity {
         }
     }
 
+    /*retrieves the place that the user has selected*/
     private void displaySelectedPlaceFromPlacePicker(Intent data) {
         Place placeSelected = PlacePicker.getPlace(data, this);
-
         String name = placeSelected.getName().toString();
         String address = placeSelected.getAddress().toString();
-
-        //TextView enterCurrentLocation = (TextView) findViewById(R.id.txtLocation);
         txtLocation.setText(name + ", " + address);
     }
 
     @Override
     protected  void onActivityResult(int requestCode, int resultCode, Intent data) {
-        txtCategory = (TextView)findViewById(R.id.txtCategory);
+        txtCategory = (EditText) findViewById(R.id.txtCategory);
         if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             displaySelectedPlaceFromPlacePicker(data);
         }
 
     }
 
+    /* Method to keep the input amount/price as valid price/amount */
     public class CurrencyFormatInputFilter implements InputFilter {
 
         Pattern mPattern = Pattern.compile("(0|[1-9]+[0-9]*)?(\\.[0-9]{0,2})?");
@@ -371,18 +431,20 @@ public class AddTransaction extends AppCompatActivity {
 
 
 
+    /*Save & Update Trnsactions*/
     public void saveTransaction(View view) {
-
+        final actionValidater av = new actionValidater();
         final Validate v = new Validate();
+        boolean validExpense=false, validIncome=false;
         amount = txtAmount.getText().toString();
         date = txtDate.getText().toString();
         date = v.dateToValue(date);
         time = txtTime.getText().toString();
         title = txtTitle.getText().toString();
-        currency = spinCurrency.getSelectedItem().toString();
+        currency = txtCurrency.getText().toString();
         location = txtLocation.getText().toString();
-        account = spinAccount.getSelectedItem().toString();
-        String recurringPeriod = btnRecurring.getText().toString();
+        account = txtAccount.getText().toString();
+        recurrPeriod = txtRecurring.getText().toString();
 
         if (categoryName==null){
             categoryName = "Other";
@@ -398,7 +460,7 @@ public class AddTransaction extends AppCompatActivity {
                 try {
                     if (update.equals("False")){
                         mDatabase = FirebaseDatabase.getInstance().getReference();
-                        td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID, recurringPeriod);
+                        td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID, recurrPeriod);
                         mDatabase.child("RecurringTransactions").push().setValue(td);
                         Toast.makeText(this, "Transaction Added", Toast.LENGTH_LONG).show();
                     }
@@ -423,34 +485,58 @@ public class AddTransaction extends AppCompatActivity {
             Toast.makeText(this, " Set the Amount first", Toast.LENGTH_SHORT).show();
         }
         else {
-            //DatabaseOps dbOp = new DatabaseOps(cnt);
-            //dbOp.addData(amount, title, categoryName, date, Integer.parseInt(categoryID), time, account, location, type, currency, "uID");
-            //Toast.makeText(this, "Success", Toast.LENGTH_LONG).show();
-
-            //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
             TransactionDetails td;
             try {
                 if (update.equals("False")){
                     mDatabase = FirebaseDatabase.getInstance().getReference();
                     td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID);
-                    mDatabase.child("Transactions").push().setValue(td);
-                    Toast.makeText(this, "Transaction Added", Toast.LENGTH_LONG).show();
+                    Double amountDouble =Double.parseDouble(amount);
+                    if (type.equals("Expense")){
+                        validExpense = av.getAmount(account, amountDouble);
+
+                    }
+                    else if(type.equals("Income")){
+                        validIncome = av.addIncome(account, amountDouble);
+                    }
+                    if (validExpense==true || validIncome==true && !account.isEmpty()) {
+                        mDatabase.child("Transactions").push().setValue(td);
+                        Toast.makeText(this, "Transaction Added "+validIncome, Toast.LENGTH_LONG).show();
+                    }
                 }
                 else if (update.equals("True")){
                     mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
+
                     td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
-                    Map<String, Object> postValues = td.toMap();
-                    mDatabase.child(key).updateChildren(postValues);
-                    Toast.makeText(this, "Successfully Updated", Toast.LENGTH_LONG).show();
+                    Double amountDouble =Double.parseDouble(amount)-Double.parseDouble(previousAmount);
+
+                    if (type.equals("Expense")){
+                        validExpense = av.getAmount(account, amountDouble);
+                    }
+                    else if(type.equals("Income")){
+                        validIncome = av.addIncome(account, amountDouble);
+                    }
+                    if (validExpense==true || validIncome==true && !account.isEmpty()) {
+                        Map<String, Object> postValues = td.toMap();
+                        mDatabase.child(key).updateChildren(postValues);
+                        Toast.makeText(this, "Successfully Updated "+previousAmount, Toast.LENGTH_LONG).show();
+                    }
+
+
                 }
             }catch (Exception e){
 
             }
 
-
-
-            Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
-            startActivity(intent);
+            if (validExpense==true || validIncome==true && !account.isEmpty()) {
+                Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
+                startActivity(intent);
+            }
+            else if(type.equals("Expense") && validExpense==false ){
+                Toast.makeText(this, "Account limit reached", Toast.LENGTH_LONG).show();
+            }
+            else if (account.isEmpty()){
+                Toast.makeText(this, "Please select Account first", Toast.LENGTH_LONG).show();
+            }
         }
 
         }
