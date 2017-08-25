@@ -3,6 +3,7 @@ package ccpe001.familywallet;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -35,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.joanzapata.iconify.widget.IconButton;
+import com.kobakei.ratethisapp.RateThisApp;
 import com.squareup.picasso.Picasso;
 
 import ccpe001.familywallet.admin.CircleTransform;
@@ -44,6 +46,8 @@ import ccpe001.familywallet.budget.budgetList;
 import ccpe001.familywallet.summary.SummaryTab;
 import ccpe001.familywallet.transaction.TransactionMain;
 import ccpe001.familywallet.transaction.TransactionRecurring;
+
+import java.util.Locale;
 
 
 public class Dashboard extends AppCompatActivity
@@ -90,6 +94,7 @@ public class Dashboard extends AppCompatActivity
         setFirst(false);
 
 
+
         badgeCount = new SQLiteHelper(getApplication()).viewNoti().size();//LOAD ONCE
 
         mAuth = FirebaseAuth.getInstance();
@@ -104,6 +109,10 @@ public class Dashboard extends AppCompatActivity
 
         prefs = getSharedPreferences("App Settings", Context.MODE_PRIVATE);
         PeriodicBackupCaller.backupRunner(getApplication(),prefs.getString("appBackUp","No Auto Backups"));
+
+        if (mAuth.getCurrentUser() != null) {
+            new Splash().userLoginFunc(getApplication());
+        }
 
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -389,6 +398,7 @@ public class Dashboard extends AppCompatActivity
         editor.putBoolean("isFirst",isFirst);
         editor.commit();
     }
+
 
 
 }

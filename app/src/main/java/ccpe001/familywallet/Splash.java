@@ -28,12 +28,12 @@ public class Splash extends PinActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
         mAuth = FirebaseAuth.getInstance();
 
-        prefs = getSharedPreferences("App Settings",Context.MODE_PRIVATE);
 
         /*CaocConfig.Builder.create()
                 //.errorDrawable(R.drawable.ic_custom_drawable) //default: bug image
@@ -49,23 +49,29 @@ public class Splash extends PinActivity {
                 }
                 Intent intent = new Intent("ccpe001.familywallet.INTRODUCTIONPAGE");
                 startActivity(intent);
-                overridePendingTransition(R.animator.transition1,R.animator.transition2);
+                overridePendingTransition(R.animator.transition1, R.animator.transition2);
                 finish();
             }
         });
         t1.start();
 
         //if user logged in only
-        if(mAuth.getCurrentUser() != null){
+        if (mAuth.getCurrentUser() != null){
+            userLoginFunc(getApplication());
+        }
+
+    }
+
+    protected void userLoginFunc(Context c){
             ccpe001.familywallet.admin.Notification noti = new ccpe001.familywallet.admin.Notification();
-            noti.statusIcon(getApplication());
+            noti.statusIcon(c);
 
-            noti.dailyReminder(getApplication());
-            rateApi();
-
+            rateApi(c);
+            noti.dailyReminder(c);
 
             //localisation
             Locale locale = null;
+            prefs = c.getSharedPreferences("App Settings", c.MODE_PRIVATE);
             if(prefs.getString("appLang","English").equals("English")){
                 locale = new Locale("en");
             }else {
@@ -74,32 +80,28 @@ public class Splash extends PinActivity {
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-        }
-
+            c.getResources().updateConfiguration(config, c.getResources().getDisplayMetrics());
 
     }
 
-
-    protected void rateApi(){
+    protected void rateApi(final Context c)  {
         RateThisApp.Config config = new RateThisApp.Config(3, 8);
         config.setTitle(R.string.splash_rateapi_settitle);
         config.setMessage(R.string.splash_rateapi_setmsg);
         config.setYesButtonText(R.string.splash_rateapi_setyesbtntxt);
         config.setNoButtonText(R.string.splash_rateapi_setnobtntxt);
         config.setCancelButtonText(R.string.splash_rateapi_setcancelbtntxt);
-        config.setUrl("market://details?id=" + getPackageName());
+        config.setUrl("market://details?id=" + c.getPackageName());
         RateThisApp.init(config);
-        RateThisApp.onCreate(getApplication());
-        RateThisApp.showRateDialogIfNeeded(getApplication());
+        RateThisApp.showRateDialogIfNeeded(c);
 
-            RateThisApp.setCallback(new RateThisApp.Callback() {
+        RateThisApp.setCallback(new RateThisApp.Callback() {
             @Override
             public void onYesClicked() {}
 
             @Override
             public void onNoClicked() {
-                RateThisApp.stopRateDialog(getApplication());
+                RateThisApp.stopRateDialog(c);
             }
 
             @Override

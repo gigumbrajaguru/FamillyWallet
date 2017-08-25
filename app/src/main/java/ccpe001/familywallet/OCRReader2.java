@@ -57,6 +57,7 @@ public class OCRReader2 extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.ocrreader2_setttile);
         setContentView(R.layout.ocrreader);
         cropImageView = (ImageView) findViewById(R.id.cropImageView);
         layout = (RelativeLayout) findViewById(R.id.layout);
