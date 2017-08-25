@@ -320,7 +320,7 @@ public class TransactionMain extends Fragment {
                 vAmount.setText(td.getCurrency()+td.getAmount());
                 vCategory.setText(td.getCategoryName());
                 vAccount.setText(td.getAccount());
-                vDate.setText(td.getDate());
+                vDate.setText(v.valueToDate(td.getDate(),getContext()));
                 vTime.setText(td.getTime());
                 vLocation.setText(td.getLocation());
 
@@ -367,7 +367,7 @@ public class TransactionMain extends Fragment {
                 intent.putExtra("key",key);
                 intent.putExtra("title",td.getTitle());
                 intent.putExtra("amount",td.getAmount());
-                intent.putExtra("date",v.valueToDate(td.getDate()));
+                intent.putExtra("date",v.valueToDate(td.getDate(),getActivity()));
                 intent.putExtra("time",td.getTime());
                 intent.putExtra("categoryName",td.getCategoryName());
                 intent.putExtra("categoryID",td.getCategoryID());

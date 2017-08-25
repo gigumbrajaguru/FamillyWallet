@@ -23,6 +23,51 @@
     <string name="transactionAmount">මුදල</string>
     <string name="transactionCategory">කාන්ඩය තෝරන්න</string>
     <string name="transactionTitle">ශීර්ෂය</string>
-    <string name="transactionLocation">ස්ථානය තෝරන්න</string>ගිණුම
+    <string name="transactionLocation">ස්ථානය තෝරන්න</string>
     <string name="transactionAccount">ගිණුම තෝරන්න</string>
+
+    <string name="mJan">ජන</string>
+    <string name="mFeb">පෙබ</string>
+    <string name="mMar">මාර්</string>
+    <string name="mApr">අප්\u200Dරේල්</string>
+    <string name="mMay">මැයි</string>
+    <string name="mJun">ජුනි</string>
+    <string name="mJul">ජූලි</string>
+    <string name="mAug">අගෝ</string>
+    <string name="mSep">සැප්</string>
+    <string name="mOct">නොවැ</string>
+    <string name="mNov">නොවැ</string>
+    <string name="mDec">දෙසැ</string>
+
+    <string-array name="IncomeCategory">
+        <item>මෝටර් රථ</item>
+        <item>ගමන්</item>
+        <item>ආහාර පාන</item>
+        <item>ප්‍රරවාහනයයි</item>
+        <item>තෑගි</item>
+        <item>බිල්</item>
+        <item>විනෝදාස්වාදය</item>
+        <item>ගෙදර</item>
+        <item>උපයෝගිතා</item>
+        <item>සාප්පු සවාරි</item>
+        <item>නවාතැන්</item>
+        <item>සෞඛ්ය සත්කාර</item>
+        <item>ඇඳුම්</item>
+        <item>සිල්ලර බඩු</item>
+        <item>බීම</item>
+        <item>සුරතල් සතුන්</item>
+        <item>අධ්යාපන</item>
+        <item>චිත්රපට</item>
+        <item>දරුවන්</item>
+        <item>වෙනත්</item>
+    </string-array>
+
+    <string-array name="ExpenseCategory">
+        <item>ණය</item>
+        <item>ව්යාපාර</item>
+        <item>තෑගි</item>
+        <item>වැටුප්</item>
+        <item>අමතර ආදායම</item>
+        <item>වෙනත්</item>
+    </string-array>
 </resources>

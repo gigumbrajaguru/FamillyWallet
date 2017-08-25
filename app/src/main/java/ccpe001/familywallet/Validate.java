@@ -2,6 +2,7 @@ package ccpe001.familywallet;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
 import android.text.Editable;
 import android.widget.Toast;
@@ -50,41 +51,42 @@ public class Validate {
         String year = date.substring(7);
         String monthNum = "";
         switch (month) {
-            case "Jan":monthNum = "01";break;
-            case "Feb":monthNum = "02";break;
-            case "Mar":monthNum = "03";break;
-            case "Apr":monthNum = "04";break;
-            case "May":monthNum = "05";break;
-            case "Jun":monthNum = "06";break;
-            case "Jul":monthNum = "07";break;
-            case "Aug":monthNum = "08";break;
-            case "Sep":monthNum = "09";break;
-            case "Oct":monthNum = "10";break;
-            case "Nov":monthNum = "11";break;
-            case "Dec":monthNum = "12";break;
+            case "Jan":case "ජන":monthNum = "01";break;
+            case "Feb":case "පෙබ":monthNum = "02";break;
+            case "Mar":case "මාර්":monthNum = "03";break;
+            case "Apr":case "අප්\u200Dරේල්":monthNum = "04";break;
+            case "May":case "මැයි":monthNum = "05";break;
+            case "Jun":case "ජුනි":monthNum = "06";break;
+            case "Jul":case "ජූලි":monthNum = "07";break;
+            case "Aug":case "අගෝ":monthNum = "08";break;
+            case "Sep":case "සැප්":monthNum = "09";break;
+            case "Oct":case "ඔක්":monthNum = "10";break;
+            case "Nov":case "නොවැ":monthNum = "11";break;
+            case "Dec":case "දෙසැ":monthNum = "12";break;
 
         }
         return year + monthNum + day;
     }
 
-    public static String valueToDate(String date){
+    public static String valueToDate(String date, Context con){
+        Resources res = con.getResources();
         String monthNum = date.substring(4,6);
         String day = date.substring(6);
         String year = date.substring(0,4);
         String month="";
         switch (monthNum){
-            case "01":month="Jan";break;
-            case "02":month="Feb";break;
-            case "03":month="Mar";break;
-            case "04":month="Apr";break;
-            case "05":month="May";break;
-            case "06":month="Jun";break;
-            case "07":month="Jul";break;
-            case "08":month="Aug";break;
-            case "09":month="Sep";break;
-            case "10":month="Oct";break;
-            case "11":month="Nov";break;
-            case "12":month="Dec";break;
+            case "01":month=res.getString(R.string.mJan);break;
+            case "02":month=res.getString(R.string.mFeb);break;
+            case "03":month=res.getString(R.string.mMar);break;
+            case "04":month=res.getString(R.string.mApr);break;
+            case "05":month=res.getString(R.string.mMay);break;
+            case "06":month=res.getString(R.string.mJun);break;
+            case "07":month=res.getString(R.string.mJul);break;
+            case "08":month=res.getString(R.string.mAug);break;
+            case "09":month=res.getString(R.string.mSep);break;
+            case "10":month=res.getString(R.string.mOct);break;
+            case "11":month=res.getString(R.string.mNov);break;
+            case "12":month=res.getString(R.string.mDec);break;
 
         }
         return day+"-"+month+"-"+year;

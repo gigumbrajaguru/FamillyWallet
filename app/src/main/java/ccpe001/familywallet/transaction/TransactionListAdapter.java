@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ccpe001.familywallet.R;
+import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
 
 /**
@@ -24,6 +25,7 @@ public class TransactionListAdapter extends ArrayAdapter<TransactionDetails> {
 
     private Activity context;
     private List<TransactionDetails> tdList;
+    Translate tr = new Translate();
 
 
     public TransactionListAdapter(Activity context, List<TransactionDetails> tdList) {
@@ -50,8 +52,8 @@ public class TransactionListAdapter extends ArrayAdapter<TransactionDetails> {
 
 
         txtTitle.setText(td.getTitle());
-        txtCategory.setText(td.getCategoryName());
-        txtDate.setText(v.valueToDate(td.getDate()));
+        txtCategory.setText(tr.categoryView(td.getCategoryName(),context));
+        txtDate.setText(v.valueToDate(td.getDate(),getContext()));
         String type = td.getType();
         if (type.equals("Income")){
             txtAmount.setText("+"+td.getCurrency()+td.getAmount());

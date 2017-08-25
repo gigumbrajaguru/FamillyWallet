@@ -44,6 +44,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ccpe001.familywallet.R;
+import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
 import ccpe001.familywallet.budget.actionValidater;
 
@@ -100,7 +101,7 @@ public class AddTransaction extends AppCompatActivity {
         /**/
         txtAmount.setHint(resources.getString(R.string.transactionAmount));
         txtCategory.setHint(resources.getString(R.string.transactionCategory));
-        txtTime.setHint(resources.getString(R.string.transactionTitle));
+        txtTitle.setHint(resources.getString(R.string.transactionTitle));
         txtLocation.setHint(resources.getString(R.string.transactionLocation));
         txtAccount.setHint(resources.getString(R.string.transactionAccount));
 
@@ -435,6 +436,7 @@ public class AddTransaction extends AppCompatActivity {
     public void saveTransaction(View view) {
         final actionValidater av = new actionValidater();
         final Validate v = new Validate();
+        final Translate trns = new Translate();
         boolean validExpense=false, validIncome=false;
         amount = txtAmount.getText().toString();
         date = txtDate.getText().toString();
@@ -450,6 +452,7 @@ public class AddTransaction extends AppCompatActivity {
             categoryName = "Other";
             categoryID = (R.drawable.cat_other);
         }
+        categoryName = trns.categoryToEngilsh(categoryName);
 
         if (checkRecurring.isChecked()) {
             if (amount.isEmpty()) {
@@ -500,7 +503,7 @@ public class AddTransaction extends AppCompatActivity {
                     }
                     if (validExpense==true || validIncome==true && !account.isEmpty()) {
                         mDatabase.child("Transactions").push().setValue(td);
-                        Toast.makeText(this, "Transaction Added "+validIncome, Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Transaction Added ", Toast.LENGTH_LONG).show();
                     }
                 }
                 else if (update.equals("True")){

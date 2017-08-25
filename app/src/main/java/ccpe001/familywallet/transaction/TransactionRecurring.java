@@ -206,7 +206,7 @@ public class TransactionRecurring extends Fragment {
                 intent.putExtra("key",key);
                 intent.putExtra("title",td.getTitle());
                 intent.putExtra("amount",td.getAmount());
-                intent.putExtra("date",v.valueToDate(td.getDate()));
+                intent.putExtra("date",v.valueToDate(td.getDate(),getContext()));
                 intent.putExtra("time",td.getTime());
                 intent.putExtra("categoryName",td.getCategoryName());
                 intent.putExtra("categoryID",td.getCategoryID());

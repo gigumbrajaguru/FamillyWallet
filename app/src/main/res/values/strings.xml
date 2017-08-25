@@ -23,11 +23,26 @@
         <item>GBP.</item>
         <item>INR.</item>
     </string-array>
+
     <string name="transactionAmount">Amount</string>
     <string name="transactionCategory">Tap to Set Category</string>
     <string name="transactionTitle">Title</string>
     <string name="transactionLocation">Tap to Set Location</string>
     <string name="transactionAccount">Tap to Set Account</string>
+
+    <string name="mJan">Jan</string>
+    <string name="mFeb">Feb</string>
+    <string name="mMar">Mar</string>
+    <string name="mApr">Apr</string>
+    <string name="mMay">May</string>
+    <string name="mJun">Jun</string>
+    <string name="mJul">Jul</string>
+    <string name="mAug">Aug</string>
+    <string name="mSep">Sep</string>
+    <string name="mOct">Oct</string>
+    <string name="mNov">Nov</string>
+    <string name="mDec">Dec</string>
+
 
     <string-array name="IncomeCategory">
         <item>Car</item>
@@ -55,7 +70,7 @@
     <string-array name="ExpenseCategory">
         <item>Loan</item>
         <item>Business</item>
-        <item>Gift</item>
+        <item>Gifts</item>
         <item>Salary</item>
         <item>Extra Income</item>
         <item>Other</item>

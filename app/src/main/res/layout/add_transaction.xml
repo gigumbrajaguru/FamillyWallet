@@ -101,7 +101,8 @@
                         android:ems="10"
                         android:focusable="false"
                         android:gravity="center"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:textStyle="bold" />
 
                 </TableRow>
 

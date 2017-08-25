@@ -50,7 +50,7 @@ public class TransactionRecurListAdapter extends ArrayAdapter<TransactionDetails
 
         txtTitle.setText(td.getTitle());
         txtCategory.setText(td.getCategoryName());
-        txtDate.setText(v.valueToDate(td.getDate()));
+        txtDate.setText(v.valueToDate(td.getDate(),getContext()));
         txtRecurring.setText("Recurring "+td.getRecurringPeriod());
         String type = td.getType();
         if (type.equals("Income")){
