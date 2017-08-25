@@ -1,6 +1,7 @@
 package ccpe001.familywallet.budget;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -22,18 +23,25 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 import ccpe001.familywallet.R;
 
 public class addAccount extends Fragment  {
-    String m_txt="",validbank,isPrivate="Flase",Notify="False",currtype,familyId="Not assigned";
+    String m_txt="",validbank,isPrivate="False",Notify="False",currtype;
+    String familyId="not assigned";
+    int validateName=0;
     boolean check=false,msgBoxOut=false;
     private DatabaseReference database;
-    Button btnSubmit;
-    EditText editTxt,editTxt1;
+    private static DatabaseReference mDatabases;
+    Button btnSubmit,btnUpdate;
+    EditText accName,editTxt1;
     private String[] arraySpinner,arraySpinner1;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,11 +92,11 @@ public class addAccount extends Fragment  {
                             if(m_txt.matches(".*[a-z0-9].*")){
                                 check=true;
                                 validbank=m_txt;
-                                Toast.makeText(getActivity(), "Successful", Toast.LENGTH_LONG).show();
+                                alertBox.alertBoxOut(getContext(),"Succeed","BAnk account added");
                             }
                             else{
                                 check=false;
-                                Toast.makeText(getActivity(), "Wrong inputs", Toast.LENGTH_LONG).show();
+                                alertBox.alertBoxOut(getContext(),"Failed","Wrong input");
                             }
                         }
                     });
@@ -143,27 +151,72 @@ public class addAccount extends Fragment  {
             isPrivate="False";
         }
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        editTxt=(EditText)v.findViewById(R.id.editText5);
+        mDatabases = FirebaseDatabase.getInstance().getReference();
+        mDatabases.child("UserInfo").orderByChild("userId").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    familyId=child.child("familyId").getValue().toString();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        accName=(EditText)v.findViewById(R.id.editText5);
         editTxt1=(EditText)v.findViewById(R.id.editText7);
         btnSubmit=(Button)v.findViewById(R.id.btnAdd);
         btnSubmit.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                acountCtrl Ctrl = new acountCtrl();
-                String accountName = editTxt.getText().toString();
-                Double amount = Double.parseDouble(editTxt1.getText().toString());
-                if (check) {
-                    msgBoxOut=(Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, Notify,currtype,familyId));
-                } else {
-                    msgBoxOut=(Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Wallet", "Wallet", isPrivate, Notify,currtype,familyId));
+                                         @Override
+                                         public void onClick(View v) {
+                                             acountCtrl Ctrl = new acountCtrl();
+                                             validateName=0;
+                                             final String accountName = accName.getText().toString();
+                                             Double amount = Double.parseDouble(editTxt1.getText().toString());
+                                             mDatabases.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
+                                                 @Override
+                                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                }
-                if(msgBoxOut){
-                    alertBox.alertBoxOut(getContext(),"Data Stored","Succeed");
-                }
-            }
-        });
+                                                     for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                                         if(child.child("accountName").getValue().toString().equals(accountName)) {
+                                                             validateName=1;
+                                                         }
+                                                         else{
+                                                             validateName=0;
+                                                         }
+                                                     }
+                                                 }
+
+                                                 @Override
+                                                 public void onCancelled(DatabaseError databaseError) {
+
+                                                 }
+                                             });
+                                             if (validateName==0) {
+                                                 if (check) {
+                                                     msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, Notify, currtype, familyId));
+                                                 } else {
+                                                     msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Wallet", "Wallet", isPrivate, Notify, currtype, familyId));
+
+                                                 }
+                                                 if (msgBoxOut) {
+                                                     alertBox.alertBoxOut(getContext(), "Data Stored", "Succeed");
+                                                 }
+                                             } else {
+                                                 alertBox.alertBoxOut(getContext(), "Account Name ", "Change your account name");
+                                             }
+                                         }
+                                     });
+                btnUpdate = (Button) v.findViewById(R.id.btnUpdate);
+                btnUpdate.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), accViews.class);
+                        startActivity(intent);
+                    }
+                });
+
+
                 return v;
-    }
-
-    }
+            }
+        }

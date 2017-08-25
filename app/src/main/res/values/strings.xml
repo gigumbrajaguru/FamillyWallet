@@ -253,7 +253,7 @@
     <string name="xmlmenu_backupFrag_title">Backup</string>
     <string name="xmlmenu_helpFrag_title">Help and Manual</string>
     <string name="xmlmenu_settingFrag_title">Settings</string>
-    <string name="xmlmenu_walletFrag_title">Add Wallet</string>
+    <string name="xmlmenu_walletFrag_title">Wallet</string>
     <string name="xmlmenu_budgetFrag_title">Budgets</string>
     <string name="title_activity_summary_tab">SummaryTab</string>
     <string name="title_activity_test">TEST</string>
@@ -277,5 +277,6 @@
     <string name="xmlsignin_fbOptBtn_text">Sign in via Facebook</string>
     <string name="ocrreader_snackbar_takepicbtn">Take Picture</string>
     <string name="ocrreader_snackbar_takepic">Would you like to store the bill?</string>
+    <string name="ocrreader2_setttile">Bill Scanner</string>
 
 </resources>
