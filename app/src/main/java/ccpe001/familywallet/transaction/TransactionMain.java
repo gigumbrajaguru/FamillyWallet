@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,6 +42,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ccpe001.familywallet.R;
+import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
 
 /**
@@ -50,17 +53,18 @@ public class TransactionMain extends Fragment {
     ListView list;
     FloatingActionButton fab_income, fab_expense,fab_main;
     Animation fabOpen, fabClose, fabClockwise, fabAntiClockwise;
-    TextView txtIncome,txtExpense;
+    TextView txtIncome,txtExpense,amnt;
     boolean isOpen = false;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
     Validate v = new Validate();
+    Translate trns = new Translate();
     List<TransactionDetails> tdList;
     List<String> keys;
     List<String> checkedPosition;
     TransactionListAdapter adapter;
-    String userID, familyID;
+    String userID, familyID, amount;
 
     public TransactionMain() {
         // Required empty public constructor
@@ -141,8 +145,6 @@ public class TransactionMain extends Fragment {
         });
         list.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             MenuItem deleteIcon, editIcon;
-
-
 
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
@@ -287,15 +289,13 @@ public class TransactionMain extends Fragment {
 
 
 
-
-
         return view;
     }
     String amt;
     private void viewTransaction(final String key) {
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.transaction_view);
-        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
+        final DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
 
         transaction.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -315,10 +315,10 @@ public class TransactionMain extends Fragment {
                 else
                     vTitle.setText("Title - "+td.getTitle());
                 vAmount.setText(td.getCurrency()+td.getAmount());
-                vCategory.setText(td.getCategoryName());
+                vCategory.setText(trns.categoryView(td.getCategoryName(),getActivity()));
                 vAccount.setText(td.getAccount());
-                vDate.setText(v.valueToDate(td.getDate(),getContext()));
-                vTime.setText(td.getTime());
+                vDate.setText(trns.valueToDate(td.getDate(),getContext()));
+                vTime.setText(trns.timeView(td.getTime(),getActivity()));
                 vLocation.setText(td.getLocation());
 
                 vEdit.setOnClickListener(new View.OnClickListener() {
@@ -364,12 +364,12 @@ public class TransactionMain extends Fragment {
                 intent.putExtra("key",key);
                 intent.putExtra("title",td.getTitle());
                 intent.putExtra("amount",td.getAmount());
-                intent.putExtra("date",v.valueToDate(td.getDate(),getActivity()));
-                intent.putExtra("time",td.getTime());
-                intent.putExtra("categoryName",td.getCategoryName());
+                intent.putExtra("date",trns.valueToDate(td.getDate(),getActivity()));
+                intent.putExtra("time",trns.timeView(td.getTime(),getActivity()));
+                intent.putExtra("categoryName",trns.categoryView(td.getCategoryName(),getActivity()));
                 intent.putExtra("categoryID",td.getCategoryID());
                 intent.putExtra("location",td.getLocation());
-                intent.putExtra("currency",td.getCurrency());
+                intent.putExtra("currency",trns.currencyView(td.getCurrency(),getActivity()));
                 intent.putExtra("account",td.getAccount());
                 intent.putExtra("transactionType",td.getType());
                 intent.putExtra("userID",td.getUserID());

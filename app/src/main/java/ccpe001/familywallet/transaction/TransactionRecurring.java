@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ccpe001.familywallet.R;
+import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
 
 
@@ -46,6 +47,8 @@ public class TransactionRecurring extends Fragment {
     TransactionRecurListAdapter adapter;
     String userID;
     String familyID;
+    Validate v = new Validate();
+    Translate trns = new Translate();
 
 
     private DatabaseReference mDatabase;
@@ -195,7 +198,7 @@ public class TransactionRecurring extends Fragment {
         transaction.removeValue();
     }
     private void editTransaction(final String key){
-        final Validate v = new Validate();
+
         DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(key);
         transaction.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -206,7 +209,7 @@ public class TransactionRecurring extends Fragment {
                 intent.putExtra("key",key);
                 intent.putExtra("title",td.getTitle());
                 intent.putExtra("amount",td.getAmount());
-                intent.putExtra("date",v.valueToDate(td.getDate(),getContext()));
+                intent.putExtra("date",trns.valueToDate(td.getDate(),getContext()));
                 intent.putExtra("time",td.getTime());
                 intent.putExtra("categoryName",td.getCategoryName());
                 intent.putExtra("categoryID",td.getCategoryID());

@@ -1,6 +1,7 @@
 package ccpe001.familywallet;
 
 import android.content.Context;
+import android.content.SearchRecentSuggestionsProvider;
 import android.content.res.Resources;
 
 /**
@@ -9,7 +10,7 @@ import android.content.res.Resources;
 
 public class Translate {
 
-    public String categoryToEngilsh(String cat){
+    public String categoryToDB(String cat){
         String retCat="";
         switch (cat){
             case"Car":case"මෝටර් රථ":retCat="Car";break;
@@ -74,4 +75,105 @@ public class Translate {
         return retCat;
     }
 
+    public String timeToDB(String time){
+        String[] parts = time.split(":");
+        String ampm = parts[1].substring(3);
+        String ampmAfter="";
+        switch (ampm){
+            case "AM":case "පෙ.ව.":ampmAfter="AM";break;
+            case "PM":case "ප.ව.":ampmAfter="PM";break;
+        }
+        return parts[0]+":"+parts[1].substring(0,3)+ampmAfter;
+
+    }
+
+    public String timeView(String time, Context con){
+        Resources res = con.getResources();
+        String[] parts = time.split(":");
+        String ampm = parts[1].substring(3);
+        String ampmAfter="";
+        switch (ampm){
+            case "AM":ampmAfter=res.getString(R.string.tAM);break;
+            case "PM":ampmAfter=res.getString(R.string.tPM);break;
+        }
+        return parts[0]+":"+parts[1].substring(0,3)+ampmAfter;
+
+    }
+
+    public static String dateToDB(String date) {
+        String[] parts = date.split("-");
+        String month = parts[1];
+        String day = parts[0];
+        String year = parts[2];
+        String monthNum = "";
+        switch (month) {
+            case "Jan":case "ජන":monthNum = "01";break;
+            case "Feb":case "පෙබ":monthNum = "02";break;
+            case "Mar":case "මාර්":monthNum = "03";break;
+            case "Apr":case "අප්\u200Dරේල්":monthNum = "04";break;
+            case "May":case "මැයි":monthNum = "05";break;
+            case "Jun":case "ජුනි":monthNum = "06";break;
+            case "Jul":case "ජූලි":monthNum = "07";break;
+            case "Aug":case "අගෝ":monthNum = "08";break;
+            case "Sep":case "සැප්":monthNum = "09";break;
+            case "Oct":case "ඔක්":monthNum = "10";break;
+            case "Nov":case "නොවැ":monthNum = "11";break;
+            case "Dec":case "දෙසැ":monthNum = "12";break;
+
+        }
+        return year + monthNum + day;
+    }
+
+    public static String valueToDate(String date, Context con){
+        Resources res = con.getResources();
+        String[] monthList = res.getStringArray(R.array.Months);
+        String monthNum = date.substring(4,6);
+        String day = date.substring(6);
+        String year = date.substring(0,4);
+        String month="";
+        switch (monthNum){
+            case "01":month=monthList[0];break;
+            case "02":month=monthList[1];break;
+            case "03":month=monthList[2];break;
+            case "04":month=monthList[3];break;
+            case "05":month=monthList[4];break;
+            case "06":month=monthList[5];break;
+            case "07":month=monthList[6];break;
+            case "08":month=monthList[7];break;
+            case "09":month=monthList[8];break;
+            case "10":month=monthList[9];break;
+            case "11":month=monthList[10];break;
+            case "12":month=monthList[11];break;
+
+        }
+        return day+"-"+month+"-"+year;
+    }
+
+    public String currencyToDB(String cur){
+
+        String retCur="";
+
+        switch (cur){
+            case"LKR.":case"රු.":retCur="LKR.";break;
+            case"USD.":case"ඇ. ඩොලර්.":retCur="USD.";break;
+            case"EUR.":case"යුරෝ.":retCur="EUR.";break;
+            case"GBP.":case"පවුම්.":retCur="GBP.";break;
+            case"INR.":case"ඉන්දීය රු.":retCur="INR.";break;
+        }
+        return retCur;
+    }
+
+    public String currencyView(String cur, Context con){
+        Resources res = con.getResources();
+        String[] curArr = res.getStringArray(R.array.spinnerCurrency);
+        String retCur="";
+        switch (cur){
+            case"LKR.":retCur=curArr[0];break;
+            case"USD.":retCur=curArr[1];break;
+            case"EUR.":retCur=curArr[2];break;
+            case"GBP.":retCur=curArr[3];break;
+            case"INR.":retCur=curArr[4];break;
+        }
+        return retCur;
+    }
 }

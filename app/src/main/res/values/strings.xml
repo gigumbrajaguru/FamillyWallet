@@ -30,18 +30,24 @@
     <string name="transactionLocation">Tap to Set Location</string>
     <string name="transactionAccount">Tap to Set Account</string>
 
-    <string name="mJan">Jan</string>
-    <string name="mFeb">Feb</string>
-    <string name="mMar">Mar</string>
-    <string name="mApr">Apr</string>
-    <string name="mMay">May</string>
-    <string name="mJun">Jun</string>
-    <string name="mJul">Jul</string>
-    <string name="mAug">Aug</string>
-    <string name="mSep">Sep</string>
-    <string name="mOct">Oct</string>
-    <string name="mNov">Nov</string>
-    <string name="mDec">Dec</string>
+    <string-array name="Months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </string-array>
+
+
+    <string name="tAM">AM</string>
+    <string name="tPM">PM</string>
 
 
     <string-array name="IncomeCategory">

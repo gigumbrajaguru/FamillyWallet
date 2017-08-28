@@ -12,6 +12,8 @@ import android.widget.TimePicker;
 import java.sql.Time;
 import java.util.Calendar;
 
+import ccpe001.familywallet.Translate;
+
 /**
  * Created by Knight on 5/13/2017.
  */
@@ -19,6 +21,7 @@ import java.util.Calendar;
 public class TimeDialog extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     TextView txtTime;
+    Translate tran = new Translate();
 
     public TimeDialog(View view) {
         txtTime = (TextView) view;
@@ -46,7 +49,7 @@ public class TimeDialog extends DialogFragment implements TimePickerDialog.OnTim
             hour=12;
 
         String time1 = pad(hour) + ":" + pad(minute)+" "+am_pm;
-        txtTime.setText(time1);
+        txtTime.setText(tran.timeView(time1,getActivity()));
     }
 
     public static String pad(int input)

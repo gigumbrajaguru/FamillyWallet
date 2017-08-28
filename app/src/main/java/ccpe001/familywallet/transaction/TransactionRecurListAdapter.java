@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ccpe001.familywallet.R;
+import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
 
 /**
@@ -22,6 +23,7 @@ public class TransactionRecurListAdapter extends ArrayAdapter<TransactionDetails
 
     private Activity context;
     private List<TransactionDetails> tdList;
+    Translate trns = new Translate();
 
 
     public TransactionRecurListAdapter(Activity context, List<TransactionDetails> tdList) {
@@ -50,7 +52,7 @@ public class TransactionRecurListAdapter extends ArrayAdapter<TransactionDetails
 
         txtTitle.setText(td.getTitle());
         txtCategory.setText(td.getCategoryName());
-        txtDate.setText(v.valueToDate(td.getDate(),getContext()));
+        txtDate.setText(trns.valueToDate(td.getDate(),getContext()));
         txtRecurring.setText("Recurring "+td.getRecurringPeriod());
         String type = td.getType();
         if (type.equals("Income")){

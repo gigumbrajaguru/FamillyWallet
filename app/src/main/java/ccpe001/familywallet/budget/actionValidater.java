@@ -67,7 +67,7 @@ public class actionValidater {
         return c;
     }
     public static boolean addIncome(final String accountName, final Double income) {
-        c=false;
+        c=true;
         check=0;
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -84,7 +84,6 @@ public class actionValidater {
                         }
                     }
                 }
-
                 c=true;
             }
 

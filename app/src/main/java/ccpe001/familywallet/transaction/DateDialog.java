@@ -4,14 +4,13 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import java.util.Calendar;
-import android.os.Build;
+
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
+
+import ccpe001.familywallet.Translate;
 
 /**
  * Created by Knight on 5/13/2017.
@@ -20,6 +19,7 @@ import android.widget.TextView;
 public class DateDialog  extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
     TextView txtDate;
+    Translate trns = new Translate();
 
     public DateDialog(){
 
@@ -44,7 +44,8 @@ public class DateDialog  extends DialogFragment implements DatePickerDialog.OnDa
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
         String date = dayOfMonth +"-"+MONTHS[month]+"-"+year;
-        txtDate.setText(date);
+        String dateVal = trns.dateToDB(date);
+        txtDate.setText(trns.valueToDate(dateVal,getActivity()));
     }
 
     public String pad(int input)

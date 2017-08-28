@@ -13,11 +13,11 @@
     </string-array>
 
     <string-array name="spinnerCurrency">
-        <item>LKR(රු).</item>
-        <item>USD(ඩොලර්).</item>
-        <item>EUR(යුරෝ).</item>
-        <item>GBP(පවුම්).</item>
-        <item>INR(ඉන්දීය රු).</item>
+        <item>රු.</item>
+        <item>ඇ. ඩොලර්.</item>
+        <item>යුරෝ.</item>
+        <item>පවුම්.</item>
+        <item>ඉන්දීය රු.</item>
     </string-array>
 
     <string name="transactionAmount">මුදල</string>
@@ -26,18 +26,23 @@
     <string name="transactionLocation">ස්ථානය තෝරන්න</string>
     <string name="transactionAccount">ගිණුම තෝරන්න</string>
 
-    <string name="mJan">ජන</string>
-    <string name="mFeb">පෙබ</string>
-    <string name="mMar">මාර්</string>
-    <string name="mApr">අප්\u200Dරේල්</string>
-    <string name="mMay">මැයි</string>
-    <string name="mJun">ජුනි</string>
-    <string name="mJul">ජූලි</string>
-    <string name="mAug">අගෝ</string>
-    <string name="mSep">සැප්</string>
-    <string name="mOct">නොවැ</string>
-    <string name="mNov">නොවැ</string>
-    <string name="mDec">දෙසැ</string>
+    <string-array name="Months">
+        <item>ජන</item>
+        <item>පෙබ</item>
+        <item>මාර්</item>
+        <item>අප්\u200Dරේල්</item>
+        <item>මැයි</item>
+        <item>ජුනි</item>
+        <item>ජූලි</item>
+        <item>අගෝ</item>
+        <item>සැප්</item>
+        <item>නොවැ</item>
+        <item>නොවැ</item>
+        <item>දෙසැ</item>
+    </string-array>
+
+    <string name="tAM">පෙ.ව.</string>
+    <string name="tPM">ප.ව.</string>
 
     <string-array name="IncomeCategory">
         <item>මෝටර් රථ</item>

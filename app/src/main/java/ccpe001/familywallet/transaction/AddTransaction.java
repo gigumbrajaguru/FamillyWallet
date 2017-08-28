@@ -71,6 +71,10 @@ public class AddTransaction extends AppCompatActivity {
     int PLACE_PICKER_REQUEST=1;
     final Context context = this;
 
+    final actionValidater av = new actionValidater();
+    final Validate v = new Validate();
+    final Translate trns = new Translate();
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +132,7 @@ public class AddTransaction extends AppCompatActivity {
         query.addValueEventListener(new ValueEventListener() {
              @Override
              public void onDataChange(DataSnapshot dataSnapshot) {
+                 accountsList.clear();
                  for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
                     accountsList.add(tdSnapshot.child("accountName").getValue().toString());
                  }
@@ -354,7 +359,7 @@ public class AddTransaction extends AppCompatActivity {
             }
         }
 
-        TextView txtDate = (TextView) findViewById(R.id.txtDate);
+
         txtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -366,14 +371,13 @@ public class AddTransaction extends AppCompatActivity {
             }
         });
 
-        TextView txtTime = (TextView) findViewById(R.id.txtTime);
+
         txtTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TimeDialog dialog = new TimeDialog(v);
                 android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 dialog.show(ft,"TimePicker");
-
             }
         });
 
@@ -434,16 +438,17 @@ public class AddTransaction extends AppCompatActivity {
 
     /*Save & Update Trnsactions*/
     public void saveTransaction(View view) {
-        final actionValidater av = new actionValidater();
-        final Validate v = new Validate();
-        final Translate trns = new Translate();
+        Toast.makeText(context, "Working", Toast.LENGTH_SHORT).show();
         boolean validExpense=false, validIncome=false;
         amount = txtAmount.getText().toString();
         date = txtDate.getText().toString();
-        date = v.dateToValue(date);
+        Toast.makeText(this, date, Toast.LENGTH_SHORT).show();
+        date = trns.dateToDB(date);
         time = txtTime.getText().toString();
+        time = trns.timeToDB(time);
         title = txtTitle.getText().toString();
         currency = txtCurrency.getText().toString();
+        currency = trns.currencyToDB(currency);
         location = txtLocation.getText().toString();
         account = txtAccount.getText().toString();
         recurrPeriod = txtRecurring.getText().toString();
@@ -452,7 +457,7 @@ public class AddTransaction extends AppCompatActivity {
             categoryName = "Other";
             categoryID = (R.drawable.cat_other);
         }
-        categoryName = trns.categoryToEngilsh(categoryName);
+        categoryName = trns.categoryToDB(categoryName);
 
         if (checkRecurring.isChecked()) {
             if (amount.isEmpty()) {
@@ -467,13 +472,13 @@ public class AddTransaction extends AppCompatActivity {
                         mDatabase.child("RecurringTransactions").push().setValue(td);
                         Toast.makeText(this, "Transaction Added", Toast.LENGTH_LONG).show();
                     }
-//                    else if (update.equals("True")){
-//                        mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
-//                        td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
-//                        Map<String, Object> postValues = td.toMap();
-//                        mDatabase.child(key).updateChildren(postValues);
-//                        Toast.makeText(this, "Successfully Updated", Toast.LENGTH_LONG).show();
-//                    }
+                    else if (update.equals("True")){
+                        mDatabase = FirebaseDatabase.getInstance().getReference("RecurringTransactions");
+                        td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID, recurrPeriod);
+                        Map<String, Object> postValues = td.toMap();
+                        mDatabase.child(key).updateChildren(postValues);
+                        Toast.makeText(this, "Successfully Updated", Toast.LENGTH_LONG).show();
+                    }
                 }catch (Exception e){
 
                 }
@@ -503,7 +508,7 @@ public class AddTransaction extends AppCompatActivity {
                     }
                     if (validExpense==true || validIncome==true && !account.isEmpty()) {
                         mDatabase.child("Transactions").push().setValue(td);
-                        Toast.makeText(this, "Transaction Added ", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(this, "Transaction Added ", Toast.LENGTH_LONG).show();
                     }
                 }
                 else if (update.equals("True")){

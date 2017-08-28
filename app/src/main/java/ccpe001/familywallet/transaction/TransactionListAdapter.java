@@ -25,7 +25,7 @@ public class TransactionListAdapter extends ArrayAdapter<TransactionDetails> {
 
     private Activity context;
     private List<TransactionDetails> tdList;
-    Translate tr = new Translate();
+    Translate trns = new Translate();
 
 
     public TransactionListAdapter(Activity context, List<TransactionDetails> tdList) {
@@ -52,14 +52,14 @@ public class TransactionListAdapter extends ArrayAdapter<TransactionDetails> {
 
 
         txtTitle.setText(td.getTitle());
-        txtCategory.setText(tr.categoryView(td.getCategoryName(),context));
-        txtDate.setText(v.valueToDate(td.getDate(),getContext()));
+        txtCategory.setText(trns.categoryView(td.getCategoryName(),context));
+        txtDate.setText(trns.valueToDate(td.getDate(),getContext()));
         String type = td.getType();
         if (type.equals("Income")){
-            txtAmount.setText("+"+td.getCurrency()+td.getAmount());
+            txtAmount.setText("+"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());
             txtAmount.setTextColor(ContextCompat.getColor(context,R.color.income));
         }else if (type.equals("Expense")){
-            txtAmount.setText("-"+td.getCurrency()+td.getAmount());
+            txtAmount.setText("-"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());
             txtAmount.setTextColor(ContextCompat.getColor(context,R.color.expense));
         }
         imageView.setImageResource(td.getCategoryID());
