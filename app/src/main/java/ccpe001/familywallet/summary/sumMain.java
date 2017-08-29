@@ -38,57 +38,57 @@ import static ccpe001.familywallet.R.mipmap.category;
 public class sumMain extends Fragment {
 
     public  PieChart charts;
-   // float transac[] = {750.0f, 150.0f, 200.0f};
-    String category[] = {"food", "other", "fees"};
+    // float transac[] = {750.0f, 150.0f, 200.0f};
+    //String category[] = {"food", "other", "fees"};
 
     private DatabaseReference rtrvdata; // creating database referrence to read data
-    public List<Double> transacval = new ArrayList<Double>(); // List to add transaction data
-    public List<String> dbcat = new ArrayList<String>(); // List to add category
+    public final ArrayList<Float> transacval = new ArrayList<Float>(); // List to add transaction data
+    public final ArrayList<String> dbcat = new ArrayList<String>(); // List to add category
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-            rtrvdata= FirebaseDatabase.getInstance().getReference();
-            rtrvdata.child("Transaction").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) { // Data retrieving method
+        rtrvdata= FirebaseDatabase.getInstance().getReference();
+        rtrvdata.child("Transaction").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) { // Data retrieving method
 
-                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
 
-                        //Assigning database values to variables
-                        Double transacdt = (Double) child.child("amount").getValue();
-                        String catdata = (String) child.child("categoryName").getValue();
-                        transacval.add(transacdt);
-                        dbcat.add(catdata);
-                    }
+                    //Assigning database values to variables
+                    Float transacdt = (Float) child.child("amount").getValue();
+                    String catdata = (String) child.child("categoryName").getValue();
+                    transacval.add(transacdt);
+                    dbcat.add(catdata);
                 }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-            View view = inflater.inflate(R.layout.sum_main, container, false);
-            charts = (PieChart) view.findViewById(R.id.chart);
-            //Pie chart method to populate
-            SetupChart();
-            return view;
-        }
-        private void SetupChart() //ref : https://www.youtube.com/watch?v=iS7EgKnyDeY
-        {
-
-            Float testtransac[] = (Float[]) transacval.toArray(); //Covert Double List to float array
-            String testcat[] = (String[]) dbcat.toArray();        //Convert String List to String array
-            List<PieEntry> pieEntries = new ArrayList<>();
-            for (int i = 0; i < testtransac.length; i++) {
-                pieEntries.add(new PieEntry(testtransac[i], testcat[i]));
             }
 
-            PieDataSet dataSet = new PieDataSet(pieEntries, "Transactions Done");
-            dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-            PieData data = new PieData(dataSet);
-            charts.setData(data);
-            charts.animateY(1000);
-            charts.invalidate();
-        }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        View view = inflater.inflate(R.layout.sum_main, container, false);
+        charts = (PieChart) view.findViewById(R.id.chart);
+        //Pie chart method to populate
+        SetupChart();
+        return view;
     }
+    private void SetupChart() //ref : https://www.youtube.com/watch?v=iS7EgKnyDeY
+    {
+
+        Float testtransac[] = transacval.toArray(new Float[transacval.size()]); //Covert Float array List to float array
+        String testcat[] = dbcat.toArray(new String[dbcat.size()]);        //Convert String array List to String array
+        ArrayList<PieEntry> pieEntries = new ArrayList<>();
+        for (int i = 0; i < testtransac.length; i++) {
+            pieEntries.add(new PieEntry(testtransac[i], testcat[i]));
+        }
+
+        PieDataSet dataSet = new PieDataSet(pieEntries, "Transactions Done");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        PieData data = new PieData(dataSet);
+        charts.setData(data);
+        charts.animateY(1000);
+        charts.invalidate();
+    }
+}
 
