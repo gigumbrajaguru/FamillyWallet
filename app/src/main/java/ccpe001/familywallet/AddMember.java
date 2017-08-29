@@ -6,6 +6,7 @@ import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,14 +87,15 @@ public class AddMember extends Fragment  implements View.OnClickListener{
         intentIntegrator.setDesiredBarcodeFormats(intentIntegrator.QR_CODE_TYPES);
         intentIntegrator.setPrompt(getString(R.string.signin_scan_setpromt));
         intentIntegrator.setCameraId(0);
-        intentIntegrator.setOrientationLocked(false);
+        intentIntegrator.setOrientationLocked(true);
         intentIntegrator.setBeepEnabled(true);
         intentIntegrator.setBarcodeImageEnabled(true);
-        intentIntegrator.initiateScan();
+        intentIntegrator.forSupportFragment(this).initiateScan();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("sdf","fddfdf");
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
         if(result != null){
             if (result.getContents()== null){
@@ -101,6 +103,8 @@ public class AddMember extends Fragment  implements View.OnClickListener{
             }else {
                 Toast.makeText(getActivity(),result.getContents(),Toast.LENGTH_LONG).show();
             }
+        }else{
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }
