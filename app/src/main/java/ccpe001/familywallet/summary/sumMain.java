@@ -51,7 +51,7 @@ public class sumMain extends Fragment {
 
         rtrvdata= FirebaseDatabase.getInstance().getReference();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        rtrvdata.child("Transaction").orderByChild("userID").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
+        rtrvdata.child("Transactions").orderByChild("userID").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) { // Data retrieving method
 
@@ -70,7 +70,7 @@ public class sumMain extends Fragment {
 
             }
         });
-           Log.i("test",transacval.toString());
+
         View view = inflater.inflate(R.layout.sum_main, container, false);
         charts = (PieChart) view.findViewById(R.id.chart);
         //Pie chart method to populate
