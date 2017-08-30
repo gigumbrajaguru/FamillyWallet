@@ -39,6 +39,7 @@ public class AddMember extends Fragment  implements View.OnClickListener{
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.add_member, container, false);
         init(view);
@@ -67,6 +68,7 @@ public class AddMember extends Fragment  implements View.OnClickListener{
             setQr();
         }else if(view.getId() == R.id.scanqrbtn){
             qrReader();
+
         }
     }
 

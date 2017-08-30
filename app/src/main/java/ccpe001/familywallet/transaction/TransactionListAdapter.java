@@ -41,32 +41,45 @@ public class TransactionListAdapter extends ArrayAdapter<TransactionDetails> {
         View rowView;
         TransactionDetails td = tdList.get(position);
         String prevDate="";
-
         final Validate v = new Validate();
-        rowView = inflater.inflate(R.layout.transaction_list, null, true);
-        TextView txtTitle = (TextView) rowView.findViewById(R.id.txtTitle);
-        TextView txtCategory = (TextView) rowView.findViewById(R.id.txtCategory);
-        TextView txtDate = (TextView) rowView.findViewById(R.id.txtTime);
-        TextView txtAmount = (TextView) rowView.findViewById(R.id.txtAmount);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
 
-
-        txtTitle.setText(td.getTitle());
-        txtCategory.setText(trns.categoryView(td.getCategoryName(),context));
-        txtDate.setText(trns.valueToDate(td.getDate(),getContext()));
-        String type = td.getType();
-        if (type.equals("Income")){
-            txtAmount.setText("+"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());
-            txtAmount.setTextColor(ContextCompat.getColor(context,R.color.income));
-        }else if (type.equals("Expense")){
-            txtAmount.setText("-"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());
-            txtAmount.setTextColor(ContextCompat.getColor(context,R.color.expense));
+        if (td.getCategoryName().equals("Other")){
+            rowView = inflater.inflate(R.layout.temp, null, true);
+            TextView tmp = (TextView) rowView.findViewById(R.id.txtTemp);
+            tmp.setText("other");
         }
-        imageView.setImageResource(td.getCategoryID());
+
+            rowView = inflater.inflate(R.layout.transaction_list, null, true);
+            TextView txtTitle = (TextView) rowView.findViewById(R.id.txtTitle);
+            TextView txtCategory = (TextView) rowView.findViewById(R.id.txtCategory);
+            TextView txtDate = (TextView) rowView.findViewById(R.id.txtTime);
+            TextView txtAmount = (TextView) rowView.findViewById(R.id.txtAmount);
+            ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
+
+
+            txtTitle.setText(td.getTitle());
+            txtCategory.setText(trns.categoryView(td.getCategoryName(),context));
+            txtDate.setText(trns.valueToDate(td.getDate(),getContext()));
+            String type = td.getType();
+            if (type.equals("Income")){
+                txtAmount.setText("+"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());
+                txtAmount.setTextColor(ContextCompat.getColor(context,R.color.income));
+            }else if (type.equals("Expense")){
+                txtAmount.setText("-"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());
+                txtAmount.setTextColor(ContextCompat.getColor(context,R.color.expense));
+            }
+            imageView.setImageResource(td.getCategoryID());
+
+
+
+
 
         return rowView;
 
 
     }
-
+    public String getget(int position, List<TransactionDetails> tdListt){
+        TransactionDetails td = tdListt.get(position);
+        return td.getAmount();
+    }
 }

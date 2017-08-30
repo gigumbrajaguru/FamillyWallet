@@ -384,33 +384,7 @@ public class AddTransaction extends AppCompatActivity {
     }
 
 
-    /*launches the place picker activity*/
-    private void startPlacePickerActivity() {
-        PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-        try {
-            Intent intent = intentBuilder.build(this);
-            startActivityForResult(intent, PLACE_PICKER_REQUEST);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    /*retrieves the place that the user has selected*/
-    private void displaySelectedPlaceFromPlacePicker(Intent data) {
-        Place placeSelected = PlacePicker.getPlace(data, this);
-        String name = placeSelected.getName().toString();
-        String address = placeSelected.getAddress().toString();
-        txtLocation.setText(name + ", " + address);
-    }
-
-    @Override
-    protected  void onActivityResult(int requestCode, int resultCode, Intent data) {
-        txtCategory = (EditText) findViewById(R.id.txtCategory);
-        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
-            displaySelectedPlaceFromPlacePicker(data);
-        }
-
-    }
 
     /* Method to keep the input amount/price as valid price/amount */
     public class CurrencyFormatInputFilter implements InputFilter {
@@ -549,6 +523,34 @@ public class AddTransaction extends AppCompatActivity {
 
         }
 
+
+    }
+
+    /*launches the place picker activity when location text field selected */
+    private void startPlacePickerActivity() {
+        PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+        try {
+            Intent intent = intentBuilder.build(this);
+            startActivityForResult(intent, PLACE_PICKER_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*retrieves the place that the user has selected*/
+    private void displaySelectedPlaceFromPlacePicker(Intent data) {
+        Place placeSelected = PlacePicker.getPlace(data, this);
+        String name = placeSelected.getName().toString();
+        String address = placeSelected.getAddress().toString();
+        txtLocation.setText(name + ", " + address);     //setting the location in location text field
+    }
+
+    /* Method run when place is selected*/
+    @Override
+    protected  void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+            displaySelectedPlaceFromPlacePicker(data);
+        }
 
     }
 

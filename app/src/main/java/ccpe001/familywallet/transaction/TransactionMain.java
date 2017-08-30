@@ -149,6 +149,9 @@ public class TransactionMain extends Fragment {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
                 int checkedItems = list.getCheckedItemCount();
+
+                //int positions=list.getItemAtPosition(position);
+                Toast.makeText(getActivity(), adapter.getget(position,tdList), Toast.LENGTH_SHORT).show();
                 mode.setTitle(String.valueOf(checkedItems)+ " Selected");
                 if (checked==true) {
                     checkedPosition.add(String.valueOf(position));
