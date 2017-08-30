@@ -5,11 +5,16 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -65,6 +70,7 @@ public class TransactionMain extends Fragment {
     List<String> checkedPosition;
     TransactionListAdapter adapter;
     String userID, familyID, amount;
+    Resources res;
 
     public TransactionMain() {
         // Required empty public constructor
@@ -75,10 +81,12 @@ public class TransactionMain extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.transaction_main, container, false);
+        fabAddMenu(view);
         list = (ListView) view.findViewById(R.id.transactionList);
         tdList = new ArrayList<>();
         keys = new ArrayList<>();
         checkedPosition = new ArrayList<>();
+        res = getResources();
         try {
             mAuth = FirebaseAuth.getInstance();
             firebaseUser = mAuth.getCurrentUser();
@@ -224,6 +232,135 @@ public class TransactionMain extends Fragment {
 
 
 
+
+
+
+
+
+        return view;
+    }
+
+    private void viewTransaction(final String key) {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.transaction_view);
+        final DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
+        TextView vhTitle = (TextView) dialog.findViewById(R.id.vhTitle);
+        TextView vhAmount = (TextView) dialog.findViewById(R.id.vhAmount);
+        TextView vhCategory = (TextView) dialog.findViewById(R.id.vhCategory);
+        TextView vhAccount = (TextView) dialog.findViewById(R.id.vhAccount);
+        TextView vhDate = (TextView) dialog.findViewById(R.id.vhDate);
+        TextView vhTime = (TextView) dialog.findViewById(R.id.vhTime);
+        TextView vhLocation = (TextView) dialog.findViewById(R.id.vhLocation);
+        vhTitle.setText(res.getString(R.string.vhTitle));
+        vhAmount.setText(res.getString(R.string.vhAmount));
+        vhCategory.setText(res.getString(R.string.vhCategory));
+        vhAccount.setText(res.getString(R.string.vhAccount));
+        vhDate.setText(res.getString(R.string.vhDate));
+        vhTime.setText(res.getString(R.string.vhTime));
+        vhLocation.setText(res.getString(R.string.vhLocation));
+
+        transaction.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TransactionDetails td = dataSnapshot.getValue(TransactionDetails.class);
+                TextView vTitle = (TextView) dialog.findViewById(R.id.vTitle);
+                TextView vAmount = (TextView) dialog.findViewById(R.id.vTxtAmount);
+                TextView vCategory = (TextView) dialog.findViewById(R.id.vTxtCategory);
+                TextView vAccount = (TextView) dialog.findViewById(R.id.vTxtAccount);
+                TextView vDate = (TextView) dialog.findViewById(R.id.vTxtDate);
+                TextView vTime = (TextView) dialog.findViewById(R.id.vTxtTime);
+                TextView vLocation = (TextView) dialog.findViewById(R.id.vTxtLocation);
+                Button vEdit = (Button) dialog.findViewById(R.id.btnEdit);
+                Button vCancel = (Button) dialog.findViewById(R.id.btnCancel);
+                if (td.getTitle().isEmpty())
+                    vTitle.setText("Title Not Available");
+                else
+                    vTitle.setText(td.getTitle());
+                vAmount.setText(td.getCurrency()+td.getAmount());
+                vCategory.setText(trns.categoryView(td.getCategoryName(),getActivity()));
+                vAccount.setText(td.getAccount());
+                vDate.setText(trns.valueToDate(td.getDate(),getContext()));
+                vTime.setText(trns.timeView(td.getTime(),getActivity()));
+                SpannableString content = new SpannableString(td.getLocation());
+                content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                vLocation.setText(content);
+                if (vLocation.getText().equals(null)){
+                    vLocation.setClickable(false);
+                }
+                else {
+                    vLocation.setClickable(true);
+                }
+
+                final String location = td.getLocation();
+                vLocation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String map = "http://maps.google.co.in/maps?q=" + location;
+                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,Uri.parse(map));
+                        startActivity(intent);
+                    }
+                });
+                vEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        editTransaction(key);
+                    }
+                });
+
+                vCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void deleteTransaction(String key){
+        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
+        transaction.removeValue();
+    }
+
+    private void editTransaction(final String key){
+        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
+        transaction.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TransactionDetails td = dataSnapshot.getValue(TransactionDetails.class);
+                Intent intent = new Intent("ccpe001.familywallet.AddTransaction");
+                intent.putExtra("Update","True");
+                intent.putExtra("key",key);
+                intent.putExtra("title",td.getTitle());
+                intent.putExtra("amount",td.getAmount());
+                intent.putExtra("date",trns.valueToDate(td.getDate(),getActivity()));
+                intent.putExtra("time",trns.timeView(td.getTime(),getActivity()));
+                intent.putExtra("categoryName",trns.categoryView(td.getCategoryName(),getActivity()));
+                intent.putExtra("categoryID",td.getCategoryID());
+                intent.putExtra("location",td.getLocation());
+                intent.putExtra("currency",trns.currencyView(td.getCurrency(),getActivity()));
+                intent.putExtra("account",td.getAccount());
+                intent.putExtra("transactionType",td.getType());
+                intent.putExtra("userID",td.getUserID());
+                intent.putExtra("familyID",td.getFamilyID());
+                intent.putExtra("previousAmount",td.getAmount());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void fabAddMenu(View view){
         txtExpense = (TextView) view.findViewById(R.id.txtExpense);
         txtIncome = (TextView) view.findViewById(R.id.txtIncome);
         fab_main = (FloatingActionButton) view.findViewById(R.id.fabMain);
@@ -288,103 +425,7 @@ public class TransactionMain extends Fragment {
                 }
             }
         });
-
-
-
-
-        return view;
-    }
-    String amt;
-    private void viewTransaction(final String key) {
-        final Dialog dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.transaction_view);
-        final DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
-
-        transaction.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                TransactionDetails td = dataSnapshot.getValue(TransactionDetails.class);
-                TextView vTitle = (TextView) dialog.findViewById(R.id.vTxtTitle);
-                TextView vAmount = (TextView) dialog.findViewById(R.id.vTxtAmount);
-                TextView vCategory = (TextView) dialog.findViewById(R.id.vTxtCategory);
-                TextView vAccount = (TextView) dialog.findViewById(R.id.vTxtAccount);
-                TextView vDate = (TextView) dialog.findViewById(R.id.vTxtDate);
-                TextView vTime = (TextView) dialog.findViewById(R.id.vTxtTime);
-                TextView vLocation = (TextView) dialog.findViewById(R.id.vTxtLocation);
-                Button vEdit = (Button) dialog.findViewById(R.id.btnEdit);
-                Button vCancel = (Button) dialog.findViewById(R.id.btnCancel);
-                if (td.getTitle().isEmpty())
-                    vTitle.setText("Title Not Available");
-                else
-                    vTitle.setText("Title - "+td.getTitle());
-                vAmount.setText(td.getCurrency()+td.getAmount());
-                vCategory.setText(trns.categoryView(td.getCategoryName(),getActivity()));
-                vAccount.setText(td.getAccount());
-                vDate.setText(trns.valueToDate(td.getDate(),getContext()));
-                vTime.setText(trns.timeView(td.getTime(),getActivity()));
-                vLocation.setText(td.getLocation());
-
-                vEdit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        editTransaction(key);
-                    }
-                });
-
-                vCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
-
-
-
     }
 
-    private void deleteTransaction(String key){
-        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
-        transaction.removeValue();
-    }
-    private void editTransaction(final String key){
-        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
-        transaction.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                TransactionDetails td = dataSnapshot.getValue(TransactionDetails.class);
-                Intent intent = new Intent("ccpe001.familywallet.AddTransaction");
-                intent.putExtra("Update","True");
-                intent.putExtra("key",key);
-                intent.putExtra("title",td.getTitle());
-                intent.putExtra("amount",td.getAmount());
-                intent.putExtra("date",trns.valueToDate(td.getDate(),getActivity()));
-                intent.putExtra("time",trns.timeView(td.getTime(),getActivity()));
-                intent.putExtra("categoryName",trns.categoryView(td.getCategoryName(),getActivity()));
-                intent.putExtra("categoryID",td.getCategoryID());
-                intent.putExtra("location",td.getLocation());
-                intent.putExtra("currency",trns.currencyView(td.getCurrency(),getActivity()));
-                intent.putExtra("account",td.getAccount());
-                intent.putExtra("transactionType",td.getType());
-                intent.putExtra("userID",td.getUserID());
-                intent.putExtra("familyID",td.getFamilyID());
-                intent.putExtra("previousAmount",td.getAmount());
-                startActivity(intent);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 }

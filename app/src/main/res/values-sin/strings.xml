@@ -44,6 +44,14 @@
     <string name="tAM">පෙ.ව.</string>
     <string name="tPM">ප.ව.</string>
 
+    <string name="vhTitle">ශීර්ෂය</string>
+    <string name="vhAmount">මුදල</string>
+    <string name="vhCategory">කාන්ඩය</string>
+    <string name="vhAccount">ගිණුම</string>
+    <string name="vhDate">දිනය</string>
+    <string name="vhTime">වෙලාව</string>
+    <string name="vhLocation">ස්ථානය</string>
+
     <string-array name="IncomeCategory">
         <item>මෝටර් රථ</item>
         <item>ගමන්</item>

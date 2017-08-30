@@ -22,25 +22,28 @@
             android:gravity="center">
 
             <TextView
-                android:id="@+id/vTxtTitle"
+                android:id="@+id/vvTxtTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Title"
                 android:textColor="?android:attr/textColorLink"
                 android:textSize="26sp"
                 android:textStyle="bold" />
 
         </TableRow>
 
+
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="10dp">
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView36"
+                android:id="@+id/vhTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:text="Title"
+                android:textColor="@color/com_facebook_likeview_text_color" />
         </TableRow>
 
         <TableRow
@@ -48,7 +51,43 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/vTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="45dp"
+                android:textColor="@color/default_color"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <TextView
+                android:id="@+id/textView203"
+                android:layout_width="wrap_content"
+                android:layout_height="10dp" />
+        </TableRow>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/vhAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -85,7 +124,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView18"
+                android:id="@+id/vhCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -122,7 +161,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView19"
+                android:id="@+id/vhAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -162,7 +201,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView20"
+                android:id="@+id/vhDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -201,7 +240,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView21"
+                android:id="@+id/vhTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -241,7 +280,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView27"
+                android:id="@+id/vhLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -259,11 +298,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
+                android:autoLink="map"
+                android:linksClickable="true"
+                android:longClickable="true"
                 android:maxWidth="180dp"
                 android:singleLine="false"
-                android:textColor="@color/default_color"
+                android:textColor="#69463d"
+                android:textColorLink="#69463d"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold|italic" />
 
         </TableRow>
 

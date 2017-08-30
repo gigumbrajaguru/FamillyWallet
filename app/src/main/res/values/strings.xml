@@ -49,6 +49,13 @@
     <string name="tAM">AM</string>
     <string name="tPM">PM</string>
 
+    <string name="vhTitle">Title</string>
+    <string name="vhAmount">Amount</string>
+    <string name="vhCategory">Category</string>
+    <string name="vhAccount">Account</string>
+    <string name="vhDate">Date</string>
+    <string name="vhTime">Time</string>
+    <string name="vhLocation">Location</string>
 
     <string-array name="IncomeCategory">
         <item>Car</item>
