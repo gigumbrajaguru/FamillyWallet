@@ -276,7 +276,7 @@ public class TransactionMain extends Fragment {
                     vTitle.setText("Title Not Available");
                 else
                     vTitle.setText(td.getTitle());
-                vAmount.setText(td.getCurrency()+td.getAmount());
+                vAmount.setText(trns.currencyView(td.getCurrency(),getActivity())+td.getAmount());
                 vCategory.setText(trns.categoryView(td.getCategoryName(),getActivity()));
                 vAccount.setText(td.getAccount());
                 vDate.setText(trns.valueToDate(td.getDate(),getContext()));
