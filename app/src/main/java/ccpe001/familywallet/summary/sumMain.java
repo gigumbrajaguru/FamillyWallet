@@ -3,6 +3,7 @@ package ccpe001.familywallet.summary;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,12 +45,13 @@ public class sumMain extends Fragment {
     //String category[] = {"food", "other", "fees"};
 
     private DatabaseReference rtrvdata; // creating database referrence to read data
-    public final ArrayList<Float> transacval = new ArrayList<Float>(); // List to add transaction data
-    public final ArrayList<String> dbcat = new ArrayList<String>(); // List to add category
+    public final ArrayList<Float> transacval = new ArrayList<>(); // List to add transaction data
+    public final ArrayList<String> dbcat = new ArrayList<>(); // List to add category
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         rtrvdata= FirebaseDatabase.getInstance().getReference();
-        rtrvdata.child("Transaction").addValueEventListener(new ValueEventListener() {
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        rtrvdata.child("Transaction").orderByChild("userID").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) { // Data retrieving method
 
@@ -66,7 +70,7 @@ public class sumMain extends Fragment {
 
             }
         });
-
+           Log.i("test",transacval.toString());
         View view = inflater.inflate(R.layout.sum_main, container, false);
         charts = (PieChart) view.findViewById(R.id.chart);
         //Pie chart method to populate
