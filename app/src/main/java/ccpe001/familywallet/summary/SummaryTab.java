@@ -53,8 +53,6 @@ public class SummaryTab extends Fragment {
 
         TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_launcher);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_launcher);
         return v;
     }
 
