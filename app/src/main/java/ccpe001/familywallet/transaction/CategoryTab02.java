@@ -40,7 +40,7 @@ public class CategoryTab02 extends Fragment {
 
          /*populating imgid array with income category images ID's */
         final Integer[] imgid = {
-                R.drawable.cat100,R.drawable.cat101,R.drawable.cat102,R.drawable.cat103,
+                R.drawable.cat100,R.drawable.cat101,R.drawable.cat5,R.drawable.cat103,
                 R.drawable.cat104,R.drawable.cat_other,
         };
 

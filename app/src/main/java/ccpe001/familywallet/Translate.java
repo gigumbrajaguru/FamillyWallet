@@ -176,4 +176,36 @@ public class Translate {
         }
         return retCur;
     }
+
+    public int getCategoryID(String cat){
+        int catID=0;
+        switch (cat){
+            case"Car":catID=R.drawable.cat1;break;
+            case"Travel":catID=R.drawable.cat2;break;
+            case"Food & Drinks":catID=R.drawable.cat3;break;
+            case"Transportation":catID=R.drawable.cat4;break;
+            case"Gifts":catID=R.drawable.cat5;break;
+            case"Bill":catID=R.drawable.cat6;break;
+            case"Entertainment":catID=R.drawable.cat7;break;
+            case"Home":catID=R.drawable.cat8;break;
+            case"Utilities":catID=R.drawable.cat9;break;
+            case"Shopping":catID=R.drawable.cat10;break;
+            case"Accommodation":catID=R.drawable.cat11;break;
+            case"Healthcare":catID=R.drawable.cat12;break;
+            case"Clothing":catID=R.drawable.cat13;break;
+            case"Groceries":catID=R.drawable.cat14;break;
+            case"Drinks":catID=R.drawable.cat15;break;
+            case"Pets":catID=R.drawable.cat16;break;
+            case"Education":catID=R.drawable.cat17;break;
+            case"Cinema":catID=R.drawable.cat18;break;
+            case"Kids":catID=R.drawable.cat19;break;
+            case"Loan":catID=R.drawable.cat100;break;
+            case"Business":catID=R.drawable.cat101;break;
+            case"Salary":catID=R.drawable.cat103;break;
+            case"Extra Income":catID=R.drawable.cat104;break;
+            case"Other":catID=R.drawable.cat_other;break;
+        }
+        return catID;
+    }
+
 }
