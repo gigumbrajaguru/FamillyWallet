@@ -38,7 +38,6 @@ public class addAccount extends Fragment  {
     String familyId="not assigned";
     int validateName=0;
     boolean check=false,msgBoxOut=false;
-    private DatabaseReference database;
     private static DatabaseReference mDatabases;
     Button btnSubmit,btnUpdate;
     EditText accName,editTxt1;

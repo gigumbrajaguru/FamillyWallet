@@ -16,6 +16,8 @@ public class DataStores {
     public  String Notify;
     public String curType;
     public  String familyId;
+
+
     public DataStores(){}
 
     public DataStores(String user,String accountName,Double amount,String types,String bankID,String addDate,String lastUpdated,String isSaving,String Notify,String curTypes,String family){
@@ -32,6 +34,7 @@ public class DataStores {
         this.familyId=family;
 
     }
+
 
 
 
