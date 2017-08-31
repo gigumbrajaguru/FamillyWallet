@@ -50,7 +50,8 @@ public class sumMain extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         rtrvdata= FirebaseDatabase.getInstance().getReference();
-        rtrvdata.child("Transactions").addValueEventListener(new ValueEventListener() { //test
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        rtrvdata.child("Transactions").orderByChild("userID").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) { // Data retrieving method
 
