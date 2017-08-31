@@ -1,6 +1,7 @@
 package ccpe001.familywallet.transaction;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ public class TransactionRecurListAdapter extends ArrayAdapter<TransactionDetails
     private Activity context;
     private List<TransactionDetails> tdList;
     Translate trns = new Translate();
+    Resources res= getContext().getResources();
 
 
     public TransactionRecurListAdapter(Activity context, List<TransactionDetails> tdList) {
@@ -54,15 +56,15 @@ public class TransactionRecurListAdapter extends ArrayAdapter<TransactionDetails
 
 
             txtTitle.setText(td.getTitle());
-            txtCategory.setText(td.getCategoryName());
+            txtCategory.setText(trns.categoryView(td.getCategoryName(),getContext()));
             txtDate.setText(trns.valueToDate(td.getDate(),getContext()));
-            txtRecurring.setText("Recurring "+td.getRecurringPeriod());
+            txtRecurring.setText(res.getString(R.string.recurring)+": "+trns.recurringView(td.getRecurringPeriod(),getContext()));
             String type = td.getType();
             if (type.equals("Income")){
-                txtAmount.setText("+"+td.getCurrency()+td.getAmount());
+                txtAmount.setText("+"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());
                 txtAmount.setTextColor(ContextCompat.getColor(context,R.color.income));
             }else if (type.equals("Expense")){
-                txtAmount.setText("-"+td.getCurrency()+td.getAmount());
+                txtAmount.setText("-"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());
                 txtAmount.setTextColor(ContextCompat.getColor(context,R.color.expense));
             }
             imageView.setImageResource(td.getCategoryID());

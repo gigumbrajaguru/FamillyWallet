@@ -10,6 +10,10 @@ import android.view.WindowManager;
 
 import com.github.orangegangsters.lollipin.lib.PinActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kobakei.ratethisapp.RateThisApp;
 
 import java.util.Locale;
@@ -23,7 +27,7 @@ public class Splash extends PinActivity {
 
     private SharedPreferences prefs;
     private FirebaseAuth mAuth;
-
+    public static String userID, familyID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,11 @@ public class Splash extends PinActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
+        try {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        }catch (Exception e){
+
+        }
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -58,6 +67,18 @@ public class Splash extends PinActivity {
         //if user logged in only
         if (mAuth.getCurrentUser() != null){
             userLoginFunc(getApplication());
+            userID = mAuth.getCurrentUser().getUid();
+            FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    familyID=dataSnapshot.getValue().toString();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
 
     }

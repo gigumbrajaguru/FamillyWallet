@@ -25,6 +25,9 @@
     <string name="transactionTitle">ශීර්ෂය</string>
     <string name="transactionLocation">ස්ථානය තෝරන්න</string>
     <string name="transactionAccount">ගිණුම තෝරන්න</string>
+    <string name="recurring">පුනරාවර්තනය</string>
+    <string name="income">ආදායම්</string>
+    <string name="expense">වියදම්</string>
 
     <string-array name="Months">
         <item>ජන</item>
@@ -83,4 +86,6 @@
         <item>අමතර ආදායම</item>
         <item>වෙනත්</item>
     </string-array>
+    <string name="dashboard_settitle_overview">සියලුම ගනුදෙනු</string>
+    <string name="dashboard_settitle_recurring">"පුනරාවර්තනය ගනුදෙනු"</string>
 </resources>

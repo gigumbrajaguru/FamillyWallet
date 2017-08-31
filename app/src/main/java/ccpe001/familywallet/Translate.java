@@ -177,6 +177,30 @@ public class Translate {
         return retCur;
     }
 
+    public String recurringToDB(String recur){
+        String retRecur="";
+        switch (recur){
+            case"Daily":case"දිනපතා":retRecur="Daily";break;
+            case"Weekly":case"සතිපතා":retRecur="Weekly";break;
+            case"Monthly":case"මාසිකව":retRecur="Monthly";break;
+            case"Annually":case"වාර්ෂිකව":retRecur="Annually";break;
+        }
+        return  retRecur;
+    }
+
+    public String recurringView(String recur, Context con){
+        Resources res = con.getResources();
+        String[] recurList = res.getStringArray(R.array.spinnerRecurring);
+        String retRecur="";
+        switch (recur){
+            case"Daily":retRecur=recurList[0];break;
+            case"Weekly":retRecur=recurList[1];break;
+            case"Monthly":retRecur=recurList[2];break;
+            case"Annually":retRecur=recurList[3];break;
+        }
+        return  retRecur;
+    }
+
     public int getCategoryID(String cat){
         int catID=0;
         switch (cat){

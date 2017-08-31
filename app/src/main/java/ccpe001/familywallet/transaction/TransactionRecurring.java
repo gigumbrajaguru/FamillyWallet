@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ccpe001.familywallet.R;
+import ccpe001.familywallet.Splash;
 import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
 
@@ -45,8 +46,7 @@ public class TransactionRecurring extends Fragment {
     List<String> keys;
     List<String> checkedPosition;
     TransactionRecurListAdapter adapter;
-    String userID;
-    String familyID;
+    String userID, familyID;
     Validate v = new Validate();
     Translate trns = new Translate();
 
@@ -65,54 +65,50 @@ public class TransactionRecurring extends Fragment {
         final View view = inflater.inflate(R.layout.transaction_recurring, container, false);
         list = (ListView) view.findViewById(R.id.transactionListR);
         emptyText = (TextView) view.findViewById(android.R.id.empty);
+        try {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        }catch (Exception e){
+
+        }
+
         list.setEmptyView(emptyText);
 
         tdList = new ArrayList<>();
         keys = new ArrayList<>();
         checkedPosition = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
-        firebaseUser = mAuth.getCurrentUser();
-        userID = firebaseUser.getUid();
-        FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                familyID=dataSnapshot.getValue().toString();
-            }
+        userID= Splash.userID;
+        familyID=Splash.familyID;
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        mDatabase = FirebaseDatabase.getInstance().getReference("RecurringTransactions");
+        mDatabase.keepSynced(true);
+        try {
 
-            }
-        });
-
-        Query query = FirebaseDatabase.getInstance().getReference("RecurringTransactions").orderByChild("date");
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                tdList.clear();
-                //keys.clear();
-                for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
-                    TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
-                    if (familyID.equals(td.getFamilyID())){
+            Query query = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(familyID).orderByChild("date");
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    tdList.clear();
+                    //keys.clear();
+                    for (DataSnapshot tdSnapshot : dataSnapshot.getChildren()) {
+                        TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
                         tdList.add(td);
                         keys.add(tdSnapshot.getKey());
                     }
+                    Collections.reverse(tdList);
+                    Collections.reverse(keys);
+                    adapter = new TransactionRecurListAdapter(getActivity(), tdList);
+                    list.setAdapter(adapter);
+                }
 
-
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
                 }
-                Collections.reverse(tdList);
-                Collections.reverse(keys);
-                adapter = new TransactionRecurListAdapter(getActivity(),tdList);
-                list.setAdapter(adapter);
-            }
+            });
+        }catch (Exception e){
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        }
         list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
         list.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             MenuItem deleteIcon, editIcon;
@@ -194,12 +190,12 @@ public class TransactionRecurring extends Fragment {
     }
 
     private void deleteTransaction(String key){
-        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(key);
+        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(familyID).child(key);
         transaction.removeValue();
     }
     private void editTransaction(final String key){
 
-        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(key);
+        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(familyID).child(key);
         transaction.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -210,17 +206,17 @@ public class TransactionRecurring extends Fragment {
                 intent.putExtra("title",td.getTitle());
                 intent.putExtra("amount",td.getAmount());
                 intent.putExtra("date",trns.valueToDate(td.getDate(),getContext()));
-                intent.putExtra("time",td.getTime());
-                intent.putExtra("categoryName",td.getCategoryName());
+                intent.putExtra("time",trns.timeView(td.getTime(),getContext()));
+                intent.putExtra("categoryName",trns.categoryView(td.getCategoryName(),getContext()));
                 intent.putExtra("categoryID",td.getCategoryID());
                 intent.putExtra("location",td.getLocation());
-                intent.putExtra("currencyIndex",td.getCurrency());
-                intent.putExtra("accountIndex",td.getAccount());
+                intent.putExtra("currency",trns.currencyView(td.getCurrency(),getContext()));
+                intent.putExtra("account",td.getAccount());
                 intent.putExtra("transactionType",td.getType());
                 intent.putExtra("userID",td.getUserID());
                 intent.putExtra("familyID",td.getFamilyID());
                 intent.putExtra("templateChecked",true);
-                intent.putExtra("recurrPeriod",td.getRecurringPeriod());
+                intent.putExtra("recurrPeriod",trns.recurringView(td.getRecurringPeriod(),getContext()));
                 startActivity(intent);
             }
 

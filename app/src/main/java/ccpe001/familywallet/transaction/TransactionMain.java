@@ -47,6 +47,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ccpe001.familywallet.R;
+import ccpe001.familywallet.Splash;
 import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
 
@@ -69,7 +70,7 @@ public class TransactionMain extends Fragment {
     List<String> keys;
     List<String> checkedPosition;
     TransactionListAdapter adapter;
-    String userID, familyID, amount;
+    String userID, familyID;
     Resources res;
 
     public TransactionMain() {
@@ -80,6 +81,7 @@ public class TransactionMain extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+
         final View view = inflater.inflate(R.layout.transaction_main, container, false);
         fabAddMenu(view);
         list = (ListView) view.findViewById(R.id.transactionList);
@@ -88,13 +90,33 @@ public class TransactionMain extends Fragment {
         checkedPosition = new ArrayList<>();
         res = getResources();
         try {
-            mAuth = FirebaseAuth.getInstance();
-            firebaseUser = mAuth.getCurrentUser();
-            userID = firebaseUser.getUid();
-            FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        }catch (Exception e){
+
+        }
+        userID= Splash.userID;
+        familyID=Splash.familyID;
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
+        mDatabase.keepSynced(true);
+
+        try{
+            Query query = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID).orderByChild("date");
+            query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    familyID=dataSnapshot.getValue().toString();
+                    tdList.clear();
+                    //keys.clear();
+                    for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                        TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
+                        tdList.add(td);
+                        keys.add(tdSnapshot.getKey());
+
+                    }
+                    Collections.reverse(tdList);
+                    Collections.reverse(keys);
+                    adapter = new TransactionListAdapter(getActivity(),tdList);
+                    list.setAdapter(adapter);
                 }
 
                 @Override
@@ -102,42 +124,9 @@ public class TransactionMain extends Fragment {
 
                 }
             });
-        }
-        catch (Exception e){
+        }catch (Exception e){
 
         }
-
-        mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
-        mDatabase.keepSynced(true);
-
-        Query query = FirebaseDatabase.getInstance().getReference("Transactions").orderByChild("date");
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                tdList.clear();
-                //keys.clear();
-                for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
-                    TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
-                    try {
-                        if (familyID.equals(td.getFamilyID())){
-                            tdList.add(td);
-                            keys.add(tdSnapshot.getKey());
-                        }
-                    }catch (Exception e){
-
-                    }
-                }
-                Collections.reverse(tdList);
-                Collections.reverse(keys);
-                adapter = new TransactionListAdapter(getActivity(),tdList);
-                list.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
 
@@ -243,7 +232,7 @@ public class TransactionMain extends Fragment {
     private void viewTransaction(final String key) {
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.transaction_view);
-        final DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
+        final DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID).child(key);
         TextView vhTitle = (TextView) dialog.findViewById(R.id.vhTitle);
         TextView vhAmount = (TextView) dialog.findViewById(R.id.vhAmount);
         TextView vhCategory = (TextView) dialog.findViewById(R.id.vhCategory);
@@ -324,12 +313,12 @@ public class TransactionMain extends Fragment {
     }
 
     private void deleteTransaction(String key){
-        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
+        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID).child(key);
         transaction.removeValue();
     }
 
     private void editTransaction(final String key){
-        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(key);
+        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID).child(key);
         transaction.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -339,12 +328,12 @@ public class TransactionMain extends Fragment {
                 intent.putExtra("key",key);
                 intent.putExtra("title",td.getTitle());
                 intent.putExtra("amount",td.getAmount());
-                intent.putExtra("date",trns.valueToDate(td.getDate(),getActivity()));
-                intent.putExtra("time",trns.timeView(td.getTime(),getActivity()));
-                intent.putExtra("categoryName",trns.categoryView(td.getCategoryName(),getActivity()));
+                intent.putExtra("date",trns.valueToDate(td.getDate(),getContext()));
+                intent.putExtra("time",trns.timeView(td.getTime(),getContext()));
+                intent.putExtra("categoryName",trns.categoryView(td.getCategoryName(),getContext()));
                 intent.putExtra("categoryID",td.getCategoryID());
                 intent.putExtra("location",td.getLocation());
-                intent.putExtra("currency",trns.currencyView(td.getCurrency(),getActivity()));
+                intent.putExtra("currency",trns.currencyView(td.getCurrency(),getContext()));
                 intent.putExtra("account",td.getAccount());
                 intent.putExtra("transactionType",td.getType());
                 intent.putExtra("userID",td.getUserID());
@@ -370,7 +359,6 @@ public class TransactionMain extends Fragment {
         fabClose = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_close);
         fabClockwise = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.rotate_clockwise);
         fabAntiClockwise = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.rotate_anticlockwise);
-
         fab_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

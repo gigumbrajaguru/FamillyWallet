@@ -26,14 +26,14 @@
                 android:id="@+id/txtRecurring"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/txtCategory"
-                android:layout_below="@+id/txtCategory"
                 android:layout_marginRight="10dp"
-                android:layout_marginStart="25dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:text="TextView" />
+                android:text="TextView"
+                android:layout_below="@+id/txtCategory"
+                android:layout_alignStart="@+id/txtCategory"
+                android:layout_marginStart="12dp" />
 
             <TextView
                 android:id="@+id/txtCategory"

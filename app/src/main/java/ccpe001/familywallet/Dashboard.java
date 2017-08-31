@@ -74,6 +74,7 @@ public class Dashboard extends AppCompatActivity
     private ShowcaseView showcaseView;
     private SharedPreferences.Editor editor;
     private SharedPreferences pref;
+    String userID, familyID;
 
 
     @Override
@@ -85,7 +86,11 @@ public class Dashboard extends AppCompatActivity
         toolbar.setTitle(R.string.dashboard_settitle_overview);
         setSupportActionBar(toolbar);
         signUpIntent = getIntent();
+        try {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        }catch (Exception e){
 
+        }
         //display help menu if app first installed
         pref = getSharedPreferences("First Time",Context.MODE_PRIVATE);
         if(pref.getBoolean("isFirst",true)){
@@ -99,11 +104,21 @@ public class Dashboard extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
-        try {
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        }catch (Exception e){
+        userID = mAuth.getCurrentUser().getUid();
+        Splash.userID=userID;
+        FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                familyID=dataSnapshot.getValue().toString();
+                Splash.familyID=familyID;
+            }
 
-        }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         databaseReference = FirebaseDatabase.getInstance().getReference().child("UserInfo").child(firebaseUser.getUid());
         databaseReference.keepSynced(true);
 

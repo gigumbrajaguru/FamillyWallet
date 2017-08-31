@@ -81,6 +81,11 @@ public class AddTransaction extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_transaction);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        }catch (Exception e){
+
+        }
         /*Setting references to layout items*/
         txtAmount =(EditText)findViewById(R.id.txtAmount);
         txtDate = (EditText) findViewById(R.id.txtDate);
@@ -108,6 +113,7 @@ public class AddTransaction extends AppCompatActivity {
         txtTitle.setHint(resources.getString(R.string.transactionTitle));
         txtLocation.setHint(resources.getString(R.string.transactionLocation));
         txtAccount.setHint(resources.getString(R.string.transactionAccount));
+        checkRecurring.setText(resources.getString(R.string.recurring));
 
 
         /*Getting firebase authentication to get users info*/
@@ -327,7 +333,7 @@ public class AddTransaction extends AppCompatActivity {
         if (type!=null){
             getSupportActionBar().setTitle(type);
             if (type.equals("Income")){
-
+                getSupportActionBar().setTitle(resources.getString(R.string.income));
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.income)));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                     Window window = getWindow();
@@ -343,6 +349,7 @@ public class AddTransaction extends AppCompatActivity {
                 }
             }
             else if(type.equals("Expense")){
+                getSupportActionBar().setTitle(resources.getString(R.string.expense));
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.expense)));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                     Window window = getWindow();
@@ -416,7 +423,6 @@ public class AddTransaction extends AppCompatActivity {
         boolean validExpense=false, validIncome=false;
         amount = txtAmount.getText().toString();
         date = txtDate.getText().toString();
-        Toast.makeText(this, date, Toast.LENGTH_SHORT).show();
         date = trns.dateToDB(date);
         time = txtTime.getText().toString();
         time = trns.timeToDB(time);
@@ -426,6 +432,7 @@ public class AddTransaction extends AppCompatActivity {
         location = txtLocation.getText().toString();
         account = txtAccount.getText().toString();
         recurrPeriod = txtRecurring.getText().toString();
+        recurrPeriod = trns.recurringToDB(recurrPeriod);
 
         if (categoryName==null){
             categoryName = "Other";
@@ -443,11 +450,11 @@ public class AddTransaction extends AppCompatActivity {
                     if (update.equals("False")){
                         mDatabase = FirebaseDatabase.getInstance().getReference();
                         td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID, recurrPeriod);
-                        mDatabase.child("RecurringTransactions").push().setValue(td);
+                        mDatabase.child("RecurringTransactions").child(familyID).push().setValue(td);
                         Toast.makeText(this, "Transaction Added", Toast.LENGTH_LONG).show();
                     }
                     else if (update.equals("True")){
-                        mDatabase = FirebaseDatabase.getInstance().getReference("RecurringTransactions");
+                        mDatabase = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(familyID);
                         td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID, recurrPeriod);
                         Map<String, Object> postValues = td.toMap();
                         mDatabase.child(key).updateChildren(postValues);
@@ -481,12 +488,12 @@ public class AddTransaction extends AppCompatActivity {
                         validIncome = av.addIncome(account, amountDouble);
                     }
                     if (validExpense==true || validIncome==true && !account.isEmpty()) {
-                        mDatabase.child("Transactions").push().setValue(td);
+                        mDatabase.child("Transactions").child(familyID).push().setValue(td);
                         //Toast.makeText(this, "Transaction Added ", Toast.LENGTH_LONG).show();
                     }
                 }
                 else if (update.equals("True")){
-                    mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
+                    mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID);
 
                     td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
                     Double amountDouble =Double.parseDouble(amount)-Double.parseDouble(previousAmount);

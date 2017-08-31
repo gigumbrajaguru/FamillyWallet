@@ -29,6 +29,9 @@
     <string name="transactionTitle">Title</string>
     <string name="transactionLocation">Tap to Set Location</string>
     <string name="transactionAccount">Tap to Set Account</string>
+    <string name="recurring">Recurring</string>
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
 
     <string-array name="Months">
         <item>Jan</item>
@@ -274,9 +277,9 @@
     <string name="summarytab_settitle_1">Income</string>
     <string name="summarytab_settitle_2">Expense</string>
     <string name="xmladdmember_scanqrbtn_text">Scan QR Code</string>
-    <string name="dashboard_settitle_overview">Overview</string>
+    <string name="dashboard_settitle_overview">Transaction Overview</string>
     <string name="dashboard_settitle_summary">Reports</string>
-    <string name="dashboard_settitle_recurring">Rec. Transactions</string>
+    <string name="dashboard_settitle_recurring">Recurring Transactions</string>
     <string name="dashboard_settitle_tranfer">Accounts</string>
     <string name="dashboard_settitle_budget">Budget</string>
     <string name="dashboard_settitle_wallet">Wallet</string>

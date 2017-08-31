@@ -326,35 +326,6 @@
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="right"
-                    android:padding="10dp">
-
-                    <Spinner
-                        android:id="@+id/spinCurrency"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/txtAmount"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignTop="@+id/txtAmount"
-                        android:layout_span="1"
-                        android:layout_weight=".6"
-                        android:layout_x="275dp"
-                        android:layout_y="14dp"
-                        android:entries="@array/spinnerCurrency"
-                        android:textAlignment="textEnd"
-                        android:visibility="gone" />
-
-                    <CheckBox
-                        android:id="@+id/chTemplate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Save As Template"
-                        android:textStyle="bold|italic" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:layout_gravity="right"
                     android:gravity="right"
                     android:padding="10dp">
