@@ -7,6 +7,8 @@ import android.os.Build;
 import android.text.Editable;
 import android.widget.Toast;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,10 +36,14 @@ public class Validate {
     }
 
     public static boolean anyValidMail(String email) { //email
-        String str = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-        Pattern pattern = Pattern.compile(str);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+        InternetAddress internetAddress = null;
+        try {
+            internetAddress = new InternetAddress(email);
+            internetAddress.validate();
+            return true;
+        } catch (AddressException e) {
+            return false;
+        }
     }
 
     //Only letters

@@ -1,33 +1,44 @@
 package ccpe001.familywallet;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
 
+import ccpe001.familywallet.admin.Notification;
+import ccpe001.familywallet.admin.SignUp;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.Target;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.github.orangegangsters.lollipin.lib.managers.AppLock;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.*;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -73,8 +84,11 @@ public class Dashboard extends AppCompatActivity
     private int animateCounter = 0;
     private ShowcaseView showcaseView;
     private SharedPreferences.Editor editor;
-    private SharedPreferences pref;
-    String userID, familyID;
+    private SharedPreferences pref,pref2;
+    private TextView itemMessagesBadgeTextView;
+    private DrawerLayout layout;
+    private Snackbar snackbar;
+    private CallbackManager callbackManager;
 
 
     @Override
@@ -83,14 +97,12 @@ public class Dashboard extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        layout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         toolbar.setTitle(R.string.dashboard_settitle_overview);
         setSupportActionBar(toolbar);
         signUpIntent = getIntent();
-        try {
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        }catch (Exception e){
 
-        }
         //display help menu if app first installed
         pref = getSharedPreferences("First Time",Context.MODE_PRIVATE);
         if(pref.getBoolean("isFirst",true)){
@@ -104,21 +116,11 @@ public class Dashboard extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
-        userID = mAuth.getCurrentUser().getUid();
-        Splash.userID=userID;
-        FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                familyID=dataSnapshot.getValue().toString();
-                Splash.familyID=familyID;
-            }
+        try {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        }catch (Exception e){
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        }
         databaseReference = FirebaseDatabase.getInstance().getReference().child("UserInfo").child(firebaseUser.getUid());
         databaseReference.keepSynced(true);
 
@@ -131,7 +133,7 @@ public class Dashboard extends AppCompatActivity
 
         storageReference = FirebaseStorage.getInstance().getReference();
 
-            databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -212,7 +214,6 @@ public class Dashboard extends AppCompatActivity
         toggle.syncState();
 
 
-
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView.setNavigationItemSelectedListener(this);
@@ -220,6 +221,114 @@ public class Dashboard extends AppCompatActivity
         navUserDetTxt = (Spinner) headerView.findViewById(R.id.navUserDet);
         circleButton = (FloatingActionButton) headerView.findViewById(R.id.loggedUsrImg);
         circleButton.setOnClickListener(this);
+
+
+        //if it is a a unnkown login
+        if(mAuth.getCurrentUser().getProviders().toString().equals("[]")) {
+            //layout.setPadding(0,0,0,(int) (-200*getResources().getDisplayMetrics().density + 0.5f));
+            snackbar = Snackbar
+                    .make(layout, R.string.dashboard_snackbar_demopermanent, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.dashboard_snackbar_demopermanentBtn, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Dashboard.this);
+                            builder.setTitle(R.string.dashboard_socialbuilder_settitle)
+                                    .setItems(R.array.social_logins, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(which == 0){
+                                                final EditText emailTxt,pwTxt;
+
+                                                final AlertDialog.Builder nameBuilder = new AlertDialog.Builder(Dashboard.this);
+                                                View alertDiaView = getLayoutInflater().inflate(R.layout.get_credentials,null);
+                                                nameBuilder.setView(alertDiaView);
+                                                emailTxt = (EditText) alertDiaView.findViewById(R.id.email);
+                                                pwTxt = (EditText) alertDiaView.findViewById(R.id.password);
+
+                                                nameBuilder.setPositiveButton(R.string.dashboard_social_demo_signup, new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                if (Validate.anyValidMail(emailTxt.getText().toString().trim())) {
+                                                                    if (Validate.anyValidPass(pwTxt.getText().toString().trim())) {
+                                                                        mAuth.getCurrentUser().linkWithCredential(EmailAuthProvider.getCredential(emailTxt.getText().toString(),
+                                                                                pwTxt.getText().toString()))
+                                                                                .addOnCompleteListener(Dashboard.this, new OnCompleteListener<AuthResult>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                                                                        if (task.isSuccessful()) {
+                                                                                            //saveSession(mAuth.getCurrentUser().getEmail());
+                                                                                            Toast.makeText(Dashboard.this,R.string.signup_oncomplete_sucesstoast,Toast.LENGTH_SHORT).show();
+                                                                                            Intent intent = new Intent("ccpe001.familywallet.GETINFO");
+                                                                                            startActivity(intent);
+                                                                                        } else {
+                                                                                            try {
+                                                                                                throw task.getException();
+                                                                                            }catch (FirebaseAuthUserCollisionException invalidEmail) {
+                                                                                                emailTxt.setError(getString(R.string.signup_already_email_text));
+                                                                                                Toast.makeText(Dashboard.this,R.string.signup_already_email_text,Toast.LENGTH_SHORT).show();
+                                                                                            } catch (Exception e) {
+                                                                                                Log.d("rror", ""+e.getMessage());
+                                                                                            }                                                                                        }
+                                                                                    }
+                                                                                });
+
+                                                                    } else {
+                                                                        Log.d("df","df");
+                                                                        pwTxt.setError(getString(R.string.signup_onclick_passerr));
+                                                                    }
+                                                                } else {
+                                                                    emailTxt.setError(getString(R.string.signup_onclick_emailerr));
+                                                                }
+                                                            }
+                                                        }).setNegativeButton(R.string.setting_pinbuilder_negbtn, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                            }
+                                                        }).show();
+
+                                            }else if(which == 1){
+
+                                                //credential = GoogleAuthProvider.getCredential(googleIdToken, null);
+
+                                            }else if(which == 2){
+                                                callbackManager = CallbackManager.Factory.create();
+                                                LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                                                    @Override
+                                                    public void onSuccess(LoginResult loginResult) {
+                                                        mAuth.getCurrentUser().linkWithCredential(FacebookAuthProvider.getCredential(String.valueOf(loginResult.getAccessToken())))
+                                                                .addOnCompleteListener(Dashboard.this, new OnCompleteListener<AuthResult>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            Log.d("lol", "linkWithCredential:success");
+                                                                            FirebaseUser user = task.getResult().getUser();
+                                                                        } else {
+                                                                            Log.d("lol", "linkWithCredential:failure" + task.getException());
+                                                                        }
+                                                                    }
+                                                                });
+                                                    }
+
+
+                                                    @Override
+                                                    public void onCancel() {
+                                                        Toast.makeText(getApplication(),R.string.signup_cancel_toast,Toast.LENGTH_SHORT).show();
+                                                    }
+
+                                                    @Override
+                                                    public void onError(FacebookException error) {
+                                                        Toast.makeText(getApplicationContext(), R.string.common_error, Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
+                                            }
+
+
+                                        }
+                                    });
+                            builder.show();
+
+                        }
+                    });
+            snackbar.show();
+        }
 
     }
 
@@ -242,7 +351,7 @@ public class Dashboard extends AppCompatActivity
 
         MenuItem itemMessages = menu.findItem(R.id.action_notification);
         RelativeLayout badgeLayout = (RelativeLayout) itemMessages.getActionView();
-        TextView itemMessagesBadgeTextView = (TextView) badgeLayout.findViewById(R.id.badge_textView);
+        itemMessagesBadgeTextView = (TextView) badgeLayout.findViewById(R.id.badge_textView);
         IconButton iconButtonMessages = (IconButton) badgeLayout.findViewById(R.id.badge_icon_button);
         Log.d("badgeCount","onCreateOptionsMenu"+badgeCount);
         setBadgeCount(badgeCount,itemMessagesBadgeTextView);
@@ -250,15 +359,26 @@ public class Dashboard extends AppCompatActivity
         iconButtonMessages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 NotificationCards noti = new NotificationCards();
-                fragmentTransaction.replace(R.id.fragmentContainer1,noti);
-                fragmentTransaction.commit();
+                TransactionMain dashboard = new TransactionMain();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                        .beginTransaction();
+                if (getSupportFragmentManager().findFragmentById(R.id.fragmentContainer1) instanceof TransactionMain) {
+                    toolbar.setTitle(R.string.dashboard_settitle_notifications);
+                    fragmentTransaction.replace(R.id.fragmentContainer1, noti);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }else{
+                    toolbar.setTitle(R.string.dashboard_settitle_overview);
+                    fragmentTransaction.replace(R.id.fragmentContainer1,dashboard);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
             }
         });
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -414,6 +534,7 @@ public class Dashboard extends AppCompatActivity
         editor.commit();
     }
 
-
+    @Override
+    public void onBackPressed() { /*back disabled*/}
 
 }

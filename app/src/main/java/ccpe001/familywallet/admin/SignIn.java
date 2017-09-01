@@ -54,6 +54,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
     private FirebaseAuth mAuth;
     private SignInButton googleBtn;
     private LoginButton fbBtn;
+    private Button noSignInBtn;
 
     private final static int RC_SIGN_IN = 0;
     private GoogleApiClient mGoogleApiClient;
@@ -71,6 +72,8 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
     private void init() {
         setTitle(R.string.signin_title);
         signIn= (Button)findViewById(R.id.signInBtn);
+        noSignInBtn= (Button)findViewById(R.id.noSignInBtn);
+        noSignInBtn.setOnClickListener(this);
         toSignUp = (TextView)findViewById(R.id.textView2);
         forgotTxt = (TextView)findViewById(R.id.textView);
         emailTxt = (EditText)findViewById(R.id.emailTxt);
@@ -180,7 +183,30 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
                     Toast.makeText(getApplicationContext(), R.string.common_error, Toast.LENGTH_LONG).show();
                 }
             });
+        }else if(view.getId()== R.id.noSignInBtn){
+            mAuth.signInAnonymously()
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Log.d("lol", "signInAnonymously:success");
+                                saveData("Demo","User",null);
+                                finish();
+                                Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
+                                startActivity(intent);
+
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w("lol", "signInAnonymously:failure", task.getException());
+
+                            }
+                        }
+                    });
         }
+
+
+
     }
 
     @Override

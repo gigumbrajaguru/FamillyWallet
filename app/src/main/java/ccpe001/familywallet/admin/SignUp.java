@@ -190,7 +190,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
         }
     }
 
-    private void saveSession(String email) {
+    public void saveSession(String email) {
         SharedPreferences prefs = getSharedPreferences("Session", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("userMail",email);
@@ -239,7 +239,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
                         startActivity(intent);
                     }
                 });
-
     }
 
     private void saveData(String fname, String lname, String proPic) {

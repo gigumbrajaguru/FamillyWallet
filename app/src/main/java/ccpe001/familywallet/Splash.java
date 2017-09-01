@@ -5,9 +5,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import ccpe001.familywallet.admin.Notification;
 import com.github.orangegangsters.lollipin.lib.PinActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -84,11 +90,12 @@ public class Splash extends PinActivity {
     }
 
     protected void userLoginFunc(Context c){
-            ccpe001.familywallet.admin.Notification noti = new ccpe001.familywallet.admin.Notification();
+            Notification noti = new Notification();
             noti.statusIcon(c);
 
             rateApi(c);
-            noti.dailyReminder(c);
+            //noti.dailyReminder(c); FIX
+
 
             //localisation
             Locale locale = null;
@@ -129,7 +136,6 @@ public class Splash extends PinActivity {
             public void onCancelClicked() {}
         });
     }
-
 
 
 }

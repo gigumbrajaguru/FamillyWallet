@@ -17,12 +17,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 
 import ccpe001.familywallet.admin.GetInfo;
+import ccpe001.familywallet.admin.Notification;
 import ccpe001.familywallet.admin.SignIn;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
@@ -79,8 +78,12 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
     private DatabaseReference db;
+    private TextView itemMessagesBadgeTextView;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.setting, container, false);
         FacebookSdk.sdkInitialize(getActivity());
         prefs = getContext().getSharedPreferences("App Settings",Context.MODE_PRIVATE);
@@ -269,7 +272,8 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                     remTime = pad(hr) + ":" + pad(min);
                     dailyRemText.setText(remTime);
                     storePWSharedPref();
-                    new ccpe001.familywallet.admin.Notification().dailyReminder(getActivity());
+                    Notification noti = new Notification(itemMessagesBadgeTextView);
+                    noti.dailyReminder(getActivity());
                 }
             },c.get(Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE),true).show();
         }else if(view.getId()==R.id.backupLocRow) {
@@ -374,6 +378,18 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         }
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem itemMessages = menu.findItem(R.id.action_notification);
+        RelativeLayout badgeLayout = (RelativeLayout) itemMessages.getActionView();
+        itemMessagesBadgeTextView = (TextView) badgeLayout.findViewById(R.id.badge_textView);
+        if(itemMessagesBadgeTextView != null){
+            Log.d("nullbro2","dfdfdf");
+        }
+    }
+
+
+
     private void showLangChanger(){
         langBuilder = new AlertDialog.Builder(getContext());
         langBuilder.setTitle(R.string.setting_langbuilder_settitle);
@@ -458,6 +474,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 storePWSharedPref();
             }else{
                 dailyRemRow.setVisibility(View.GONE);
+
                 //off noti here
                 appNoty = false;
                 storePWSharedPref();

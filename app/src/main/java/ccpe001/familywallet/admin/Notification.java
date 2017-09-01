@@ -11,9 +11,14 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import ccpe001.familywallet.*;
 import ccpe001.familywallet.transaction.AddTransaction;
+import com.joanzapata.iconify.widget.IconButton;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -22,6 +27,7 @@ import java.util.GregorianCalendar;
 
 import static android.content.Context.ALARM_SERVICE;
 import static ccpe001.familywallet.Dashboard.badgeCount;
+import static ccpe001.familywallet.Dashboard.setBadgeCount;
 
 /**
  * Created by harithaperera on 7/9/17.
@@ -36,9 +42,17 @@ public class Notification {
     private final static int NOTI_PPROTOTYPE = 22;
 
     private Calendar calendar;
-    private TextView itemMessagesBadgeTextView;
+    protected static TextView itemMessagesBadgeTextView;////////////////////
 
+    public Notification(TextView itemMessagesBadgeTextView){
+        this.itemMessagesBadgeTextView = itemMessagesBadgeTextView;
+    }
 
+    public Notification(){
+        if(itemMessagesBadgeTextView == null){
+
+        }
+    }
 
     public void statusIcon(Context c){
         //displaing status icon
@@ -68,9 +82,10 @@ public class Notification {
 
         nm = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(NOTI_PPROTOTYPE,notiBuilder.build());
-        new SQLiteHelper(context).addNoti(title,new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").
+        new SQLiteHelper(context).addNoti(title,new SimpleDateFormat("yyyy-MM-dd").
                 format(GregorianCalendar.getInstance().getTime()),body);
         badgeCount++;
+        setBadgeCount(badgeCount,itemMessagesBadgeTextView);
         return true;
     }
 
@@ -85,12 +100,12 @@ public class Notification {
         calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arr[0]));
         calendar.set(Calendar.MINUTE,Integer.parseInt(arr[1]));
-        calendar.set(Calendar.SECOND,00);
         Intent intent = new Intent(c,Notification_Receiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(c,DAILY_REMINDER,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) c.getSystemService(ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
     }
+
 
     public static class Notification_Receiver extends BroadcastReceiver {
         @Override
@@ -112,11 +127,11 @@ public class Notification {
                     .setContentTitle(context.getString(R.string.noti_onrecieve_setcontenttitle))
                     .setContentText(context.getString(R.string.noti_onrecieve_setcontenttext));
             notificationManager.notify(DAILY_REMINDER,builder.build());
-            new SQLiteHelper(context).addNoti(context.getString(R.string.noti_onrecieve_setcontenttitle),new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").
+            new SQLiteHelper(context).addNoti(context.getString(R.string.noti_onrecieve_setcontenttitle),new SimpleDateFormat("yyyy-MM-dd").
                     format(GregorianCalendar.getInstance().getTime()),context.getString(R.string.noti_onrecieve_setcontenttext));
             badgeCount++;
             Log.d("badcount","add on noti rec"+badgeCount);
-
+            setBadgeCount(badgeCount,itemMessagesBadgeTextView);
         }
     }
 }

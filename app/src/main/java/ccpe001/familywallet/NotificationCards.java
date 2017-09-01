@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import ccpe001.familywallet.admin.Notification;
+import ccpe001.familywallet.transaction.TransactionMain;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -58,7 +59,6 @@ public class NotificationCards extends Fragment {
         MenuItem itemMessages = menu.findItem(R.id.action_notification);
         RelativeLayout badgeLayout = (RelativeLayout) itemMessages.getActionView();
         itemMessagesBadgeTextView = (TextView) badgeLayout.findViewById(R.id.badge_textView);
-        Log.d("badcount"," bind view del"+itemMessagesBadgeTextView);
     }
 
 

@@ -69,7 +69,6 @@ public class OCRReader2 extends AppCompatActivity {
                     public void onClick(View view) {
                         mAuth = FirebaseAuth.getInstance();
                         storageReference = FirebaseStorage.getInstance().getReference().child("ScannedBills").child(mAuth.getCurrentUser().getUid());
-                        cropImageView = (ImageView) view.findViewById(R.id.cropImageView);
 
                         if(!checkPermit()){
                             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},EXTERNAL_READ_PERMIT);
