@@ -300,6 +300,7 @@
     <string name="dashboard_snackbar_demopermanentBtn">Yes..!</string>
     <string name="dashboard_socialbuilder_settitle">Select Login</string>
     <string name="dashboard_social_demo_signup">Signup</string>
+    <string name="dashboard_accountcollide_text">This account is already registered.</string>
 
 
     <string-array name="social_logins">

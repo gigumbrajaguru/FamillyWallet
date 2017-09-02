@@ -1,6 +1,10 @@
 package ccpe001.familywallet.admin;
 
+import com.google.firebase.database.Exclude;
+
 import java.security.PublicKey;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by harithaperera on 6/26/17.
@@ -37,6 +41,7 @@ public class UserData {
         this.proPic = p;
         this.familyId = u;
     }
+
 
 
     public String getFirstName() {
