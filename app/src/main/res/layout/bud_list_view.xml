@@ -18,15 +18,17 @@
 
         <TextView
             android:id="@+id/budStat"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/budCat"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:text="TextView"
-            android:layout_below="@+id/budCat"
-            android:layout_alignStart="@+id/txtTime"
-            android:layout_marginStart="16dp"/>
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/img"
@@ -43,15 +45,18 @@
 
         <TextView
             android:id="@+id/budName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
             android:layout_alignBottom="@+id/img"
-            android:layout_alignEnd="@+id/budCat"
-            android:layout_marginEnd="16dp"
+            android:layout_toStartOf="@+id/budStat"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/budCat"
@@ -69,15 +74,15 @@
             android:id="@+id/txtTime"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:layout_marginStart="14dp"
+            android:layout_alignBaseline="@+id/budCat"
+            android:layout_alignBottom="@+id/budCat"
+            android:layout_alignParentEnd="true"
             android:clickable="false"
             android:ems="10"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:inputType="date"
-            android:layout_alignBaseline="@+id/budCat"
-            android:layout_alignBottom="@+id/budCat"
-            android:layout_toEndOf="@+id/budCat"/>
+            android:textStyle="bold"/>
     </RelativeLayout>
 
 

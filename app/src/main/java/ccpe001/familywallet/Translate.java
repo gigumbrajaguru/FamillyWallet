@@ -1,7 +1,6 @@
 package ccpe001.familywallet;
 
 import android.content.Context;
-import android.content.SearchRecentSuggestionsProvider;
 import android.content.res.Resources;
 
 /**
@@ -206,7 +205,7 @@ public class Translate {
         switch (cat){
             case"Car":catID=R.drawable.cat1;break;
             case"Travel":catID=R.drawable.cat2;break;
-            case"Food & Drinks":catID=R.drawable.cat3;break;
+            case"Food":catID=R.drawable.cat3;break;
             case"Transportation":catID=R.drawable.cat4;break;
             case"Gifts":catID=R.drawable.cat5;break;
             case"Bill":catID=R.drawable.cat6;break;

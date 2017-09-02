@@ -41,7 +41,7 @@ public class BudgetHandling extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.arraySpinner = new String[] {
-                "Food", "Travel"
+                "Food", "Travel", "Gifts","Bill","Entertainment","Home","Utilities","Shopping","Accommodation","Healthcare","Clothing","Groceries","Pets","Education","Kids","Loan","Business"
         };
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabases = FirebaseDatabase.getInstance().getReference();
