@@ -1,21 +1,23 @@
 package ccpe001.familywallet.admin;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ccpe001.familywallet.CustomAlertDialogs;
 import com.facebook.*;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -34,11 +36,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
 import ccpe001.familywallet.R;
-import ccpe001.familywallet.Validate;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.Arrays;
 
@@ -119,7 +119,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
     @Override
     public void onClick(View view) {
         if(view.getId()== R.id.signInBtn){
-            if(Validate.anyValidMail(emailTxt.getText().toString().trim())) {
+            /*if(Validate.anyValidMail(emailTxt.getText().toString().trim())) {
                 if(Validate.anyValidPass(passTxt.getText().toString().trim())){
                     progressDialog.setMessage(getString(R.string.signin_waitmsg));
                     progressDialog.show();
@@ -157,7 +157,10 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
                 }
             }else {
                 emailTxt.setError(getString(R.string.signup_onclick_emailerr));
-            }
+            }*/
+
+
+            new CustomAlertDialogs().initLoadingPage(this);
         }else if(view.getId()== R.id.textView2){
             startActivity(new Intent(this,SignUp.class));
         }else if(view.getId()== R.id.textView){
@@ -292,4 +295,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
             }
         });
     }
+
+    @Override
+    public void onBackPressed() { /*back disabled*/}
 }

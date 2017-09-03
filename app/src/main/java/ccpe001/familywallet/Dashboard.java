@@ -317,7 +317,7 @@ public class Dashboard extends AppCompatActivity
 
                                                 LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                                                     @Override
-                                                    public void onSuccess(LoginResult loginResult) {c
+                                                    public void onSuccess(LoginResult loginResult) {
 
                                                         mAuth.getCurrentUser().linkWithCredential(FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken()))
                                                                 .addOnCompleteListener(Dashboard.this, new OnCompleteListener<AuthResult>() {
