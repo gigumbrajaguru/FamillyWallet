@@ -2,8 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
-                android:background="#FFF"
-              android:layout_width="match_parent"
+                android:alpha="0.7"
+                android:background="@android:color/black"
+
+                android:layout_width="match_parent"
               android:layout_height="match_parent">
 
 
@@ -11,17 +13,17 @@
             android:id="@+id/avi"
             android:layout_width="wrap_content"
             android:layout_centerInParent="true"
-
+            android:layout_marginTop="50dp"
             android:layout_height="wrap_content"
             app:indicatorName="BallPulseIndicator"
-            app:indicatorColor="#9C9"
+            app:indicatorColor="#D3D3D3"
     />
 
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_alignBottom="@id/avi"
-              android:layout_gravity="center_vertical|center_horizontal"
-
+              android:layout_centerHorizontal="true"
+              android:textColor="#D3D3D3"
               android:textStyle="bold"
               android:text="@string/xmlactivity_loading_dialog_pageTxt"
     />

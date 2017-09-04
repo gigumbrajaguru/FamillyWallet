@@ -20,11 +20,6 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="Theme.Material.NoActionBar.Light.NoActionBar.TestTheme" parent="android:Theme.Material.NoActionBar"/>
-    <style name="D1NoTitleDim" parent="android:style/Theme.Translucent">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:background">@android:color/transparent</item>
-    </style>
+
 
 </resources>

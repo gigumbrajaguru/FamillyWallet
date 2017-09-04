@@ -160,7 +160,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
             }*/
 
 
-            new CustomAlertDialogs().initLoadingPage(this);
+            new CustomAlertDialogs().initCommonDialogPage(this,"sdsdsd",true);
         }else if(view.getId()== R.id.textView2){
             startActivity(new Intent(this,SignUp.class));
         }else if(view.getId()== R.id.textView){
