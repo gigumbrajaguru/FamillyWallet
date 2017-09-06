@@ -12,11 +12,8 @@ public class alertBox {
 
     public static void alertBoxOut(Context context, String title, String message) {
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-
         alertDialog.setTitle(title);
-
         alertDialog.setMessage(message);
-
         // Show Alert Message
         alertDialog.show();
     }
