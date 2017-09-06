@@ -215,7 +215,6 @@ public class actionValidater {
                 checks=true;
                 for(DataSnapshot child:dataSnapshot.getChildren()){
                     if(child.getKey().equals(currentUser.getUid())){
-
                     }
                 }
             }
