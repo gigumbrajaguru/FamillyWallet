@@ -36,7 +36,6 @@ import ccpe001.familywallet.R;
 public class addAccount extends Fragment  {
     String m_txt="",validbank,isPrivate="False",Notify="False",currtype;
     String familyId="not assigned";
-    public boolean validateName;
     boolean check=false,msgBoxOut=false;
     private static DatabaseReference mDatabases;
     Button btnSubmit,btnUpdate;
@@ -171,28 +170,8 @@ public class addAccount extends Fragment  {
                                              acountCtrl Ctrl = new acountCtrl();
                                              final String accountName = accName.getText().toString();
                                              Double amount = Double.parseDouble(accAmountss.getText().toString());
-                                             mDatabases.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
-                                                 @Override
-                                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                                     dumpData dp= new dumpData();
-                                                     for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                                         if(child.child("accountName").getValue().toString().equals(accountName)) {
-                                                             dp.setCheckName(true);
-                                                             validateName=  dp.getCheckName();
-                                                         }
-                                                         else{
-                                                             dp.setCheckName(false);
-                                                             validateName= dp.getCheckName();
-                                                         }
-                                                     }
-                                                 }
-
-                                                 @Override
-                                                 public void onCancelled(DatabaseError databaseError) {
-
-                                                 }
-                                             });
-                                             if (validateName) {
+                                             boolean xyzx=actionValidater.accountName(accountName);
+                                             if (xyzx) {
                                                  if (check) {
                                                      msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, Notify, currtype, familyId));
                                                  } else {

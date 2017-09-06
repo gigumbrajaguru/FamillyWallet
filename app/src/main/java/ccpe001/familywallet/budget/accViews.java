@@ -35,7 +35,7 @@ public class accViews extends AppCompatActivity {
     Object[] array={"Select One"};
     String[] array1=null;
     Button btnDel1,btnUpdate1;
-    boolean c,x;
+    public  boolean c,actionresult;
     int check,checkspinner=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +151,7 @@ public class accViews extends AppCompatActivity {
         });
     }
     public boolean walletDelete(final String acconame) {
-          x=false;
+
             final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
             mDatabase = FirebaseDatabase.getInstance().getReference();
             mDatabase.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
@@ -160,7 +160,7 @@ public class accViews extends AppCompatActivity {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         if(child.child("accountName").getValue().toString().equals(acconame)) {
                             child.getRef().removeValue();
-                            x=true;
+
                         }
                     }
                 }
@@ -169,7 +169,7 @@ public class accViews extends AppCompatActivity {
                 }
 
             });
-        return x;
+        return actionresult;
     }
     public boolean walletUpdate(final String accNames,final String amount){
         check=0;

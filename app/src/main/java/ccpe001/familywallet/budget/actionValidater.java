@@ -170,6 +170,62 @@ public class actionValidater {
         });
         return checks;
         }
+    public static boolean accountName(final String accountN){
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener(){
 
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int x=0;
+                checks=true;
+                for(DataSnapshot child:dataSnapshot.getChildren()){
+                    if(child.child("accountName").getValue().equals(accountN)){
+                        dumpData dp=new dumpData();
+                        dp.setCheckName(false);
+                        checks=dp.getCheckName();
+                        x=1;
+                    }
+                    else{
+                        if(x==0) {
+                            dumpData dp=new dumpData();
+                            dp.setCheckName(true);
+                            checks=dp.getCheckName();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return checks;
+    }
+    public static boolean rectransactionChecker(final String Wallet){
+        int x=0;
+        checks=true;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase.child("RecurringTransactions").addValueEventListener(new ValueEventListener(){
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                checks=true;
+                for(DataSnapshot child:dataSnapshot.getChildren()){
+                    if(child.getKey().equals(currentUser.getUid())){
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return checks;
+    }
 
 }
