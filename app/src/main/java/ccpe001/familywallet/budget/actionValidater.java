@@ -32,7 +32,6 @@ public class actionValidater {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 dumpData dp= new dumpData();
-                Log.i("ss","ss1");
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if(isSaving(AccountName)) {
                         if (child.child("accountName").getValue().toString().equals(AccountName)) {
@@ -47,7 +46,6 @@ public class actionValidater {
                             } else {
                                 dp.setCheck(false);
                                 checks = dp.getCheck();
-                                Log.i("ss", "ss3");
                             }
 
                         }
@@ -62,7 +60,7 @@ public class actionValidater {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        return checks;
+        return true;
     }
     public static boolean isSaving(final String AccountName) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -145,7 +143,7 @@ public class actionValidater {
                 public void onCancelled(DatabaseError databaseError) {
                 }
             });
-        return checks;
+        return true;
         }
 
     public static boolean  accountChecker(){

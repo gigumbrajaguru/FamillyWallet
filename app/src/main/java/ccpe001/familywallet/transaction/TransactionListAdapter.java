@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.graphics.drawable.ColorDrawable;
 import java.util.List;
-
+import java.util.ArrayList;
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;

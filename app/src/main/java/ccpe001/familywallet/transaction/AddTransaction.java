@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.View;
@@ -481,15 +481,15 @@ public class AddTransaction extends AppCompatActivity {
                     td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID);
                     Double amountDouble =Double.parseDouble(amount);
                     if (type.equals("Expense")){
-                       // validExpense = av.amountCheck(account, amountDouble);
+                        validExpense = av.amountCheck(account, amountDouble);
 
                     }
                     else if(type.equals("Income")){
-                       // validIncome = av.addIncome(account, amountDouble);
+                        validIncome = av.addIncome(account, amountDouble);
                     }
                     if (validExpense==true || validIncome==true && !account.isEmpty()) {
                         mDatabase.child("Transactions").child(familyID).push().setValue(td);
-                        //Toast.makeText(this, "Transaction Added ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Transaction Added ", Toast.LENGTH_LONG).show();
                     }
                 }
                 else if (update.equals("True")){
@@ -499,10 +499,10 @@ public class AddTransaction extends AppCompatActivity {
                     Double amountDouble =Double.parseDouble(amount)-Double.parseDouble(previousAmount);
 
                     if (type.equals("Expense")){
-                       // validExpense = av.amountCheck(account, amountDouble);
+                        validExpense = av.amountCheck(account, amountDouble);
                     }
                     else if(type.equals("Income")){
-                       // validIncome = av.addIncome(account, amountDouble);
+                        validIncome = av.addIncome(account, amountDouble);
                     }
                     if (validExpense==true || validIncome==true && !account.isEmpty()) {
                         Map<String, Object> postValues = td.toMap();
