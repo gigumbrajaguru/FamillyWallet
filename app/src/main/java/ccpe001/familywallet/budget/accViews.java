@@ -37,11 +37,13 @@ public class accViews extends AppCompatActivity {
     Button btnDel1,btnUpdate1;
     boolean c,x;
     int check,checkspinner=0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acc_views);
+        if(actionValidater.accountChecker()){
+
+        }
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final List<String> areas = new ArrayList<String>();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();

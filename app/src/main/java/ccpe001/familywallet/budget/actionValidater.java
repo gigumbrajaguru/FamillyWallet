@@ -156,11 +156,12 @@ public class actionValidater {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 dumpData dp= new dumpData();
                 if(dataSnapshot.hasChildren()){
-                    dp.setCheck(true);
+                    dp.setCheck(false);
                     checks=dp.getCheck();
                 }
                 else{
-                    dp.setCheck(false);
+                    dp.setCheck(true);
+                    checks=dp.getCheck();
                 }
             }
             @Override

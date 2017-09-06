@@ -46,7 +46,7 @@
                         android:id="@+id/txtLocation"
                         android:layout_width="256dp"
                         android:layout_height="42dp"
-                        android:layout_alignStart="@+id/txtbudgetId"
+                        android:layout_alignStart="@+id/txtTime"
                         android:layout_alignTop="@+id/imgLocation"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="10dp"
@@ -279,12 +279,12 @@
                         app:srcCompat="@mipmap/calander" />
 
                     <EditText
-                        android:id="@+id/txtbudgetId"
+                        android:id="@+id/txtTime"
                         android:layout_width="115dp"
                         android:layout_height="41dp"
-                        android:layout_alignBottom="@+id/txtbudgetId"
+                        android:layout_alignBottom="@+id/txtTime"
                         android:layout_alignEnd="@+id/txtCategory"
-                        android:layout_alignTop="@+id/txtbudgetId"
+                        android:layout_alignTop="@+id/txtTime"
                         android:layout_marginLeft="15dp"
                         android:layout_weight="1"
                         android:layout_x="201dp"
