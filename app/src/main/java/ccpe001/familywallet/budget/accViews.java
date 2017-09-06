@@ -27,22 +27,17 @@ import java.util.List;
 
 import ccpe001.familywallet.R;
 
-import static ccpe001.familywallet.R.id.accAmount;
-import static ccpe001.familywallet.R.id.accDate;
-import static ccpe001.familywallet.R.id.accId;
-import static ccpe001.familywallet.R.id.accStat;
-import static ccpe001.familywallet.R.id.curType;
-
 public class accViews extends AppCompatActivity {
     private DatabaseReference mDatabase;
-    String typess = "", bankIDs = "", addDates = "", lastUpdateds = "", issaving = "", curTypess = "", accamountavaialble="",accName="";
-    TextView curTypes, accDates, accStats, accIds;
+    String accountName="", typess = "", bankIDs = "", addDates = "", lastUpdateds = "", issaving = "", curTypess = "", accamountavaialble="",accName="";
+    TextView curTypes, accDates, accStats, accIds,accNames;
     EditText accAmounts;
     Object[] array={"Select One"};
     String[] array1=null;
     Button btnDel1,btnUpdate1;
     boolean c,x;
     int check,checkspinner=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,11 +69,12 @@ public class accViews extends AppCompatActivity {
 
             }
         });
-        curTypes = (TextView) findViewById(curType);
-        accDates = (TextView) findViewById(accDate);
-        accStats = (TextView) findViewById(accStat);
-        accIds = (TextView) findViewById(accId);
-        accAmounts = (EditText) findViewById(accAmount);
+        accNames=(TextView) findViewById(R.id.accNameText);
+        curTypes = (TextView) findViewById(R.id.curType);
+        accDates = (TextView) findViewById(R.id.accDate);
+        accStats = (TextView) findViewById(R.id.accStat);
+        accIds = (TextView) findViewById(R.id.accId);
+        accAmounts = (EditText) findViewById(R.id.accAmount);
         Spinner s = (Spinner) findViewById(R.id.accountselect);
         s.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
@@ -89,6 +85,7 @@ public class accViews extends AppCompatActivity {
                 accDates.setText(addDates);
                 accStats.setText(issaving);
                 accIds.setText(bankIDs);
+                accNames.setText("Account Name : "+accountName);
                 accAmounts.setText(accamountavaialble);
             }
             @Override
@@ -134,6 +131,7 @@ public class accViews extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if(child.child("accountName").getValue().toString().equals(acconame)) {
+                        accountName=child.child("accountName").getValue().toString();
                         typess = child.child("types").getValue().toString();
                         bankIDs = child.child("bankID").getValue().toString();
                         addDates = child.child("addDate").getValue().toString();

@@ -36,11 +36,11 @@ import ccpe001.familywallet.R;
 public class addAccount extends Fragment  {
     String m_txt="",validbank,isPrivate="False",Notify="False",currtype;
     String familyId="not assigned";
-    int validateName=0;
+    public boolean validateName;
     boolean check=false,msgBoxOut=false;
     private static DatabaseReference mDatabases;
     Button btnSubmit,btnUpdate;
-    EditText accName,editTxt1;
+    EditText accName,accAmountss;
     private String[] arraySpinner,arraySpinner1;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -163,25 +163,26 @@ public class addAccount extends Fragment  {
             }
         });
         accName=(EditText)v.findViewById(R.id.editText5);
-        editTxt1=(EditText)v.findViewById(R.id.editText7);
+        accAmountss=(EditText)v.findViewById(R.id.editText7);
         btnSubmit=(Button)v.findViewById(R.id.btnAdd);
         btnSubmit.setOnClickListener(new OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
                                              acountCtrl Ctrl = new acountCtrl();
-                                             validateName=0;
                                              final String accountName = accName.getText().toString();
-                                             Double amount = Double.parseDouble(editTxt1.getText().toString());
+                                             Double amount = Double.parseDouble(accAmountss.getText().toString());
                                              mDatabases.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
                                                  @Override
                                                  public void onDataChange(DataSnapshot dataSnapshot) {
-
+                                                     dumpData dp= new dumpData();
                                                      for (DataSnapshot child : dataSnapshot.getChildren()) {
                                                          if(child.child("accountName").getValue().toString().equals(accountName)) {
-                                                             validateName=1;
+                                                             dp.setCheckName(true);
+                                                             validateName=  dp.getCheckName();
                                                          }
                                                          else{
-                                                             validateName=0;
+                                                             dp.setCheckName(false);
+                                                             validateName= dp.getCheckName();
                                                          }
                                                      }
                                                  }
@@ -191,7 +192,7 @@ public class addAccount extends Fragment  {
 
                                                  }
                                              });
-                                             if (validateName==0) {
+                                             if (validateName) {
                                                  if (check) {
                                                      msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, Notify, currtype, familyId));
                                                  } else {
@@ -200,6 +201,8 @@ public class addAccount extends Fragment  {
                                                  }
                                                  if (msgBoxOut) {
                                                      alertBox.alertBoxOut(getContext(), "Data Stored", "Succeed");
+                                                     accName.setText("");
+                                                     accAmountss.setText("");
                                                  }
                                              } else {
                                                  alertBox.alertBoxOut(getContext(), "Account Name ", "Change your account name");

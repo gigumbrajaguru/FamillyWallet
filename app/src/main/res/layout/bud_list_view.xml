@@ -35,7 +35,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/txtTime"
+            android:layout_alignTop="@+id/txtbudgetId"
             android:layout_marginStart="7dp"
             android:layout_weight="1"
             android:clickable="false"
@@ -71,7 +71,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/txtTime"
+            android:id="@+id/txtbudgetId"
             android:layout_width="80dp"
             android:layout_height="20dp"
             android:layout_alignBaseline="@+id/budCat"
