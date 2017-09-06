@@ -89,7 +89,7 @@ public class AddTransaction extends AppCompatActivity {
         /*Setting references to layout items*/
         txtAmount =(EditText)findViewById(R.id.txtAmount);
         txtDate = (EditText) findViewById(R.id.txtDate);
-        txtTime = (EditText) findViewById(R.id.txtbudgetId);
+        txtTime = (EditText) findViewById(R.id.txtTime);
         txtTitle = (EditText) findViewById(R.id.txtTitle);
         txtLocation = (TextView) findViewById(R.id.txtLocation);
         txtCategory = (EditText) findViewById(R.id.txtCategory);
