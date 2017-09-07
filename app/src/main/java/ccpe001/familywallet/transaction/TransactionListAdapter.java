@@ -57,7 +57,7 @@ public class TransactionListAdapter extends ArrayAdapter<TransactionDetails> {
 
             txtTitle.setText(td.getTitle());
             txtCategory.setText(trns.categoryView(td.getCategoryName(),context));
-            txtDate.setText(trns.valueToDate(td.getDate(),getContext()));
+            txtDate.setText(trns.dateView(td.getDate(),getContext()));
             String type = td.getType();
             if (type.equals("Income")){
                 txtAmount.setText("+"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());

@@ -81,6 +81,7 @@ public class Dashboard extends AppCompatActivity
 
     public String fullname;
     public String propicUrl;
+    String familyID, userID;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser;
@@ -128,6 +129,21 @@ public class Dashboard extends AppCompatActivity
         }catch (Exception e){
 
         }
+
+        userID = firebaseUser.getUid();
+        FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                familyID=dataSnapshot.getValue().toString();
+                Splash.userID=userID;
+                Splash.familyID=familyID;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         databaseReference = FirebaseDatabase.getInstance().getReference().child("UserInfo").child(firebaseUser.getUid());
         databaseReference.keepSynced(true);
 

@@ -269,7 +269,7 @@ public class TransactionMain extends Fragment {
                 vAmount.setText(trns.currencyView(td.getCurrency(),getActivity())+td.getAmount());
                 vCategory.setText(trns.categoryView(td.getCategoryName(),getActivity()));
                 vAccount.setText(td.getAccount());
-                vDate.setText(trns.valueToDate(td.getDate(),getContext()));
+                vDate.setText(trns.dateView(td.getDate(),getContext()));
                 vTime.setText(trns.timeView(td.getTime(),getActivity()));
                 SpannableString content = new SpannableString(td.getLocation());
                 content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
@@ -329,7 +329,7 @@ public class TransactionMain extends Fragment {
                 intent.putExtra("key",key);
                 intent.putExtra("title",td.getTitle());
                 intent.putExtra("amount",td.getAmount());
-                intent.putExtra("date",trns.valueToDate(td.getDate(),getContext()));
+                intent.putExtra("date",trns.dateView(td.getDate(),getContext()));
                 intent.putExtra("time",trns.timeView(td.getTime(),getContext()));
                 intent.putExtra("categoryName",trns.categoryView(td.getCategoryName(),getContext()));
                 intent.putExtra("categoryID",td.getCategoryID());

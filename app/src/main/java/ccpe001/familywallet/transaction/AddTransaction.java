@@ -44,6 +44,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ccpe001.familywallet.R;
+import ccpe001.familywallet.Splash;
 import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
 import ccpe001.familywallet.budget.actionValidater;
@@ -116,21 +117,10 @@ public class AddTransaction extends AppCompatActivity {
         checkRecurring.setText(resources.getString(R.string.recurring));
 
 
-        /*Getting firebase authentication to get users info*/
-        mAuth = FirebaseAuth.getInstance();
-        firebaseUser = mAuth.getCurrentUser();
-        userID = firebaseUser.getUid();
-        FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                familyID=dataSnapshot.getValue().toString();
-            }
+        userID= Splash.userID;
+        familyID=Splash.familyID;
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
 
         accountsList = new ArrayList<>();
 
@@ -423,8 +413,8 @@ public class AddTransaction extends AppCompatActivity {
         boolean validExpense=false, validIncome=false;
         amount = txtAmount.getText().toString();
         date = txtDate.getText().toString();
-        date = trns.dateToDB(date);
         time = txtTime.getText().toString();
+        date = trns.dateToDB(date,time);
         time = trns.timeToDB(time);
         title = txtTitle.getText().toString();
         currency = txtCurrency.getText().toString();
@@ -442,7 +432,10 @@ public class AddTransaction extends AppCompatActivity {
 
         if (checkRecurring.isChecked()) {
             if (amount.isEmpty()) {
-                Toast.makeText(this, " Set the Amount first", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Set the Amount first", Toast.LENGTH_LONG).show();
+            }
+            else if (account.isEmpty()){
+                Toast.makeText(this, "Select Account first", Toast.LENGTH_LONG).show();
             }
             else {
                 TransactionDetails td;
@@ -471,7 +464,10 @@ public class AddTransaction extends AppCompatActivity {
 
         else {
         if (amount.isEmpty()) {
-            Toast.makeText(this, " Set the Amount first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, " Set the Amount first", Toast.LENGTH_LONG).show();
+        }
+        else if (account.isEmpty()){
+            Toast.makeText(this, "Select Account first", Toast.LENGTH_LONG).show();
         }
         else {
             TransactionDetails td;
@@ -487,10 +483,12 @@ public class AddTransaction extends AppCompatActivity {
                     else if(type.equals("Income")){
                         validIncome = av.addIncome(account, amountDouble);
                     }
-                    if (validExpense==true || validIncome==true && !account.isEmpty()) {
+
                         mDatabase.child("Transactions").child(familyID).push().setValue(td);
+                        Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
+                        startActivity(intent);
                         Toast.makeText(this, "Transaction Added ", Toast.LENGTH_LONG).show();
-                    }
+
                 }
                 else if (update.equals("True")){
                     mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID);
@@ -504,11 +502,10 @@ public class AddTransaction extends AppCompatActivity {
                     else if(type.equals("Income")){
                         validIncome = av.addIncome(account, amountDouble);
                     }
-                    if (validExpense==true || validIncome==true && !account.isEmpty()) {
                         Map<String, Object> postValues = td.toMap();
                         mDatabase.child(key).updateChildren(postValues);
                         Toast.makeText(this, "Successfully Updated "+previousAmount, Toast.LENGTH_LONG).show();
-                    }
+
 
 
                 }
@@ -516,16 +513,6 @@ public class AddTransaction extends AppCompatActivity {
 
             }
 
-            if (validExpense==true || validIncome==true && !account.isEmpty()) {
-                Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
-                startActivity(intent);
-            }
-            else if(type.equals("Expense") && validExpense==false ){
-                Toast.makeText(this, "Account limit reached", Toast.LENGTH_LONG).show();
-            }
-            else if (account.isEmpty()){
-                Toast.makeText(this, "Please select Account first", Toast.LENGTH_LONG).show();
-            }
         }
 
         }

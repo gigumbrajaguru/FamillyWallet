@@ -52,8 +52,6 @@ public class TransactionRecurring extends Fragment {
 
 
     private DatabaseReference mDatabase;
-    private FirebaseAuth mAuth;
-    private FirebaseUser firebaseUser;
 
     public TransactionRecurring() {
         // Required empty public constructor
@@ -76,7 +74,6 @@ public class TransactionRecurring extends Fragment {
         tdList = new ArrayList<>();
         keys = new ArrayList<>();
         checkedPosition = new ArrayList<>();
-        mAuth = FirebaseAuth.getInstance();
         userID= Splash.userID;
         familyID=Splash.familyID;
 

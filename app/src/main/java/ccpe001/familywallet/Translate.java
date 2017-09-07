@@ -2,6 +2,10 @@ package ccpe001.familywallet;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
+import android.widget.Toast;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * Created by Knight on 8/25/2017.
@@ -39,7 +43,6 @@ public class Translate {
         }
         return retCat;
     }
-
     public String categoryView(String cat, Context con){
         Resources res = con.getResources();
         String[] iArr = res.getStringArray(R.array.IncomeCategory);
@@ -73,7 +76,6 @@ public class Translate {
         }
         return retCat;
     }
-
     public String timeToDB(String time){
         String[] parts = time.split(":");
         String ampm = parts[1].substring(3);
@@ -85,7 +87,6 @@ public class Translate {
         return parts[0]+":"+parts[1].substring(0,3)+ampmAfter;
 
     }
-
     public String timeView(String time, Context con){
         Resources res = con.getResources();
         String[] parts = time.split(":");
@@ -99,7 +100,84 @@ public class Translate {
 
     }
 
-    public static String dateToDB(String date) {
+    public static String dateToDB(String date,String time) {
+        String[] parts = date.split("-");
+        String month = parts[1];
+        String day = parts[0];
+        String year = parts[2];
+        String monthNum = "";
+
+        String[] timeParts = time.split(":");
+        String ampm = timeParts[1].substring(3);
+        String ampmAfter="";
+        String rethours="";
+        int hour=0;
+        switch (ampm){
+            case "AM":case "පෙ.ව.":ampmAfter="AM";break;
+            case "PM":case "ප.ව.":ampmAfter="PM";break;
+        }
+        if (ampmAfter.equals("PM")){
+           hour = Integer.parseInt(timeParts[0]);
+            if(hour!=12){
+                rethours = Integer.toString(hour+12);
+            }
+            else {
+                rethours="12";
+            }
+        }
+        else if(ampmAfter.equals("AM")) {
+            if(timeParts[0].equals("12")){
+                rethours = "00";
+            }
+            else{
+                rethours = timeParts[0];
+            }
+
+        }
+
+        switch (month) {
+            case "Jan":case "ජන":monthNum = "01";break;
+            case "Feb":case "පෙබ":monthNum = "02";break;
+            case "Mar":case "මාර්":monthNum = "03";break;
+            case "Apr":case "අප්\u200Dරේල්":monthNum = "04";break;
+            case "May":case "මැයි":monthNum = "05";break;
+            case "Jun":case "ජුනි":monthNum = "06";break;
+            case "Jul":case "ජූලි":monthNum = "07";break;
+            case "Aug":case "අගෝ":monthNum = "08";break;
+            case "Sep":case "සැප්":monthNum = "09";break;
+            case "Oct":case "ඔක්":monthNum = "10";break;
+            case "Nov":case "නොවැ":monthNum = "11";break;
+            case "Dec":case "දෙසැ":monthNum = "12";break;
+
+        }
+        return year + monthNum + day + rethours + timeParts[1].substring(0,2);
+    }
+
+    public static String dateView(String date, Context con){
+        Resources res = con.getResources();
+        String[] monthList = res.getStringArray(R.array.Months);
+        String monthNum = date.substring(4,6);
+        String day = date.substring(6,8);
+        String year = date.substring(0,4);
+        String month="";
+        switch (monthNum){
+            case "01":month=monthList[0];break;
+            case "02":month=monthList[1];break;
+            case "03":month=monthList[2];break;
+            case "04":month=monthList[3];break;
+            case "05":month=monthList[4];break;
+            case "06":month=monthList[5];break;
+            case "07":month=monthList[6];break;
+            case "08":month=monthList[7];break;
+            case "09":month=monthList[8];break;
+            case "10":month=monthList[9];break;
+            case "11":month=monthList[10];break;
+            case "12":month=monthList[11];break;
+
+        }
+        return day+"-"+month+"-"+year;
+    }
+    public static String dateToValue(String date) {
         String[] parts = date.split("-");
         String month = parts[1];
         String day = parts[0];
@@ -122,7 +200,6 @@ public class Translate {
         }
         return year + monthNum + day;
     }
-
     public static String valueToDate(String date, Context con){
         Resources res = con.getResources();
         String[] monthList = res.getStringArray(R.array.Months);
@@ -147,7 +224,6 @@ public class Translate {
         }
         return day+"-"+month+"-"+year;
     }
-
     public String currencyToDB(String cur){
 
         String retCur="";
@@ -161,7 +237,6 @@ public class Translate {
         }
         return retCur;
     }
-
     public String currencyView(String cur, Context con){
         Resources res = con.getResources();
         String[] curArr = res.getStringArray(R.array.spinnerCurrency);
@@ -175,7 +250,6 @@ public class Translate {
         }
         return retCur;
     }
-
     public String recurringToDB(String recur){
         String retRecur="";
         switch (recur){
@@ -186,7 +260,6 @@ public class Translate {
         }
         return  retRecur;
     }
-
     public String recurringView(String recur, Context con){
         Resources res = con.getResources();
         String[] recurList = res.getStringArray(R.array.spinnerRecurring);
@@ -199,7 +272,6 @@ public class Translate {
         }
         return  retRecur;
     }
-
     public int getCategoryID(String cat){
         int catID=0;
         switch (cat){

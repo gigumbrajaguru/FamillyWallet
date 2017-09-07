@@ -5,7 +5,9 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import java.util.Calendar;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -39,12 +41,12 @@ public class DateDialog  extends DialogFragment implements DatePickerDialog.OnDa
         return new DatePickerDialog(getActivity(), this,year,month,day);
     }
 
-    //fdsdf
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
         String date = dayOfMonth +"-"+MONTHS[month]+"-"+year;
-        String dateVal = trns.dateToDB(date);
+        String dateVal = trns.dateToValue(date);
         txtDate.setText(trns.valueToDate(dateVal,getActivity()));
     }
 
