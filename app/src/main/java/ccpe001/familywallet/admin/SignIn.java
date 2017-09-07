@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ccpe001.familywallet.CustomAlertDialogs;
+import ccpe001.familywallet.Dashboard;
+import ccpe001.familywallet.Validate;
 import com.facebook.*;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -33,6 +36,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.*;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -60,6 +64,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager callbackManager;
     private DatabaseReference databaseReference;
+    private CustomAlertDialogs alert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,48 +124,49 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
     @Override
     public void onClick(View view) {
         if(view.getId()== R.id.signInBtn){
-            /*if(Validate.anyValidMail(emailTxt.getText().toString().trim())) {
+            if(Validate.anyValidMail(emailTxt.getText().toString().trim())) {
                 if(Validate.anyValidPass(passTxt.getText().toString().trim())){
-                    progressDialog.setMessage(getString(R.string.signin_waitmsg));
-                    progressDialog.show();
+                    alert = new CustomAlertDialogs();
+                    /*alert.initLoadingPage(this);
                     mAuth.signInWithEmailAndPassword(emailTxt.getText().toString().trim(),
                             passTxt.getText().toString().trim())
                             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    progressDialog.dismiss();
                                     if(task.isSuccessful()){
                                         saveSession(emailTxt.getText().toString());
                                         finish();
                                         Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
                                         startActivity(intent);
                                     }else{
+                                        alert.hideLoadingPage();
                                         try {
                                             throw task.getException();
                                         }catch (FirebaseAuthInvalidUserException invalidEmail)
                                         {
                                             emailTxt.setError(getString(R.string.signup_incorrect_email_text));
-                                            Toast.makeText(SignIn.this,R.string.signup_incorrect_email_text,Toast.LENGTH_SHORT).show();
                                         }catch(FirebaseAuthInvalidCredentialsException wrongPassword) {
                                             passTxt.setError(getString(R.string.signup_incorrect_pw_text));
-                                            Toast.makeText(SignIn.this,R.string.signup_incorrect_pw_text,Toast.LENGTH_SHORT).show();
                                         }
-                                        catch (Exception e)
+                                        catch (FirebaseNetworkException e)
                                         {
-                                            Log.d("rror", ""+e.getMessage());
+                                            alert.hideLoadingPage();
+                                            alert.initCommonDialogPage(SignIn.this,getString(R.string.network_error),true);
+                                        } catch (Exception e) {
+                                            alert.initCommonDialogPage(SignIn.this,getString(R.string.common_error),true);
+                                            e.printStackTrace();
                                         }
                                     }
                                 }
-                            });
+                            });*/alert.initPermissionPage(SignIn.this,"ssdsd").show();
                 }else{
                     passTxt.setError(getString(R.string.signup_onclick_passerr));
                 }
             }else {
                 emailTxt.setError(getString(R.string.signup_onclick_emailerr));
-            }*/
+            }
 
 
-            new CustomAlertDialogs().initCommonDialogPage(this,"sdsdsd",true);
         }else if(view.getId()== R.id.textView2){
             startActivity(new Intent(this,SignUp.class));
         }else if(view.getId()== R.id.textView){
@@ -183,26 +189,33 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
 
                 @Override
                 public void onError(FacebookException error) {
-                    Toast.makeText(getApplicationContext(), R.string.common_error, Toast.LENGTH_LONG).show();
+                    alert = new CustomAlertDialogs();
+                    alert.initCommonDialogPage(SignIn.this,getString(R.string.network_error),true);
                 }
             });
         }else if(view.getId()== R.id.noSignInBtn){
+            alert = new CustomAlertDialogs();
+            alert.initLoadingPage(this);
             mAuth.signInAnonymously()
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                Log.d("lol", "signInAnonymously:success");
                                 saveData("Demo","User",null);
                                 finish();
                                 Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
                                 startActivity(intent);
-
                             } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w("lol", "signInAnonymously:failure", task.getException());
-
+                                alert.hideLoadingPage();
+                                try {
+                                    throw task.getException();
+                                }
+                                catch (FirebaseNetworkException e)
+                                {
+                                    alert.initCommonDialogPage(SignIn.this,getString(R.string.network_error),true);
+                                } catch (Exception e) {
+                                    alert.initCommonDialogPage(getApplication(),"signInAnonymously:failure "+task.getException(),true);
+                                }
                             }
                         }
                     });
@@ -215,7 +228,11 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        if(callbackManager!=null){
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+
 
         if(requestCode == RC_SIGN_IN){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -224,8 +241,10 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);//once it auth with google it does others
             }
-            else
-                Toast.makeText(this, R.string.common_error,Toast.LENGTH_SHORT).show();
+            else {
+                alert = new CustomAlertDialogs();
+                alert.initCommonDialogPage(SignIn.this, getString(R.string.network_error), true);
+            }
 
         }
     }
@@ -245,23 +264,31 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
 
     public void firebaseAuthWithGoogle(final GoogleSignInAccount acct){
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        alert = new CustomAlertDialogs();
+        alert.initLoadingPage(this);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(SignIn.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("Google", "signInWithCredential:oncomplete: " + task.isSuccessful());
-                        Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
-                        intent.putExtra("firstname",acct.getFamilyName());
-                        intent.putExtra("lastname",acct.getDisplayName());
-                        saveData(acct.getFamilyName(),acct.getDisplayName(),acct.getPhotoUrl().toString());
-                        try {
-                            intent.putExtra("profilepic", acct.getPhotoUrl().toString());
-                        }catch (Exception e){
+                        if(task.isSuccessful()){
+                            Log.d("Google", "signInWithCredential:oncomplete: " + task.isSuccessful());
+                            Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
+                            intent.putExtra("firstname",acct.getFamilyName());
+                            intent.putExtra("lastname",acct.getDisplayName());
+                            saveData(acct.getFamilyName(),acct.getDisplayName(),acct.getPhotoUrl().toString());
+                            try {
+                                intent.putExtra("profilepic", acct.getPhotoUrl().toString());
+                            }catch (Exception e){
 
+                            }
+                            startActivity(intent);
+                        }else {
+                            alert.hideLoadingPage();
+                            alert.initCommonDialogPage(SignIn.this,getString(R.string.common_error),true);
                         }
-                        startActivity(intent);
                     }
                 });
+
 
     }
 
@@ -272,10 +299,11 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
 
     public void handleFacebookAccessToken(AccessToken accessToken) {
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+        alert = new CustomAlertDialogs();
+        alert.initLoadingPage(this);
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.d("Facebook", "signInWithCredential:oncomplete: " + task.isSuccessful());
                 Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
                 intent.putExtra("firstname",Profile.getCurrentProfile().getFirstName());
                 intent.putExtra("lastname",Profile.getCurrentProfile().getLastName());
@@ -291,7 +319,8 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
         }).addOnFailureListener(this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SignIn.this,getString(R.string.common_error),Toast.LENGTH_SHORT).show();
+                alert.hideLoadingPage();
+                alert.initCommonDialogPage(SignIn.this,getString(R.string.common_error),true);
             }
         });
     }

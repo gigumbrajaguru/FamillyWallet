@@ -8,6 +8,7 @@ import android.os.IBinder;
 import android.util.Log;
 import ccpe001.familywallet.transaction.TransactionDetails;
 import com.google.android.gms.gcm.*;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
 import com.opencsv.CSVWriter;
 import jxl.WorkbookSettings;
@@ -68,20 +69,25 @@ public class PeriodicBackupCaller extends GcmTaskService {
     }
 
     private static long timeConverter(String time,Context c){
-        switch (time){
-            /*case c.getString(R.string.daily): return 86400;
-            case c.getString(R.string.weekly): return 30;//604800;
-            case c.getString(R.string.monthly): return 2628003;
-            case c.getString(R.string.annualy): return 31536000;
-            case c.getString(R.string.nobackup): return 0;*/
+        if(time.equals(c.getString(R.string.daily))){
+            return 86400;
+        }else if(time.equals(c.getString(R.string.weekly))){
+            return 604800;
+        }else if(time.equals(c.getString(R.string.monthly))){
+            return 2628003;
+        }else if(time.equals(c.getString(R.string.annualy))){
+            return 31536000;
+        }else if(time.equals(c.getString(R.string.nobackup))){
+            return 0;
+        }else {
+            return 0;
         }
-        return 0;
     }
 
 
     private void export() throws IOException {
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Transactions");
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Transactions").child(FirebaseAuth.getInstance().getCurrentUser().getUid());;
         databaseReference.keepSynced(true);
 
         prefs = getSharedPreferences("App Settings", Context.MODE_PRIVATE);

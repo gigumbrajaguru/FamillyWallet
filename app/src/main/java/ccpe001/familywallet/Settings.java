@@ -65,8 +65,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     private static final int ENABLE_PIN = 1;
     private static final int DIR_CHOOSER = 2;
     private final static int PERMENT_NOT = 33;
-    private static final int EXTERNAL_READ_PERMIT = 3;
-    private static final int EXTERNAL_WRITE_PERMIT = 4;
+    private static final int BACKUP_PERM = 3;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
 
@@ -79,6 +78,8 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     private GoogleApiClient mGoogleApiClient;
     private DatabaseReference db;
     private TextView itemMessagesBadgeTextView;
+    private CustomAlertDialogs alert;
+
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -170,27 +171,28 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     }
 
 
-    private boolean checkPermit(){
-        return ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED&&
-                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED;
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == EXTERNAL_READ_PERMIT||requestCode == EXTERNAL_WRITE_PERMIT) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getActivity(), R.string.permitgranted, Toast.LENGTH_SHORT).show();
+        if(requestCode == BACKUP_PERM){
+            if (grantResults[0]==PackageManager.PERMISSION_GRANTED||grantResults[1]==PackageManager.PERMISSION_GRANTED) {
+                final String[] items = {getString(R.string.daily),getString(R.string.weekly),getString(R.string.monthly),getString(R.string.annualy),getString(R.string.nobackup)};
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.setting_reminderbuilder_settitle);
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        PeriodicBackupCaller.backupRunner(getActivity(),items[item]);
+                        backupRemText.setText(items[item]);
+                        appBackUp = items[item];
+                        storePWSharedPref();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
             } else {
-                checkPermit();
-            }
-        }else if(requestCode == EXTERNAL_READ_PERMIT||requestCode == EXTERNAL_WRITE_PERMIT){
-            if(grantResults[0]==PackageManager.PERMISSION_GRANTED||grantResults[1]==PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getActivity(),R.string.permitgranted,Toast.LENGTH_SHORT).show();
-            }else {
-                ExportData.checkPermitBackup(getActivity());
+                alert = new CustomAlertDialogs();
+                alert.initCommonDialogPage(getActivity(),getString(R.string.error_permitting),true);
             }
         }
     }
@@ -198,6 +200,9 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     @Override
     public void onClick(View view) {
         if(view.getId()==R.id.signOutBtn){
+            CustomAlertDialogs alert = new CustomAlertDialogs();
+            alert.initLoadingPage(getActivity());
+
             //sign out & del daily rem,auto backups,noti icon,clear session
             if(mAuth.getCurrentUser().getProviders().toString().equals("[facebook.com]")){
                 LoginManager.getInstance().logOut();
@@ -210,7 +215,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                     .NOTIFICATION_SERVICE);
             mNotificationManager.cancel(PERMENT_NOT);
 
-            PeriodicBackupCaller.backupRunner(getActivity(),"No Auto Backups");
+            PeriodicBackupCaller.backupRunner(getActivity(),getString(R.string.nobackup));
 
             //off noti here
 
@@ -278,7 +283,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
             },c.get(Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE),true).show();
         }else if(view.getId()==R.id.backupLocRow) {
 
-            if (!checkPermit()) {
+            /*if (!checkPermit()) {
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},EXTERNAL_READ_PERMIT);
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},EXTERNAL_WRITE_PERMIT);
             }else {
@@ -291,7 +296,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 mDialog = DirectoryChooserFragment.newInstance(config);
                 mDialog.show(getActivity().getFragmentManager(), null);
                 mDialog.setDirectoryChooserListener(this);
-            }
+            }*/
 
         }else if(view.getId()==R.id.appPasswordRow){
             enterPinBuilder = new AlertDialog.Builder(getActivity());
@@ -355,12 +360,18 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
             RateThisApp.init(config);
             RateThisApp.showRateDialog(getActivity());
         }else if(view.getId()==R.id.backupRemRow) {
-
-            if(!ExportData.checkPermitBackup(getActivity())){
-                requestPermissions(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},EXTERNAL_READ_PERMIT);
-                requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},EXTERNAL_WRITE_PERMIT);
+            final String[] EXPORTDATAPERARR = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            if(!CustomAlertDialogs.hasPermissions(getActivity(),EXPORTDATAPERARR)){
+                alert = new CustomAlertDialogs();
+                alert.initPermissionPage(getActivity(),getString(R.string.permit_only_backup)).setPositiveButton(R.string.customaletdialog_initPermissionPage_posbtn, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        requestPermissions(EXPORTDATAPERARR,BACKUP_PERM);
+                    }
+                }).show();
             }else{
-                final String[] items = {"Daily", "Weekly", "Monthly","Annually","No Auto Backups"};
+                final String[] items = {getString(R.string.daily),getString(R.string.weekly),getString(R.string.monthly),getString(R.string.annualy),getString(R.string.nobackup)};
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.setting_reminderbuilder_settitle);
                 builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -518,7 +529,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         appIcon = prefs.getBoolean("appIcon",true);
         remTime = prefs.getString("appDailyRem","09:00");
         appSync = prefs.getBoolean("appSync",true);
-        appBackUp = prefs.getString("appBackUp","No Auto Backups");
+        appBackUp = prefs.getString("appBackUp",getString(R.string.weekly));
         appbackUpPath = prefs.getString("appBackUpPath","/storage/emulated/0/");
 
 
@@ -562,7 +573,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         preferedDateFor = dateForArr[0];
         preferedCurr = currArr[0];
         remTime = "09:00";
-        appBackUp = "No Auto Backups";
+        appBackUp = getString(R.string.nobackup);
         appSync = true;
         appbackUpPath = "/storage/emulated/0/";
         pinStatus = false;

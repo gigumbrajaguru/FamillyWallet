@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.*;
+import ccpe001.familywallet.CustomAlertDialogs;
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Validate;
 import com.facebook.*;
@@ -31,6 +32,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.*;
 import com.google.firebase.database.*;
 import com.google.firebase.storage.FirebaseStorage;
@@ -53,6 +55,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
     private CallbackManager callbackManager;
+    private CustomAlertDialogs alert;
 
 
     @Override
@@ -105,10 +108,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
 
     public void handleFacebookAccessToken(AccessToken accessToken) {
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+        alert = new CustomAlertDialogs();
+        alert.initLoadingPage(this);
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.d("Facebook", "signInWithCredential:oncomplete: " + task.isSuccessful());
                 Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
                 intent.putExtra("firstname",Profile.getCurrentProfile().getFirstName());
                 intent.putExtra("lastname",Profile.getCurrentProfile().getLastName());
@@ -124,8 +128,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
         }).addOnFailureListener(this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SignUp.this,getString(R.string.common_error),Toast.LENGTH_SHORT).show();
-            }
+                alert.hideLoadingPage();
+                alert.initCommonDialogPage(SignUp.this,getString(R.string.common_error),true);            }
         });
     }
 
@@ -135,27 +139,30 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
         if(view.getId()== R.id.signupBtn){
             if(Validate.anyValidMail(emailTxt.getText().toString().trim())) {
                 if(Validate.anyValidPass(passTxt.getText().toString().trim())){
-                    progressBar.setMessage(getString(R.string.signup_onclickprogressbar_msg));
-                    progressBar.show();
+                    alert = new CustomAlertDialogs();
+                    alert.initLoadingPage(this);
                     mAuth.createUserWithEmailAndPassword(emailTxt.getText().toString().trim(),
                                                         passTxt.getText().toString().trim())
                             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    progressBar.dismiss();
                                     if(task.isSuccessful()){
                                         saveSession(mAuth.getCurrentUser().getEmail());
                                         Toast.makeText(SignUp.this,R.string.signup_oncomplete_sucesstoast,Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent("ccpe001.familywallet.GETINFO");
                                         startActivity(intent);
                                     }else{
+                                        alert.hideLoadingPage();
                                         try {
                                             throw task.getException();
+                                        }catch (FirebaseNetworkException e) {
+                                            alert.initCommonDialogPage(SignUp.this,getString(R.string.network_error),true);
                                         }catch (FirebaseAuthUserCollisionException invalidEmail) {
                                             emailTxt.setError(getString(R.string.signup_already_email_text));
                                             Toast.makeText(SignUp.this,R.string.signup_already_email_text,Toast.LENGTH_SHORT).show();
                                         } catch (Exception e) {
-                                            Log.d("rror", ""+e.getMessage());
+                                            alert.initCommonDialogPage(SignUp.this, getString(R.string.common_error), true);
+                                            e.printStackTrace();
                                         }
                                     }
                                 }
@@ -184,7 +191,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
 
                 @Override
                 public void onError(FacebookException error) {
-                    Toast.makeText(getApplicationContext(), R.string.common_error, Toast.LENGTH_LONG).show();
+                    alert = new CustomAlertDialogs();
+                    alert.initCommonDialogPage(SignUp.this,getString(R.string.network_error),true);
                 }
             });
         }
@@ -213,30 +221,37 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);//once it auth with google it does others
             }
-            else
-                Toast.makeText(this, R.string.common_error,Toast.LENGTH_SHORT).show();
-
+            else {
+                alert = new CustomAlertDialogs();
+                alert.initCommonDialogPage(SignUp.this, getString(R.string.network_error), true);
+            }
         }
     }
 
 
     public void firebaseAuthWithGoogle(final GoogleSignInAccount acct){
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        alert = new CustomAlertDialogs();
+        alert.initLoadingPage(this);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("Google", "signInWithCredential:oncomplete: " + task.isSuccessful());
-                        Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
-                        intent.putExtra("firstname",acct.getFamilyName());
-                        intent.putExtra("lastname",acct.getDisplayName());
-                        saveData(acct.getFamilyName(),acct.getDisplayName(),acct.getPhotoUrl().toString());
-                        try {
-                            intent.putExtra("profilepic", acct.getPhotoUrl().toString());
-                        }catch (Exception e){
+                        if(task.isSuccessful()){
+                            Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
+                            intent.putExtra("firstname",acct.getFamilyName());
+                            intent.putExtra("lastname",acct.getDisplayName());
+                            saveData(acct.getFamilyName(),acct.getDisplayName(),acct.getPhotoUrl().toString());
+                            try {
+                                intent.putExtra("profilepic", acct.getPhotoUrl().toString());
+                            }catch (Exception e){
 
+                            }
+                            startActivity(intent);
+                        }else{
+                            alert.hideLoadingPage();
+                            alert.initCommonDialogPage(SignUp.this,getString(R.string.common_error),true);
                         }
-                        startActivity(intent);
                     }
                 });
     }

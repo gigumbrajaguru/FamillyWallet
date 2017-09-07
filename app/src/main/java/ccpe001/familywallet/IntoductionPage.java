@@ -20,8 +20,8 @@ import android.widget.Toast;
  */
 public class IntoductionPage extends AppCompatActivity implements ViewPager.OnPageChangeListener,View.OnClickListener{
 
-    private SharedPreferences.Editor editor;
-    private SharedPreferences pref;
+    /*private SharedPreferences.Editor editor;
+    private SharedPreferences pref;*/
     private ViewPager viewPager;
     private int[] layouts;
     private Button nextBtn,skipBtn;
@@ -32,13 +32,6 @@ public class IntoductionPage extends AppCompatActivity implements ViewPager.OnPa
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-
-        pref = getSharedPreferences("First Time",Context.MODE_PRIVATE);
-        if (!pref.getBoolean("isFirst",true)){
-            Intent intent = new Intent("ccpe001.familywallet.SIGNIN");
-            startActivity(intent);
-        }
-
         setContentView(R.layout.introcontainer);
         init();
     }

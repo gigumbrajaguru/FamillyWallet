@@ -1,6 +1,8 @@
 package ccpe001.familywallet;
 
+import android.*;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,7 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import ccpe001.familywallet.admin.GetInfo;
 import ccpe001.familywallet.transaction.TransactionDetails;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
 import com.opencsv.CSVWriter;
 import jxl.*;
@@ -42,8 +46,7 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
     private boolean exelChecked;
     private boolean csvChecked;
     private boolean mailChecked;
-    private static final int EXTERNAL_READ_PERMIT = 3;
-    private static final int EXTERNAL_WRITE_PERMIT = 4;
+    private static final int BACKUP_PERM = 3;
     private DatabaseReference databaseReference;
     private TransactionDetails tdata;
     private CSVWriter writer;
@@ -51,6 +54,7 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
     private File file;
     private WritableSheet sheet;
     private SharedPreferences prefs;
+    private CustomAlertDialogs alert;
 
 
 
@@ -59,7 +63,7 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.exportdata, container, false);
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Transactions");
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Transactions").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         databaseReference.keepSynced(true);
         init(view);
         return view;
@@ -80,40 +84,58 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == EXTERNAL_READ_PERMIT||requestCode == EXTERNAL_WRITE_PERMIT){
+        if(requestCode == BACKUP_PERM){
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED||grantResults[1]==PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getActivity(),R.string.permitgranted,Toast.LENGTH_SHORT).show();
+                Log.d("dff","sd");
+                try {
+                    alert = new CustomAlertDialogs();
+                    if ((!csvChecked) && (!exelChecked)) {
+                        alert.initCommonDialogPage(getActivity(),getString(R.string.exportdata_onclick_checkticks),true);
+                    } else {
+                        export();
+                        alert.initCommonDialogPage(getActivity(),getString(R.string.exportdata_onclick_backupdone),false);
+                        if (mailChecked) {
+                            isMailCreator();
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }else {
-                checkPermitBackup(getActivity());
+                alert = new CustomAlertDialogs();
+                alert.initCommonDialogPage(getActivity(),getString(R.string.error_permitting),true);
             }
         }
     }
 
-    protected static boolean checkPermitBackup(Context c){
-        return ActivityCompat.checkSelfPermission(c, android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED&&
-                ActivityCompat.checkSelfPermission(c, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED;
-    }
 
     @Override
     public void onClick(View view) {
         if(view.getId()==R.id.createBtn){
             if (Validate.fileValidate(fileName.getText())) {
                 filename = fileName.getText().toString();
+                final String[] EXPORTDATAPERARR = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                if (!CustomAlertDialogs.hasPermissions(getActivity(),EXPORTDATAPERARR)) {
 
-                if (!checkPermitBackup(getActivity())) {
-                    requestPermissions(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},EXTERNAL_READ_PERMIT);
-                    requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},EXTERNAL_WRITE_PERMIT);
+                    alert = new CustomAlertDialogs();
+                    alert.initPermissionPage(getActivity(),getString(R.string.permit_only_backup)).setPositiveButton(R.string.customaletdialog_initPermissionPage_posbtn, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                            requestPermissions(EXPORTDATAPERARR,BACKUP_PERM);
+                        }
+                    }).show();
+
+
                 }else {
 
-
                     try {
+                        alert = new CustomAlertDialogs();
                         if ((!csvChecked) && (!exelChecked)) {
-                            Toast.makeText(getContext(), getString(R.string.exportdata_onclick_checkticks), Toast.LENGTH_SHORT).show();
+                            alert.initCommonDialogPage(getActivity(),getString(R.string.exportdata_onclick_checkticks),true);
                         } else {
                             export();
-                            Toast.makeText(getContext(), getString(R.string.exportdata_onclick_backupdone), Toast.LENGTH_SHORT).show();
+                            alert.initCommonDialogPage(getActivity(),getString(R.string.exportdata_onclick_backupdone),false);
                             if (mailChecked) {
                                 isMailCreator();
                             }

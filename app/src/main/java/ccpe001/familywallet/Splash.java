@@ -13,6 +13,7 @@ import android.view.WindowManager;
 
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import ccpe001.familywallet.admin.Language_Selector;
 import ccpe001.familywallet.admin.Notification;
 import com.github.orangegangsters.lollipin.lib.PinActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,7 +63,7 @@ public class Splash extends PinActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Intent intent = new Intent("ccpe001.familywallet.INTRODUCTIONPAGE");
+                Intent intent = new Intent(Splash.this, Language_Selector.class);
                 startActivity(intent);
                 overridePendingTransition(R.animator.transition1, R.animator.transition2);
                 finish();

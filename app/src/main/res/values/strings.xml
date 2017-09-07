@@ -175,8 +175,8 @@
     <string name="signup_oncomplete_sucesstoast">Registration successful</string>
     <string name="signup_cancel_toast">You cancelled</string>
     <string name="signin_scan_setpromt">Scan</string>
-    <string name="common_error">Error occured,try again</string>
-
+    <string name="error_dialogbox_title">We are sorry!</string>
+    <string name="common_error">Some unknown error occured. Please restart the app.</string>
     <string name="noti_statusicon_setcontenttitle">Family Wallet</string>
     <string name="noti_statusicon_setaction_expense">Add expense</string>
     <string name="noti_statusicon_setaction_scanbill">Scan Bill</string>
@@ -300,7 +300,9 @@
     <string name="dashboard_snackbar_demopermanentBtn">Yes..!</string>
     <string name="dashboard_socialbuilder_settitle">Select Login</string>
     <string name="dashboard_social_demo_signup">Signup</string>
-    <string name="dashboard_accountcollide_text">This account is already registered.</string>
+    <string name="dashboard_accountcollide_text">This account is already registered. Please reset the account or
+        register with another account.
+    </string>
 
 
     <string-array name="social_logins">
@@ -381,7 +383,25 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
-    <string name="xmlactivity_loading_dialog_pageTxt">LOADING</string>
+    <string name="xmlactivity_loading_dialog_pageTxt">LOADING..</string>
     <string name="customaletdialog_initCommonDialogPage_posbtn">Report</string>
     <string name="customaletdialog_initCommonDialogPage_negbtn">Cancel</string>
+    <string name="common_sucessful">Successful..!</string>
+    <string name="customaletdialog_initPermissionPage_negbtn">Later</string>
+    <string name="customaletdialog_initPermissionPage_posbtn">Allow Now</string>
+    <string name="xml_getpermit_title">Grant Permissions..!</string>
+    <string name="network_error">Please turn on mobile data or Wifi to Sign in.</string>
+    <string name="forgot_FirebaseAuthInvalidUserException">There is no user email corresponding to this identifier. The
+        user may have been deleted.
+    </string>
+    <string name="dashboard_permentmem_sucess">Now you are a permanent member of our application. Thank you..</string>
+    <string name="permit_only_read">Would you like to allow access to your storage read? Press Allow now.</string>
+    <string name="permit_only_camera">Would you like to allow access to your Camera? Press Allow now.</string>
+    <string name="permit_only_backup">Would you like to allow access to your storage read and writes? Press Allow now.</string>
+
+    <string name="error_permitting">Something is wrong when granting permissions.Please try again.</string>
+    permit_only_backup
+    <string name="xml_lang_selector_english">English</string>
+    <string name="xml_lang_selector_sinhala">සිංහල</string>
+
 </resources>
