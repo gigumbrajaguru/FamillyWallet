@@ -66,6 +66,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     private static final int DIR_CHOOSER = 2;
     private final static int PERMENT_NOT = 33;
     private static final int BACKUP_PERM = 3;
+    private static final int BACKUP_PERM2 = 4;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
 
@@ -194,6 +195,20 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 alert = new CustomAlertDialogs();
                 alert.initCommonDialogPage(getActivity(),getString(R.string.error_permitting),true);
             }
+        }else if(requestCode == BACKUP_PERM2){
+            if (grantResults[0]==PackageManager.PERMISSION_GRANTED||grantResults[1]==PackageManager.PERMISSION_GRANTED) {
+                final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
+                        .allowNewDirectoryNameModification(true)
+                        .newDirectoryName("FamilyWallet Backups")
+                        .build();
+
+                mDialog = DirectoryChooserFragment.newInstance(config);
+                mDialog.show(getActivity().getFragmentManager(), null);
+                mDialog.setDirectoryChooserListener(this);
+            }else {
+                alert = new CustomAlertDialogs();
+                alert.initCommonDialogPage(getActivity(),getString(R.string.error_permitting),true);
+            }
         }
     }
 
@@ -282,12 +297,18 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 }
             },c.get(Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE),true).show();
         }else if(view.getId()==R.id.backupLocRow) {
+            final String[] EXPORTDATAPERARR = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-            /*if (!checkPermit()) {
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},EXTERNAL_READ_PERMIT);
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},EXTERNAL_WRITE_PERMIT);
+            if (!CustomAlertDialogs.hasPermissions(getActivity(),EXPORTDATAPERARR)) {
+                alert = new CustomAlertDialogs();
+                alert.initPermissionPage(getActivity(),getString(R.string.permit_only_backup)).setPositiveButton(R.string.customaletdialog_initPermissionPage_posbtn, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        requestPermissions(EXPORTDATAPERARR,BACKUP_PERM2);
+                    }
+                }).show();
             }else {
-
                 final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
                         .allowNewDirectoryNameModification(true)
                         .newDirectoryName("FamilyWallet Backups")
@@ -296,7 +317,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 mDialog = DirectoryChooserFragment.newInstance(config);
                 mDialog.show(getActivity().getFragmentManager(), null);
                 mDialog.setDirectoryChooserListener(this);
-            }*/
+            }
 
         }else if(view.getId()==R.id.appPasswordRow){
             enterPinBuilder = new AlertDialog.Builder(getActivity());

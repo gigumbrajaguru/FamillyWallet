@@ -32,6 +32,8 @@ import com.facebook.login.LoginResult;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.Target;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.github.arturogutierrez.Badges;
+import com.github.arturogutierrez.BadgesNotSupportedException;
 import com.github.orangegangsters.lollipin.lib.managers.AppLock;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -62,6 +64,8 @@ import ccpe001.familywallet.budget.budgetList;
 import ccpe001.familywallet.summary.SummaryTab;
 import ccpe001.familywallet.transaction.TransactionMain;
 import ccpe001.familywallet.transaction.TransactionRecurring;
+import me.leolin.shortcutbadger.ShortcutBadgeException;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 import java.util.Arrays;
 import java.util.Locale;

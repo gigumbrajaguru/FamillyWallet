@@ -1,6 +1,7 @@
 package ccpe001.familywallet;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -44,14 +45,15 @@ public class OCRReader2 extends AppCompatActivity {
     private TextView bill_data;
     private ImageView cropImageView;
     private CameraSource cameraSource;
-    private static final int CAMERA_PERMIT = 55;
-    private static final int EXTERNAL_READ_PERMIT = 3;
-    private static final int EXTERNAL_WRITE_PERMIT = 4;
+    private static final int GENARAL_CAM = 3;
+    private static final int CROP_CAM = 4;
+
     private StorageReference storageReference;
     private Uri billImageUri;
     private FirebaseAuth mAuth;
     private RelativeLayout layout;
     private Snackbar snackbar;
+    private CustomAlertDialogs alert;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -69,11 +71,16 @@ public class OCRReader2 extends AppCompatActivity {
                     public void onClick(View view) {
                         mAuth = FirebaseAuth.getInstance();
                         storageReference = FirebaseStorage.getInstance().getReference().child("ScannedBills").child(mAuth.getCurrentUser().getUid());
-
-                        if(!checkPermit()){
-                            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},EXTERNAL_READ_PERMIT);
-                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},EXTERNAL_WRITE_PERMIT);
-                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},CAMERA_PERMIT);
+                        final String[] CROPCAMPERARR = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
+                        if(!CustomAlertDialogs.hasPermissions(OCRReader2.this,CROPCAMPERARR)){
+                            alert = new CustomAlertDialogs();
+                            alert.initPermissionPage(OCRReader2.this,getString(R.string.permit_only_camera)).setPositiveButton(R.string.customaletdialog_initPermissionPage_posbtn, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                    ActivityCompat.requestPermissions(OCRReader2.this,CROPCAMPERARR,CROP_CAM);
+                                }
+                            }).show();
                         }else {
                             CropImage.activity()
                                     .setGuidelines(CropImageView.Guidelines.ON)
@@ -99,15 +106,24 @@ public class OCRReader2 extends AppCompatActivity {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void surfaceCreated(SurfaceHolder surfaceHolder) {
-                        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                            try {
-                                cameraSource.start(camera_view.getHolder());
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                    final String[] CAMPERARR = {Manifest.permission.CAMERA};
+                    if (!CustomAlertDialogs.hasPermissions(OCRReader2.this,CAMPERARR)) {
+                        alert = new CustomAlertDialogs();
+                        alert.initPermissionPage(OCRReader2.this,getString(R.string.permit_only_camera)).setPositiveButton(R.string.customaletdialog_initPermissionPage_posbtn, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                requestPermissions(CAMPERARR,GENARAL_CAM);
                             }
-                        }else {
-                            requestPermissions(new String[]{Manifest.permission.CAMERA},CAMERA_PERMIT);
+                        }).show();
+                    }else {
+                        try {
+                            checkSelfPermission(Manifest.permission.CAMERA);
+                            cameraSource.start(camera_view.getHolder());
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+                    }
                 }
 
                 @Override
@@ -157,6 +173,8 @@ public class OCRReader2 extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        alert = new CustomAlertDialogs();
+
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
@@ -171,12 +189,11 @@ public class OCRReader2 extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),R.string.common_error,Toast.LENGTH_SHORT).show();
-                    }
+                        alert.initCommonDialogPage(OCRReader2.this,getString(R.string.common_error),true);                    }
                 });
 
             } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Toast.makeText(this,R.string.common_error,Toast.LENGTH_SHORT).show();
+                alert.initCommonDialogPage(OCRReader2.this,getString(R.string.common_error),true);
             }
         }
     }
@@ -185,30 +202,29 @@ public class OCRReader2 extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode==CAMERA_PERMIT){
+        if(requestCode==GENARAL_CAM){
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getApplicationContext(),R.string.permitgranted,Toast.LENGTH_SHORT).show();
+                try {
+                    checkSelfPermission(Manifest.permission.CAMERA);
+                    cameraSource.start(camera_view.getHolder());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }else{
-                checkCamPermit();
+                alert = new CustomAlertDialogs();
+                alert.initCommonDialogPage(OCRReader2.this,getString(R.string.error_permitting),true);
             }
-        }else if(requestCode == EXTERNAL_READ_PERMIT||requestCode == EXTERNAL_WRITE_PERMIT||requestCode==CAMERA_PERMIT){
+        }else if(requestCode == CROP_CAM){
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED||grantResults[1]==PackageManager.PERMISSION_GRANTED||grantResults[2]==PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getApplicationContext(),R.string.permitgranted,Toast.LENGTH_SHORT).show();
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .start(OCRReader2.this);
             }else {
-                checkPermit();
+                alert = new CustomAlertDialogs();
+                alert.initCommonDialogPage(OCRReader2.this,getString(R.string.error_permitting),true);
             }
         }
     }
 
-
-    protected  boolean checkPermit(){
-        return ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED&&
-                ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED&&
-                ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    protected  boolean checkCamPermit(){
-        return ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-    }
 }
 
