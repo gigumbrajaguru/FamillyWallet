@@ -1,6 +1,9 @@
 package ccpe001.familywallet.budget;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
@@ -41,9 +44,6 @@ public class accViews extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acc_views);
-        if(actionValidater.accountChecker()){
-
-        }
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final List<String> areas = new ArrayList<String>();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -99,13 +99,45 @@ public class accViews extends AppCompatActivity {
         btnDel1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                walletDelete(accName);
+                AlertDialog.Builder builder = new AlertDialog.Builder(accViews.this);
+                builder.setTitle(R.string.app_name);
+                builder.setMessage("Do you want proceed ?");
+                builder.setIcon(R.drawable.ic_launcher);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        walletDelete(getApplicationContext(),accName);
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+
             }
         });
         btnUpdate1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                walletUpdate(accName,accAmounts.getText().toString());
+                AlertDialog.Builder builder = new AlertDialog.Builder(accViews.this);
+                builder.setTitle(R.string.app_name);
+                builder.setMessage("Do you want proceed ?");
+                builder.setIcon(R.drawable.ic_launcher);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        walletUpdate(accName,accAmounts.getText().toString());
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+
 
             }
         });
@@ -150,7 +182,7 @@ public class accViews extends AppCompatActivity {
             }
         });
     }
-    public boolean walletDelete(final String acconame) {
+    public boolean walletDelete(final Context context, final String acconame) {
 
             final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
             mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -159,10 +191,16 @@ public class accViews extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         if(child.child("accountName").getValue().toString().equals(acconame)) {
-                            child.getRef().removeValue();
-
+                            if(actionValidater.rectransactionChecker(acconame)) {
+                                child.getRef().removeValue();
+                                alertBox.alertBoxOut(accViews.this,"Completed","Wallet Deleted");
+                            }
+                            else{
+                                alertBox.alertBoxOut(accViews.this,"Terminated","You must delete recurring transactions first");
+                            }
                         }
                     }
+                    startActivity(getIntent());
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
@@ -185,6 +223,7 @@ public class accViews extends AppCompatActivity {
                         double newValue = income;
                         if (check == 0) {
                             child.getRef().child("amount").setValue(newValue);
+                            alertBox.alertBoxOut(accViews.this,"Completed","Wallet Updated");
                             check = 1;
                         }
                     }

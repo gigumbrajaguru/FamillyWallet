@@ -204,17 +204,23 @@ public class actionValidater {
     public static boolean rectransactionChecker(final String Wallet){
         int x=0;
         checks=true;
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference("RecurringTransactions");
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase.child("RecurringTransactions").addValueEventListener(new ValueEventListener(){
+        mDatabase.child(currentUser.getUid()).orderByChild("account").equalTo(Wallet).addValueEventListener(new ValueEventListener(){
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 checks=true;
-                for(DataSnapshot child:dataSnapshot.getChildren()){
-                    if(child.getKey().equals(currentUser.getUid())){
-                    }
-                }
+                dumpData dp= new dumpData();
+               if(dataSnapshot.hasChildren()){
+                   dp.setCheck(false);
+                   checks=dp.getCheck();
+               }
+               else{
+                   dp.setCheck(true);
+                   checks=dp.getCheck();
+               }
+
             }
 
             @Override
