@@ -148,7 +148,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
                                         saveSession(mAuth.getCurrentUser().getEmail());
-                                        Toast.makeText(SignUp.this,R.string.signup_oncomplete_sucesstoast,Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent("ccpe001.familywallet.GETINFO");
                                         startActivity(intent);
                                     }else{

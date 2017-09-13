@@ -126,8 +126,8 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
         if(view.getId()== R.id.signInBtn){
             if(Validate.anyValidMail(emailTxt.getText().toString().trim())) {
                 if(Validate.anyValidPass(passTxt.getText().toString().trim())){
-                    alert = new CustomAlertDialogs();
-                    /*alert.initLoadingPage(this);
+                    /*alert = new CustomAlertDialogs();
+                    alert.initLoadingPage(this);
                     mAuth.signInWithEmailAndPassword(emailTxt.getText().toString().trim(),
                             passTxt.getText().toString().trim())
                             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
