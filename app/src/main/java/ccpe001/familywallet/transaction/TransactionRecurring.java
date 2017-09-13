@@ -3,6 +3,7 @@ package ccpe001.familywallet.transaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -74,8 +75,12 @@ public class TransactionRecurring extends Fragment {
         tdList = new ArrayList<>();
         keys = new ArrayList<>();
         checkedPosition = new ArrayList<>();
-        userID= Splash.userID;
-        familyID=Splash.familyID;
+
+        SharedPreferences sharedPref = getContext().getSharedPreferences("fwPrefs",0);
+        String uid = sharedPref.getString("uniUserID", "");
+        String fid = sharedPref.getString("uniFamilyID", "");
+        userID = uid;
+        familyID = fid;
 
         mDatabase = FirebaseDatabase.getInstance().getReference("RecurringTransactions");
         mDatabase.keepSynced(true);

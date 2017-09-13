@@ -89,6 +89,7 @@ public class Dashboard extends AppCompatActivity
 
     public String fullname;
     public String propicUrl;
+    private String userID, familyID;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser;
@@ -113,7 +114,6 @@ public class Dashboard extends AppCompatActivity
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         layout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         toolbar.setTitle(R.string.dashboard_settitle_overview);
         setSupportActionBar(toolbar);
         signUpIntent = getIntent();
@@ -134,6 +134,28 @@ public class Dashboard extends AppCompatActivity
         }catch (Exception e){
 
         }
+
+        /*Setting up shared preferences*/
+        SharedPreferences sharedPref= getSharedPreferences("fwPrefs", 0);
+        final SharedPreferences.Editor editor= sharedPref.edit();
+
+        userID = firebaseUser.getUid();
+        FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                familyID=dataSnapshot.getValue().toString();
+                /* saving user id and family id in preferences */
+                Log.i("eco",familyID);
+                editor.putString("uniUserID", userID);
+                editor.putString("uniFamilyID", familyID);
+                editor.commit();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         databaseReference = FirebaseDatabase.getInstance().getReference().child("UserInfo").child(firebaseUser.getUid());
         databaseReference.keepSynced(true);
 

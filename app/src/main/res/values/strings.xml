@@ -32,6 +32,15 @@
     <string name="recurring">Recurring</string>
     <string name="income">Income</string>
     <string name="expense">Expense</string>
+    <string name="nullAmount">Set the Amount first</string>
+    <string name="nullAccount">Select Account first</string>
+    <string name="transactionAdded">Transaction Added</string>
+    <string name="transactionUpdated">Successfully Updated</string>
+
+    <string name="noAccTitle">No account found.</string>
+    <string name="noAccMsg">An account is needed to add a transaction. Do you want to add an account?</string>
+    <string name="noAccBtnAdd">Yes</string>
+    <string name="cancel">Cancel</string>
 
     <string-array name="Months">
         <item>Jan</item>

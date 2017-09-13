@@ -13,6 +13,7 @@ import static java.lang.Integer.parseInt;
 
 public class Translate {
 
+    /* Method to get category name in english to save in database  */
     public String categoryToDB(String cat){
         String retCat="";
         switch (cat){
@@ -43,6 +44,8 @@ public class Translate {
         }
         return retCat;
     }
+
+    /* Method to get category name in selected language */
     public String categoryView(String cat, Context con){
         Resources res = con.getResources();
         String[] iArr = res.getStringArray(R.array.IncomeCategory);
@@ -76,6 +79,8 @@ public class Translate {
         }
         return retCat;
     }
+
+    /* Method to get time to english to save in database  */
     public String timeToDB(String time){
         String[] parts = time.split(":");
         String ampm = parts[1].substring(3);
@@ -87,6 +92,8 @@ public class Translate {
         return parts[0]+":"+parts[1].substring(0,3)+ampmAfter;
 
     }
+
+    /* Method to get time in selected language */
     public String timeView(String time, Context con){
         Resources res = con.getResources();
         String[] parts = time.split(":");
@@ -100,6 +107,7 @@ public class Translate {
 
     }
 
+    /* Method to convert date and time in to all digit format ie- "2017-Jan-11 and 11.24pm" --> "201701112324"  */
     public static String dateToDB(String date,String time) {
         String[] parts = date.split("-");
         String month = parts[1];
@@ -134,6 +142,9 @@ public class Translate {
             }
 
         }
+            if (Integer.parseInt(day)<10){
+                day="0"+day;
+            }
 
         switch (month) {
             case "Jan":case "ජන":monthNum = "01";break;
@@ -153,6 +164,7 @@ public class Translate {
         return year + monthNum + day + rethours + timeParts[1].substring(0,2);
     }
 
+    /* Method to get date from all digit format(date and time) to readable format in language ie- "20170111" --> "2017-Jan-11" */
     public static String dateView(String date, Context con){
         Resources res = con.getResources();
         String[] monthList = res.getStringArray(R.array.Months);
@@ -177,6 +189,8 @@ public class Translate {
         }
         return day+"-"+month+"-"+year;
     }
+
+    /* Method to convert date in to all digit format ie- "2017-Jan-11" --> "20170111"*/
     public static String dateToValue(String date) {
         String[] parts = date.split("-");
         String month = parts[1];
@@ -200,6 +214,8 @@ public class Translate {
         }
         return year + monthNum + day;
     }
+
+    /* Method to get date from all digit format(date) to readable format in language ie- "20170111" --> "2017-Jan-11" */
     public static String valueToDate(String date, Context con){
         Resources res = con.getResources();
         String[] monthList = res.getStringArray(R.array.Months);
@@ -224,6 +240,8 @@ public class Translate {
         }
         return day+"-"+month+"-"+year;
     }
+
+    /* Method to get the currency name in english in database */
     public String currencyToDB(String cur){
 
         String retCur="";
@@ -237,6 +255,8 @@ public class Translate {
         }
         return retCur;
     }
+
+    /* Method to get the currency name according to the selected language*/
     public String currencyView(String cur, Context con){
         Resources res = con.getResources();
         String[] curArr = res.getStringArray(R.array.spinnerCurrency);
@@ -250,6 +270,8 @@ public class Translate {
         }
         return retCur;
     }
+
+    /* Method to get the recurring period name in english in database */
     public String recurringToDB(String recur){
         String retRecur="";
         switch (recur){
@@ -260,6 +282,8 @@ public class Translate {
         }
         return  retRecur;
     }
+
+    /* Method to get the recurring period name according to the selected language*/
     public String recurringView(String recur, Context con){
         Resources res = con.getResources();
         String[] recurList = res.getStringArray(R.array.spinnerRecurring);
@@ -272,6 +296,8 @@ public class Translate {
         }
         return  retRecur;
     }
+
+    /* Method to get the image id of the category name*/
     public int getCategoryID(String cat){
         int catID=0;
         switch (cat){

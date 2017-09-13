@@ -4,6 +4,7 @@ package ccpe001.familywallet.transaction;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -13,9 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +32,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.gcm.GcmNetworkManager;
+import com.google.android.gms.gcm.PeriodicTask;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -46,10 +47,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ccpe001.familywallet.PeriodicBackupCaller;
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Splash;
 import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
+import ccpe001.familywallet.budget.addAccount;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,7 +62,7 @@ public class TransactionMain extends Fragment {
     ListView list;
     FloatingActionButton fab_income, fab_expense,fab_main;
     Animation fabOpen, fabClose, fabClockwise, fabAntiClockwise;
-    TextView txtIncome,txtExpense,amnt;
+    TextView txtIncome,txtExpense;
     boolean isOpen = false;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -67,12 +70,10 @@ public class TransactionMain extends Fragment {
     Validate v = new Validate();
     Translate trns = new Translate();
     List<TransactionDetails> tdList;
-    List<String> keys;
-    List<String> checkedPosition;
+    List<String> keys, checkedPosition, accountsList;
     TransactionListAdapter adapter;
     String userID, familyID;
     Resources res;
-
     public TransactionMain() {
         // Required empty public constructor
     }
@@ -95,22 +96,53 @@ public class TransactionMain extends Fragment {
         }catch (Exception e){
 
         }
-        userID= Splash.userID;
-        familyID=Splash.familyID;
+
+        SharedPreferences sharedPref = getContext().getSharedPreferences("fwPrefs",0);
+        String uid = sharedPref.getString("uniUserID", "");
+        String fid = sharedPref.getString("uniFamilyID", "");
+        userID = uid;
+        familyID = fid;
+
+        /* gcmNetworkManager api method scheduling to run the recurring transactions daily*/
+        GcmNetworkManager gcmRecuTrans = GcmNetworkManager.getInstance(getActivity());
+        PeriodicTask task = new PeriodicTask.Builder()
+                .setService(recurringService.class)
+                .setPeriod(86400)//recurring daily
+                .setTag("recurringTransaction")
+                .setPersisted(true)
+                .build();
+        gcmRecuTrans.schedule(task);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Transactions");
         mDatabase.keepSynced(true);
 
+        accountsList = new ArrayList<>();
+        Query query = FirebaseDatabase.getInstance().getReference("Account").orderByChild("user").equalTo(userID);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                accountsList.clear();
+                for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                    accountsList.add(tdSnapshot.child("accountName").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         try{
-            Query query = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID).orderByChild("date");
-            query.addValueEventListener(new ValueEventListener() {
+            Query query2 = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID).orderByChild("date");
+            query2.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     tdList.clear();
                     //keys.clear();
                     for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
                         TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
-                        tdList.add(td);
+                        tdList.add(tdSnapshot.getValue(TransactionDetails.class));
                         keys.add(tdSnapshot.getKey());
 
                     }
@@ -218,15 +250,6 @@ public class TransactionMain extends Fragment {
 
 
         });
-
-
-
-
-
-
-
-
-
         return view;
     }
 
@@ -363,54 +386,77 @@ public class TransactionMain extends Fragment {
         fab_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (accountsList.isEmpty()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-                if(isOpen){
-                    fab_income.startAnimation(fabClose);
-                    fab_expense.startAnimation(fabClose);
-                    txtExpense.setAnimation(fabClose);
-                    txtIncome.setAnimation(fabClose);
-                    txtExpense.setClickable(false);
-                    txtIncome.setClickable(false);
-                    fab_main.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#1976d2")));
-                    fab_main.setScaleType(ImageView.ScaleType.CENTER);
-                    fab_main.setImageResource(R.mipmap.add_transaction);
-                    fab_income.setClickable(false);
-                    fab_expense.setClickable(false);
-                    isOpen = false;
-                }
-                else {
-                    fab_income.startAnimation(fabOpen);
-                    fab_expense.startAnimation(fabOpen);
-                    txtExpense.setAnimation(fabOpen);
-                    txtIncome.setAnimation(fabOpen);
-                    txtExpense.setClickable(true);
-                    txtIncome.setClickable(true);
-                    fab_main.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffcc0000")));
-                    fab_main.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                    fab_main.setImageResource(R.mipmap.cancel);
-                    fab_income.setClickable(true);
-                    fab_expense.setClickable(true);
-                    isOpen = true;
-                }
-                if (isOpen) {
-                    fab_income.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent("ccpe001.familywallet.AddTransaction");
-                            intent.putExtra("transactionType","Income");
-                            intent.putExtra("Update","False");
-                            startActivity(intent);
+                    builder.setMessage(R.string.noAccMsg)
+                            .setTitle(R.string.noAccTitle);
+                    builder.setPositiveButton(R.string.noAccBtnAdd, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
+                                    .beginTransaction();
+                            addAccount addwallet = new addAccount();
+                            fragmentTransaction.replace(R.id.fragmentContainer1, addwallet);
+                            fragmentTransaction.commit();
                         }
                     });
-                    fab_expense.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent("ccpe001.familywallet.AddTransaction");
-                            intent.putExtra("transactionType","Expense");
-                            intent.putExtra("Update","False");
-                            startActivity(intent);
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
                         }
                     });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+
+                    if (isOpen) {
+                        fab_income.startAnimation(fabClose);
+                        fab_expense.startAnimation(fabClose);
+                        txtExpense.setAnimation(fabClose);
+                        txtIncome.setAnimation(fabClose);
+                        txtExpense.setClickable(false);
+                        txtIncome.setClickable(false);
+                        fab_main.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#1976d2")));
+                        fab_main.setScaleType(ImageView.ScaleType.CENTER);
+                        fab_main.setImageResource(R.mipmap.add_transaction);
+                        fab_income.setClickable(false);
+                        fab_expense.setClickable(false);
+                        isOpen = false;
+                    } else {
+                        fab_income.startAnimation(fabOpen);
+                        fab_expense.startAnimation(fabOpen);
+                        txtExpense.setAnimation(fabOpen);
+                        txtIncome.setAnimation(fabOpen);
+                        txtExpense.setClickable(true);
+                        txtIncome.setClickable(true);
+                        fab_main.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffcc0000")));
+                        fab_main.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                        fab_main.setImageResource(R.mipmap.cancel);
+                        fab_income.setClickable(true);
+                        fab_expense.setClickable(true);
+                        isOpen = true;
+                    }
+                    if (isOpen) {
+                        fab_income.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent("ccpe001.familywallet.AddTransaction");
+                                intent.putExtra("transactionType", "Income");
+                                intent.putExtra("Update", "False");
+                                startActivity(intent);
+                            }
+                        });
+                        fab_expense.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent("ccpe001.familywallet.AddTransaction");
+                                intent.putExtra("transactionType", "Expense");
+                                intent.putExtra("Update", "False");
+                                startActivity(intent);
+
+                            }
+                        });
+                    }
                 }
             }
         });

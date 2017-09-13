@@ -127,7 +127,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
             if(Validate.anyValidMail(emailTxt.getText().toString().trim())) {
                 if(Validate.anyValidPass(passTxt.getText().toString().trim())){
                     alert = new CustomAlertDialogs();
-                    /*alert.initLoadingPage(this);
+                    alert.initLoadingPage(this);
                     mAuth.signInWithEmailAndPassword(emailTxt.getText().toString().trim(),
                             passTxt.getText().toString().trim())
                             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -158,7 +158,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
                                         }
                                     }
                                 }
-                            });*/alert.initPermissionPage(SignIn.this,"ssdsd").show();
+                            });
                 }else{
                     passTxt.setError(getString(R.string.signup_onclick_passerr));
                 }

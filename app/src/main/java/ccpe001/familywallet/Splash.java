@@ -48,6 +48,8 @@ public class Splash extends PinActivity {
         }catch (Exception e){
 
         }
+
+
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -71,6 +73,11 @@ public class Splash extends PinActivity {
         });
         t1.start();
 
+
+        /*Setting up shared preferences*/
+        SharedPreferences sharedPref= getSharedPreferences("fwPrefs", 0);
+        final SharedPreferences.Editor editor= sharedPref.edit();
+
         //if user logged in only
         if (mAuth.getCurrentUser() != null){
             userLoginFunc(getApplication());
@@ -79,6 +86,10 @@ public class Splash extends PinActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     familyID=dataSnapshot.getValue().toString();
+                    /* saving user id and family id in preferences */
+                    editor.putString("uniUserID", userID);
+                    editor.putString("uniFamilyID", familyID);
+                    editor.commit();
                 }
 
                 @Override

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -27,7 +28,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
@@ -40,7 +47,6 @@ public class CustomAlertDialogs {
     private TextView txtVw,txtTitle;
     private ImageView bgBVw,iconvVw,lblVw;
     private AlertDialog alertDialog;
-
 
     /*USE this FOR PASSING CONTEXT*/
 
@@ -59,6 +65,7 @@ public class CustomAlertDialogs {
         int val= (int) (130 * Resources.getSystem().getDisplayMetrics().density);//dp to px
         alertDialog= nameBuilder.show();
         alertDialog.getWindow().setLayout(val ,val);
+
 
     }
 
