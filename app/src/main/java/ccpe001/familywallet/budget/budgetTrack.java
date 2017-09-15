@@ -34,7 +34,7 @@ public class budgetTrack extends AppCompatActivity{
     TextView budNames,CategoryTexts,PercentageTexts,strtDates;
     final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference mDatabase;
-    private int day,mon,yr;
+    private int day,mon,yr,x,y,z;
     String budgetI;
     EditText endDys,budam;
     Switch switch1;
@@ -60,9 +60,6 @@ public class budgetTrack extends AppCompatActivity{
         Mdatabase.child(budgetI).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                String[] array=new String[20];
-                int y=0;
                 if(dataSnapshot.hasChildren()) {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         if (child.getKey().equals("BudgetName")) {
@@ -124,31 +121,58 @@ public class budgetTrack extends AppCompatActivity{
     btnUpdates.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View v) {
+            x=0;z=0;y=0;
             final String edate=endDys.getText().toString();
             final String amoun=budam.getText().toString();
             mDatabase = FirebaseDatabase.getInstance().getReference("Budget");
-            mDatabase.child(budgetI).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(budgetTrack.this);
+            builder.setTitle(R.string.app_name);
+            builder.setMessage("Do you want proceed ?");
+            builder.setIcon(R.drawable.ic_launcher);
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    mDatabase.child(budgetI).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    for (DataSnapshot child: dataSnapshot.getChildren()) {
-                        if (child.getKey().equals("Amount")){
-                            child.getRef().setValue(amoun);
-                        }
-                        if (child.getKey().equals("endDays")){
-                            child.getRef().setValue(edate);
-                        }
-                        if (child.getKey().equals("notification")){
-                            child.getRef().setValue(Notify);
-                        }
+                            for (DataSnapshot child: dataSnapshot.getChildren()) {
+                                if (child.getKey().equals("Amount")) {
+                                    if (x==0){
+                                        child.getRef().setValue(amoun);
+                                        x=1;
+                                    }
+                                }
+                                else if (child.getKey().equals("endDays")){
+                                    if (y==0) {
+                                        child.getRef().setValue(edate);
+                                        y=1;
+                                    }
+                                }
+                                else if (child.getKey().equals("notification")){
+                                    if (z==0) {
+                                        child.getRef().setValue(Notify);
+                                        z=1;
+                                    }
+                                }
 
-                    }
+                            }
 
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+
                 }
             });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+
         }
     });
         btnDelete.setOnClickListener(new OnClickListener() {
@@ -175,7 +199,7 @@ public class budgetTrack extends AppCompatActivity{
                         });
                         AlertDialog alert = builder.create();
                         alert.show();
-                        moveBack();
+
 
                     }
                     @Override
