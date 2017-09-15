@@ -209,6 +209,17 @@
 
         </activity>
         <activity
+                android:name=".admin.Language_Selector"
+                android:theme="@style/AppTheme.NoActionBar"
+                android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="ccpe001.familywallet.budget.accViews"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+        </activity>
+        <activity
                 android:name=".transaction.TransactionCategory"
                 android:parentActivityName=".transaction.AddTransaction"
                 android:screenOrientation="portrait"

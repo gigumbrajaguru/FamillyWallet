@@ -19,6 +19,7 @@ import android.widget.TextView;
 import ccpe001.familywallet.*;
 import ccpe001.familywallet.transaction.AddTransaction;
 import com.joanzapata.iconify.widget.IconButton;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -72,6 +73,7 @@ public class Notification {
     }
 
 
+    //THIS FUNC PROTOTYPE IMPLEMENTED TO USE WITH BUDGET LIMITS
     //This method returns true if notification successfully created and added to DB
     public boolean addNotification(Context context,String title,String body){
         NotificationCompat.Builder notiBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
@@ -86,6 +88,7 @@ public class Notification {
                 format(GregorianCalendar.getInstance().getTime()),body);
         badgeCount++;
         setBadgeCount(badgeCount,itemMessagesBadgeTextView);
+        ShortcutBadger.applyCount(context, badgeCount);
         return true;
     }
 
@@ -132,6 +135,7 @@ public class Notification {
             badgeCount++;
             Log.d("badcount","add on noti rec"+badgeCount);
             setBadgeCount(badgeCount,itemMessagesBadgeTextView);
+            ShortcutBadger.applyCount(context, badgeCount);
         }
     }
 }

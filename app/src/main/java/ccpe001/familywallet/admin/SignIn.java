@@ -52,13 +52,11 @@ import java.util.Arrays;
 public class SignIn extends PinActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private Button signIn;
-    private TextView toSignUp,forgotTxt;
+    private TextView toSignUp,forgotTxt,noSignInBtn;
     private EditText emailTxt,passTxt;
-    private ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
     private SignInButton googleBtn;
     private LoginButton fbBtn;
-    private Button noSignInBtn;
 
     private final static int RC_SIGN_IN = 0;
     private GoogleApiClient mGoogleApiClient;
@@ -77,7 +75,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
     private void init() {
         setTitle(R.string.signin_title);
         signIn= (Button)findViewById(R.id.signInBtn);
-        noSignInBtn= (Button)findViewById(R.id.noSignInBtn);
+        noSignInBtn= (TextView)findViewById(R.id.noSignInBtn);
         noSignInBtn.setOnClickListener(this);
         toSignUp = (TextView)findViewById(R.id.textView2);
         forgotTxt = (TextView)findViewById(R.id.textView);
@@ -87,7 +85,6 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
         signIn.setOnClickListener(this);
         toSignUp.setOnClickListener(this);
         forgotTxt.setOnClickListener(this);
-        progressDialog = new ProgressDialog(this);
 
         fbBtn = (LoginButton) findViewById(R.id.fbOptBtn);
         googleBtn= (SignInButton)findViewById(R.id.googleOptBtn);
@@ -126,7 +123,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
         if(view.getId()== R.id.signInBtn){
             if(Validate.anyValidMail(emailTxt.getText().toString().trim())) {
                 if(Validate.anyValidPass(passTxt.getText().toString().trim())){
-                    /*alert = new CustomAlertDialogs();
+                    alert = new CustomAlertDialogs();
                     alert.initLoadingPage(this);
                     mAuth.signInWithEmailAndPassword(emailTxt.getText().toString().trim(),
                             passTxt.getText().toString().trim())
@@ -158,7 +155,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
                                         }
                                     }
                                 }
-                            });*/alert.initPermissionPage(SignIn.this,"ssdsd").show();
+                            });//alert.initPermissionPage(SignIn.this,"ssdsd").show();
                 }else{
                     passTxt.setError(getString(R.string.signup_onclick_passerr));
                 }

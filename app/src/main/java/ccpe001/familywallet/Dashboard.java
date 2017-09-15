@@ -26,6 +26,7 @@ import android.widget.*;
 
 import ccpe001.familywallet.admin.Notification;
 import ccpe001.familywallet.admin.SignUp;
+import ccpe001.familywallet.budget.actionValidater;
 import com.facebook.*;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -394,7 +395,31 @@ public class Dashboard extends AppCompatActivity
                     });
             snackbar.show();
         }
+        /*------------------------Account Availabilty checker--------------------------------------*/
+        if (actionValidater.accountChecker()) {
+            final android.support.v4.app.FragmentTransaction fragmentes = getSupportFragmentManager().beginTransaction();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.app_name);
+            builder.setMessage("Do you want to add new Wallet/Bank account ?");
+            builder.setIcon(R.drawable.ic_launcher);
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    addAccount addwallet = new addAccount();
+                    fragmentes.replace(R.id.fragmentContainer1, addwallet);
+                    fragmentes.commit();
 
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
+        /*------------------------Account Availabilty checker--------------------------------------*/
     }
 
     @Override

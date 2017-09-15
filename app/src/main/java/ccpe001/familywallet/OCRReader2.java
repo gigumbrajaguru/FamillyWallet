@@ -97,7 +97,7 @@ public class OCRReader2 extends AppCompatActivity {
         if (!textRecognizer.isOperational()) {
         } else {
             cameraSource = new CameraSource.Builder(getApplicationContext(), textRecognizer)
-                    .setFacing(CameraSource.CAMERA_FACING_FRONT)
+                    .setFacing(CameraSource.CAMERA_FACING_BACK)
                     .setRequestedPreviewSize(1280, 1024)
                     .setRequestedFps(2.0f)
                     .setAutoFocusEnabled(true)
