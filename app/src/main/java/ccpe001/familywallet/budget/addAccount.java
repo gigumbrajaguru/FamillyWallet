@@ -112,25 +112,8 @@ public class addAccount extends Fragment  {
 
             }
         });
-        Switch sw = (Switch)v.findViewById(R.id.swtNotify);
         Switch sw1 = (Switch)v.findViewById(R.id.swcPrivate);
-        sw.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    Notify="True";
-                }
-                else {
-                    Notify="False";
-                }
 
-            }
-        });
-        if(sw.isChecked()){
-            Notify="True";
-        }
-        else {
-            Notify="False";
-        }
         sw1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -142,7 +125,7 @@ public class addAccount extends Fragment  {
 
             }
         });
-        if(sw.isChecked()){
+        if(sw1.isChecked()){
             isPrivate="True";
         }
         else {
@@ -173,9 +156,9 @@ public class addAccount extends Fragment  {
                                              boolean xyzx=actionValidater.accountName(accountName);
                                              if (xyzx) {
                                                  if (check) {
-                                                     msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, Notify, currtype, familyId));
+                                                     msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, currtype, familyId));
                                                  } else {
-                                                     msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Wallet", "Wallet", isPrivate, Notify, currtype, familyId));
+                                                     msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Wallet", "Wallet", isPrivate, currtype, familyId));
 
                                                  }
                                                  if (msgBoxOut) {

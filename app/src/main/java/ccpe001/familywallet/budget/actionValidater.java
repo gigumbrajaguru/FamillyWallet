@@ -60,7 +60,7 @@ public class actionValidater {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        return true;
+        return checks;
     }
     public static boolean isSaving(final String AccountName) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -104,6 +104,7 @@ public class actionValidater {
                             child.getRef().child("amount").setValue(newValue);
                             dumpData dp= new dumpData();
                             dp.setCheck(true);
+                            dp.getCheck();
                             check = 1;
                         }
                     }
@@ -133,6 +134,7 @@ public class actionValidater {
                                     child.getRef().child("amount").setValue(newValue);
                                     dumpData dp= new dumpData();
                                     dp.setCheck(true);
+                                    checks=dp.getCheck();
                                     check = 1;
                                 }
                             }
@@ -143,7 +145,7 @@ public class actionValidater {
                 public void onCancelled(DatabaseError databaseError) {
                 }
             });
-        return true;
+        return checks;
         }
 
     public static boolean  accountChecker(){

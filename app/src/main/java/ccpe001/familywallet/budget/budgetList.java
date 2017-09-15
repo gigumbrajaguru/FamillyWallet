@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,18 +32,19 @@ import ccpe001.familywallet.Translate;
 
 public class budgetList extends Fragment {
     private DatabaseReference mDatabase;
-    Object[] array={},array10={},array20={},arrayk={};
-    String[] title1={},catName1={},status1={},bugKey={};
-    String[] title,catName,status,budKeys;
+    Object[] array={},array10={},array20={},arrayk={},percentage1,end1;
+    String[] title1={},catName1={},status1={},bugKey={},percentage2,end2;
+    String[] title,catName,status,budKeys,percentage,end;
     Integer[] imgId1={};
     budgetListAd addList;
     final List<String> lkey = new ArrayList<String>();
     final List<String> lBname = new ArrayList<String>();
     final List<String> lcat = new ArrayList<String>();
     final List<String> lstat = new ArrayList<String>();
+    final List<String> lpercent = new ArrayList<String>();
+    final List<String> lend = new ArrayList<String>();
     private final Handler handler = new Handler();
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-
         final View view = inflater.inflate(R.layout.budget_list, container, false);
         ListView budList = (ListView) view.findViewById(R.id.list);
         AutoRefresh(view);
@@ -74,12 +76,20 @@ public class budgetList extends Fragment {
                         String xy = child.child("BudgetName").getValue().toString();
                         String xyz = child.child("status").getValue().toString();
                         String xxy = child.child("catagory").getValue().toString();
+                        String cvh=child.child("percentage").getValue().toString();
+                        String cvi=child.child("endDays").getValue().toString();
                         String xyy = child.getKey().toString();
                         lkey.add(xyy);
                         lBname.add(xy);
                         lcat.add(xxy);
                         lstat.add(xyz);
+                        lpercent.add(cvh);
+                        lend.add(cvi);
                     }
+                    percentage1 = new Object[lkey.size()];
+                    percentage2 = new String[lkey.size()];
+                    end1 = new Object[lkey.size()];
+                    end2 = new String[lkey.size()];
                     arrayk = new Object[lkey.size()];
                     bugKey = new String[lkey.size()];
                     array = new Object[lBname.size()];
@@ -93,6 +103,8 @@ public class budgetList extends Fragment {
                     array10 = lcat.toArray();
                     array20 = lstat.toArray();
                     arrayk = lkey.toArray();
+                    end1=lend.toArray();
+                    percentage1=lpercent.toArray();
                     Translate getcat = new Translate();
                     for (int y = 0; y < array.length; y++) {
                         title1[y] = (String) array[y];
@@ -100,12 +112,16 @@ public class budgetList extends Fragment {
                         status1[y] = (String) array20[y];
                         bugKey[y] = (String) arrayk[y];
                         imgId1[y] = getcat.getCategoryID(catName1[y]);
+                        percentage2[y]=(String)percentage1[y];
+                        end2[y]=(String)end1[y];
                     }
                     lkey.clear();
                     lBname.clear();
                     lcat.clear();
                     lstat.clear();
-                    pushList(view, title1, catName1, status1, imgId1, bugKey);
+                    lpercent.clear();
+                    lend.clear();
+                    pushList(view, title1, catName1, status1, imgId1, bugKey,percentage2,end2);
                 }
             }
             @Override
@@ -115,16 +131,19 @@ public class budgetList extends Fragment {
         return true;
     }
 
-    public void pushList(View view,String title1[],String catName1[],String status1[],Integer imgId1[],String budKey[]) {
+    public void pushList(View view,String title1[],String catName1[],String status1[],Integer imgId1[],String budKey[],String[] p2,String[] end12) {
         Integer[] imgId;
         ListView budList = (ListView) view.findViewById(R.id.list);
         title = title1.clone();
         catName= catName1.clone();
         status = status1.clone();
         imgId = imgId1.clone();
+        percentage=p2.clone();
+        end=end12.clone();
+        Log.i(end[0],"ddd");
         budKeys=budKey.clone();
         if(getActivity()!=null) {
-            addList = new budgetListAd(getActivity(), title, catName, status, imgId, budKeys);
+            addList = new budgetListAd(getActivity(), title, catName, status, imgId, budKeys,percentage,end);
             budList.setAdapter(addList);
         }
         }
