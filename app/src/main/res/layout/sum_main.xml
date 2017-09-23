@@ -6,15 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="ccpe001.familywallet.summary.sumMain"> -->
+    tools:context="ccpe001.familywallet.summary.sumMain">
 
-<!--
+
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="375dp"/> -->
+        android:layout_height="375dp"/>
 
-<!--   <EditText
+   <EditText
        android:id="@+id/strtdt"
        android:layout_width="160dp"
        android:layout_height="wrap_content"
@@ -33,7 +33,8 @@
        android:hint="End Date"
        android:inputType="date"
        android:layout_alignParentBottom="true"
-       android:layout_toEndOf="@+id/strtdt" /> -->
+       android:layout_toEndOf="@+id/strtdt" />-->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -44,37 +45,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ccpe001.familywallet.summary.sumMain" >
 
-    <!-- <TextView
-         android:id="@+id/textView1"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignParentTop="true"
-         android:layout_centerHorizontal="true"
-         android:layout_marginTop="168dp"
-         android:text=""
-         android:textAppearance="?android:attr/textAppearanceLarge"
-         android:gravity="center" />
-
-      <TextView
-          android:id="@+id/textView2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/textView1"
-          android:layout_marginTop="27dp"
-          android:layout_centerHorizontal="true"
-          android:text=""
-          android:textAppearance="?android:attr/textAppearanceLarge"
-          android:gravity="center" /> -->
-
-
     <TextView
         android:id="@+id/textView29"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="140dp"
-        android:text="TextView" />
+        android:layout_marginTop="140dp" />
 
     <TextView
         android:id="@+id/textView30"
@@ -82,8 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textView29"
         android:layout_below="@+id/textView29"
-        android:layout_marginTop="63dp"
-        android:text="TextView" />
+        android:layout_marginTop="63dp" />
 </RelativeLayout>
 
-    <!--</RelativeLayout> -->
+   <!-- </RelativeLayout>-->
