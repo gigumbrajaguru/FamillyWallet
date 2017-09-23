@@ -100,7 +100,7 @@ public class OCRReader2 extends AppCompatActivity {
                     .setFacing(CameraSource.CAMERA_FACING_BACK)
                     .setRequestedPreviewSize(1280, 1024)
                     .setRequestedFps(2.0f)
-                    .setAutoFocusEnabled(true)
+                    .setAutoFocusEnabled(false)
                     .build();
             camera_view.getHolder().addCallback(new SurfaceHolder.Callback() {
                 @RequiresApi(api = Build.VERSION_CODES.M)

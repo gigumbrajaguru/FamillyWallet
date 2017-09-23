@@ -137,7 +137,6 @@
         </activity>
         <activity
                 android:name=".admin.SignIn"
-
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -190,9 +189,6 @@
                         android:value=".ccpe001.familywallet.DASHBOARD"/>
             </intent-filter>
         </activity>
-
-
-
         <activity
                 android:name=".budget.accViews"
                 android:parentActivityName=".Dashboard"
@@ -206,7 +202,6 @@
                         android:name="android.support.PARENT_ACTIVITY"
                         android:value=".ccpe001.familywallet.DASHBOARD"/>
             </intent-filter>
-
         </activity>
         <activity
                 android:name=".admin.Language_Selector"
@@ -253,7 +248,19 @@
                 android:name="com.google.android.gms.vision.DEPENDENCIES"
                 android:value="ocr"/>
 
-
+        <activity android:name=".admin.Language_Selector"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <service
+            android:name=".transaction.recurringService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
+            <intent-filter>
+                <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
