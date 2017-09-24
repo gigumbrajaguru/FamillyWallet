@@ -54,8 +54,9 @@ public class sumMain extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.sum_main, container, false);
-        integerTextView = (TextView)view.findViewById(R.id.textView29);
-        stringTextView = (TextView)view.findViewById(R.id.textView30);
+        //integerTextView = (TextView)view.findViewById(R.id.textView29);
+        //stringTextView = (TextView)view.findViewById(R.id.textView30);
+        charts = (PieChart) view.findViewById(R.id.chart);
         rtrvdata= FirebaseDatabase.getInstance().getReference();
         rtrvdata.child("Transactions").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -70,6 +71,9 @@ public class sumMain extends Fragment {
                     transacval.add(transacdt);
                     dbcat.add(catdata);
                 }
+                int lstsize=transacval.size();
+                int lstsizet=dbcat.size();
+               /* Log.d("lstsize",String.valueOf(lstsize));
                 for(int i=0; i < transacval.size(); i++){
 
                     integerTextView.setText(integerTextView.getText() + " " + transacval.get(i) + " , ");
@@ -77,17 +81,19 @@ public class sumMain extends Fragment {
                 for(int i=0; i < dbcat.size(); i++){
 
                     stringTextView.setText(stringTextView.getText() + dbcat.get(i) + " , ");
-                }
-               /* testtransac=new Float[transacval.size()];
-                for (int i = 0; i < transacval.size(); i++) //ref : https://stackoverflow.com/questions/7379680/how-to-convert-arrayliststring-to-float
+                }*/
+                testtransac=new Float[lstsize];
+                for (int i = 0; i < lstsize; i++) //ref : https://stackoverflow.com/questions/7379680/how-to-convert-arrayliststring-to-float
                 {
                     testtransac[i] = Float.parseFloat(transacval.get(i));
                 }
-                testcat=new String[dbcat.size()];
-                for (int j = 0; j < dbcat.size(); j++) //ref : https://stackoverflow.com/questions/7379680/how-to-convert-arrayliststring-to-float
+                testcat=new String[lstsizet];
+                for (int j = 0; j < lstsizet; j++) //ref : https://stackoverflow.com/questions/7379680/how-to-convert-arrayliststring-to-float
                 {
                     testcat[j] = dbcat.get(j);
-                }*/
+                }
+                //Pie chart method to populate
+                SetupChart();
 
             }
 
@@ -96,13 +102,9 @@ public class sumMain extends Fragment {
 
             }
         });
-
-       // charts = (PieChart) view.findViewById(R.id.chart);
-        //Pie chart method to populate
-        //SetupChart();
         return view;
     }
-    /*private void SetupChart() //ref : https://www.youtube.com/watch?v=iS7EgKnyDeY
+    private void SetupChart() //ref : https://www.youtube.com/watch?v=iS7EgKnyDeY
     {
 
        ArrayList<PieEntry> pieEntries = new ArrayList<>();
@@ -117,6 +119,6 @@ public class sumMain extends Fragment {
         charts.animateY(1000);
         charts.invalidate();
 
-    }*/
+    }
 }
 

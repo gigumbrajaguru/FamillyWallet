@@ -1,4 +1,4 @@
-<!--<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -33,9 +33,9 @@
        android:hint="End Date"
        android:inputType="date"
        android:layout_alignParentBottom="true"
-       android:layout_toEndOf="@+id/strtdt" />-->
+       android:layout_toEndOf="@+id/strtdt" />
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -60,6 +60,6 @@
         android:layout_alignStart="@+id/textView29"
         android:layout_below="@+id/textView29"
         android:layout_marginTop="63dp" />
-</RelativeLayout>
+</RelativeLayout>-->
 
-   <!-- </RelativeLayout>-->
+    </RelativeLayout>
