@@ -75,7 +75,7 @@ public class CustomAlertDialogs {
     }
 
     /*pass the context, msg description, and whther if it is a error or not*/
-    public void initCommonDialogPage(Context c,String str,Boolean isError){
+    public AlertDialog.Builder initCommonDialogPage(Context c,String str,Boolean isError){
         LayoutInflater inflater = (LayoutInflater) c.getSystemService( c.LAYOUT_INFLATER_SERVICE);
         final AlertDialog.Builder nameBuilder = new AlertDialog.Builder(c);
         View alertDiaView = inflater.inflate(R.layout.common_dialog_box,null);
@@ -114,7 +114,7 @@ public class CustomAlertDialogs {
 
 
 
-        nameBuilder.show();
+        return nameBuilder;
     }
 
     /*pass the contect when asking for permissions,permission desc for str*/

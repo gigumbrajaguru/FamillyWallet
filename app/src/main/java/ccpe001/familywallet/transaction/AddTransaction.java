@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -520,6 +521,7 @@ public class AddTransaction extends AppCompatActivity {
                 }
                 else if (update.equals("True")){
                     mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID);
+
 
                     td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
                     Double amountDouble =Double.parseDouble(amount)-Double.parseDouble(previousAmount);

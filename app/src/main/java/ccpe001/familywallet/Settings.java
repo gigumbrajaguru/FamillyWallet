@@ -54,7 +54,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 public class Settings extends Fragment implements View.OnClickListener,Switch.OnCheckedChangeListener,DirectoryChooserFragment.OnFragmentInteractionListener{
 
-    private Switch localMode,statusIcon,autoSync,appNotySwitch,enDisPinSwitch;
+    private Switch localMode,statusIcon,appNotySwitch,enDisPinSwitch;
     private Button signOutBtn,setPinBtn;
     private TextView langText,currText,dateForText,dailyRemText,backupLocText,appPwText,backupRemText;
     private AlertDialog.Builder langBuilder,currBuilder,dateForBuilder,enterPinBuilder,langBuilderOpener;
@@ -65,14 +65,17 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     private static final int ENABLE_PIN = 1;
     private static final int DIR_CHOOSER = 2;
     private final static int PERMENT_NOT = 33;
+    private final static int DAILY_REMINDER = 11;
+    private final static int NOTI_PPROTOTYPE = 22;
     private static final int BACKUP_PERM = 3;
     private static final int BACKUP_PERM2 = 4;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
+    private NotificationManager notificationManager;
 
     private String[] langArr,currArr,dateForArr;
 
-    private boolean pinStatus,mode,appNoty,appIcon,appSync;
+    private boolean pinStatus,mode,appNoty,appIcon;
     private String pin,preferedLang,preferedDateFor,preferedCurr,remTime,appbackUpPath,appBackUp;
 
     private FirebaseAuth mAuth;
@@ -131,9 +134,6 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         backupRemRow = (TableRow) v.findViewById(R.id.backupRemRow);
         backupRemRow.setOnClickListener(this);
         dailyRemText = (TextView) v.findViewById(R.id.startRem);
-        autoSync = (Switch) v.findViewById(R.id.autoSyncSwitch);
-        autoSync.setOnCheckedChangeListener(this);
-        autoSync.setOnCheckedChangeListener(this);
         backupLocRow = (TableRow) v.findViewById(R.id.backupLocRow);
         backupLocRow.setOnClickListener(this);
         backupLocText = (TextView) v.findViewById(R.id.statusBackUpLoc);
@@ -193,7 +193,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 alert.show();
             } else {
                 alert = new CustomAlertDialogs();
-                alert.initCommonDialogPage(getActivity(),getString(R.string.error_permitting),true);
+                alert.initCommonDialogPage(getActivity(),getString(R.string.error_permitting),true).show();
             }
         }else if(requestCode == BACKUP_PERM2){
             if (grantResults[0]==PackageManager.PERMISSION_GRANTED||grantResults[1]==PackageManager.PERMISSION_GRANTED) {
@@ -207,7 +207,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 mDialog.setDirectoryChooserListener(this);
             }else {
                 alert = new CustomAlertDialogs();
-                alert.initCommonDialogPage(getActivity(),getString(R.string.error_permitting),true);
+                alert.initCommonDialogPage(getActivity(),getString(R.string.error_permitting),true).show();
             }
         }
     }
@@ -226,31 +226,27 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
             }
             mAuth.signOut();
 
-            NotificationManager mNotificationManager = (NotificationManager)getActivity().getSystemService(Context
-                    .NOTIFICATION_SERVICE);
-            mNotificationManager.cancel(PERMENT_NOT);
-
             PeriodicBackupCaller.backupRunner(getActivity(),getString(R.string.nobackup));
 
             //off noti here
-
+            notificationManager = (NotificationManager)getActivity().getSystemService(Context
+                    .NOTIFICATION_SERVICE);
+            notificationManager.cancelAll();
 
             getActivity().finish();
             sessionClear();
             startActivity(new Intent("ccpe001.familywallet.SIGNIN"));
         }else if(view.getId()==R.id.selectLangRow){
-            langBuilderOpener = new AlertDialog.Builder(getContext());
-            langBuilderOpener.setTitle(R.string.setting_langBuilderOpener_settitle);
-            langBuilderOpener.setMessage(R.string.setting_langBuilderOpener_setmsg);
-            langBuilderOpener.setPositiveButton(R.string.setting_setlangBuilderOpener_positive, new DialogInterface.OnClickListener() {
+            new CustomAlertDialogs().initCommonDialogPage(getActivity(),getString(R.string.setting_langBuilderOpener_setmsg),true)
+                    .setPositiveButton(R.string.setting_setlangBuilderOpener_positive, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     showLangChanger();
                 }
             }).setNegativeButton(R.string.setting_setNegativeButton, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-
+                    dialog.dismiss();
                 }
-            }).setIcon(android.R.drawable.ic_dialog_alert).show();
+            }).show();
         }else if(view.getId()==R.id.selectCurrRow){
             currBuilder = new AlertDialog.Builder(getContext());
             currBuilder.setTitle(R.string.setting_currbuilder_settitle);
@@ -472,10 +468,8 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         if(switchs.getId()==R.id.localModeSwitch){
 
             if(b) {
-                langBuilderOpener = new AlertDialog.Builder(getContext());
-                langBuilderOpener.setTitle(R.string.setting_langBuilderOpener_settitle);
-                langBuilderOpener.setMessage(R.string.setting_onCheckedChanged_langBuilderOpener_setmsg);
-                langBuilderOpener.setPositiveButton(R.string.setting_setlangBuilderOpener_positive, new DialogInterface.OnClickListener() {
+                new CustomAlertDialogs().initCommonDialogPage(getActivity(),getString(R.string.setting_onCheckedChanged_langBuilderOpener_setmsg),true)
+                .setPositiveButton(R.string.setting_setlangBuilderOpener_positive, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         mode = true;
                         localMode();
@@ -492,7 +486,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                         setDefaults();
                         storePWSharedPref();
                     }
-                }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                }).show();
             }else{
                 mode = false;
                 setDefaults();
@@ -500,14 +494,22 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
             }
         }else if(switchs.getId()==R.id.appNotySwitch){
             if(b) {
-                Toast.makeText(getActivity(),R.string.setting_appnotiswitch_on_toast,Toast.LENGTH_SHORT).show();
                 dailyRemRow.setVisibility(View.VISIBLE);
                 appNoty = true;
                 storePWSharedPref();
+
+                Notification noti = new Notification(itemMessagesBadgeTextView);
+                noti.dailyReminder(getActivity());
+                new Notification.UpdateNotification();
+
             }else{
                 dailyRemRow.setVisibility(View.GONE);
 
-                //off noti here
+                notificationManager = (NotificationManager)getActivity().getSystemService(Context
+                        .NOTIFICATION_SERVICE);
+                notificationManager.cancel(DAILY_REMINDER);
+                notificationManager.cancel(NOTI_PPROTOTYPE);
+
                 appNoty = false;
                 storePWSharedPref();
             }
@@ -523,18 +525,6 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 storePWSharedPref();
                 new ccpe001.familywallet.admin.Notification().statusIcon(getActivity());
             }
-        }else if(switchs.getId()==R.id.autoSyncSwitch){
-            db = FirebaseDatabase.getInstance().getReference();
-            if(b) {
-                appSync = true;
-                storePWSharedPref();
-                db.keepSynced(true);
-
-            }else{
-                appSync = false;
-                storePWSharedPref();
-                db.keepSynced(false);
-            }
         }
     }
 
@@ -549,7 +539,6 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         appNoty = prefs.getBoolean("appNoty",true);
         appIcon = prefs.getBoolean("appIcon",true);
         remTime = prefs.getString("appDailyRem","09:00");
-        appSync = prefs.getBoolean("appSync",true);
         appBackUp = prefs.getString("appBackUp",getString(R.string.weekly));
         appbackUpPath = prefs.getString("appBackUpPath","/storage/emulated/0/");
 
@@ -561,7 +550,6 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         appNotySwitch.setChecked(appNoty);
         statusIcon.setChecked(appIcon);
         dailyRemText.setText(remTime);
-        autoSync.setChecked(appSync);
         backupRemText.setText(appBackUp);
         backupLocText.setText(appbackUpPath);
         appPwText.setText(String.valueOf(pinStatus));
@@ -579,7 +567,6 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         editor.putBoolean("appNoty",appNoty);
         editor.putBoolean("appIcon",appIcon);
         editor.putString("appDailyRem",remTime);
-        editor.putBoolean("appSync",appSync);
         editor.putString("appBackUp",appBackUp);
         editor.putString("appBackUpPath", appbackUpPath);
 
@@ -595,7 +582,6 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         preferedCurr = currArr[0];
         remTime = "09:00";
         appBackUp = getString(R.string.nobackup);
-        appSync = true;
         appbackUpPath = "/storage/emulated/0/";
         pinStatus = false;
 
@@ -606,7 +592,6 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         appNotySwitch.setChecked(appIcon);
         statusIcon.setChecked(appNoty);
         dailyRemText.setText(remTime);
-        autoSync.setChecked(appSync);
         backupRemText.setText(appBackUp);
         backupLocText.setText(appbackUpPath);
         appPwText.setText(String.valueOf(pinStatus));

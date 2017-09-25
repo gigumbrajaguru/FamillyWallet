@@ -288,7 +288,7 @@ public class Dashboard extends AppCompatActivity
                                                                                     @Override
                                                                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                                                                         if (task.isSuccessful()) {
-                                                                                            alert.initCommonDialogPage(Dashboard.this,getString(R.string.dashboard_permentmem_sucess),false);
+                                                                                            alert.initCommonDialogPage(Dashboard.this,getString(R.string.dashboard_permentmem_sucess),false).show();
                                                                                             Intent intent = new Intent("ccpe001.familywallet.GETINFO");
                                                                                             startActivity(intent);
                                                                                         } else {
@@ -296,11 +296,11 @@ public class Dashboard extends AppCompatActivity
                                                                                             try {
                                                                                                 throw task.getException();
                                                                                             }catch (FirebaseNetworkException e) {
-                                                                                                alert.initCommonDialogPage(Dashboard.this,getString(R.string.network_error),true);
+                                                                                                alert.initCommonDialogPage(Dashboard.this,getString(R.string.network_error),true).show();
                                                                                             }catch (FirebaseAuthUserCollisionException invalidEmail) {
                                                                                                 emailTxt.setError(getString(R.string.signup_already_email_text));
                                                                                             } catch (Exception e) {
-                                                                                                alert.initCommonDialogPage(Dashboard.this, getString(R.string.common_error), true);
+                                                                                                alert.initCommonDialogPage(Dashboard.this, getString(R.string.common_error), true).show();
                                                                                                 e.printStackTrace();
                                                                                             }
                                                                                         }
@@ -317,6 +317,7 @@ public class Dashboard extends AppCompatActivity
                                                             }
                                                         }).setNegativeButton(R.string.setting_pinbuilder_negbtn, new DialogInterface.OnClickListener() {
                                                             public void onClick(DialogInterface dialog, int id) {
+                                                                dialog.dismiss();
                                                             }
                                                         }).show();
 
@@ -355,16 +356,16 @@ public class Dashboard extends AppCompatActivity
                                                                         alert.hideLoadingPage();
                                                                         if (task.isSuccessful()) {
                                                                             alert.hideLoadingPage();
-                                                                            alert.initCommonDialogPage(Dashboard.this,getString(R.string.dashboard_permentmem_sucess),false);
+                                                                            alert.initCommonDialogPage(Dashboard.this,getString(R.string.dashboard_permentmem_sucess),false).show();
                                                                         saveData(Profile.getCurrentProfile().getFirstName(),Profile.getCurrentProfile().getLastName(),
                                                                                     Profile.getCurrentProfile().getProfilePictureUri(500,500).toString());
                                                                         } else {
                                                                             try {
                                                                                 throw task.getException();
                                                                             }catch (FirebaseAuthUserCollisionException collide) {
-                                                                                alert.initCommonDialogPage(Dashboard.this,getString(R.string.dashboard_accountcollide_text),true);
+                                                                                alert.initCommonDialogPage(Dashboard.this,getString(R.string.dashboard_accountcollide_text),true).show();
                                                                             } catch (Exception e) {
-                                                                                alert.initCommonDialogPage(Dashboard.this,getString(R.string.common_error),true);
+                                                                                alert.initCommonDialogPage(Dashboard.this,getString(R.string.common_error),true).show();
                                                                                 Log.d("rror", ""+e.getMessage());
                                                                             }
                                                                         }
@@ -380,7 +381,7 @@ public class Dashboard extends AppCompatActivity
                                                     @Override
                                                     public void onError(FacebookException error) {
                                                         alert = new CustomAlertDialogs();
-                                                        alert.initCommonDialogPage(Dashboard.this,getString(R.string.network_error),true);                                                    }
+                                                        alert.initCommonDialogPage(Dashboard.this,getString(R.string.network_error),true).show();                                                    }
                                                 });
 
 
@@ -441,15 +442,15 @@ public class Dashboard extends AppCompatActivity
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 alert.hideLoadingPage();
                                 if (task.isSuccessful()) {
-                                    alert.initCommonDialogPage(Dashboard.this,getString(R.string.dashboard_permentmem_sucess),false);
+                                    alert.initCommonDialogPage(Dashboard.this,getString(R.string.dashboard_permentmem_sucess),false).show();
                                     saveData(acct.getFamilyName(),acct.getDisplayName(),acct.getPhotoUrl().toString());
                                 } else {
                                     try {
                                         throw task.getException();
                                     }catch (FirebaseAuthUserCollisionException collide) {
-                                        alert.initCommonDialogPage(Dashboard.this,getString(R.string.dashboard_accountcollide_text),true);
+                                        alert.initCommonDialogPage(Dashboard.this,getString(R.string.dashboard_accountcollide_text),true).show();
                                     } catch (Exception e) {
-                                        alert.initCommonDialogPage(Dashboard.this,getString(R.string.common_error),true);
+                                        alert.initCommonDialogPage(Dashboard.this,getString(R.string.common_error),true).show();
                                         Log.d("rror", ""+e.getMessage());
                                     }
                                 }
@@ -458,7 +459,7 @@ public class Dashboard extends AppCompatActivity
                         });
             }
             else {
-                alert.initCommonDialogPage(Dashboard.this, getString(R.string.network_error), true);
+                alert.initCommonDialogPage(Dashboard.this, getString(R.string.network_error), true).show();
             }
         }
     }

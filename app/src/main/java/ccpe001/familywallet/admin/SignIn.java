@@ -148,9 +148,9 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
                                         catch (FirebaseNetworkException e)
                                         {
                                             alert.hideLoadingPage();
-                                            alert.initCommonDialogPage(SignIn.this,getString(R.string.network_error),true);
+                                            alert.initCommonDialogPage(SignIn.this,getString(R.string.network_error),true).show();
                                         } catch (Exception e) {
-                                            alert.initCommonDialogPage(SignIn.this,getString(R.string.common_error),true);
+                                            alert.initCommonDialogPage(SignIn.this,getString(R.string.common_error),true).show();
                                             e.printStackTrace();
                                         }
                                     }
@@ -187,7 +187,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
                 @Override
                 public void onError(FacebookException error) {
                     alert = new CustomAlertDialogs();
-                    alert.initCommonDialogPage(SignIn.this,getString(R.string.network_error),true);
+                    alert.initCommonDialogPage(SignIn.this,getString(R.string.network_error),true).show();
                 }
             });
         }else if(view.getId()== R.id.noSignInBtn){
@@ -209,9 +209,9 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
                                 }
                                 catch (FirebaseNetworkException e)
                                 {
-                                    alert.initCommonDialogPage(SignIn.this,getString(R.string.network_error),true);
+                                    alert.initCommonDialogPage(SignIn.this,getString(R.string.network_error),true).show();
                                 } catch (Exception e) {
-                                    alert.initCommonDialogPage(getApplication(),"signInAnonymously:failure "+task.getException(),true);
+                                    alert.initCommonDialogPage(getApplication(),"signInAnonymously:failure "+task.getException(),true).show();
                                 }
                             }
                         }
@@ -240,7 +240,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
             }
             else {
                 alert = new CustomAlertDialogs();
-                alert.initCommonDialogPage(SignIn.this, getString(R.string.network_error), true);
+                alert.initCommonDialogPage(SignIn.this, getString(R.string.network_error), true).show();
             }
 
         }
@@ -281,7 +281,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
                             startActivity(intent);
                         }else {
                             alert.hideLoadingPage();
-                            alert.initCommonDialogPage(SignIn.this,getString(R.string.common_error),true);
+                            alert.initCommonDialogPage(SignIn.this,getString(R.string.common_error),true).show();
                         }
                     }
                 });
@@ -317,7 +317,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
             @Override
             public void onFailure(@NonNull Exception e) {
                 alert.hideLoadingPage();
-                alert.initCommonDialogPage(SignIn.this,getString(R.string.common_error),true);
+                alert.initCommonDialogPage(SignIn.this,getString(R.string.common_error),true).show();
             }
         });
     }

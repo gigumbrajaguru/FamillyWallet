@@ -53,18 +53,18 @@ public class Forgot extends PinActivity implements View.OnClickListener {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     alert.hideLoadingPage();
-                                    alert.initCommonDialogPage(Forgot.this, getString(R.string.forgot_oncomplete_toast),false);
+                                    alert.initCommonDialogPage(Forgot.this, getString(R.string.forgot_oncomplete_toast),false).show();
                                 }else{
                                     alert.hideLoadingPage();
                                     try {
                                         throw task.getException();
                                     }
                                     catch (FirebaseNetworkException e) {
-                                        alert.initCommonDialogPage(Forgot.this,getString(R.string.network_error),true);
+                                        alert.initCommonDialogPage(Forgot.this,getString(R.string.network_error),true).show();
                                     } catch (FirebaseAuthInvalidUserException e) {
-                                        alert.initCommonDialogPage(Forgot.this,getString(R.string.forgot_FirebaseAuthInvalidUserException),true);
+                                        alert.initCommonDialogPage(Forgot.this,getString(R.string.forgot_FirebaseAuthInvalidUserException),true).show();
                                     } catch (Exception e) {
-                                        alert.initCommonDialogPage(Forgot.this,getString(R.string.common_error),true);
+                                        alert.initCommonDialogPage(Forgot.this,getString(R.string.common_error),true).show();
                                         e.printStackTrace();
                                     }
                                 }

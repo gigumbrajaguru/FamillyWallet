@@ -273,27 +273,10 @@
                 </TableRow>
             </TableLayout>
 
+
+
             <TableLayout
-                    android:layout_width="match_parent"
                     android:layout_below="@+id/head5"
-                    android:id="@+id/autoSyncSwitchLay"
-                    android:layout_height="match_parent">
-
-                <TableRow android:layout_width="match_parent"
-                          android:layout_height="match_parent"
-                          android:padding="10dp" >
-
-                    <Switch
-                            android:text="@string/xmlsetting_autoSyncSwitch_text"
-                            android:layout_weight="1"
-
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" android:id="@+id/autoSyncSwitch"/>
-                </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                    android:layout_below="@+id/autoSyncSwitchLay"
                     android:id="@+id/autoBackUpSwitchLay"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">

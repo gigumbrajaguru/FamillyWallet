@@ -248,10 +248,12 @@
                 android:name="com.google.android.gms.vision.DEPENDENCIES"
                 android:value="ocr"/>
 
-        <activity android:name=".admin.Language_Selector"
-                  android:screenOrientation="portrait"
-                  android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+        <service android:name=".admin.Notification$UpdateNotification">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
         <service
             android:name=".transaction.recurringService"
             android:enabled="true"

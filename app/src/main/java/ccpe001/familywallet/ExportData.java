@@ -90,10 +90,10 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
                 try {
                     alert = new CustomAlertDialogs();
                     if ((!csvChecked) && (!exelChecked)) {
-                        alert.initCommonDialogPage(getActivity(),getString(R.string.exportdata_onclick_checkticks),true);
+                        alert.initCommonDialogPage(getActivity(),getString(R.string.exportdata_onclick_checkticks),true).show();
                     } else {
                         export();
-                        alert.initCommonDialogPage(getActivity(),getString(R.string.exportdata_onclick_backupdone),false);
+                        alert.initCommonDialogPage(getActivity(),getString(R.string.exportdata_onclick_backupdone),false).show();
                         if (mailChecked) {
                             isMailCreator();
                         }
@@ -103,7 +103,7 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
                 }
             }else {
                 alert = new CustomAlertDialogs();
-                alert.initCommonDialogPage(getActivity(),getString(R.string.error_permitting),true);
+                alert.initCommonDialogPage(getActivity(),getString(R.string.error_permitting),true).show();
             }
         }
     }
@@ -132,10 +132,10 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
                     try {
                         alert = new CustomAlertDialogs();
                         if ((!csvChecked) && (!exelChecked)) {
-                            alert.initCommonDialogPage(getActivity(),getString(R.string.exportdata_onclick_checkticks),true);
+                            alert.initCommonDialogPage(getActivity(),getString(R.string.exportdata_onclick_checkticks),true).show();
                         } else {
                             export();
-                            alert.initCommonDialogPage(getActivity(),getString(R.string.exportdata_onclick_backupdone),false);
+                            alert.initCommonDialogPage(getActivity(),getString(R.string.exportdata_onclick_backupdone),false).show();
                             if (mailChecked) {
                                 isMailCreator();
                             }
