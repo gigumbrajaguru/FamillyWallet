@@ -32,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
@@ -42,39 +43,37 @@ import static ccpe001.familywallet.R.mipmap.category;
 public class sumMain extends Fragment {
 
     public  PieChart charts;
-    // float transac[] = {750.0f, 150.0f, 200.0f};
-    //String category[] = {"food", "other", "fees"};
     private DatabaseReference rtrvdata; // creating database referrence to read data
-    public final ArrayList<Float> transacval = new ArrayList<>(); // List to add transaction data
+    public final ArrayList<String> transacval = new ArrayList<>(); // List to add transaction data
     public final ArrayList<String> dbcat = new ArrayList<>(); // List to add category
-    // public String testcat[];
-    // public Float testtransac[];
-    // public Object ObjTransac[], ObjTestCat[];
-    public Float transacdt;
-    public String catdata;
     TextView integerTextView,stringTextView;
+    public String []testcat;
+    public Float[]testtransac;
+    public String transacdt;
+    public String catdata;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.sum_main, container, false);
-        integerTextView = (TextView)view.findViewById(R.id.textView29);
-        stringTextView = (TextView)view.findViewById(R.id.textView30);
+        //integerTextView = (TextView)view.findViewById(R.id.textView29);
+        //stringTextView = (TextView)view.findViewById(R.id.textView30);
+        charts = (PieChart) view.findViewById(R.id.chart);
         rtrvdata= FirebaseDatabase.getInstance().getReference();
-        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        rtrvdata.child("Transactions").equalTo(currentUser.getUid()).orderByChild("userID").addValueEventListener(new ValueEventListener() {
+        rtrvdata.child("Transactions").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) { // Data retrieving method
-
+                Log.d("dbval",dataSnapshot.toString());
                 for (DataSnapshot Transacdata : dataSnapshot.getChildren()) {
                     transacval.clear();
                     dbcat.clear();
                     //Assigning database values to variables
-                    transacdt = Float.parseFloat(String.valueOf(Transacdata.child("amount").getValue()));
-                    catdata = Transacdata.child("categoryName").getValue().toString();
-                    //Log.d("Test", String.valueOf(transacdt));
+                    transacdt = (Transacdata.child("amount").getValue(String.class)).toString();
+                    catdata = (Transacdata.child("categoryName").getValue(String.class)).toString();
                     transacval.add(transacdt);
                     dbcat.add(catdata);
                 }
-
+                int lstsize=transacval.size();
+                int lstsizet=dbcat.size();
+               /* Log.d("lstsize",String.valueOf(lstsize));
                 for(int i=0; i < transacval.size(); i++){
 
                     integerTextView.setText(integerTextView.getText() + " " + transacval.get(i) + " , ");
@@ -82,8 +81,20 @@ public class sumMain extends Fragment {
                 for(int i=0; i < dbcat.size(); i++){
 
                     stringTextView.setText(stringTextView.getText() + dbcat.get(i) + " , ");
+                }*/
+                testtransac=new Float[lstsize];
+                for (int i = 0; i < lstsize; i++) //ref : https://stackoverflow.com/questions/7379680/how-to-convert-arrayliststring-to-float
+                {
+                    testtransac[i] = Float.parseFloat(transacval.get(i));
                 }
-                //SetupChart();
+                testcat=new String[lstsizet];
+                for (int j = 0; j < lstsizet; j++) //ref : https://stackoverflow.com/questions/7379680/how-to-convert-arrayliststring-to-float
+                {
+                    testcat[j] = dbcat.get(j);
+                }
+                //Pie chart method to populate
+                SetupChart();
+
             }
 
             @Override
@@ -91,26 +102,12 @@ public class sumMain extends Fragment {
 
             }
         });
-       /* ObjTransac = transacval.toArray(new Object[transacval.size()]); //Covert Float array List to Object array
-        ObjTestCat = dbcat.toArray(new Object[dbcat.size()]);        //Convert String array List to Object array
-        for(int j=0; j < ObjTransac.length; j++)
-        {
-            testtransac[j]= (Float) ObjTransac[j]; //adding object array values to float array
-        }
-
-        for(int k=0; k < ObjTestCat.length; k++)
-        {
-            testcat [k]= (String) ObjTestCat[k];  //adding object array values to float array
-        }*/
-
-        // charts = (PieChart) view.findViewById(R.id.chart);
-        //Pie chart method to populate
         return view;
     }
     private void SetupChart() //ref : https://www.youtube.com/watch?v=iS7EgKnyDeY
     {
 
-      /*  ArrayList<PieEntry> pieEntries = new ArrayList<>();
+       ArrayList<PieEntry> pieEntries = new ArrayList<>();
         for (int i = 0; i < testtransac.length; i++) {
             pieEntries.add(new PieEntry(testtransac[i], testcat[i]));
         }
@@ -120,7 +117,7 @@ public class sumMain extends Fragment {
         PieData data = new PieData(dataSet);
         charts.setData(data);
         charts.animateY(1000);
-        charts.invalidate();*/
+        charts.invalidate();
 
     }
 }
