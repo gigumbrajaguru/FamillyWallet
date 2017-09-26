@@ -136,6 +136,7 @@ public class BudgetHandling extends AppCompatActivity implements View.OnClickLis
     }
     public void nxtForecast(View v){
         Intent newInt1 = new Intent(this,forecast.class);
+        newInt1.putExtra("Category",selected );
         startActivity(newInt1);
     }
 }

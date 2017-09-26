@@ -4,6 +4,7 @@ package ccpe001.familywallet.budget;
  * Created by Gigum on 2017-07-09.
  */
 
+/***This class used to pass data for account function*****/
 public class DataStores {
     public String user;
     public   String accountName;

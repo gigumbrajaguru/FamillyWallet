@@ -16,6 +16,8 @@ public class acountCtrl {
     public DatabaseReference databaseReference;
     public FirebaseAuth firebaseAuth;
 
+
+    /** this method use to add account data to firebase **/
     public boolean addDataAcc(String user,String accountName,Double amount,String types,String bankID,String isPrivate,String curType,String familyId){
         databaseReference= FirebaseDatabase.getInstance().getReference();
         firebaseAuth= FirebaseAuth.getInstance();
@@ -29,6 +31,7 @@ public class acountCtrl {
 
         return true;
     }
+    /** this method use to add budget data to firebase **/
     public boolean addbdget(String uname,String Fname,String bname,String strDate,String endDate,String amount,String tnotify,String catogary){
         databaseReference= FirebaseDatabase.getInstance().getReference();
         firebaseAuth= FirebaseAuth.getInstance();

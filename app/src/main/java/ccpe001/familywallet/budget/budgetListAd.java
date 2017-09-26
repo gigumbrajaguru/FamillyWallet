@@ -14,6 +14,8 @@ import ccpe001.familywallet.R;
  * Created by Gigum on 2017-05-29.
  */
 
+
+/**This class use to add data into list view box**/
 public class budgetListAd extends ArrayAdapter<String> {
     private final Activity context;
     private final String[]title;

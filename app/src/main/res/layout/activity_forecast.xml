@@ -8,44 +8,30 @@
               tools:context="ccpe001.familywallet.budget.forecast"
               android:weightSum="1">
 
-    <com.github.mikephil.charting.charts.CombinedChart
-        android:id="@+id/forecastChart"
-        android:layout_width="match_parent"
-        android:layout_height="333dp"
-        android:layout_marginTop="40dp">
-
-    </com.github.mikephil.charting.charts.CombinedChart>
-
-    <TextView
-        android:id="@+id/viAvg"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:text="Average Spend"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        />
-
-    <TextView
-        android:id="@+id/viAvg1"
-        android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:layout_x="189dp"
-        android:layout_y="413dp"
-        android:text="8000.00"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        />
-
     <TextView
         android:id="@+id/viCat"
         android:layout_width="match_parent"
         android:layout_height="37dp"
-        android:layout_x="99dp"
-        android:layout_y="364dp"
-        android:text="Catagory"
+        android:text="Catagory  "
+        android:layout_marginTop="30dp"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        />
+
+
+    <com.github.mikephil.charting.charts.CombinedChart
+        android:id="@+id/forecastChart"
+        android:layout_width="match_parent"
+        android:layout_height="333dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/forecastamoount"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:text="Forecast amount:"
+        android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textStyle="bold"

@@ -14,6 +14,8 @@ import ccpe001.familywallet.R;
  * Created by Gigum on 2017-09-15.
  */
 
+/***** This class use to pass account details for account list view*****/
+
 public class accountListAd extends ArrayAdapter{
     private final Activity context;
     private final String[]accountName;

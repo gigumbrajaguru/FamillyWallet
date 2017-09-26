@@ -4,6 +4,8 @@ package ccpe001.familywallet.budget;
  * Created by Gigum on 2017-09-05.
  */
 
+
+/********* This class use to pass data ****/
 public class dumpData {
     public boolean checks;
     public boolean checkAddname;

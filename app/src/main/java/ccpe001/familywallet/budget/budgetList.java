@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -86,6 +85,7 @@ public class budgetList extends Fragment {
                         lpercent.add(cvh);
                         lend.add(cvi);
                     }
+                    /* create arrays and pass data between arrays*/
                     percentage1 = new Object[lkey.size()];
                     percentage2 = new String[lkey.size()];
                     end1 = new Object[lkey.size()];
@@ -140,7 +140,6 @@ public class budgetList extends Fragment {
         imgId = imgId1.clone();
         percentage=p2.clone();
         end=end12.clone();
-        Log.i(end[0],"ddd");
         budKeys=budKey.clone();
         if(getActivity()!=null) {
             addList = new budgetListAd(getActivity(), title, catName, status, imgId, budKeys,percentage,end);
