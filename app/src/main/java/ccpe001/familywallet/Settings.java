@@ -225,7 +225,10 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
             }
             mAuth.signOut();
-
+            SharedPreferences sharedPref= getContext().getSharedPreferences("fwPrefs",0);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.clear();      //clear all data.
+            editor.commit();  //commit change to SharedPreferences.
             NotificationManager mNotificationManager = (NotificationManager)getActivity().getSystemService(Context
                     .NOTIFICATION_SERVICE);
             mNotificationManager.cancel(PERMENT_NOT);

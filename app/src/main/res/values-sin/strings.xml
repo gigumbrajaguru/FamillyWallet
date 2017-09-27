@@ -37,6 +37,9 @@
     <string name="noAccMsg">ගනුදෙනුවක් ඇතුලත් කිරීමට ගිණුමක් සැදිය යුතුයි.</string>
     <string name="noAccBtnAdd">ගිණුමක් සාදන්න</string>
     <string name="cancel">අවලංගු කරන්න</string>
+    <string name="updateTransaction">සංස්කරණය කරන්න</string>
+    <string name="leaveGroup">Leave Group</string>
+    <string name="remove">Remove(s)</string>
 
     <string-array name="Months">
         <item>ජන</item>
@@ -56,6 +59,8 @@
     <string name="tAM">පෙ.ව.</string>
     <string name="tPM">ප.ව.</string>
 
+
+    <string name="vhName">ගනුදෙනුව හිමිකරු</string>
     <string name="vhTitle">ශීර්ෂය</string>
     <string name="vhAmount">මුදල</string>
     <string name="vhCategory">කාන්ඩය</string>
@@ -95,6 +100,7 @@
         <item>අමතර ආදායම</item>
         <item>වෙනත්</item>
     </string-array>
-    <string name="dashboard_settitle_overview">සියලුම ගනුදෙනු</string>
+    <string name="dashboard_settitle_overview">මගේ ගනුදෙනු</string>
     <string name="dashboard_settitle_recurring">"පුනරාවර්තනය ගනුදෙනු"</string>
+    <string name="dashboard_settitle_family">පවුලේ ගනුදෙනු</string>
 </resources>

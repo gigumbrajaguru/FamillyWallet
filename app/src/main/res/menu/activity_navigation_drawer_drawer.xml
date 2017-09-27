@@ -7,21 +7,21 @@
         <item
             android:id="@+id/transactionFrag"
             android:icon="@drawable/ic_menu_camera"
-            android:title="@string/xmlmenu_transactionFrag_title" />
+            android:title="@string/dashboard_settitle_overview" />
+        <item
+            android:id="@+id/categoryFrag"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/dashboard_settitle_family" />
+
+        <item
+            android:id="@+id/recurringFrag"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/dashboard_settitle_recurring" />
         <item
             android:id="@+id/reportsFrag"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/xmlmenu_reportsFrag_title" />
 
-        <item
-            android:id="@+id/recurringFrag"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/xmlmenu_recurringFrag_title" />
-
-        <item
-            android:id="@+id/categoryFrag"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/xmlmenu_categoryFrag_title" />
 
 
 

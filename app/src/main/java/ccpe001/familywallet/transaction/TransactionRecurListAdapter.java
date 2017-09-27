@@ -40,13 +40,10 @@ public class TransactionRecurListAdapter extends ArrayAdapter<TransactionDetails
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView;
         TransactionDetails td = tdList.get(position);
-        String prevDate="";
-
         final Validate v = new Validate();
 
 
-            rowView = inflater.inflate(R.layout.transaction_recurring_list, null, true);
-
+            rowView = inflater.inflate(R.layout.transaction_recurring_row, null, true);
             TextView txtTitle = (TextView) rowView.findViewById(R.id.txtTitle);
             TextView txtCategory = (TextView) rowView.findViewById(R.id.txtCategory);
             TextView txtDate = (TextView) rowView.findViewById(R.id.txtTime);

@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.graphics.drawable.ColorDrawable;
+
 import java.util.List;
-import java.util.ArrayList;
+
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
@@ -27,7 +27,7 @@ public class TransactionListAdapter extends ArrayAdapter<TransactionDetails> {
 
 
     public TransactionListAdapter(Activity context, List<TransactionDetails> tdList) {
-        super(context, R.layout.category_list, tdList);
+        super(context, R.layout.transaction_main, tdList);
         // TODO Auto-generated constructor stub
 
         this.context = context;
@@ -38,16 +38,10 @@ public class TransactionListAdapter extends ArrayAdapter<TransactionDetails> {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView;
         TransactionDetails td = tdList.get(position);
-        String prevDate="";
         final Validate v = new Validate();
 
-        if (td.getCategoryName().equals("Other")){
-            rowView = inflater.inflate(R.layout.temp, null, true);
-            TextView tmp = (TextView) rowView.findViewById(R.id.txtTemp);
-            tmp.setText("other");
-        }
 
-            rowView = inflater.inflate(R.layout.transaction_list, null, true);
+            rowView = inflater.inflate(R.layout.transaction_row, null, true);
             TextView txtTitle = (TextView) rowView.findViewById(R.id.txtTitle);
             TextView txtCategory = (TextView) rowView.findViewById(R.id.txtCategory);
             TextView txtDate = (TextView) rowView.findViewById(R.id.txtTime);
@@ -55,16 +49,26 @@ public class TransactionListAdapter extends ArrayAdapter<TransactionDetails> {
             ImageView imageView = (ImageView) rowView.findViewById(R.id.img);
 
 
-            txtTitle.setText(td.getTitle());
-            txtCategory.setText(trns.categoryView(td.getCategoryName(),context));
-            txtDate.setText(trns.dateView(td.getDate(),getContext()));
+
             String type = td.getType();
             if (type.equals("Income")){
+                txtAmount.setTextColor(ContextCompat.getColor(getContext(),R.color.income));
+                txtTitle.setTextColor(ContextCompat.getColor(getContext(),R.color.income));
+                txtCategory.setTextColor(ContextCompat.getColor(getContext(),R.color.income));
+                txtDate.setTextColor(ContextCompat.getColor(getContext(),R.color.income));
                 txtAmount.setText("+"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());
-                txtAmount.setTextColor(ContextCompat.getColor(context,R.color.income));
+                txtTitle.setText(td.getTitle());
+                txtCategory.setText(trns.categoryView(td.getCategoryName(),getContext()));
+                txtDate.setText(trns.dateView(td.getDate(),getContext()));
             }else if (type.equals("Expense")){
+                txtAmount.setTextColor(ContextCompat.getColor(getContext(),R.color.expense));
+                txtTitle.setTextColor(ContextCompat.getColor(getContext(),R.color.expense));
+                txtCategory.setTextColor(ContextCompat.getColor(getContext(),R.color.expense));
+                txtDate.setTextColor(ContextCompat.getColor(getContext(),R.color.expense));
                 txtAmount.setText("-"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());
-                txtAmount.setTextColor(ContextCompat.getColor(context,R.color.expense));
+                txtTitle.setText(td.getTitle());
+                txtCategory.setText(trns.categoryView(td.getCategoryName(),getContext()));
+                txtDate.setText(trns.dateView(td.getDate(),getContext()));
             }
             imageView.setImageResource(td.getCategoryID());
 

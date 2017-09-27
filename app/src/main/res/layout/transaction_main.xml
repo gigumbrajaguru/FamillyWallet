@@ -16,20 +16,20 @@
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="60dp"
+        android:choiceMode="multipleChoiceModal"
         android:clickable="false"
         android:divider="@android:color/transparent"
         android:dividerHeight="1.5sp"
         android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:choiceMode="multipleChoiceModal"/>
+        android:focusableInTouchMode="false" />
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/transactionList"
-        android:layout_alignEnd="@+id/transactionList"
-        android:layout_gravity="bottom|end">
+        android:layout_gravity="bottom|end"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabIncome"

@@ -5,45 +5,87 @@
               android:layout_height="match_parent">
 
 
-    <TextView
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
-            android:layout_marginTop="60dp"
+            android:orientation="vertical" >
 
-            android:text="@string/xmladdmember_editText10_text"
-            android:id="@+id/editText10"/>
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="30dp"
-            android:id="@+id/qrCodeImage"/>
+            <TextView
+                android:id="@+id/addMemberTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/xmladdmember_editText2_text"
-            android:clickable="true"
-            android:layout_marginBottom="-5dp"
-            android:ems="10"
-            android:id="@+id/editText2"/>
+                android:layout_marginTop="60dp"
+                android:text="@string/xmladdmember_editText10_text"
+                android:textAlignment="center"
+                android:textSize="28dp"
+                android:textStyle="bold" />
 
-    <Button
-            android:text="@string/xmladdmember_scanqrbtn_text"
-            android:gravity="center_vertical"
+            <ImageView
+                android:id="@+id/qrCodeImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="30dp" />
 
-            android:background="@drawable/roundbutton"
-            android:layout_width="match_parent"
-            android:textAllCaps="false"
-            android:textAlignment="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_height="47dp"
-            android:id="@+id/scanqrbtn"/>
+            <TextView
+                android:id="@+id/qrError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-5dp"
+                android:layout_marginStart="10dp"
+                android:clickable="true"
+                android:ems="10"
+                android:text="@string/xmladdmember_editText2_text" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/grDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                android:paddingLeft="10dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/scanqrbtn"
+                android:layout_width="match_parent"
+
+                android:layout_height="35dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/roundbutton"
+                android:gravity="center_vertical"
+                android:text="@string/xmladdmember_scanqrbtn_text"
+                android:textAlignment="center"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/btnLeave"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/roundbutton"
+                android:gravity="center_vertical"
+                android:text="@string/leaveGroup"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>

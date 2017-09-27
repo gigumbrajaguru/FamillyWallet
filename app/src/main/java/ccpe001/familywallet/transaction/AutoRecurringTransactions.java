@@ -28,7 +28,7 @@ import static java.security.AccessController.getContext;
 
 public class AutoRecurringTransactions {
 
-    String userID, familyID;
+    String userID, familyID, InGroup;
     List<TransactionDetails> tdList;
     List<String> keys;
     private DatabaseReference mDatabase, m2Database;
@@ -37,7 +37,7 @@ public class AutoRecurringTransactions {
     TransactionDetails tdReturn;
     final actionValidater av = new actionValidater();
 
-    public AutoRecurringTransactions(String uID , String fID){
+    public AutoRecurringTransactions(String uID , String fID, String inGrp){
         /*Getting Current Date*/
         final Calendar c = Calendar.getInstance();
         todayYear = c.get(Calendar.YEAR);   //Current year
@@ -54,6 +54,7 @@ public class AutoRecurringTransactions {
         /**/
         familyID=fID;
         userID=uID;
+        InGroup = inGrp;
 
 
         /*Keeping the recurring transaction list available offline */
@@ -71,7 +72,7 @@ public class AutoRecurringTransactions {
         /*Getting the recurring transaction list for particular user*/
         try {
             Log.i("echo",familyID);
-            Query query = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(familyID);
+            Query query = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(userID);
             query.keepSynced(true);
             query.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -242,6 +243,12 @@ public class AutoRecurringTransactions {
         tdReturn = new TransactionDetails(userID,td.getAmount(), td.getTitle(),
                 td.getCategoryName(), retDate, td.getCategoryID(), td.getTime(),
                 td.getAccount(), td.getLocation(), td.getType(), td.getCurrency(),familyID);
+        if (familyID.equals(userID) && !InGroup.equals("true")){
+            m2Database.child("Transactions").child(userID).push().setValue(tdReturn);
+        }
+        else {
+            m2Database.child("Transactions").child("Groups").child(familyID).push().setValue(tdReturn);
+        }
         m2Database.child("Transactions").child(familyID).push().setValue(tdReturn);
         Double amountDouble =Double.parseDouble(td.getAmount());
         /* Reduct amount from the relevant account  */

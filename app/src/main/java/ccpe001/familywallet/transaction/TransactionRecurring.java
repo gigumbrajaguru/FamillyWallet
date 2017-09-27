@@ -1,10 +1,8 @@
 package ccpe001.familywallet.transaction;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -19,8 +17,6 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +29,6 @@ import java.util.Collections;
 import java.util.List;
 
 import ccpe001.familywallet.R;
-import ccpe001.familywallet.Splash;
 import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
 
@@ -61,7 +56,7 @@ public class TransactionRecurring extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.transaction_recurring, container, false);
+        final View view = inflater.inflate(R.layout.transaction_recurring_list, container, false);
         list = (ListView) view.findViewById(R.id.transactionListR);
         emptyText = (TextView) view.findViewById(android.R.id.empty);
         try {
@@ -86,12 +81,11 @@ public class TransactionRecurring extends Fragment {
         mDatabase.keepSynced(true);
         try {
 
-            Query query = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(familyID).orderByChild("date");
+            Query query = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(userID).orderByChild("date");
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     tdList.clear();
-                    //keys.clear();
                     for (DataSnapshot tdSnapshot : dataSnapshot.getChildren()) {
                         TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
                         tdList.add(td);
@@ -207,7 +201,7 @@ public class TransactionRecurring extends Fragment {
                 intent.putExtra("key",key);
                 intent.putExtra("title",td.getTitle());
                 intent.putExtra("amount",td.getAmount());
-                intent.putExtra("date",trns.valueToDate(td.getDate(),getContext()));
+                intent.putExtra("date",trns.dateView(td.getDate(),getContext()));
                 intent.putExtra("time",trns.timeView(td.getTime(),getContext()));
                 intent.putExtra("categoryName",trns.categoryView(td.getCategoryName(),getContext()));
                 intent.putExtra("categoryID",td.getCategoryID());

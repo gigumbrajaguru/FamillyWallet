@@ -41,6 +41,9 @@
     <string name="noAccMsg">An account is needed to add a transaction. Do you want to add an account?</string>
     <string name="noAccBtnAdd">Yes</string>
     <string name="cancel">Cancel</string>
+    <string name="updateTransaction">Update</string>
+    <string name="leaveGroup">Leave Group</string>
+    <string name="remove">Remove</string>
 
     <string-array name="Months">
         <item>Jan</item>
@@ -61,6 +64,7 @@
     <string name="tAM">AM</string>
     <string name="tPM">PM</string>
 
+    <string name="vhName">Transaction Owner</string>
     <string name="vhTitle">Title</string>
     <string name="vhAmount">Amount</string>
     <string name="vhCategory">Category</string>
@@ -264,7 +268,7 @@
     <string name="xmlexportdata_sendBackMail_text">Send files via mail?</string>
     <string name="xmlexportdata_createBtn_text">Create files</string>
     <string name="xmladdmember_editText2_text">Can\'t scan QR code?</string>
-    <string name="xmladdmember_editText10_text">Go to other members mobile and scan the QR code..!</string>
+    <string name="xmladdmember_editText10_text">To add a member scan their QR code.</string>
     <string name="xmlactscreen3_textView4_text">Description String</string>
     <string name="xmlactscreen2_textView4_text">Description String</string>
     <string name="xmlactscreen1_textView4_text">Description String</string>
@@ -286,9 +290,10 @@
     <string name="summarytab_settitle_1">Income</string>
     <string name="summarytab_settitle_2">Expense</string>
     <string name="xmladdmember_scanqrbtn_text">Scan QR Code</string>
-    <string name="dashboard_settitle_overview">Transaction Overview</string>
+    <string name="dashboard_settitle_overview">My Transactions</string>
     <string name="dashboard_settitle_summary">Reports</string>
     <string name="dashboard_settitle_recurring">Recurring Transactions</string>
+    <string name="dashboard_settitle_family">Family Transactions</string>
     <string name="dashboard_settitle_tranfer">Accounts</string>
     <string name="dashboard_settitle_budget">Budget</string>
     <string name="dashboard_settitle_wallet">Wallet</string>
@@ -379,7 +384,7 @@
         <item>3</item>
     </string-array>
 
-    <string-array name="multi_select_list_preference_default_value"/>
+    <string-array name="multi_select_list_preference_default_value" />
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
 

@@ -34,7 +34,7 @@ public class Splash extends PinActivity {
 
     private SharedPreferences prefs;
     private FirebaseAuth mAuth;
-    public static String userID, familyID;
+    public static String userID, familyID, fname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,13 +82,16 @@ public class Splash extends PinActivity {
         if (mAuth.getCurrentUser() != null){
             userLoginFunc(getApplication());
             userID = mAuth.getCurrentUser().getUid();
-            FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
+            FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    familyID=dataSnapshot.getValue().toString();
-                    /* saving user id and family id in preferences */
+                    familyID=dataSnapshot.child("familyId").getValue().toString();
+                    fname=dataSnapshot.child("firstName").getValue().toString()+dataSnapshot.child("lastName").getValue().toString();
+                    /* saving user id, family id and first name in preferences */
+                    Log.i("echo",fname);
                     editor.putString("uniUserID", userID);
                     editor.putString("uniFamilyID", familyID);
+                    editor.putString("uniFname", fname);
                     editor.commit();
                 }
 

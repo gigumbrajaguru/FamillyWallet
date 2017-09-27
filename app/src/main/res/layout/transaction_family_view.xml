@@ -23,7 +23,7 @@
             android:gravity="center">
 
             <TextView
-                android:id="@+id/vvTxtTitle"
+                android:id="@+id/vvFamTxtTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -33,17 +33,17 @@
 
         </TableRow>
 
-
+        --
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhTitle"
+                android:id="@+id/vhFamName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:text="Title"
+                android:text="@string/vhName"
                 android:textColor="@color/com_facebook_likeview_text_color" />
         </TableRow>
 
@@ -52,7 +52,45 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vTitle"
+                android:id="@+id/vFamTxtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="45dp"
+                android:textColor="@color/default_color"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <TextView
+                android:id="@+id/textView213"
+                android:layout_width="wrap_content"
+                android:layout_height="10dp" />
+        </TableRow>
+
+        --
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/vhFamTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:text="@string/vhTitle"
+                android:textColor="@color/com_facebook_likeview_text_color" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/vFamTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -77,11 +115,11 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhAmount"
+                android:id="@+id/vhFamAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:text="Amount"
+                android:text="@string/vhAmount"
                 android:textColor="@color/com_facebook_likeview_text_color" />
         </TableRow>
 
@@ -90,7 +128,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vTxtAmount"
+                android:id="@+id/vFamTxtAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -114,11 +152,11 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhCategory"
+                android:id="@+id/vhFamCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:text="Category"
+                android:text="@string/vhCategory"
                 android:textColor="@color/com_facebook_likeview_text_color" />
         </TableRow>
 
@@ -127,7 +165,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vTxtCategory"
+                android:id="@+id/vFamTxtCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -151,11 +189,11 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhAccount"
+                android:id="@+id/vhFamAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:text="Account"
+                android:text="@string/vhCategory"
                 android:textColor="@color/com_facebook_likeview_text_color" />
 
         </TableRow>
@@ -165,7 +203,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vTxtAccount"
+                android:id="@+id/vFamTxtAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -191,11 +229,11 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhDate"
+                android:id="@+id/vhFamDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:text="Date"
+                android:text="@string/vhDate"
                 android:textColor="@color/com_facebook_likeview_text_color" />
 
         </TableRow>
@@ -205,7 +243,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vTxtDate"
+                android:id="@+id/vFamTxtDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -230,11 +268,11 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhTime"
+                android:id="@+id/vhFamTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:text="Time"
+                android:text="@string/vhTime"
                 android:textColor="@color/com_facebook_likeview_text_color" />
 
         </TableRow>
@@ -244,7 +282,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vTxtTime"
+                android:id="@+id/vFamTxtTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -270,11 +308,11 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhLocation"
+                android:id="@+id/vhFamLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:text="Location"
+                android:text="@string/vhLocation"
                 android:textColor="@color/com_facebook_likeview_text_color" />
 
         </TableRow>
@@ -284,7 +322,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/vTxtLocation"
+                android:id="@+id/vFamTxtLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -325,19 +363,7 @@
             android:gravity="center">
 
             <Button
-                android:id="@+id/btnEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/updateTransaction"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/textView37"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/btnCancel"
+                android:id="@+id/btnFamCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"

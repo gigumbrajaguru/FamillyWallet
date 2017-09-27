@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -65,14 +66,12 @@ public class TransactionMain extends Fragment {
     TextView txtIncome,txtExpense;
     boolean isOpen = false;
     private DatabaseReference mDatabase;
-    private FirebaseAuth mAuth;
-    private FirebaseUser firebaseUser;
     Validate v = new Validate();
     Translate trns = new Translate();
     List<TransactionDetails> tdList;
-    List<String> keys, checkedPosition, accountsList;
+    List<String> keys, checkedPosition, accountsList, groupKeys;
     TransactionListAdapter adapter;
-    String userID, familyID;
+    String userID, familyID, InGroup;
     Resources res;
     public TransactionMain() {
         // Required empty public constructor
@@ -88,6 +87,7 @@ public class TransactionMain extends Fragment {
         fabAddMenu(view);
         list = (ListView) view.findViewById(R.id.transactionList);
         tdList = new ArrayList<>();
+        groupKeys = new ArrayList<>();
         keys = new ArrayList<>();
         checkedPosition = new ArrayList<>();
         res = getResources();
@@ -100,8 +100,12 @@ public class TransactionMain extends Fragment {
         SharedPreferences sharedPref = getContext().getSharedPreferences("fwPrefs",0);
         String uid = sharedPref.getString("uniUserID", "");
         String fid = sharedPref.getString("uniFamilyID", "");
+        InGroup = sharedPref.getString("InGroup", "");
         userID = uid;
         familyID = fid;
+
+
+
 
         /* gcmNetworkManager api method scheduling to run the recurring transactions daily*/
         GcmNetworkManager gcmRecuTrans = GcmNetworkManager.getInstance(getActivity());
@@ -132,24 +136,15 @@ public class TransactionMain extends Fragment {
 
             }
         });
-
         try{
-            Query query2 = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID).orderByChild("date");
+            Query query2 = FirebaseDatabase.getInstance().getReference("Groups").orderByChild(familyID);
             query2.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    tdList.clear();
-                    //keys.clear();
+                    groupKeys.clear();
                     for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
-                        TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
-                        tdList.add(tdSnapshot.getValue(TransactionDetails.class));
-                        keys.add(tdSnapshot.getKey());
-
+                        groupKeys.add(tdSnapshot.getKey());
                     }
-                    Collections.reverse(tdList);
-                    Collections.reverse(keys);
-                    adapter = new TransactionListAdapter(getActivity(),tdList);
-                    list.setAdapter(adapter);
                 }
 
                 @Override
@@ -160,6 +155,48 @@ public class TransactionMain extends Fragment {
         }catch (Exception e){
 
         }
+
+           try{
+
+               Query query3;
+               if (familyID.equals(userID) && !InGroup.equals("true")){
+                   query3 = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date");
+               }
+               else {
+                   query3 = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
+
+               }
+                query3.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        tdList.clear();
+                        for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                            TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
+                            if (td.getUserID().equals(userID)){
+                                tdList.add(tdSnapshot.getValue(TransactionDetails.class));
+                                keys.add(tdSnapshot.getKey());
+                            }
+                        }
+
+                        try{
+                            Collections.reverse(tdList);
+                            Collections.reverse(keys);
+                            adapter = new TransactionListAdapter(getActivity(),tdList);
+                            list.setAdapter(adapter);
+                        }catch (Exception e){
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+           }catch (Exception e){
+
+           }
 
 
 
@@ -180,8 +217,6 @@ public class TransactionMain extends Fragment {
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
                 int checkedItems = list.getCheckedItemCount();
 
-                //int positions=list.getItemAtPosition(position);
-                Toast.makeText(getActivity(), adapter.getget(position,tdList), Toast.LENGTH_SHORT).show();
                 mode.setTitle(String.valueOf(checkedItems)+ " Selected");
                 if (checked==true) {
                     checkedPosition.add(String.valueOf(position));
@@ -256,7 +291,13 @@ public class TransactionMain extends Fragment {
     private void viewTransaction(final String key) {
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.transaction_view);
-        final DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID).child(key);
+        final DatabaseReference transaction;
+        if (familyID.equals(userID) && !InGroup.equals("true")){
+            transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).child(key);
+        }
+        else {
+            transaction = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).child(key);
+        }
         TextView vhTitle = (TextView) dialog.findViewById(R.id.vhTitle);
         TextView vhAmount = (TextView) dialog.findViewById(R.id.vhAmount);
         TextView vhCategory = (TextView) dialog.findViewById(R.id.vhCategory);
@@ -337,12 +378,24 @@ public class TransactionMain extends Fragment {
     }
 
     private void deleteTransaction(String key){
-        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID).child(key);
+        final DatabaseReference transaction;
+        if (familyID.equals(userID) && !InGroup.equals("true")){
+            transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).child(key);
+        }
+        else {
+            transaction = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).child(key);
+        }
         transaction.removeValue();
     }
 
     private void editTransaction(final String key){
-        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID).child(key);
+        final DatabaseReference transaction;
+        if (familyID.equals(userID) && !InGroup.equals("true")){
+            transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).child(key);
+        }
+        else {
+            transaction = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).child(key);
+        }
         transaction.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/transaction_main_block"
+        android:backgroundTintMode="src_over">
+
+        <RelativeLayout
+            android:id="@+id/layout2"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="?android:attr/activatedBackgroundIndicator"
+            android:drawable="@android:color/transparent">
+
+            <TextView
+                android:id="@+id/txtFamTitle"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/FamImg"
+                android:layout_alignStart="@+id/txtFamCategory"
+                android:layout_marginRight="10dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/txtFamCategory"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="11dp"
+                android:layout_toEndOf="@+id/FamImg"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:text="TextView"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtFamAmount"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:fontFamily="sans-serif"
+                android:text="TextView"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_alignBottom="@+id/txtFamTitle"
+                android:layout_alignStart="@+id/txtFamTime" />
+
+            <ImageView
+                android:id="@+id/FamImg"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                app:srcCompat="@drawable/round"
+                android:layout_alignTop="@+id/txtFamCategory"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/txtFamTime"
+                android:layout_width="90dp"
+                android:layout_height="20dp"
+                android:clickable="false"
+                android:ems="10"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="date"
+                android:layout_above="@+id/txtFamCategory"
+                android:layout_toEndOf="@+id/txtFamCategory"
+                android:layout_marginStart="32dp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txtFamName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="14dp"
+        android:text="TextView"
+        android:textStyle="bold|italic" />
+
+</RelativeLayout>

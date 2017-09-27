@@ -60,7 +60,7 @@ public class AddTransaction extends AppCompatActivity {
     private ImageView imgValue, imgAccount, imgCategory, imgNote, imgCalender, imgLocation, imgSave;
     /*Initializing variables to hold Extra values passed with intent or values from input fields */
     String categoryName,  title, date, amount, currency, time, location, account, type, update, key,
-            userID, familyID, eUserID, eFamilyID, previousAmount, recurrPeriod;
+            userID, familyID, eUserID, eFamilyID, previousAmount, recurrPeriod, InGroup;
     Integer   categoryID;
     Boolean templateChecked;
     List<String> accountsList;
@@ -122,7 +122,7 @@ public class AddTransaction extends AppCompatActivity {
         String fid = sharedPref.getString("uniFamilyID", "");
         userID = uid;
         familyID = fid;
-
+        InGroup = sharedPref.getString("InGroup", "");
 
 
         /* Getting the accounts relevant user to a list*/
@@ -471,6 +471,7 @@ public class AddTransaction extends AppCompatActivity {
                         mDatabase = FirebaseDatabase.getInstance().getReference();
                         td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID, recurrPeriod);
                         mDatabase.child("RecurringTransactions").child(familyID).push().setValue(td);
+                        returnToDashboard();
                         Toast.makeText(this, R.string.transactionAdded, Toast.LENGTH_LONG).show();
                     }
                     else if (update.equals("True")){
@@ -478,14 +479,12 @@ public class AddTransaction extends AppCompatActivity {
                         td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID, recurrPeriod);
                         Map<String, Object> postValues = td.toMap();
                         mDatabase.child(key).updateChildren(postValues);
+                        returnToDashboard();
                         Toast.makeText(this, R.string.transactionUpdated, Toast.LENGTH_LONG).show();
                     }
                 }catch (Exception e){
 
                 }
-
-                Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
-                startActivity(intent);
             }
         }
 
@@ -511,10 +510,13 @@ public class AddTransaction extends AppCompatActivity {
                     else if(type.equals("Income")){
                         validIncome = av.addIncome(account, amountDouble);
                     }
-
-                        mDatabase.child("Transactions").child(familyID).push().setValue(td);
-                        Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
-                        startActivity(intent);
+                        if (familyID.equals(userID) && !InGroup.equals("true")){
+                            mDatabase.child("Transactions").child(userID).push().setValue(td);
+                        }
+                        else{
+                            mDatabase.child("Transactions").child("Groups").child(familyID).push().setValue(td);
+                        }
+                        returnToDashboard();
                         Toast.makeText(this, R.string.transactionAdded, Toast.LENGTH_LONG).show();
 
                 }
@@ -532,6 +534,7 @@ public class AddTransaction extends AppCompatActivity {
                     }
                         Map<String, Object> postValues = td.toMap();
                         mDatabase.child(key).updateChildren(postValues);
+                        returnToDashboard();
                         Toast.makeText(this, R.string.transactionUpdated, Toast.LENGTH_LONG).show();
 
 
@@ -546,6 +549,11 @@ public class AddTransaction extends AppCompatActivity {
         }
 
 
+    }
+
+    private void returnToDashboard() {
+        Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
+        startActivity(intent);
     }
 
     /*launches the place picker activity when location text field selected */
@@ -575,6 +583,7 @@ public class AddTransaction extends AppCompatActivity {
         }
 
     }
+
 
 
 

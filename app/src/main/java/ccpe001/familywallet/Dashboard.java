@@ -71,6 +71,7 @@ import ccpe001.familywallet.budget.actionValidater;
 import ccpe001.familywallet.budget.addAccount;
 import ccpe001.familywallet.budget.budgetList;
 import ccpe001.familywallet.summary.SummaryTab;
+import ccpe001.familywallet.transaction.FamilyTransactions;
 import ccpe001.familywallet.transaction.TransactionMain;
 import ccpe001.familywallet.transaction.TransactionRecurring;
 
@@ -89,7 +90,7 @@ public class Dashboard extends AppCompatActivity
 
     public String fullname;
     public String propicUrl;
-    private String userID, familyID;
+    private String userID, familyID, fname;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser;
@@ -140,15 +141,17 @@ public class Dashboard extends AppCompatActivity
         final SharedPreferences.Editor editor= sharedPref.edit();
 
         userID = firebaseUser.getUid();
-        FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).child("familyId").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("UserInfo").child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                familyID=dataSnapshot.getValue().toString();
-                /* saving user id and family id in preferences */
-                Log.i("eco",familyID);
+                familyID=dataSnapshot.child("familyId").getValue().toString();
+                fname=dataSnapshot.child("firstName").getValue().toString()+dataSnapshot.child("lastName").getValue().toString();
+                /* saving user id, family id and first name in preferences */
                 editor.putString("uniUserID", userID);
                 editor.putString("uniFamilyID", familyID);
+                editor.putString("uniFname", fname);
                 editor.commit();
+                groupStatus(userID,familyID);
             }
 
             @Override
@@ -156,6 +159,7 @@ public class Dashboard extends AppCompatActivity
 
             }
         });
+
         databaseReference = FirebaseDatabase.getInstance().getReference().child("UserInfo").child(firebaseUser.getUid());
         databaseReference.keepSynced(true);
 
@@ -392,7 +396,7 @@ public class Dashboard extends AppCompatActivity
                     });
             snackbar.show();
         }
-        /*------------------------Account Availabilty checker--------------------------------------*/
+        /*------------------------Account Availability checker--------------------------------------*/
         if (actionValidater.accountChecker()) {
             final android.support.v4.app.FragmentTransaction fragmentes = getSupportFragmentManager().beginTransaction();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -416,7 +420,7 @@ public class Dashboard extends AppCompatActivity
             alert.show();
         }
 
-        /*------------------------Account Availabilty checker--------------------------------------*/
+        /*------------------------Account Availability checker--------------------------------------*/
 
 
     }
@@ -539,6 +543,13 @@ public class Dashboard extends AppCompatActivity
 
             TransactionRecurring transRecur = new TransactionRecurring();
             fragmentTransaction.replace(R.id.fragmentContainer1,transRecur);
+            fragmentTransaction.commit();
+        }else if (id == R.id.categoryFrag) {
+            toolbar.setTitle(R.string.dashboard_settitle_recurring);
+
+
+            FamilyTransactions famTrans = new FamilyTransactions();
+            fragmentTransaction.replace(R.id.fragmentContainer1,famTrans);
             fragmentTransaction.commit();
         }else if (id == R.id.budgetFrag) {
             toolbar.setTitle(R.string.dashboard_settitle_budget);
@@ -669,5 +680,22 @@ public class Dashboard extends AppCompatActivity
     private void saveData(String fname, String lname, String proPic) {
         UserData userData = new UserData(fname,lname, mAuth.getCurrentUser().getUid(),proPic);
         databaseReference.setValue(userData);
+    }
+
+    private void groupStatus(final String uID, String fID){
+        FirebaseDatabase.getInstance().getReference("Groups").child(fID).child(uID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getKey().equals(uID)){
+                    editor.putString("InGroup", "true");
+                    editor.commit();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
