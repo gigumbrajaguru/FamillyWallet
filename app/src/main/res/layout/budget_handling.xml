@@ -104,7 +104,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Amount"
+            android:text="Amount[LKR]"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textSize="14sp"
@@ -115,7 +115,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Amount"
+            android:hint="Amount[LKR]"
             android:inputType="number"
             android:textSize="14sp"/>
 

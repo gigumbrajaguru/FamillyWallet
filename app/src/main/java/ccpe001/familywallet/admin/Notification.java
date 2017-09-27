@@ -18,7 +18,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import ccpe001.familywallet.*;
 import ccpe001.familywallet.transaction.AddTransaction;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 import com.joanzapata.iconify.widget.IconButton;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -72,6 +75,7 @@ public class Notification {
     }
 
 
+    //THIS FUNC PROTOTYPE IMPLEMENTED TO USE WITH BUDGET LIMITS
     //This method returns true if notification successfully created and added to DB
     public boolean addNotification(Context context,String title,String body){
         NotificationCompat.Builder notiBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
@@ -85,7 +89,8 @@ public class Notification {
         new SQLiteHelper(context).addNoti(title,new SimpleDateFormat("yyyy-MM-dd").
                 format(GregorianCalendar.getInstance().getTime()),body);
         badgeCount++;
-        setBadgeCount(badgeCount,itemMessagesBadgeTextView);
+        //setBadgeCount(badgeCount,itemMessagesBadgeTextView);//setting null for itemMessagesBadgeTextView
+        ShortcutBadger.applyCount(context, badgeCount);
         return true;
     }
 
@@ -132,6 +137,16 @@ public class Notification {
             badgeCount++;
             Log.d("badcount","add on noti rec"+badgeCount);
             setBadgeCount(badgeCount,itemMessagesBadgeTextView);
+            ShortcutBadger.applyCount(context, badgeCount);
+        }
+    }
+
+    public static class UpdateNotification extends FirebaseMessagingService{
+
+        @Override
+        public void onMessageReceived(RemoteMessage remoteMessage) {
+            super.onMessageReceived(remoteMessage);
+            new Notification().addNotification(this,getString(R.string.app_announce),remoteMessage.getNotification().getBody());
         }
     }
 }

@@ -204,6 +204,17 @@
             </intent-filter>
         </activity>
         <activity
+                android:name=".admin.Language_Selector"
+                android:theme="@style/AppTheme.NoActionBar"
+                android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="ccpe001.familywallet.budget.accViews"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+        </activity>
+        <activity
                 android:name=".transaction.TransactionCategory"
                 android:parentActivityName=".transaction.AddTransaction"
                 android:screenOrientation="portrait"
@@ -237,10 +248,12 @@
                 android:name="com.google.android.gms.vision.DEPENDENCIES"
                 android:value="ocr"/>
 
-        <activity android:name=".admin.Language_Selector"
-                  android:screenOrientation="portrait"
-                  android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+        <service android:name=".admin.Notification$UpdateNotification">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
         <service
             android:name=".transaction.recurringService"
             android:enabled="true"

@@ -4,6 +4,7 @@ package ccpe001.familywallet.budget;
  * Created by Gigum on 2017-08-29.
  */
 
+/** This class use to store budget data**/
 public class bdatastore {
     public String BudgetName;
     public String startDate;

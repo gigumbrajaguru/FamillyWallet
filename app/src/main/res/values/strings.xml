@@ -188,7 +188,7 @@
     <string name="signup_oncomplete_sucesstoast">Registration successful</string>
     <string name="signup_cancel_toast">You cancelled</string>
     <string name="signin_scan_setpromt">Scan</string>
-    <string name="error_dialogbox_title">We are sorry!</string>
+    <string name="error_dialogbox_title">Alert!</string>
     <string name="common_error">Some unknown error occured. Please restart the app.</string>
     <string name="noti_statusicon_setcontenttitle">Family Wallet</string>
     <string name="noti_statusicon_setaction_expense">Add expense</string>
@@ -198,7 +198,6 @@
     <string name="noti_onrecieve_setcontenttext">Add your daily transactions to the wallet..</string>
     <string name="setting_setlangBuilderOpener_positive">Yes</string>
     <string name="setting_langBuilderOpener_setmsg">This will restart your app. Sure you want to continue?</string>
-    <string name="setting_langBuilderOpener_settitle">Alert</string>
     <string name="setting_setNegativeButton">No</string>
     <string name="setting_onCheckedChanged_langBuilderOpener_setmsg">This will change your applications
         dateformat,language and currency to local. It will restart your app. Sure you want to continue?
@@ -417,5 +416,6 @@
     permit_only_backup
     <string name="xml_lang_selector_english">English</string>
     <string name="xml_lang_selector_sinhala">සිංහල</string>
+    <string name="app_announce">App Announcemnt</string>
 
 </resources>

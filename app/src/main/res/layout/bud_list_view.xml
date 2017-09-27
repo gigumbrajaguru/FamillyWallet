@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,47 +8,48 @@
     tools:context="ccpe001.familywallet.budget.budListView">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/block"
-        android:backgroundTintMode="src_over"
-        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentTop="true"
+        android:background="@drawable/block"
+        android:backgroundTintMode="src_over">
 
         <TextView
             android:id="@+id/budStat"
-            android:layout_width="150dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/budCat"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="24dp"
+            android:layout_toEndOf="@+id/budName"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:text="TextView"
             android:textAlignment="center"
             android:textAllCaps="true"
+            android:textColor="@color/expense"
             android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/img"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_alignBottom="@+id/budStat"
             android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/txtbudgetId"
-            android:layout_marginStart="7dp"
+            android:layout_marginStart="11dp"
             android:layout_weight="1"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            app:srcCompat="@drawable/round" />
+            app:srcCompat="@drawable/round"/>
 
         <TextView
             android:id="@+id/budName"
-            android:layout_width="100dp"
-            android:layout_height="25dp"
-            android:layout_alignBottom="@+id/img"
-            android:layout_toStartOf="@+id/budStat"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/img"
+            android:layout_toStartOf="@+id/typesAcc"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
@@ -63,28 +64,37 @@
             android:layout_width="150dp"
             android:layout_height="30dp"
             android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/img"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:text="TextView"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
 
         <TextView
             android:id="@+id/txtbudgetId"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:layout_alignBaseline="@+id/budCat"
-            android:layout_alignBottom="@+id/budCat"
-            android:layout_alignParentEnd="true"
+            android:layout_alignStart="@+id/budStat"
+            android:layout_centerVertical="true"
             android:clickable="false"
             android:ems="10"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:inputType="date"
             android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/typesAcc"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:layout_alignBaseline="@+id/budName"
+            android:layout_alignBottom="@+id/budName"
+            android:layout_alignParentEnd="true"
+            android:text="TextView"/>
+
     </RelativeLayout>
 
 
-
-</RelativeLayout>
+</LinearLayout>

@@ -1,8 +1,6 @@
 package ccpe001.familywallet.budget;
 
 
-import android.util.Log;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,13 +16,13 @@ import com.google.firebase.database.ValueEventListener;
 public class actionValidater {
     private static DatabaseReference mDatabase;
     public static boolean checks;
-    static double availableAmount,newValue;
+    public static double availableAmount,newValue;
     static String key;
-    static int check=0,checkam;
+    public static int check=0,checkam;
 
     public actionValidater(){}
 
-    public static boolean amountCheck(final String AccountName, final double amount) {
+    public static boolean amountCheck(final String AccountName, final double amount) {/*this method use to validate transaction if can process transaction this will return true*/
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         checkam=0;
@@ -38,7 +36,6 @@ public class actionValidater {
                             if ((Double.parseDouble(child.child("amount").getValue().toString()) - amount) >= 0) {
                                 dp.setCheck(true);
                                 checks = dp.getCheck();
-                                Log.i("ss", "ss2");
                                 if (checkam == 0) {
                                     getAmount(AccountName, amount);
                                     checkam = 1;
@@ -60,9 +57,9 @@ public class actionValidater {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        return true;
+        return checks;
     }
-    public static boolean isSaving(final String AccountName) {
+    public static boolean isSaving(final String AccountName) {/* If given account is saving account this method return false*/
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
@@ -88,7 +85,7 @@ public class actionValidater {
         });
         return checks;
     }
-    public static boolean addIncome(final String accountName, final Double income) {
+    public static boolean addIncome(final String accountName, final Double income) {/*This method use to add income to given account*/
         check=0;
         checks=false;
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -104,6 +101,7 @@ public class actionValidater {
                             child.getRef().child("amount").setValue(newValue);
                             dumpData dp= new dumpData();
                             dp.setCheck(true);
+                            dp.getCheck();
                             check = 1;
                         }
                     }
@@ -116,7 +114,7 @@ public class actionValidater {
         });
         return checks;
     }
-    public static  boolean getAmount(final String AccountName, final double getamount){
+    public static  boolean getAmount(final String AccountName, final double getamount){/*this method reduce given amount from given account*/
 
             check=0;
             final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -133,6 +131,7 @@ public class actionValidater {
                                     child.getRef().child("amount").setValue(newValue);
                                     dumpData dp= new dumpData();
                                     dp.setCheck(true);
+                                    checks=dp.getCheck();
                                     check = 1;
                                 }
                             }
@@ -143,7 +142,7 @@ public class actionValidater {
                 public void onCancelled(DatabaseError databaseError) {
                 }
             });
-        return true;
+        return checks;
         }
 
     public static boolean  accountChecker(){
@@ -168,7 +167,7 @@ public class actionValidater {
         });
         return checks;
         }
-    public static boolean accountName(final String accountN){
+    public static boolean accountName(final String accountN){ /* If there is no equal account name for user this method will return true*/
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener(){
@@ -201,7 +200,10 @@ public class actionValidater {
         });
         return checks;
     }
-    public static boolean rectransactionChecker(final String Wallet){
+
+
+
+    public static boolean rectransactionChecker(final String Wallet){/*If there is allocated account for users any recurring transaction this method will return false*/
         int x=0;
         checks=true;
         mDatabase = FirebaseDatabase.getInstance().getReference("RecurringTransactions");

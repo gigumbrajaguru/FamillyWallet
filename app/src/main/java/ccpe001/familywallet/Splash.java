@@ -96,9 +96,7 @@ public class Splash extends PinActivity {
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
+                public void onCancelled(DatabaseError databaseError) {}
             });
         }
 
@@ -109,7 +107,7 @@ public class Splash extends PinActivity {
             noti.statusIcon(c);
 
             rateApi(c);
-            //noti.dailyReminder(c); FIX
+            //noti.dailyReminder(c); //setting null itemMessagesBadgeTextView
 
 
             //localisation

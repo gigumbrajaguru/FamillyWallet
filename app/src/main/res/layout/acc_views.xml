@@ -7,166 +7,17 @@
     android:layout_height="match_parent"
     tools:context="ccpe001.familywallet.budget.accViews">
 
-    <ScrollView
+    <ListView
+        android:id="@+id/list1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="15dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Switch
-                android:id="@+id/switch2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Update   "
-                android:textAlignment="textEnd"
-                />
-
-            <TextView
-                android:id="@+id/accName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Account Name"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textStyle="bold"/>
-
-            <Spinner
-                android:id="@+id/accountselect"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:textAlignment="center"/>
-
-            <TextView
-                android:id="@+id/accNameText"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Account ID"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                />
-
-            <TextView
-                android:id="@+id/accId"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:text="Available Amount"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textStyle="bold"/>
-
-            <EditText
-                android:id="@+id/accAmount"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:inputType="number"/>
-
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Status"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/accStat"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Add Date"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/accDate"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Currency Type"
-                android:textAlignment="center"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/curType"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textStyle="bold"/>
-
-            <Button
-                android:id="@+id/btnUpdate"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:text="Update"
-                android:textStyle="bold"/>
-
-            <Button
-                android:id="@+id/btnDel"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:text="Delete"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="510dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:clickable="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
 
 
 </LinearLayout>

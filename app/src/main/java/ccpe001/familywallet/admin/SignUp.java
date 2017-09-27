@@ -129,7 +129,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
             @Override
             public void onFailure(@NonNull Exception e) {
                 alert.hideLoadingPage();
-                alert.initCommonDialogPage(SignUp.this,getString(R.string.common_error),true);            }
+                alert.initCommonDialogPage(SignUp.this,getString(R.string.common_error),true).show();            }
         });
     }
 
@@ -148,7 +148,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
                                         saveSession(mAuth.getCurrentUser().getEmail());
-                                        Toast.makeText(SignUp.this,R.string.signup_oncomplete_sucesstoast,Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent("ccpe001.familywallet.GETINFO");
                                         startActivity(intent);
                                     }else{
@@ -156,12 +155,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
                                         try {
                                             throw task.getException();
                                         }catch (FirebaseNetworkException e) {
-                                            alert.initCommonDialogPage(SignUp.this,getString(R.string.network_error),true);
+                                            alert.initCommonDialogPage(SignUp.this,getString(R.string.network_error),true).show();
                                         }catch (FirebaseAuthUserCollisionException invalidEmail) {
                                             emailTxt.setError(getString(R.string.signup_already_email_text));
-                                            Toast.makeText(SignUp.this,R.string.signup_already_email_text,Toast.LENGTH_SHORT).show();
                                         } catch (Exception e) {
-                                            alert.initCommonDialogPage(SignUp.this, getString(R.string.common_error), true);
+                                            alert.initCommonDialogPage(SignUp.this, getString(R.string.common_error), true).show();
                                             e.printStackTrace();
                                         }
                                     }
@@ -192,7 +190,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
                 @Override
                 public void onError(FacebookException error) {
                     alert = new CustomAlertDialogs();
-                    alert.initCommonDialogPage(SignUp.this,getString(R.string.network_error),true);
+                    alert.initCommonDialogPage(SignUp.this,getString(R.string.network_error),true).show();
                 }
             });
         }
@@ -223,7 +221,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
             }
             else {
                 alert = new CustomAlertDialogs();
-                alert.initCommonDialogPage(SignUp.this, getString(R.string.network_error), true);
+                alert.initCommonDialogPage(SignUp.this, getString(R.string.network_error), true).show();
             }
         }
     }
@@ -250,7 +248,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
                             startActivity(intent);
                         }else{
                             alert.hideLoadingPage();
-                            alert.initCommonDialogPage(SignUp.this,getString(R.string.common_error),true);
+                            alert.initCommonDialogPage(SignUp.this,getString(R.string.common_error),true).show();
                         }
                     }
                 });

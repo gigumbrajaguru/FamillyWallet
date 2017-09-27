@@ -14,6 +14,8 @@ import ccpe001.familywallet.R;
  * Created by Gigum on 2017-05-29.
  */
 
+
+/**This class use to add data into list view box**/
 public class budgetListAd extends ArrayAdapter<String> {
     private final Activity context;
     private final String[]title;
@@ -21,9 +23,11 @@ public class budgetListAd extends ArrayAdapter<String> {
     private final String[]status;
     private final Integer[]imgId;
     private final String[] key;
+    private final String[] ends;
+    private final String[] percentage;
 
 
-    public budgetListAd(Activity context,String[]title, String[]catName, String[]status,Integer[]imgid,String[] budkey){
+    public budgetListAd(Activity context,String[]title, String[]catName, String[]status,Integer[]imgid,String[] budkey,String[] pert,String[] end){
         super(context, R.layout.bud_list_view, title);
         this.context=context;
         this.title=title;
@@ -31,6 +35,8 @@ public class budgetListAd extends ArrayAdapter<String> {
         this.status=status;
         this.imgId=imgid;
         this.key=budkey;
+        this.ends=end;
+        this.percentage=pert;
     }
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
@@ -41,11 +47,13 @@ public class budgetListAd extends ArrayAdapter<String> {
         TextView budstat = (TextView) v.findViewById(R.id.budStat);
         ImageView img = (ImageView) v.findViewById(R.id.img);
         TextView budID=(TextView)v.findViewById(R.id.txtbudgetId);
+        TextView ttype=(TextView)v.findViewById(R.id.typesAcc);
         budID.setVisibility(TextView.INVISIBLE);
         budTitle.setText(title[position]);
         budcat.setText(catName[position]);
         budstat.setText(status[position]);
         budID.setText(key[position]);
+        ttype.setText(percentage[position]+"%");
         img.setImageResource(imgId[position]);
         return v;
 
