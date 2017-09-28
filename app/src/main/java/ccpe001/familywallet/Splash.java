@@ -86,7 +86,7 @@ public class Splash extends PinActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     familyID=dataSnapshot.child("familyId").getValue().toString();
-                    fname=dataSnapshot.child("firstName").getValue().toString()+dataSnapshot.child("lastName").getValue().toString();
+                    fname=dataSnapshot.child("firstName").getValue().toString()+" "+dataSnapshot.child("lastName").getValue().toString();
                     /* saving user id, family id and first name in preferences */
                     Log.i("echo",fname);
                     editor.putString("uniUserID", userID);

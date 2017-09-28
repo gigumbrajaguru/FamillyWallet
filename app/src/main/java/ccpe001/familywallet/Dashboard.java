@@ -148,7 +148,7 @@ public class Dashboard extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 familyID=dataSnapshot.child("familyId").getValue().toString();
-                fname=dataSnapshot.child("firstName").getValue().toString()+dataSnapshot.child("lastName").getValue().toString();
+                fname=dataSnapshot.child("firstName").getValue().toString()+" "+dataSnapshot.child("lastName").getValue().toString();
                 /* saving user id, family id and first name in preferences */
                 editor.putString("uniUserID", userID);
                 editor.putString("uniFamilyID", familyID);
@@ -562,7 +562,7 @@ public class Dashboard extends AppCompatActivity
             fragmentTransaction.replace(R.id.fragmentContainer1,transRecur);
             fragmentTransaction.commit();
         }else if (id == R.id.categoryFrag) {
-            toolbar.setTitle(R.string.dashboard_settitle_recurring);
+            toolbar.setTitle(R.string.dashboard_settitle_family);
 
 
             FamilyTransactions famTrans = new FamilyTransactions();
@@ -700,10 +700,12 @@ public class Dashboard extends AppCompatActivity
     }
 
     private void groupStatus(final String uID, String fID){
-        FirebaseDatabase.getInstance().getReference("Groups").child(fID).child(uID).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("Groups").child(fID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getKey().equals(uID)){
+                    SharedPreferences sharedPref= getSharedPreferences("fwPrefs", 0);
+                    final SharedPreferences.Editor editor= sharedPref.edit();
                     editor.putString("InGroup", "true");
                     editor.commit();
                 }
