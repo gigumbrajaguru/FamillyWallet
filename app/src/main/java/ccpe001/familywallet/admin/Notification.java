@@ -22,7 +22,6 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.joanzapata.iconify.widget.IconButton;
 import me.leolin.shortcutbadger.ShortcutBadger;
-
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -77,6 +76,14 @@ public class Notification {
 
     //THIS FUNC PROTOTYPE IMPLEMENTED TO USE WITH BUDGET LIMITS
     //This method returns true if notification successfully created and added to DB
+
+    /**
+     *
+     * @param context
+     * @param title
+     * @param body
+     * @return
+     */
     public boolean addNotification(Context context,String title,String body){
         NotificationCompat.Builder notiBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)

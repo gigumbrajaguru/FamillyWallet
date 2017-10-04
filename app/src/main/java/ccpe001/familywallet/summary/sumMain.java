@@ -104,6 +104,10 @@ public class sumMain extends Fragment {
         });
         return view;
     }
+
+    /**
+     * sdsds
+     */
     private void SetupChart() //ref : https://www.youtube.com/watch?v=iS7EgKnyDeY
     {
 

@@ -241,7 +241,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
             notificationManager.cancelAll();
 
             getActivity().finish();
-            sessionClear();
+            sessionClear(getActivity());
             startActivity(new Intent("ccpe001.familywallet.SIGNIN"));
         }else if(view.getId()==R.id.selectLangRow){
             new CustomAlertDialogs().initCommonDialogPage(getActivity(),getString(R.string.setting_langBuilderOpener_setmsg),true)
@@ -632,8 +632,10 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
         mDialog.dismiss();
     }
 
-    private void sessionClear(){
-        prefs = getContext().getSharedPreferences("Session",Context.MODE_PRIVATE);
+    public static void sessionClear(Context c){
+        SharedPreferences prefs;
+        SharedPreferences.Editor editor;
+        prefs = c.getSharedPreferences("Session",Context.MODE_PRIVATE);
         editor = prefs.edit();
         editor.clear();
         editor.commit();

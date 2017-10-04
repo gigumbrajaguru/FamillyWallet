@@ -146,7 +146,17 @@ public class AutoRecurringTransactions {
         addTransaction(td, retDate);
     }
 
-    /* Method the find the transaction recurring weekly if so add it to the transaction list in database */
+    /* *
+    Method the find the transaction recurring weekly if so add it to the transaction list in database */
+
+    /**
+     *
+     * @param dbYear
+     * @param dbMonth
+     * @param dbDay
+     * @param dbTime
+     * @param td
+     */
     private void weeklyRecurring(String dbYear, String dbMonth, String dbDay, String dbTime, TransactionDetails td){
         String retDate, retMonth, retDay;
         Integer dbDayOfWeek = 0;
@@ -202,7 +212,7 @@ public class AutoRecurringTransactions {
                     retMonth="0"+todayMonth;
                 }
                 else {
-                    retMonth=Integer.toString(todayMonth);
+                    retMonth=String.valueOf(todayMonth);
                 }
                 String retdate = Integer.toString(todayYear)+retMonth+retDay+dbTime;
 

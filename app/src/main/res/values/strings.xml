@@ -383,7 +383,7 @@
         <item>3</item>
     </string-array>
 
-    <string-array name="multi_select_list_preference_default_value" />
+    <string-array name="multi_select_list_preference_default_value"/>
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
@@ -410,7 +410,8 @@
     <string name="dashboard_permentmem_sucess">Now you are a permanent member of our application. Thank you..</string>
     <string name="permit_only_read">Would you like to allow access to your storage read? Press Allow now.</string>
     <string name="permit_only_camera">Would you like to allow access to your Camera? Press Allow now.</string>
-    <string name="permit_only_backup">Would you like to allow access to your storage read and writes? Press Allow now.</string>
+    <string name="permit_only_backup">Would you like to allow access to your storage read and writes? Press Allow now.
+    </string>
 
     <string name="error_permitting">Something is wrong when granting permissions.Please try again.</string>
     permit_only_backup
@@ -418,4 +419,10 @@
     <string name="xml_lang_selector_sinhala">සිංහල</string>
     <string name="app_announce">App Announcemnt</string>
 
+
+    <string-array name="nav_drwer_arr">
+        <item>Update Details</item>
+        <item>Add member</item>
+        <item>Sign out</item>
+    </string-array>
 </resources>

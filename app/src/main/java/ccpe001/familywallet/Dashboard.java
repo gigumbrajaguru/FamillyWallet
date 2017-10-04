@@ -1,5 +1,6 @@
 package ccpe001.familywallet;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,8 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 
-import ccpe001.familywallet.admin.Notification;
-import ccpe001.familywallet.admin.SignUp;
+import ccpe001.familywallet.admin.*;
 import ccpe001.familywallet.budget.actionValidater;
 import com.facebook.*;
 import com.facebook.login.LoginManager;
@@ -59,8 +59,6 @@ import com.joanzapata.iconify.widget.IconButton;
 import com.kobakei.ratethisapp.RateThisApp;
 import com.squareup.picasso.Picasso;
 
-import ccpe001.familywallet.admin.CircleTransform;
-import ccpe001.familywallet.admin.UserData;
 import ccpe001.familywallet.budget.addAccount;
 import ccpe001.familywallet.budget.budgetList;
 import ccpe001.familywallet.summary.SummaryTab;
@@ -83,7 +81,6 @@ public class Dashboard extends AppCompatActivity
     private FloatingActionButton circleButton;
     private Spinner navUserDetTxt;
     private FirebaseAuth mAuth;
-    private String[] arrSpinner;
     private Intent signUpIntent;
 
     public String fullname;
@@ -95,6 +92,7 @@ public class Dashboard extends AppCompatActivity
     private UserData userData;
     private SharedPreferences prefs;
     public static int badgeCount = 0;
+    private final static int PERMENT_NOT = 33;
     private int animateCounter = 0;
     private final static int RC_SIGN_IN = 0;
 
@@ -106,6 +104,9 @@ public class Dashboard extends AppCompatActivity
     private Snackbar snackbar;
     private CallbackManager callbackManager;
     private CustomAlertDialogs alert;
+    private NotificationManager notificationManager;
+    private GoogleApiClient mGoogleApiClient;
+
 
 
     @Override
@@ -118,6 +119,16 @@ public class Dashboard extends AppCompatActivity
 
         toolbar.setTitle(R.string.dashboard_settitle_overview);
         setSupportActionBar(toolbar);
+
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_navigation_drawer);
+        navUserDetTxt = (Spinner) headerView.findViewById(R.id.navUserDet);
+        circleButton = (FloatingActionButton) headerView.findViewById(R.id.loggedUsrImg);
+
+
         signUpIntent = getIntent();
 
         //display help menu if app first installed
@@ -206,9 +217,58 @@ public class Dashboard extends AppCompatActivity
                             signUpIntent.getStringExtra("lastname");
                 }
 
-                arrSpinner = new String[]{fullname};//add more elems dynamically
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplication(), android.R.layout.simple_spinner_item, arrSpinner);
-                navUserDetTxt.setAdapter(adapter);
+                navUserDetTxt.setPrompt(fullname);
+                navUserDetTxt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if(i==0){
+                            startActivity(new Intent(Dashboard.this,GetInfo.class));
+                        }else if(i==1){
+                            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            AddMember addMember = new AddMember();
+                            fragmentTransaction.replace(R.id.fragmentContainer1,addMember);
+                            fragmentTransaction.commit();
+                            drawerLayout.closeDrawer(GravityCompat.START);
+                        }else if(i==2){
+                            alert = new CustomAlertDialogs();
+                            alert.initLoadingPage(Dashboard.this);
+
+                            //sign out & del daily rem,auto backups,noti icon,clear session
+                            if(mAuth.getCurrentUser().getProviders().toString().equals("[facebook.com]")){
+                                LoginManager.getInstance().logOut();
+                            }else if(mAuth.getCurrentUser().getProviders().toString().equals("[google.com]")){
+                                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                            }
+                            mAuth.signOut();
+                            SharedPreferences sharedPref= getSharedPreferences("fwPrefs",0);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.clear();      //clear all data.
+                            editor.commit();  //commit change to SharedPreferences.
+                            NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context
+                                    .NOTIFICATION_SERVICE);
+                            mNotificationManager.cancel(PERMENT_NOT);
+
+                            PeriodicBackupCaller.backupRunner(getApplication(),getString(R.string.nobackup));
+
+                            //off noti here
+                            notificationManager = (NotificationManager) getSystemService(Context
+                                    .NOTIFICATION_SERVICE);
+                            notificationManager.cancelAll();
+
+                            finish();
+                            Settings.sessionClear(getApplication());
+                            startActivity(new Intent("ccpe001.familywallet.SIGNIN"));
+                        }
+                        navUserDetTxt.setPrompt(fullname);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        navUserDetTxt.setPrompt(fullname);
+                    }
+                });
+
 
                 //cannot use one method for this call are asynchrous
                 if (signUpIntent.getStringExtra("profilepic") != null) {
@@ -250,21 +310,10 @@ public class Dashboard extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragmentContainer1,transaction);
         fragmentTransaction.commit();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-
-
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView.setNavigationItemSelectedListener(this);
-        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_navigation_drawer);
-        navUserDetTxt = (Spinner) headerView.findViewById(R.id.navUserDet);
-        circleButton = (FloatingActionButton) headerView.findViewById(R.id.loggedUsrImg);
-        circleButton.setOnClickListener(this);
-
 
         //if it is a a unnkown login
         if(mAuth.getCurrentUser().getProviders().toString().equals("[]")) {
@@ -436,6 +485,21 @@ public class Dashboard extends AppCompatActivity
 
 
         /*------------------------Account Availabilty checker--------------------------------------*/
+    }
+
+
+
+    @Override
+    public void onStart() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getApplication())
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+        super.onStart();
     }
 
     @Override
@@ -626,16 +690,6 @@ public class Dashboard extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
-        if (view.getId()==R.id.loggedUsrImg){
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            AddMember addmember = new AddMember();
-            fragmentTransaction.replace(R.id.fragmentContainer1,addmember);
-            fragmentTransaction.commit();
-            //Close nav drawer here
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }
-
         if (showcaseView!=null) {
             //for each click on btn
             ViewTarget navigationButtonViewTarget = null;
@@ -703,11 +757,13 @@ public class Dashboard extends AppCompatActivity
         FirebaseDatabase.getInstance().getReference("Groups").child(fID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getKey().equals(uID)){
-                    SharedPreferences sharedPref= getSharedPreferences("fwPrefs", 0);
-                    final SharedPreferences.Editor editor= sharedPref.edit();
-                    editor.putString("InGroup", "true");
-                    editor.commit();
+                for (DataSnapshot tdSnapshot:dataSnapshot.getChildren()) {
+                    if (tdSnapshot.getKey().equals(uID)) {
+                        SharedPreferences sharedPref = getSharedPreferences("fwPrefs", 0);
+                        final SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("InGroup", "true");
+                        editor.commit();
+                    }
                 }
             }
 
