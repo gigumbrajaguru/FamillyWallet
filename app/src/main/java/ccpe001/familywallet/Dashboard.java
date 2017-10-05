@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,23 +18,26 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import ccpe001.familywallet.admin.*;
-import ccpe001.familywallet.budget.actionValidater;
-import com.facebook.*;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.Target;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
-import com.github.arturogutierrez.Badges;
-import com.github.arturogutierrez.BadgesNotSupportedException;
-import com.github.orangegangsters.lollipin.lib.managers.AppLock;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -43,11 +45,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
-import com.google.firebase.auth.*;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,20 +63,21 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.joanzapata.iconify.widget.IconButton;
-import com.kobakei.ratethisapp.RateThisApp;
 import com.squareup.picasso.Picasso;
 
-import ccpe001.familywallet.budget.addAccount;
-import ccpe001.familywallet.budget.budgetList;
+import java.util.Arrays;
+
+import ccpe001.familywallet.admin.CircleTransform;
+import ccpe001.familywallet.admin.GetInfo;
+import ccpe001.familywallet.admin.UserData;
+import ccpe001.familywallet.budget.ActionValidater;
+import ccpe001.familywallet.budget.AddAccount;
+import ccpe001.familywallet.budget.AutoTracking;
+import ccpe001.familywallet.budget.BudgetList;
 import ccpe001.familywallet.summary.SummaryTab;
 import ccpe001.familywallet.transaction.FamilyTransactions;
 import ccpe001.familywallet.transaction.TransactionMain;
 import ccpe001.familywallet.transaction.TransactionRecurring;
-import me.leolin.shortcutbadger.ShortcutBadgeException;
-import me.leolin.shortcutbadger.ShortcutBadger;
-
-import java.util.Arrays;
-import java.util.Locale;
 
 
 public class Dashboard extends AppCompatActivity
@@ -458,7 +466,9 @@ public class Dashboard extends AppCompatActivity
             snackbar.show();
         }
         /*------------------------Account Availability checker--------------------------------------*/
-        if (actionValidater.accountChecker()) {
+        AutoTracking autoTrack=new AutoTracking();
+        autoTrack.getTransactionDetail(this);
+        if (ActionValidater.accountChecker()) {
             final android.support.v4.app.FragmentTransaction fragmentes = getSupportFragmentManager().beginTransaction();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.app_name);
@@ -466,7 +476,7 @@ public class Dashboard extends AppCompatActivity
             builder.setIcon(R.drawable.ic_launcher);
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    addAccount addwallet = new addAccount();
+                    AddAccount addwallet = new AddAccount();
                     fragmentes.replace(R.id.fragmentContainer1, addwallet);
                     fragmentes.commit();
 
@@ -480,9 +490,6 @@ public class Dashboard extends AppCompatActivity
             AlertDialog alert = builder.create();
             alert.show();
         }
-
-        /*------------------------Account Availability checker--------------------------------------*/
-
 
         /*------------------------Account Availabilty checker--------------------------------------*/
     }
@@ -636,14 +643,14 @@ public class Dashboard extends AppCompatActivity
             toolbar.setTitle(R.string.dashboard_settitle_budget);
 
 
-            budgetList budget = new budgetList();
+            BudgetList budget = new BudgetList();
             fragmentTransaction.replace(R.id.fragmentContainer1,budget);
             fragmentTransaction.commit();
         }else if (id == R.id.walletFrag) {
             toolbar.setTitle(R.string.dashboard_settitle_wallet);
 
 
-            addAccount addwallet = new addAccount();
+            AddAccount addwallet = new AddAccount();
             fragmentTransaction.replace(R.id.fragmentContainer1,addwallet);
             fragmentTransaction.commit();
         }else if (id == R.id.settingFrag) {
