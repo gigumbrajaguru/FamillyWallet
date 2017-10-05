@@ -43,52 +43,48 @@ import static ccpe001.familywallet.R.mipmap.category;
 public class sumMain extends Fragment {
 
     public  PieChart charts;
-    private DatabaseReference rtrvdata; // creating database referrence to read data
-    public final ArrayList<String> transacval = new ArrayList<>(); // List to add transaction data
-    public final ArrayList<String> dbcat = new ArrayList<>(); // List to add category
-    TextView integerTextView,stringTextView;
+    // creating database referrence to read data
+    private DatabaseReference rtrvdata;
+    // List to add transaction data
+    public final ArrayList<String> transacval = new ArrayList<String>();
+    // List to add category
+    public final ArrayList<String> dbcat = new ArrayList<String>();
     public String []testcat;
     public Float[]testtransac;
-    public String transacdt;
-    public String catdata;
+    public String transacdt, catdata;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.sum_main, container, false);
-        //integerTextView = (TextView)view.findViewById(R.id.textView29);
-        //stringTextView = (TextView)view.findViewById(R.id.textView30);
         charts = (PieChart) view.findViewById(R.id.chart);
         rtrvdata= FirebaseDatabase.getInstance().getReference();
         rtrvdata.child("Transactions").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) { // Data retrieving method
-                Log.d("dbval",dataSnapshot.toString());
+            /**
+             * Data retrieving method
+             */
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                transacval.clear();
+                dbcat.clear();
                 for (DataSnapshot Transacdata : dataSnapshot.getChildren()) {
-                    transacval.clear();
-                    dbcat.clear();
                     //Assigning database values to variables
                     transacdt = (Transacdata.child("amount").getValue(String.class)).toString();
                     catdata = (Transacdata.child("categoryName").getValue(String.class)).toString();
                     transacval.add(transacdt);
                     dbcat.add(catdata);
                 }
+
                 int lstsize=transacval.size();
                 int lstsizet=dbcat.size();
-               /* Log.d("lstsize",String.valueOf(lstsize));
-                for(int i=0; i < transacval.size(); i++){
-
-                    integerTextView.setText(integerTextView.getText() + " " + transacval.get(i) + " , ");
-                }
-                for(int i=0; i < dbcat.size(); i++){
-
-                    stringTextView.setText(stringTextView.getText() + dbcat.get(i) + " , ");
-                }*/
                 testtransac=new Float[lstsize];
-                for (int i = 0; i < lstsize; i++) //ref : https://stackoverflow.com/questions/7379680/how-to-convert-arrayliststring-to-float
+                testcat=new String[lstsizet];
+
+                //ref : https://stackoverflow.com/questions/7379680/how-to-convert-arrayliststring-to-float
+                for (int i = 0; i < lstsize; i++)
                 {
                     testtransac[i] = Float.parseFloat(transacval.get(i));
                 }
-                testcat=new String[lstsizet];
-                for (int j = 0; j < lstsizet; j++) //ref : https://stackoverflow.com/questions/7379680/how-to-convert-arrayliststring-to-float
+                //ref : https://stackoverflow.com/questions/7379680/how-to-convert-arrayliststring-to-float
+                for (int j = 0; j < lstsizet; j++)
                 {
                     testcat[j] = dbcat.get(j);
                 }
@@ -106,9 +102,10 @@ public class sumMain extends Fragment {
     }
 
     /**
-     * sdsds
+     * Pie chart method implementation
+     * https://www.youtube.com/watch?v=iS7EgKnyDeY
      */
-    private void SetupChart() //ref : https://www.youtube.com/watch?v=iS7EgKnyDeY
+    private void SetupChart()
     {
 
        ArrayList<PieEntry> pieEntries = new ArrayList<>();
