@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ccpe001.familywallet.budget.budListView">
+    tools:context="ccpe001.familywallet.budget.BudListView">
 
     <RelativeLayout
         android:layout_width="match_parent"

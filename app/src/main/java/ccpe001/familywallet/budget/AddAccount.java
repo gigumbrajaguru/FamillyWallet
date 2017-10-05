@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 import ccpe001.familywallet.R;
 
-public class addAccount extends Fragment  {
+public class AddAccount extends Fragment  {
     String m_txt="",validbank,isPrivate="False",Notify="False",currtype;
     String familyId="not assigned";
     boolean check=false,msgBoxOut=false;
@@ -90,11 +90,11 @@ public class addAccount extends Fragment  {
                             if(m_txt.matches(".*[a-z0-9].*")){
                                 check=true;
                                 validbank=m_txt;
-                                alertBox.alertBoxOut(getContext(),"Succeed","BAnk account added");
+                                AlertBox.alertBoxOut(getContext(),"Succeed","BAnk account added");
                             }
                             else{
                                 check=false;
-                                alertBox.alertBoxOut(getContext(),"Failed","Wrong input");
+                                AlertBox.alertBoxOut(getContext(),"Failed","Wrong input");
                             }
                         }
                     });
@@ -150,10 +150,10 @@ public class addAccount extends Fragment  {
         btnSubmit.setOnClickListener(new OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
-                                             acountCtrl Ctrl = new acountCtrl();
+                                             AccountCtrl Ctrl = new AccountCtrl();
                                              final String accountName = accName.getText().toString();
                                              Double amount = Double.parseDouble(accAmountss.getText().toString());
-                                             boolean xyzx=actionValidater.accountName(accountName);
+                                             boolean xyzx= ActionValidater.accountName(accountName);
                                              if (xyzx) {
                                                  if (check) {
                                                      msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, currtype, familyId));
@@ -162,12 +162,12 @@ public class addAccount extends Fragment  {
 
                                                  }
                                                  if (msgBoxOut) {
-                                                     alertBox.alertBoxOut(getContext(), "Data Stored", "Succeed");
+                                                     AlertBox.alertBoxOut(getContext(), "Data Stored", "Succeed");
                                                      accName.setText("");
                                                      accAmountss.setText("");
                                                  }
                                              } else {
-                                                 alertBox.alertBoxOut(getContext(), "Account Name ", "Change your account name");
+                                                 AlertBox.alertBoxOut(getContext(), "Account Name ", "Change your account name");
                                              }
                                          }
                                      });
@@ -175,7 +175,7 @@ public class addAccount extends Fragment  {
                 btnUpdate.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(getContext(), accViews.class);
+                        Intent intent = new Intent(getContext(), AccountViews.class);
                         startActivity(intent);
                     }
                 });

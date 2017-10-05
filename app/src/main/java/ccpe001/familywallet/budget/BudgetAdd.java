@@ -29,7 +29,7 @@ import java.util.Calendar;
 
 import ccpe001.familywallet.R;
 
-public class BudgetHandling extends AppCompatActivity implements View.OnClickListener {
+public class BudgetAdd extends AppCompatActivity implements View.OnClickListener {
     EditText strDt,endDt,Bname,tAmount;
     Button smit;
     Switch noty;
@@ -41,7 +41,7 @@ public class BudgetHandling extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.arraySpinner = new String[] {
-                "Food", "Travel", "Gifts","Bill","Entertainment","Home","Utilities","Shopping","Accommodation","Healthcare","Clothing","Groceries","Pets","Education","Kids","Loan","Business"
+                "Food & Drinks", "Travel", "Gifts","Bill","Entertainment","Home","Utilities","Shopping","Accommodation","Healthcare","Clothing","Groceries","Pets","Education","Kids","Loan","Business"
         };
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabases = FirebaseDatabase.getInstance().getReference();
@@ -84,7 +84,7 @@ public class BudgetHandling extends AppCompatActivity implements View.OnClickLis
                 notify="On";
             }
         });
-        final acountCtrl Ctrl = new acountCtrl();
+        final AccountCtrl Ctrl = new AccountCtrl();
         smit.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,22 +94,22 @@ public class BudgetHandling extends AppCompatActivity implements View.OnClickLis
                 amounts=tAmount.getText().toString();
                 Boolean msgBoxOut =(Ctrl.addbdget(currentUser.getUid(),Fname,bName,sttDay,endday,amounts,notify,selected));
                 if (msgBoxOut) {
-                    alertBox.alertBoxOut(BudgetHandling.this, "Data Stored", "Succeed");
+                    AlertBox.alertBoxOut(BudgetAdd.this, "Data Stored", "Succeed");
                 }
              else {
-                alertBox.alertBoxOut(BudgetHandling.this, "Account Name ", "Change your account name");
+                AlertBox.alertBoxOut(BudgetAdd.this, "Account Name ", "Change your account name");
             }
             }
         });
     }
     @Override
     public void onClick(View v) {
+
         if(v==strDt){
             final Calendar c= Calendar.getInstance();
             day=c.get(Calendar.DAY_OF_MONTH);
             mon=c.get(Calendar.MONTH);
             yr=c.get(Calendar.YEAR);
-
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -135,7 +135,7 @@ public class BudgetHandling extends AppCompatActivity implements View.OnClickLis
         }
     }
     public void nxtForecast(View v){
-        Intent newInt1 = new Intent(this,forecast.class);
+        Intent newInt1 = new Intent(this,Forecast.class);
         newInt1.putExtra("Category",selected );
         startActivity(newInt1);
     }

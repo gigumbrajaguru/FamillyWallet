@@ -50,7 +50,7 @@
         <receiver android:name=".admin.Notification$Notification_Receiver"/>
 
         <activity
-                android:name=".budget.BudgetHandling"
+                android:name=".budget.BudgetAdd"
                 android:screenOrientation="portrait"
                 android:parentActivityName=".Dashboard"
                 android:windowSoftInputMode="adjustResize">
@@ -75,7 +75,7 @@
         </activity>
 
         <activity
-                android:name=".budget.budgetTrack"
+                android:name=".budget.BudgetTrack"
                 android:screenOrientation="portrait"
                 android:parentActivityName=".Dashboard"
                 android:windowSoftInputMode="adjustResize">
@@ -90,7 +90,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".budget.forecast"
+                android:name=".budget.Forecast"
                 android:parentActivityName=".Dashboard"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustResize">
@@ -190,7 +190,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".budget.accViews"
+                android:name=".budget.AccountViews"
                 android:parentActivityName=".Dashboard"
                 android:screenOrientation="portrait">
             <intent-filter>

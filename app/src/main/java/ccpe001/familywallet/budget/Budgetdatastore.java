@@ -5,7 +5,7 @@ package ccpe001.familywallet.budget;
  */
 
 /** This class use to store budget data**/
-public class bdatastore {
+public class Budgetdatastore {
     public String BudgetName;
     public String startDate;
     public String endDays;
@@ -18,9 +18,9 @@ public class bdatastore {
     public String lastUpdated;
     public String percentage;
     public String status;
-    public  bdatastore(){}
+    public Budgetdatastore(){}
 
-    public  bdatastore(String uname,String Fname,String bname,String strDate,String endDate,String amount,String tnotify,String catogary,String adddate,String lastUpdateds,String stat){
+    public Budgetdatastore(String uname, String Fname, String bname, String strDate, String endDate, String amount, String tnotify, String catogary, String adddate, String lastUpdateds, String stat){
         this.user=uname;
         this.familyId=Fname;
         this.BudgetName=bname;

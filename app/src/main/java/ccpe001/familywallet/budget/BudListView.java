@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import ccpe001.familywallet.R;
 
-public class budListView extends AppCompatActivity {
+public class BudListView extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

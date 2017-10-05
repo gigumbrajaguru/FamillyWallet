@@ -3,8 +3,6 @@ package ccpe001.familywallet;
 import android.content.Context;
 import android.content.res.Resources;
 
-import static java.lang.Integer.parseInt;
-
 /**
  * Created by Knight on 8/25/2017.
  */
@@ -603,7 +601,7 @@ public class Translate {
             case "Travel":
                 catID = R.drawable.cat2;
                 break;
-            case "Food":
+            case "Food & Drinks":
                 catID = R.drawable.cat3;
                 break;
             case "Transportation":

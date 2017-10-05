@@ -16,7 +16,7 @@ import ccpe001.familywallet.R;
 
 
 /**This class use to add data into list view box**/
-public class budgetListAd extends ArrayAdapter<String> {
+public class BudgetListAd extends ArrayAdapter<String> {
     private final Activity context;
     private final String[]title;
     private final String[]catName;
@@ -27,7 +27,7 @@ public class budgetListAd extends ArrayAdapter<String> {
     private final String[] percentage;
 
 
-    public budgetListAd(Activity context,String[]title, String[]catName, String[]status,Integer[]imgid,String[] budkey,String[] pert,String[] end){
+    public BudgetListAd(Activity context, String[]title, String[]catName, String[]status, Integer[]imgid, String[] budkey, String[] pert, String[] end){
         super(context, R.layout.bud_list_view, title);
         this.context=context;
         this.title=title;

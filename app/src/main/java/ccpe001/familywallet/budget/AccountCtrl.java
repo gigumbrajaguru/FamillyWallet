@@ -11,7 +11,7 @@ import java.util.Calendar;
  * Created by Gigum on 2017-07-09.
  */
 
-public class acountCtrl {
+public class AccountCtrl {
     String lastUpdated,adddate,lastUpdateds,stat;
     public DatabaseReference databaseReference;
     public FirebaseAuth firebaseAuth;
@@ -40,7 +40,7 @@ public class acountCtrl {
         adddate = df.format(c.getTime());
         lastUpdated="Not Updated";
         stat="Good";
-        bdatastore insertData=new bdatastore(uname,Fname,bname,strDate,endDate,amount,tnotify,catogary,adddate,lastUpdateds,stat);
+        Budgetdatastore insertData=new Budgetdatastore(uname,Fname,bname,strDate,endDate,amount,tnotify,catogary,adddate,lastUpdateds,stat);
         DatabaseReference childD=databaseReference.child("Budget");
         childD.push().setValue(insertData);
 

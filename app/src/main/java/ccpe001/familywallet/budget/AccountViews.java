@@ -33,7 +33,7 @@ import ccpe001.familywallet.Translate;
 
 import static java.security.AccessController.getContext;
 
-public class accViews extends AppCompatActivity {
+public class AccountViews extends AppCompatActivity {
     private DatabaseReference mDatabases;
     Object[] arraysave = {}, arrayaccname = {}, arrayamount = {}, arrayk = {}, accTypes, curty;
     String[] arrayIssaving = {}, accNamearay = {}, arraamonts = {}, acckey = {}, acTypes, curtyp;
@@ -41,7 +41,7 @@ public class accViews extends AppCompatActivity {
     Integer[] imgId2 = {};
     String accnameD,saving;
     int check;
-    accountListAd addList;
+    AccountListAd addList;
     final List<String> lkey = new ArrayList<String>();
     final List<String> lAname = new ArrayList<String>();
     final List<String> lAccName = new ArrayList<String>();
@@ -153,7 +153,7 @@ public class accViews extends AppCompatActivity {
         imgId = imgI.clone();
         acckeys = accokeys.clone();
         if (getContext() != null) {
-            addList = new accountListAd(accViews.this, accName, amonts, issaving, imgId, acckeys, types, curtype);
+            addList = new AccountListAd(AccountViews.this, accName, amonts, issaving, imgId, acckeys, types, curtype);
             budList.setAdapter(addList);
         }
     }
@@ -170,7 +170,7 @@ public class accViews extends AppCompatActivity {
     }
 
     public void setPromptBox(String passed) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(accViews.this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(AccountViews.this);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") final View alertlayout = inflater.inflate(R.layout.accpromptbox, null);
         final TextView accname,accamount,acctype,bankid,curtyp,issaving;
@@ -262,7 +262,7 @@ public class accViews extends AppCompatActivity {
 
     }
     public void alertDel(final String accnam) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(accViews.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(AccountViews.this);
         builder.setTitle(R.string.app_name);
         builder.setMessage("Do you want proceed ?");
         builder.setIcon(R.drawable.ic_launcher);
@@ -280,7 +280,7 @@ public class accViews extends AppCompatActivity {
         alert.show();
     }
     public void alertupdate(final String accnam,final String switchs) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(accViews.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(AccountViews.this);
         builder.setTitle(R.string.app_name);
         builder.setMessage("Do you want proceed ?");
         builder.setIcon(R.drawable.ic_launcher);
@@ -307,12 +307,12 @@ public class accViews extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if(child.child("accountName").getValue().toString().equals(acconame)) {
-                        if(actionValidater.rectransactionChecker(acconame)) {
+                        if(ActionValidater.rectransactionChecker(acconame)) {
                             child.getRef().removeValue();
-                            alertBox.alertBoxOut(accViews.this,"Completed","Wallet Deleted");
+                            AlertBox.alertBoxOut(AccountViews.this,"Completed","Wallet Deleted");
                         }
                         else{
-                            alertBox.alertBoxOut(accViews.this,"Terminated","You must delete recurring transactions first");
+                            AlertBox.alertBoxOut(AccountViews.this,"Terminated","You must delete recurring transactions first");
                         }
                     }
                 }
@@ -335,7 +335,7 @@ public class accViews extends AppCompatActivity {
                         String newValue = switchs;
                         if (check == 0) {
                             child.getRef().child("isSaving").setValue(newValue);
-                            alertBox.alertBoxOut(accViews.this,"Completed","Wallet Updated");
+                            AlertBox.alertBoxOut(AccountViews.this,"Completed","Wallet Updated");
                             check = 1;
                         }
                     }

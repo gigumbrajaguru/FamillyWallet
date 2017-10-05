@@ -13,14 +13,14 @@ import com.google.firebase.database.ValueEventListener;
  * Created by Gigum on 2017-08-13.
  */
 
-public class actionValidater {
+public class ActionValidater {
     private static DatabaseReference mDatabase;
     public static boolean checks;
     public static double availableAmount,newValue;
     static String key;
     public static int check=0,checkam;
 
-    public actionValidater(){}
+    public ActionValidater(){}
 
     public static boolean amountCheck(final String AccountName, final double amount) {/*this method use to validate transaction if can process transaction this will return true*/
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -29,7 +29,7 @@ public class actionValidater {
         mDatabase.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                dumpData dp= new dumpData();
+                Datatrasmit dp= new Datatrasmit();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if(isSaving(AccountName)) {
                         if (child.child("accountName").getValue().toString().equals(AccountName)) {
@@ -66,7 +66,7 @@ public class actionValidater {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    dumpData dp= new dumpData();
+                    Datatrasmit dp= new Datatrasmit();
                     if((child.child("accountName").getValue().toString()).equals(AccountName)) {
                         if ((child.child("isSaving").getValue().toString()).equals("True")) {
                             dp.setCheck(false);
@@ -99,7 +99,7 @@ public class actionValidater {
                         newValue = availableAmount + income;
                         if (check == 0) {
                             child.getRef().child("amount").setValue(newValue);
-                            dumpData dp= new dumpData();
+                            Datatrasmit dp= new Datatrasmit();
                             dp.setCheck(true);
                             dp.getCheck();
                             check = 1;
@@ -129,7 +129,7 @@ public class actionValidater {
                                 newValue = availableAmount - getamount;
                                 if (check == 0) {
                                     child.getRef().child("amount").setValue(newValue);
-                                    dumpData dp= new dumpData();
+                                    Datatrasmit dp= new Datatrasmit();
                                     dp.setCheck(true);
                                     checks=dp.getCheck();
                                     check = 1;
@@ -151,7 +151,7 @@ public class actionValidater {
         mDatabase.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                dumpData dp= new dumpData();
+                Datatrasmit dp= new Datatrasmit();
                 if(dataSnapshot.hasChildren()){
                     dp.setCheck(false);
                     checks=dp.getCheck();
@@ -178,14 +178,14 @@ public class actionValidater {
                 checks=true;
                 for(DataSnapshot child:dataSnapshot.getChildren()){
                     if(child.child("accountName").getValue().equals(accountN)){
-                        dumpData dp=new dumpData();
+                        Datatrasmit dp=new Datatrasmit();
                         dp.setCheckName(false);
                         checks=dp.getCheckName();
                         x=1;
                     }
                     else{
                         if(x==0) {
-                            dumpData dp=new dumpData();
+                            Datatrasmit dp=new Datatrasmit();
                             dp.setCheckName(true);
                             checks=dp.getCheckName();
                         }
@@ -213,7 +213,7 @@ public class actionValidater {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 checks=true;
-                dumpData dp= new dumpData();
+                Datatrasmit dp= new Datatrasmit();
                if(dataSnapshot.hasChildren()){
                    dp.setCheck(false);
                    checks=dp.getCheck();

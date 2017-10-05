@@ -29,13 +29,13 @@ import ccpe001.familywallet.R;
 import ccpe001.familywallet.Translate;
 
 
-public class budgetList extends Fragment {
+public class BudgetList extends Fragment {
     private DatabaseReference mDatabase;
     Object[] array={},array10={},array20={},arrayk={},percentage1,end1;
     String[] title1={},catName1={},status1={},bugKey={},percentage2,end2;
     String[] title,catName,status,budKeys,percentage,end;
     Integer[] imgId1={};
-    budgetListAd addList;
+    BudgetListAd addList;
     final List<String> lkey = new ArrayList<String>();
     final List<String> lBname = new ArrayList<String>();
     final List<String> lcat = new ArrayList<String>();
@@ -50,7 +50,7 @@ public class budgetList extends Fragment {
         budList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selected = ((TextView) view.findViewById(R.id.txtbudgetId)).getText().toString();
-                Intent newInt1 = new Intent("ccpe001.familywallet.budget.budgetTrack");
+                Intent newInt1 = new Intent(getContext(),BudgetTrack.class);
                 newInt1.putExtra("budgetID", selected);
                 startActivity(newInt1);
             }
@@ -59,7 +59,7 @@ public class budgetList extends Fragment {
         f.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newInt3 = new Intent(getContext(), BudgetHandling.class);
+                Intent newInt3 = new Intent(getContext(), BudgetAdd.class);
                 startActivity(newInt3);
             }
         });
@@ -142,7 +142,7 @@ public class budgetList extends Fragment {
         end=end12.clone();
         budKeys=budKey.clone();
         if(getActivity()!=null) {
-            addList = new budgetListAd(getActivity(), title, catName, status, imgId, budKeys,percentage,end);
+            addList = new BudgetListAd(getActivity(), title, catName, status, imgId, budKeys,percentage,end);
             budList.setAdapter(addList);
         }
         }

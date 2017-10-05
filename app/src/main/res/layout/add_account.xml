@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ccpe001.familywallet.budget.addAccount">
+    tools:context="ccpe001.familywallet.budget.AddAccount">
 
     <ScrollView
         android:layout_width="match_parent"

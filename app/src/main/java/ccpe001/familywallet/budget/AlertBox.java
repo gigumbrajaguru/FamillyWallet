@@ -7,7 +7,7 @@ import android.support.v7.app.AlertDialog;
  * Created by Gigum on 2017-08-13.
  */
 
-public class alertBox {
+public class AlertBox {
 
 
     public static void alertBoxOut(Context context, String title, String message) {

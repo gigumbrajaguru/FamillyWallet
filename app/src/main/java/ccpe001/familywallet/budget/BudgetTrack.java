@@ -29,7 +29,7 @@ import java.util.Calendar;
 
 import ccpe001.familywallet.R;
 
-public class budgetTrack extends AppCompatActivity{
+public class BudgetTrack extends AppCompatActivity{
     Button btnUpdates,btnDelete;
     TextView budNames,CategoryTexts,PercentageTexts,strtDates;
     final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -109,7 +109,7 @@ public class budgetTrack extends AppCompatActivity{
                 mon=mcurrentDate.get(Calendar.MONTH);
                 day=mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(budgetTrack.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(BudgetTrack.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         endDys.setText(dayOfMonth+"/"+(monthOfYear+1)+"/"+year);
@@ -125,7 +125,7 @@ public class budgetTrack extends AppCompatActivity{
             final String edate=endDys.getText().toString();
             final String amoun=budam.getText().toString();
             mDatabase = FirebaseDatabase.getInstance().getReference("Budget");
-            AlertDialog.Builder builder = new AlertDialog.Builder(budgetTrack.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(BudgetTrack.this);
             builder.setTitle(R.string.app_name);
             builder.setMessage("Do you want proceed ?");
             builder.setIcon(R.drawable.ic_launcher);
@@ -134,17 +134,19 @@ public class budgetTrack extends AppCompatActivity{
                     mDatabase.child(budgetI).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-
+                            AutoTracking autoTracking=new AutoTracking();
                             for (DataSnapshot child: dataSnapshot.getChildren()) {
                                 if (child.getKey().equals("Amount")) {
                                     if (x==0){
                                         child.getRef().setValue(amoun);
+                                        autoTracking.getTransactionDetail(BudgetTrack.this);
                                         x=1;
                                     }
                                 }
                                 else if (child.getKey().equals("endDays")){
                                     if (y==0) {
                                         child.getRef().setValue(edate);
+                                        autoTracking.getTransactionDetail(BudgetTrack.this);
                                         y=1;
                                     }
                                 }
@@ -182,7 +184,7 @@ public class budgetTrack extends AppCompatActivity{
                 mDatabase.child(budgetI).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(budgetTrack.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(BudgetTrack.this);
                         builder.setTitle(R.string.app_name);
                         builder.setMessage("Do you want proceed ?");
                         builder.setIcon(R.drawable.ic_launcher);
@@ -211,7 +213,7 @@ public class budgetTrack extends AppCompatActivity{
 
     }
     public void moveBack(){
-        Intent newInt3 = new Intent(budgetTrack.this, BudgetHandling.class);
+        Intent newInt3 = new Intent(BudgetTrack.this, BudgetAdd.class);
         startActivity(newInt3);
     }
 

@@ -16,7 +16,7 @@ import ccpe001.familywallet.R;
 
 /***** This class use to pass account details for account list view*****/
 
-public class accountListAd extends ArrayAdapter{
+public class AccountListAd extends ArrayAdapter{
     private final Activity context;
     private final String[]accountName;
     private final String[]status;
@@ -27,7 +27,7 @@ public class accountListAd extends ArrayAdapter{
     private final String[] curtype;
 
 
-    public accountListAd(Activity context,String[]accountNames,String[] accAmount , String[] issaving,Integer[]imgid,String[] keyes,String[] types,String[] curtypes){
+    public AccountListAd(Activity context, String[]accountNames, String[] accAmount , String[] issaving, Integer[]imgid, String[] keyes, String[] types, String[] curtypes){
         super(context, R.layout.bud_list_view, accountNames);
         this.context=context;
         this.accountName=accountNames;

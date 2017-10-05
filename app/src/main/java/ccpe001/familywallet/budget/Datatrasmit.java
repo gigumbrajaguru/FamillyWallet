@@ -6,7 +6,7 @@ package ccpe001.familywallet.budget;
 
 
 /********* This class use to pass data ****/
-public class dumpData {
+public class Datatrasmit {
     public boolean checks;
     public boolean checkAddname;
     public String Amount;
@@ -20,9 +20,9 @@ public class dumpData {
     public String startDate;
     public String status;
     public String user;
-    public dumpData(){
+    public Datatrasmit(){
     }
-    public dumpData(boolean s,boolean ss,String am,String budName,String adDate,String cat,String enDate,String famId,String noty,String percent,String starDate,String stat,String uses) {
+    public Datatrasmit(boolean s, boolean ss, String am, String budName, String adDate, String cat, String enDate, String famId, String noty, String percent, String starDate, String stat, String uses) {
 
         this.checks=s;
         this.checkAddname=ss;

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 import ccpe001.familywallet.R;
 
-public class forecast extends AppCompatActivity {
+public class Forecast extends AppCompatActivity {
     CombinedChart Chart;
 	String budgetcat;
     ArrayList<BarEntry> group1 = new ArrayList<>();
@@ -89,7 +89,7 @@ public class forecast extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    dumpData dp = new dumpData();
+                    Datatrasmit dp = new Datatrasmit();
                     dp.setfamilyId(child.child("familyId").getValue().toString());
                     getfid = dp.getfamilyId();
                 }
