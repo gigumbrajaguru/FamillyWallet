@@ -323,6 +323,16 @@ public class Dashboard extends AppCompatActivity
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView.setNavigationItemSelectedListener(this);
+        headerView = navigationView.inflateHeaderView(R.layout.nav_header_navigation_drawer);
+        navUserDetTxt = (Spinner) headerView.findViewById(R.id.navUserDet);
+        circleButton = (FloatingActionButton) headerView.findViewById(R.id.loggedUsrImg);
+        circleButton.setOnClickListener(this);
+
+
         //if it is a a unnkown login
         if(mAuth.getCurrentUser().getProviders().toString().equals("[]")) {
             //layout.setPadding(0,0,0,(int) (-200*getResources().getDisplayMetrics().density + 0.5f));
@@ -466,8 +476,6 @@ public class Dashboard extends AppCompatActivity
             snackbar.show();
         }
         /*------------------------Account Availability checker--------------------------------------*/
-        AutoTracking autoTrack=new AutoTracking();
-        autoTrack.getTransactionDetail(this);
         if (ActionValidater.accountChecker()) {
             final android.support.v4.app.FragmentTransaction fragmentes = getSupportFragmentManager().beginTransaction();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -491,22 +499,10 @@ public class Dashboard extends AppCompatActivity
             alert.show();
         }
 
+        /*------------------------Account Availability checker--------------------------------------*/
+
+
         /*------------------------Account Availabilty checker--------------------------------------*/
-    }
-
-
-
-    @Override
-    public void onStart() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(getApplication())
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-        mGoogleApiClient.connect();
-        super.onStart();
     }
 
     @Override
@@ -697,6 +693,16 @@ public class Dashboard extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
+        if (view.getId()==R.id.loggedUsrImg){
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            AddMember addmember = new AddMember();
+            fragmentTransaction.replace(R.id.fragmentContainer1,addmember);
+            fragmentTransaction.commit();
+            //Close nav drawer here
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+
         if (showcaseView!=null) {
             //for each click on btn
             ViewTarget navigationButtonViewTarget = null;
@@ -764,13 +770,11 @@ public class Dashboard extends AppCompatActivity
         FirebaseDatabase.getInstance().getReference("Groups").child(fID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot tdSnapshot:dataSnapshot.getChildren()) {
-                    if (tdSnapshot.getKey().equals(uID)) {
-                        SharedPreferences sharedPref = getSharedPreferences("fwPrefs", 0);
-                        final SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("InGroup", "true");
-                        editor.commit();
-                    }
+                if (dataSnapshot.getKey().equals(uID)){
+                    SharedPreferences sharedPref= getSharedPreferences("fwPrefs", 0);
+                    final SharedPreferences.Editor editor= sharedPref.edit();
+                    editor.putString("InGroup", "true");
+                    editor.commit();
                 }
             }
 

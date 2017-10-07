@@ -80,8 +80,5 @@ public class TransactionListAdapter extends ArrayAdapter<TransactionDetails> {
 
 
     }
-    public String getget(int position, List<TransactionDetails> tdListt){
-        TransactionDetails td = tdListt.get(position);
-        return td.getAmount();
-    }
+
 }

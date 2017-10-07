@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/testRecyc"
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="60dp">
+        android:layout_marginTop="56dp"
+        android:backgroundTint="@color/bright_blue"
+        android:gravity="bottom"
+        sothree:umanoPanelHeight="40dp"
+        sothree:umanoShadowHeight="4dp">
 
-    </android.support.v7.widget.RecyclerView>
+        <ListView
+            android:id="@+id/familyTransactions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:paddingTop="5dp" />
+
+        <include
+            layout="@layout/transaction_family_slideup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+
+
 
 </RelativeLayout>

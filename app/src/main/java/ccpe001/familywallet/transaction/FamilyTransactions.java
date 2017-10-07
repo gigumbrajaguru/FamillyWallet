@@ -12,13 +12,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -27,9 +30,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
+import ccpe001.familywallet.AddMember;
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
@@ -45,9 +53,18 @@ public class FamilyTransactions extends Fragment {
     String userID, familyID, InGroup;
 
 
-    private DatabaseReference mDatabase;
-    private RecyclerView recyclerView;
+    private DatabaseReference mDatabase, gDatabase;
+    private RecyclerView recyclerView, familyRecyclerView;
     private Context context;
+    List<GroupDetails> grpList;
+    GroupListAdapter grpAdapter;
+    ListView memberList, transactionList;
+    SlidingUpPanelLayout slide;
+    ImageView imgSlide;
+    Button btnAlltransaction;
+    FamilyTransactionsAdapter adapter;
+    List<TransactionDetails> tdList;
+    List<String> keys;
 
     public FamilyTransactions() {
         // Required empty public constructor
@@ -60,6 +77,33 @@ public class FamilyTransactions extends Fragment {
 
         final View view = inflater.inflate(R.layout.transaction_family_list, container, false);
 
+        grpList = new ArrayList<>();
+        tdList = new ArrayList<>();
+        keys = new ArrayList<>();
+        memberList = (ListView) view.findViewById(R.id.grpList);
+        transactionList = (ListView) view.findViewById(R.id.familyTransactions);
+
+        imgSlide = (ImageView) view.findViewById(R.id.imgSlide);
+        slide = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
+        btnAlltransaction = (Button) view.findViewById(R.id.btnAllTransactions);
+
+        slide.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if (newState.equals(SlidingUpPanelLayout.PanelState.COLLAPSED)){
+                    imgSlide.setImageResource(R.mipmap.slide_up);
+                }
+                else if (newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED)){
+                    imgSlide.setImageResource(R.mipmap.slide_down);
+                }
+            }
+        });
+        
         /* getting family, user ID and group status from shred Preferences */
         SharedPreferences sharedPref = getContext().getSharedPreferences("fwPrefs",0);
         userID = sharedPref.getString("uniUserID", "");
@@ -68,15 +112,6 @@ public class FamilyTransactions extends Fragment {
 
         context=getContext();      //getting current context
         KeyName = new HashMap<>() ;     //Setting hasmap to set user ID and name as key value pair
-
-        /* getting recycler view and setting it with layout manager to populate it in reverse*/
-        recyclerView=(RecyclerView)view.findViewById(R.id.testRecyc);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
-        recyclerView.setLayoutManager(layoutManager);
-
 
         /* Getting user details from relevant group */
         FirebaseDatabase.getInstance().getReference("Groups").child(familyID).addValueEventListener(new ValueEventListener() {
@@ -96,52 +131,127 @@ public class FamilyTransactions extends Fragment {
         });
 
 
+        Query query = getQuery(familyID, userID, InGroup);
+
+        populateTransactions(query);
+
+
+            /* Getting and populating list with group member info */
+            gDatabase = FirebaseDatabase.getInstance().getReference("Groups").child(familyID);
+            gDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    grpList.clear();
+                    for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                        GroupDetails gr = tdSnapshot.getValue(GroupDetails.class);
+                        grpList.add(gr);
+                    }
+                    grpAdapter = new GroupListAdapter(getActivity(),grpList);
+                    memberList.setAdapter(grpAdapter);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        memberList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GroupDetails gr = grpList.get(position);
+                Toast.makeText(getActivity(), gr.getUserID(), Toast.LENGTH_SHORT).show();
+                Query query2 = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
+                populateUserTransactions(query2, gr.getUserID());
+                slide.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
+        });
+
+        transactionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                viewTransaction(keys.get(position));
+            }
+        });
+
+        btnAlltransaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Query query = getQuery(familyID, userID, InGroup);
+                populateTransactions(query);
+                slide.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
+        });
+
+        return view;
+        }
+
+    private static Query getQuery(String familyID, String userID, String inGroup) {
         Query query ;
 
-        if (familyID.equals(userID) && !InGroup.equals("true")){
+        if (familyID.equals(userID) && !inGroup.equals("true")){
             query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date");
         }
         else {
             query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
-
         }
+        return query;
+    }
 
-        /* Setting the firebase recycler adapter to populate the all family transaction list */
-        FirebaseRecyclerAdapter<TransactionDetails,DetailsViewHolder> adapter = new FirebaseRecyclerAdapter<TransactionDetails,DetailsViewHolder>(
-                TransactionDetails.class,
-                R.layout.transaction_family_row,
-                DetailsViewHolder.class,
-                query
-        ){
+    private void populateTransactions(final Query query) {
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                tdList.clear();
+                keys.clear();
+                for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                    TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
+                        tdList.add(tdSnapshot.getValue(TransactionDetails.class));
+                        keys.add(tdSnapshot.getKey());
+
+                }
+                Collections.reverse(tdList);
+                Collections.reverse(keys);
+                adapter = new FamilyTransactionsAdapter(getActivity(),tdList);
+                transactionList.setAdapter(adapter);
+            }
 
             @Override
-            protected void populateViewHolder(DetailsViewHolder viewHolder, TransactionDetails model, int position) {
+            public void onCancelled(DatabaseError databaseError) {
 
-                final String key = getRef(position).getKey();      //getting the key of the selecting item
-                viewHolder.setTitle(model.getTitle(),model.getType(),context);
-                viewHolder.setDate(model.getDate(),model.getType(), context);
-                viewHolder.setCategory(model.getCategoryName(),model.getType(), context);
-                viewHolder.setAmount(model.getAmount(), model.getCurrency(), model.getType(), context);
-                viewHolder.setName(model.getUserID());
-                viewHolder.setImage(model.getCategoryID());
-
-                /* listen to selection */
-                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        viewTransaction(key);
-                    }
-                });
             }
-        };
+        });
+    }
 
-        recyclerView.setAdapter(adapter);
-
-            return view;
-        }
+    private void populateUserTransactions(final Query query, final String sortUID) {
 
 
-        /* method to populate the a single row from transaction details  */
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                tdList.clear();
+                keys.clear();
+                for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                    TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
+                    if (td.getUserID().equals(sortUID)){
+                        tdList.add(tdSnapshot.getValue(TransactionDetails.class));
+                        keys.add(tdSnapshot.getKey());
+                    }
+                }
+                Collections.reverse(tdList);
+                Collections.reverse(keys);
+                adapter = new FamilyTransactionsAdapter(getActivity(),tdList);
+                transactionList.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /* method to populate the a single row from transaction details  */
         public static class DetailsViewHolder extends RecyclerView.ViewHolder{
             View mView;
             TextView txtTitle, txtCategory, txtDate, txtAmount, txtName;
@@ -200,8 +310,7 @@ public class FamilyTransactions extends Fragment {
                 }
 
             }
-            public void setName(String id) {
-                String name=KeyName.get(id);
+            public void setName(String name) {
                 txtName.setText(name);
             }
             public void setImage(Integer image) {
@@ -298,4 +407,18 @@ public class FamilyTransactions extends Fragment {
         });
     }
 
+
+    /* view holder for group details for member info */
+    public static class GrpDetailsViewHolder extends RecyclerView.ViewHolder{
+        TextView txtName;
+        public GrpDetailsViewHolder(View v) {
+            super(v);
+            txtName = (TextView) v.findViewById(R.id.txtGrName);
+        }
+
+        public void setName(String name) {
+            txtName.setText(name);
+        }
+
+    }
 }

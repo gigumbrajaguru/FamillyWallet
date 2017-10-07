@@ -49,7 +49,7 @@ import ccpe001.familywallet.R;
 import ccpe001.familywallet.Splash;
 import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
-import ccpe001.familywallet.budget.actionValidater;
+
 
 public class AddTransaction extends AppCompatActivity {
 
@@ -61,7 +61,7 @@ public class AddTransaction extends AppCompatActivity {
     private ImageView imgValue, imgAccount, imgCategory, imgNote, imgCalender, imgLocation, imgSave;
     /*Initializing variables to hold Extra values passed with intent or values from input fields */
     String categoryName,  title, date, amount, currency, time, location, account, type, update, key,
-            userID, familyID, eUserID, eFamilyID, previousAmount, recurrPeriod, InGroup;
+            userID, familyID, eUserID, eFamilyID, previousAmount, recurrPeriod, InGroup, userName;
     Integer   categoryID;
     Boolean templateChecked;
     List<String> accountsList;
@@ -74,7 +74,6 @@ public class AddTransaction extends AppCompatActivity {
     int PLACE_PICKER_REQUEST=1;
     final Context context = this;
 
-    final actionValidater av = new actionValidater();
     final Validate v = new Validate();
     final Translate trns = new Translate();
 
@@ -121,8 +120,10 @@ public class AddTransaction extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences("fwPrefs",0);
         String uid = sharedPref.getString("uniUserID", "");
         String fid = sharedPref.getString("uniFamilyID", "");
+        String uname = sharedPref.getString("uniFname", "");
         userID = uid;
         familyID = fid;
+        userName = uname;
         InGroup = sharedPref.getString("InGroup", "");
 
 
@@ -435,6 +436,7 @@ public class AddTransaction extends AppCompatActivity {
     /*Save & Update Trnsactions*/
     public void saveTransaction(View view) {
         boolean validExpense=false, validIncome=false;
+        CurrencyResponse cc = new CurrencyResponse();
 
         /* Getting the input values to sent to the database*/
         amount = txtAmount.getText().toString();
@@ -449,6 +451,7 @@ public class AddTransaction extends AppCompatActivity {
         account = txtAccount.getText().toString();
         recurrPeriod = txtRecurring.getText().toString();
         recurrPeriod = trns.recurringToDB(recurrPeriod);
+
 
         /* if no category selected making the default as other */
         if (categoryName==null){
@@ -470,14 +473,14 @@ public class AddTransaction extends AppCompatActivity {
                 try {
                     if (update.equals("False")){
                         mDatabase = FirebaseDatabase.getInstance().getReference();
-                        td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID, recurrPeriod);
+                        td = new TransactionDetails(userID,userName,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID, recurrPeriod);
                         mDatabase.child("RecurringTransactions").child(familyID).push().setValue(td);
                         returnToDashboard();
                         Toast.makeText(this, R.string.transactionAdded, Toast.LENGTH_LONG).show();
                     }
                     else if (update.equals("True")){
                         mDatabase = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(familyID);
-                        td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID, recurrPeriod);
+                        td = new TransactionDetails(eUserID,userName,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID, recurrPeriod);
                         Map<String, Object> postValues = td.toMap();
                         mDatabase.child(key).updateChildren(postValues);
                         returnToDashboard();
@@ -502,20 +505,25 @@ public class AddTransaction extends AppCompatActivity {
             try {
                 if (update.equals("False")){
                     mDatabase = FirebaseDatabase.getInstance().getReference();
-                    td = new TransactionDetails(userID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID);
+                    td = new TransactionDetails(userID,userName, amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID);
                     Double amountDouble =Double.parseDouble(amount);
-                    if (type.equals("Expense")){
-                        validExpense = av.amountCheck(account, amountDouble);
-
-                    }
-                    else if(type.equals("Income")){
-                        validIncome = av.addIncome(account, amountDouble);
-                    }
-                        if (familyID.equals(userID) && !InGroup.equals("true")){
-                            mDatabase.child("Transactions").child(userID).push().setValue(td);
+//                    if (type.equals("Expense")){
+//                        validExpense = av.amountCheck(account, amountDouble);
+//
+//                    }
+//                    else if(type.equals("Income")){
+//                        validIncome = av.addIncome(account, amountDouble);
+//                    }
+                        if(currency.equals("LKR."))  {
+                            if (familyID.equals(userID) && !InGroup.equals("true")){
+                                mDatabase.child("Transactions").child(userID).push().setValue(td);
+                            }
+                            else{
+                                mDatabase.child("Transactions").child("Groups").child(familyID).push().setValue(td);
+                            }
                         }
-                        else{
-                            mDatabase.child("Transactions").child("Groups").child(familyID).push().setValue(td);
+                        else {
+                            cc.curr(td,InGroup);
                         }
                         returnToDashboard();
                         Toast.makeText(this, R.string.transactionAdded, Toast.LENGTH_LONG).show();
@@ -523,17 +531,22 @@ public class AddTransaction extends AppCompatActivity {
                 }
                 else if (update.equals("True")){
                     mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID);
+                    if (familyID.equals(userID) && !InGroup.equals("true")){
+                        mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child(userID);
+                    }
+                    else{
+                        mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID);
+                    }
 
-
-                    td = new TransactionDetails(eUserID,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
+                    td = new TransactionDetails(eUserID,userName,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
                     Double amountDouble =Double.parseDouble(amount)-Double.parseDouble(previousAmount);
 
-                    if (type.equals("Expense")){
-                        validExpense = av.amountCheck(account, amountDouble);
-                    }
-                    else if(type.equals("Income")){
-                        validIncome = av.addIncome(account, amountDouble);
-                    }
+//                    if (type.equals("Expense")){
+//                        validExpense = av.amountCheck(account, amountDouble);
+//                    }
+//                    else if(type.equals("Income")){
+//                        validIncome = av.addIncome(account, amountDouble);
+//                    }
                         Map<String, Object> postValues = td.toMap();
                         mDatabase.child(key).updateChildren(postValues);
                         returnToDashboard();

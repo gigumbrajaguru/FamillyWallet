@@ -56,15 +56,27 @@ public class TransactionRecurListAdapter extends ArrayAdapter<TransactionDetails
             txtCategory.setText(trns.categoryView(td.getCategoryName(),getContext()));
             txtDate.setText(trns.dateView(td.getDate(),getContext()));
             txtRecurring.setText(res.getString(R.string.recurring)+": "+trns.recurringView(td.getRecurringPeriod(),getContext()));
+            txtAmount.setText("+"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());
+            txtCategory.setText(trns.categoryView(td.getCategoryName(),getContext()));
+            txtDate.setText(trns.dateView(td.getDate(),getContext()));
+            imageView.setImageResource(td.getCategoryID());
+
             String type = td.getType();
             if (type.equals("Income")){
-                txtAmount.setText("+"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());
-                txtAmount.setTextColor(ContextCompat.getColor(context,R.color.income));
+                txtAmount.setTextColor(ContextCompat.getColor(getContext(),R.color.income));
+                txtTitle.setTextColor(ContextCompat.getColor(getContext(),R.color.income));
+                txtCategory.setTextColor(ContextCompat.getColor(getContext(),R.color.income));
+                txtDate.setTextColor(ContextCompat.getColor(getContext(),R.color.income));
+                txtRecurring.setTextColor(ContextCompat.getColor(getContext(),R.color.income));
+
             }else if (type.equals("Expense")){
-                txtAmount.setText("-"+trns.currencyView(td.getCurrency(),getContext())+td.getAmount());
-                txtAmount.setTextColor(ContextCompat.getColor(context,R.color.expense));
+                txtAmount.setTextColor(ContextCompat.getColor(getContext(),R.color.expense));
+                txtTitle.setTextColor(ContextCompat.getColor(getContext(),R.color.expense));
+                txtCategory.setTextColor(ContextCompat.getColor(getContext(),R.color.expense));
+                txtDate.setTextColor(ContextCompat.getColor(getContext(),R.color.expense));
+                txtRecurring.setTextColor(ContextCompat.getColor(getContext(),R.color.expense));
             }
-            imageView.setImageResource(td.getCategoryID());
+
 
 
 

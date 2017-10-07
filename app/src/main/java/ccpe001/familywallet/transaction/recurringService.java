@@ -26,8 +26,9 @@ public class recurringService extends GcmTaskService {
         String uid = sharedPref.getString("uniUserID", "");
         String fid = sharedPref.getString("uniFamilyID", "");
         String InGroup = sharedPref.getString("InGroup", "");
+        String uname = sharedPref.getString("uniFname", "");
         /* calling recurring transaction method*/
-        AutoRecurringTransactions recurTrans = new AutoRecurringTransactions(uid, fid, InGroup);
+        AutoRecurringTransactions recurTrans = new AutoRecurringTransactions(uid, fid,uname, InGroup);
         Log.i("echo","background service working");
         return 0;
     }

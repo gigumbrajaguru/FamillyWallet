@@ -272,7 +272,7 @@ public class Translate {
 
         }
         if (Integer.parseInt(day) < 10) {
-            day = "0" + day;
+            day = "0" + Integer.parseInt(day);
         }
 
         switch (month) {

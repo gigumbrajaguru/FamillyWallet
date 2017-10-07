@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.List;
 
 import ccpe001.familywallet.Splash;
-import ccpe001.familywallet.budget.actionValidater;
 
 import static java.security.AccessController.getContext;
 
@@ -28,16 +27,15 @@ import static java.security.AccessController.getContext;
 
 public class AutoRecurringTransactions {
 
-    String userID, familyID, InGroup;
+    String userID, familyID, InGroup, userName;
     List<TransactionDetails> tdList;
     List<String> keys;
     private DatabaseReference mDatabase, m2Database;
     private int todayYear, todayMonth, todayDay, todayDayOfWeek; //variables to hold today date and dat of week
     private int nxtYear, nxtMonth, nxtDay; //variables to hold tomorrow date
     TransactionDetails tdReturn;
-    final actionValidater av = new actionValidater();
 
-    public AutoRecurringTransactions(String uID , String fID, String inGrp){
+    public AutoRecurringTransactions(String uID , String fID, String uName, String inGrp){
         /*Getting Current Date*/
         final Calendar c = Calendar.getInstance();
         todayYear = c.get(Calendar.YEAR);   //Current year
@@ -54,6 +52,7 @@ public class AutoRecurringTransactions {
         /**/
         familyID=fID;
         userID=uID;
+        userName=uName;
         InGroup = inGrp;
 
 
@@ -122,7 +121,9 @@ public class AutoRecurringTransactions {
         }
     }
 
-    /* Method the find the transaction recurring daily if so add it to the transaction list in database */
+    /**
+     *  Method the find the transaction recurring daily if so add it to the transaction list in database
+     */
     private void dailyRecuring( String dbTime, TransactionDetails td) {
         String retMonth, retDay, retDate;
 
@@ -131,7 +132,7 @@ public class AutoRecurringTransactions {
                 retMonth="0"+todayMonth;
             }
             else {
-                retMonth=Integer.toString(todayMonth);
+                retMonth=String.valueOf(todayMonth);
             }
 
                 /*Converting the day into a double digit value if its not*/
@@ -139,10 +140,10 @@ public class AutoRecurringTransactions {
                 retDay="0"+todayDay;
             }
             else {
-                retDay=Integer.toString(todayDay);
+                retDay=String.valueOf(todayDay);
             }
 
-        retDate=Integer.toString(todayYear)+retMonth+retDay+dbTime; //return date converted to format (year+month+day+time ie-201709241245)
+        retDate=String.valueOf(todayYear)+retMonth+retDay+dbTime; //return date converted to format (year+month+day+time ie-201709241245)
         addTransaction(td, retDate);
     }
 
@@ -174,7 +175,7 @@ public class AutoRecurringTransactions {
                 retMonth="0"+todayMonth;
             }
             else {
-                retMonth=Integer.toString(todayMonth);
+                retMonth=String.valueOf(todayMonth);
             }
 
             /*Converting the day into a double digit value if its not*/
@@ -182,12 +183,12 @@ public class AutoRecurringTransactions {
                 retDay="0"+todayDay;
             }
             else {
-                retDay=Integer.toString(todayDay);
+                retDay=String.valueOf(todayDay);
             }
 
         if (dbDayOfWeek==todayDayOfWeek){
 
-            retDate=Integer.toString(todayYear)+retMonth+retDay+dbTime; //return date converted to format (year+month+day+time ie-201709241245)
+            retDate=String.valueOf(todayYear)+retMonth+retDay+dbTime; //return date converted to format (year+month+day+time ie-201709241245)
             addTransaction(td, retDate);
 
         }
@@ -214,7 +215,7 @@ public class AutoRecurringTransactions {
                 else {
                     retMonth=String.valueOf(todayMonth);
                 }
-                String retdate = Integer.toString(todayYear)+retMonth+retDay+dbTime;
+                String retdate = String.valueOf(todayYear)+retMonth+retDay+dbTime;
 
                 addTransaction(td, retdate);
 
@@ -239,9 +240,9 @@ public class AutoRecurringTransactions {
                 retMonth="0"+todayMonth;
             }
             else {
-                retMonth=Integer.toString(todayMonth);
+                retMonth=String.valueOf(todayMonth);
             }
-            String retdate = Integer.toString(todayYear)+retMonth+retDay+dbTime;
+            String retdate = String.valueOf(todayYear)+retMonth+retDay+dbTime;
 
             addTransaction(td, retdate);
 
@@ -250,7 +251,7 @@ public class AutoRecurringTransactions {
 
     /* method to add the recurring transaction to database*/
     private void addTransaction(TransactionDetails td, String retDate) {
-        tdReturn = new TransactionDetails(userID,td.getAmount(), td.getTitle(),
+        tdReturn = new TransactionDetails(userID,userName,td.getAmount(), td.getTitle(),
                 td.getCategoryName(), retDate, td.getCategoryID(), td.getTime(),
                 td.getAccount(), td.getLocation(), td.getType(), td.getCurrency(),familyID);
         if (familyID.equals(userID) && !InGroup.equals("true")){
@@ -262,14 +263,14 @@ public class AutoRecurringTransactions {
         m2Database.child("Transactions").child(familyID).push().setValue(tdReturn);
         Double amountDouble =Double.parseDouble(td.getAmount());
         /* Reduct amount from the relevant account  */
-        if (td.getType().equals("Expense")){
-            av.amountCheck(td.getAccount(), amountDouble);
-
-        }
-        /* Add amount to the relevant account  */
-        else if(td.getType().equals("Income")){
-            av.addIncome(td.getAccount(), amountDouble);
-        }
+//        if (td.getType().equals("Expense")){
+//            av.amountCheck(td.getAccount(), amountDouble);
+//
+//        }
+//        /* Add amount to the relevant account  */
+//        else if(td.getType().equals("Income")){
+//            av.addIncome(td.getAccount(), amountDouble);
+//        }
     }
 
 }

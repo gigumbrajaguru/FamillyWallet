@@ -36,6 +36,7 @@
     <string name="nullAccount">Select Account first</string>
     <string name="transactionAdded">Transaction Added</string>
     <string name="transactionUpdated">Successfully Updated</string>
+    <string name="allTransactions">All family Transactions</string>
 
     <string name="noAccTitle">No account found.</string>
     <string name="noAccMsg">An account is needed to add a transaction. Do you want to add an account?</string>

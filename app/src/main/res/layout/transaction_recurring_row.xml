@@ -61,7 +61,8 @@
                 android:focusableInTouchMode="false"
                 android:fontFamily="sans-serif"
                 android:text="TextView"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/img"

@@ -13,6 +13,7 @@ public class TransactionDetails {
 
     public String userID;
     public String familyID;
+    public String userName;
     public String amount;
     public String title;
     public String categoryName;
@@ -32,9 +33,10 @@ public class TransactionDetails {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public TransactionDetails(String userID, String amount, String title, String categoryName, String date, Integer categoryID, String time, String account, String location, String type, String currency, String familyID) {
+    public TransactionDetails(String userID, String name, String amount, String title, String categoryName, String date, Integer categoryID, String time, String account, String location, String type, String currency, String familyID) {
         this.userID = userID;
         this.familyID = familyID;
+        this.userName = name;
         this.amount = amount;
         this.title = title;
         this.categoryName = categoryName;
@@ -47,9 +49,10 @@ public class TransactionDetails {
         this.currency = currency;
     }
 
-    public TransactionDetails(String userID, String amount, String title, String categoryName, String date, Integer categoryID, String time, String account, String location, String type, String currency, String familyID, String recurringPeriod) {
+    public TransactionDetails(String userID, String name, String amount, String title, String categoryName, String date, Integer categoryID, String time, String account, String location, String type, String currency, String familyID, String recurringPeriod) {
         this.userID = userID;
         this.familyID = familyID;
+        this.userName = name;
         this.amount = amount;
         this.title = title;
         this.categoryName = categoryName;
@@ -69,6 +72,7 @@ public class TransactionDetails {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("userID", userID);
+        result.put("userName", userName);
         result.put("familyID", familyID);
         result.put("amount", amount);
         result.put("title", title);
@@ -95,6 +99,10 @@ public class TransactionDetails {
 
     public String getFamilyID() {
         return familyID;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public String getAmount() {
@@ -128,6 +136,14 @@ public class TransactionDetails {
 
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setRecurringPeriod(String recurringPeriod) {
+        this.recurringPeriod = recurringPeriod;
     }
 
     public void setFamilyID(String familyID) {
