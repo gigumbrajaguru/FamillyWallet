@@ -489,7 +489,6 @@ public class Dashboard extends AppCompatActivity
             AlertDialog alert = builder.create();
             alert.show();
         }
-
         /*------------------------Account Availabilty checker--------------------------------------*/
     }
 
