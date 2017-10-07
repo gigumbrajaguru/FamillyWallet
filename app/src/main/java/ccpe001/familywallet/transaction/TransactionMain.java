@@ -15,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,12 +30,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,12 +44,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ccpe001.familywallet.PeriodicBackupCaller;
 import ccpe001.familywallet.R;
-import ccpe001.familywallet.Splash;
 import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
-import ccpe001.familywallet.budget.addAccount;
+import ccpe001.familywallet.budget.AddAccount;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -448,7 +442,7 @@ public class TransactionMain extends Fragment {
                         public void onClick(DialogInterface dialog, int id) {
                             android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
                                     .beginTransaction();
-                            addAccount addwallet = new addAccount();
+                            AddAccount addwallet = new AddAccount();
                             fragmentTransaction.replace(R.id.fragmentContainer1, addwallet);
                             fragmentTransaction.commit();
                         }

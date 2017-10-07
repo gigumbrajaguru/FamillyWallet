@@ -764,16 +764,14 @@ public class Dashboard extends AppCompatActivity
         FirebaseDatabase.getInstance().getReference("Groups").child(fID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
-                    if (tdSnapshot.getKey().equals(uID)){
-                        SharedPreferences sharedPref= getSharedPreferences("fwPrefs", 0);
-                        final SharedPreferences.Editor editor= sharedPref.edit();
+                for (DataSnapshot tdSnapshot:dataSnapshot.getChildren()) {
+                    if (tdSnapshot.getKey().equals(uID)) {
+                        SharedPreferences sharedPref = getSharedPreferences("fwPrefs", 0);
+                        final SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("InGroup", "true");
                         editor.commit();
                     }
                 }
-
             }
 
             @Override
