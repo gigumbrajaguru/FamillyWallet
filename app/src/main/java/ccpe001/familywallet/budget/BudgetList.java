@@ -46,6 +46,8 @@ public class BudgetList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.budget_list, container, false);
         ListView budList = (ListView) view.findViewById(R.id.list);
+        AutoTracking autoTrack=new AutoTracking();
+        autoTrack.getTransactionDetail(getContext());
         AutoRefresh(view);
         budList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 public class AutoTracking {
     String userID, familyID, InGroup;
     boolean updateValidation;
+    int budgetcount;
     private static DatabaseReference mDatabase;
     public static DataTrackTrasmit[][] TransactionArray;
     public static DataTrackTrasmit[][] budgetArray;
@@ -69,6 +70,9 @@ public class AutoTracking {
                     int numTrasaction = i;
                     getBudgetDetail(familyID, numTrasaction);
                 }
+                else {
+                    getBudgetDetail(familyID, 0);
+                }
             }
 
                 @Override
@@ -84,7 +88,7 @@ public class AutoTracking {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
-                    int i=0;
+                    budgetcount=0;
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         String stat = child.child("status").getValue().toString();
                         String budgetAmount=child.child("Amount").getValue().toString();
@@ -101,20 +105,19 @@ public class AutoTracking {
                         String endMon=enddateParts[0];
                         String endate=enddateParts[1];
                         if(!stat.equals("Closed")){
-                            budgetArray[i][0].catagory=catagory;
-                            budgetArray[i][1].strYr=strYr;
-                            budgetArray[i][2].strMon=strMon;
-                            budgetArray[i][3].strDate=strDate;
-                            budgetArray[i][4].endYr=endYr;
-                            budgetArray[i][5].endMon=endMon;
-                            budgetArray[i][6].endate=endate;
-                            budgetArray[i][7].budgetAmount=budgetAmount;
-                            budgetArray[i][8].keys=key;
+                            budgetArray[budgetcount][0].catagory=catagory;
+                            budgetArray[budgetcount][1].strYr=strYr;
+                            budgetArray[budgetcount][2].strMon=strMon;
+                            budgetArray[budgetcount][3].strDate=strDate;
+                            budgetArray[budgetcount][4].endYr=endYr;
+                            budgetArray[budgetcount][5].endMon=endMon;
+                            budgetArray[budgetcount][6].endate=endate;
+                            budgetArray[budgetcount][7].budgetAmount=budgetAmount;
+                            budgetArray[budgetcount][8].keys=key;
                         }
-                        i++;
+                        budgetcount++;
                     }
-                    int numbudget=i;
-                    percentageCalc(familyID,numTrans,numbudget);
+                    percentageCalc(familyID,numTrans,budgetcount);
 
                 }
             }
