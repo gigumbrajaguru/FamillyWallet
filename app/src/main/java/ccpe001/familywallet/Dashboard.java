@@ -466,6 +466,8 @@ public class Dashboard extends AppCompatActivity
             snackbar.show();
         }
         /*------------------------Account Availability checker--------------------------------------*/
+        AutoTracking autoTrack=new AutoTracking();
+        autoTrack.getTransactionDetail(this);
         if (ActionValidater.accountChecker()) {
             final android.support.v4.app.FragmentTransaction fragmentes = getSupportFragmentManager().beginTransaction();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
