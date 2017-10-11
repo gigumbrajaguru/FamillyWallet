@@ -104,7 +104,7 @@ public class TransactionMain extends Fragment {
         /* gcmNetworkManager api method scheduling to run the recurring transactions daily*/
         GcmNetworkManager gcmRecuTrans = GcmNetworkManager.getInstance(getActivity());
         PeriodicTask task = new PeriodicTask.Builder()
-                .setService(recurringService.class)
+                .setService(RecurringService.class)
                 .setPeriod(86400)//recurring daily
                 .setTag("recurringTransaction")
                 .setPersisted(true)

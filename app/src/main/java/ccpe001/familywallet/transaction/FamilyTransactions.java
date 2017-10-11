@@ -8,11 +8,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +20,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,10 +33,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import ccpe001.familywallet.AddMember;
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Translate;
-import ccpe001.familywallet.Validate;
 
 /**
  *
@@ -160,7 +154,6 @@ public class FamilyTransactions extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GroupDetails gr = grpList.get(position);
-                Toast.makeText(getActivity(), gr.getUserID(), Toast.LENGTH_SHORT).show();
                 Query query2 = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
                 populateUserTransactions(query2, gr.getUserID());
                 slide.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);

@@ -13,9 +13,15 @@ import org.json.JSONObject;
 
 public class CurrencyResponse {
 
-    Double convertedCurrency;
-    private DatabaseReference mDatabase;
+    private static  Double convertedCurrency;
+    private static DatabaseReference mDatabase;
 
+    /**
+     * Method to convert add foreign currency to local when called
+     *
+     * @param td - transaction details object
+     * @param InGroup - Admins group status to check when adding the transaction to database
+     */
     public void curr(final TransactionDetails td, final String InGroup){
 
         final Double amount = Double.parseDouble(td.getAmount());
@@ -24,11 +30,13 @@ public class CurrencyResponse {
             @Override
             public void onJSONResponse(boolean success, JSONObject ratesObj){
                 try {
+                    /** getting the relevant currency amounts from json object*/
                     final Double lkr = ratesObj.getDouble("LKR");
                     final Double eur = ratesObj.getDouble("EUR");
                     final Double gbp = ratesObj.getDouble("GBP");
                     final Double inr = ratesObj.getDouble("INR");
 
+                    /** Assigning the value to convertedCurrency value relevant currency*/
                     if (td.getCurrency().equals("USD.")) {
                         convertedCurrency = amount * lkr;
                     } else if (td.getCurrency().equals("EUR.")) {
@@ -43,9 +51,12 @@ public class CurrencyResponse {
 
                     convertedCurrency=Math.round(convertedCurrency * 100.0) / 100.0;
 
+                    /** Setting the new amount and local currency in transaction details object */
                     td.setAmount(String.valueOf(convertedCurrency));
                     td.setCurrency("LKR.");
                     mDatabase = FirebaseDatabase.getInstance().getReference();
+
+                    /** Added to the relevant node in firebase according to group status*/
                     if (td.getFamilyID().equals(td.getUserID()) && !InGroup.equals("true")){
                         mDatabase.child("Transactions").child(td.getUserID()).push().setValue(td);
                     }
@@ -53,8 +64,6 @@ public class CurrencyResponse {
                         mDatabase.child("Transactions").child("Groups").child(td.getFamilyID()).push().setValue(td);
                     }
 
-
-                    Log.i("echoCur",""+convertedCurrency);
                 }catch (Exception e){
 
                 }

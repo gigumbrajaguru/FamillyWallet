@@ -92,7 +92,7 @@ public class Dashboard extends AppCompatActivity
 
     public String fullname;
     public String propicUrl;
-    private String userID, familyID, fname;
+    private String userID, familyID, fname, proPic;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser;
@@ -134,7 +134,7 @@ public class Dashboard extends AppCompatActivity
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_navigation_drawer);
         navUserDetTxt = (TextView) headerView.findViewById(R.id.navUserDet);
         circleButton = (FloatingActionButton) headerView.findViewById(R.id.loggedUsrImg);
-
+        circleButton.setOnClickListener(this);
 
         //display help menu if app first installed
         pref = getSharedPreferences("First Time",Context.MODE_PRIVATE);
@@ -165,10 +165,12 @@ public class Dashboard extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot) {
                 familyID=dataSnapshot.child("familyId").getValue().toString();
                 fname=dataSnapshot.child("firstName").getValue().toString()+" "+dataSnapshot.child("lastName").getValue().toString();
+                proPic = dataSnapshot.child("proPic").getValue().toString();
                 /* saving user id, family id and first name in preferences */
                 editor.putString("uniUserID", userID);
                 editor.putString("uniFamilyID", familyID);
                 editor.putString("uniFname", fname);
+                editor.putString("proPic", proPic);
                 editor.commit();
                 groupStatus(userID,familyID);
             }
@@ -675,6 +677,15 @@ public class Dashboard extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
+        if (view.getId()==R.id.loggedUsrImg){
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            AddMember addmember = new AddMember();
+            fragmentTransaction.replace(R.id.fragmentContainer1,addmember);
+            fragmentTransaction.commit();
+            //Close nav drawer here
+            drawerLayout.closeDrawer(GravityCompat.START);
+         }
         if (showcaseView!=null) {
             //for each click on btn
             ViewTarget navigationButtonViewTarget = null;

@@ -1,8 +1,11 @@
 package ccpe001.familywallet;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,11 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -31,9 +37,11 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.squareup.picasso.Picasso;
 
 import java.util.Random;
 
+import ccpe001.familywallet.admin.CircleTransform;
 import ccpe001.familywallet.transaction.GroupDetails;
 import ccpe001.familywallet.transaction.TransactionDetails;
 
@@ -45,11 +53,13 @@ public class AddMember extends Fragment  implements View.OnClickListener{
 
     private ImageView qrImage;
     private TextView addMemberTitle, qrError;
-    private String userID, familyID, fname, qrValue="",InGroup;
+    private String userID, familyID, fname, qrValue="",InGroup, proPic;
     private Button scanqrbtn, btnLeave;
     private DatabaseReference mDatabase, gDatabase;
+    private static StorageReference storageReference= FirebaseStorage.getInstance().getReference();
     private SharedPreferences.Editor editor;
     private RecyclerView recyclerView;
+    private static Activity context;
 
     SharedPreferences sharedPref;
 
@@ -59,7 +69,7 @@ public class AddMember extends Fragment  implements View.OnClickListener{
 
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.add_member, container, false);
-
+        context=getActivity();
 
         /* Getting the user id and family id from shared preferences  */
         sharedPref = this.getContext().getSharedPreferences("fwPrefs",0);
@@ -67,12 +77,13 @@ public class AddMember extends Fragment  implements View.OnClickListener{
         String fid = sharedPref.getString("uniFamilyID", "");
         String name = sharedPref.getString("uniFname", "");
         InGroup = sharedPref.getString("InGroup", "");
+        proPic = sharedPref.getString("proPic", "");
         editor = sharedPref.edit();
         userID = uid;
         familyID = fid;
         fname=  name;
 
-        qrValue = "fwValid:"+userID+":"+fname ; //Output value for QR string
+        qrValue = "fwValid:::"+userID+":::"+fname+":::"+proPic ; //Output value for QR string
 
         /* Getting ad populating list with group member info */
         gDatabase = FirebaseDatabase.getInstance().getReference("Groups").child(familyID);
@@ -89,6 +100,7 @@ public class AddMember extends Fragment  implements View.OnClickListener{
             @Override
             protected void populateViewHolder(GrDetailsViewHolder viewHolder, GroupDetails model, int position) {
                 viewHolder.setName(model.getFirstName());
+                viewHolder.setProPic(model.getProPic(),model.getUserID());
             }
         };
 
@@ -191,12 +203,12 @@ public class AddMember extends Fragment  implements View.OnClickListener{
             if (result.getContents()== null){      //Scan cancelled
                 Toast.makeText(getActivity(),R.string.signup_cancel_toast,Toast.LENGTH_LONG).show();
             }else {
-                String[] parts = result.getContents().split(":");      //Split QR String into parts
+                String[] parts = result.getContents().split(":::");      //Split QR String into parts
                  /* checking if the scanning qr is valid */
                 if (parts[0].equals("fwValid")) {
                     InGroup="true";
-                    GroupDetails groupDetails = new GroupDetails(parts[1], parts[2]);   //new members details
-                    GroupDetails groupHDetails = new GroupDetails(userID, fname);       //admins details
+                    GroupDetails groupDetails = new GroupDetails(parts[1], parts[2],parts[3]);   //new members details
+                    GroupDetails groupHDetails = new GroupDetails(userID, fname, proPic);       //admins details
                     mDatabase.child("Groups").child(userID).child(parts[1]).setValue(groupDetails); //adding new members details to db
                     mDatabase.child("Groups").child(userID).child(userID).setValue(groupHDetails);  //adding admins  details to db
                     mDatabase.child("UserInfo").child(parts[1]).child("familyId").setValue(userID); //Changing family ID in user details
@@ -260,15 +272,43 @@ public class AddMember extends Fragment  implements View.OnClickListener{
 
     /* view holder for group details for member info */
     public static class GrDetailsViewHolder extends RecyclerView.ViewHolder{
-        TextView txtName;
+        final TextView txtName;
+        final ImageView proPic;
         public GrDetailsViewHolder(View v) {
             super(v);
             txtName = (TextView) v.findViewById(R.id.txtGrName);
+            proPic = (ImageView) v.findViewById(R.id.proPic);
         }
 
         public void setName(String name) {
             txtName.setText(name);
         }
 
+
+        public void setProPic(String proPicURL, String uid) {
+            try {
+                if(proPicURL.equals("Storage")){
+
+                    storageReference.child("UserPics/" + uid + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Picasso.with(context.getApplication())
+                                    .load(uri)
+                                    .transform(new CircleTransform())
+                                    .into(proPic);
+                        }
+                    });
+                    //load uri to circleButton using picasso library
+                }else{
+
+                    Picasso.with(context.getApplication())
+                            .load(proPicURL)
+                            .transform(new CircleTransform())
+                            .into(proPic);
+                }
+            }catch (Exception e){
+                Log.i("echoPro",""+e);
+            }
+        }
     }
 }

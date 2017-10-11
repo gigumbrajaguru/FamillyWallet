@@ -20,7 +20,9 @@ public class CurrencyConverter {
 
 
     static JSONObject jsnObj = null;
+    private static String CURRENCY_API;
 
+    /** Asynchronous call back when json file received */
     public interface OnJSONResponseCallback {
         public void onJSONResponse(boolean success, JSONObject response);
     }
@@ -30,7 +32,10 @@ public class CurrencyConverter {
         String day = date.substring(6, 8);   //getting day of the recurring transaction
         String year = date.substring(0, 4);  //getting year of the recurring transaction
         String exchangeDate = year + "-" + month + "-" + day;
-        String CURRENCY_API = "https://openexchangerates.org/api/historical/" + exchangeDate + ".json?app_id=0dee46c64b7f4d339415facf13e29242";
+
+        /** Getting the json file to the exchange date */
+        CURRENCY_API = "https://openexchangerates.org/api/historical/" + exchangeDate
+                + ".json?app_id=0dee46c64b7f4d339415facf13e29242";
 
             AsyncHttpClient client = new AsyncHttpClient();
             client.get(CURRENCY_API, new AsyncHttpResponseHandler() {
@@ -43,6 +48,7 @@ public class CurrencyConverter {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
                     try {
+                        /** Getting the json file to a json object and making the callback with true status*/
                         jsnObj = new JSONObject(new String(bytes));
                         JSONObject ratesObj = jsnObj.getJSONObject("rates");
                         callback.onJSONResponse(true,ratesObj);
@@ -54,9 +60,10 @@ public class CurrencyConverter {
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
                     try {
+                        /**making the callback with false status*/
                         jsnObj = new JSONObject(new String(bytes));
                         JSONObject ratesObj = jsnObj.getJSONObject("rates");
-                        callback.onJSONResponse(true,ratesObj);
+                        callback.onJSONResponse(false,ratesObj);
                     } catch (JSONException e) {
                         Log.e("Exception", "JSONException " + e.toString());
                     }

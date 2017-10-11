@@ -33,9 +33,10 @@
     <string name="transactionAdded">ගනුදෙනුව සාර්ථකත්වය අතුලත් විය</string>
     <string name="transactionUpdated">ගනුදෙනුව සාර්ථකත්වය වෙනස් විය</string>
     <string name="allTransactions">සියලු පවුලේ ගනුදෙනු</string>
+    <string name="noConnection">විදේශ මුදල් එකතු කරන විට අන්තර්ජාලයට සම්බන්ද වි සිටිය යුතුය</string>
 
     <string name="noAccTitle">ගිණුමක් සාදා නොමැත</string>
-    <string name="noAccMsg">ගනුදෙනුවක් ඇතුලත් කිරීමට ගිණුමක් සැදිය යුතුයි.</string>
+    <string name="noAccMsg">ගනුදෙනුවක් ඇතුලත් කිරීමට ගිණුමක් සැදිය යුතුයි</string>
     <string name="noAccBtnAdd">ගිණුමක් සාදන්න</string>
     <string name="cancel">අවලංගු කරන්න</string>
     <string name="updateTransaction">සංස්කරණය කරන්න</string>

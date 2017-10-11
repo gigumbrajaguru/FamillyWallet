@@ -255,7 +255,7 @@
         </service>
 
         <service
-            android:name=".transaction.recurringService"
+            android:name=".transaction.RecurringService"
             android:enabled="true"
             android:exported="true"
             android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">

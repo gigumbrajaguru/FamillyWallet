@@ -14,8 +14,8 @@ import com.google.android.gms.gcm.TaskParams;
  * Created by Knight on 9/12/2017.
  */
 
-public class recurringService extends GcmTaskService {
-    public recurringService(){
+public class RecurringService extends GcmTaskService {
+    public RecurringService(){
 
     }
 

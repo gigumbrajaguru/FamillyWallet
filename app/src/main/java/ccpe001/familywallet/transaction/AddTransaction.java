@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,16 +37,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import ccpe001.familywallet.R;
-import ccpe001.familywallet.Splash;
 import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
 
@@ -55,10 +52,10 @@ public class AddTransaction extends AppCompatActivity {
 
 
     /*Initializing layout items*/
-    private TextView txtLocation;
-    private EditText txtAmount, txtDate, txtTime, txtTitle,txtCurrency, txtCategory, txtRecurring, txtAccount;
-    private CheckBox checkRecurring;
-    private ImageView imgValue, imgAccount, imgCategory, imgNote, imgCalender, imgLocation, imgSave;
+    private static TextView txtLocation;
+    private static EditText txtAmount, txtDate, txtTime, txtTitle,txtCurrency, txtCategory, txtRecurring, txtAccount;
+    private static CheckBox checkRecurring;
+    private static ImageView imgValue, imgAccount, imgCategory, imgNote, imgCalender, imgLocation, imgSave;
     /*Initializing variables to hold Extra values passed with intent or values from input fields */
     String categoryName,  title, date, amount, currency, time, location, account, type, update, key,
             userID, familyID, eUserID, eFamilyID, previousAmount, recurrPeriod, InGroup, userName;
@@ -69,7 +66,7 @@ public class AddTransaction extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
-    Integer count=1;
+    private Integer count=1;
     Resources resources;
     int PLACE_PICKER_REQUEST=1;
     final Context context = this;
@@ -500,6 +497,9 @@ public class AddTransaction extends AppCompatActivity {
         else if (account.isEmpty()){
             Toast.makeText(this, R.string.nullAccount, Toast.LENGTH_LONG).show();
         }
+        else if (!currency.equals("LKR.") && !networkConnected()){
+            Toast.makeText(this, R.string.noConnection, Toast.LENGTH_LONG).show();
+        }
         else {
             TransactionDetails td;
             try {
@@ -599,6 +599,10 @@ public class AddTransaction extends AppCompatActivity {
 
     }
 
+    private boolean networkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
 
 
 
