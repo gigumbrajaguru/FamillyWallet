@@ -53,6 +53,7 @@ public class AddMember extends Fragment  implements View.OnClickListener{
 
     SharedPreferences sharedPref;
 
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -118,6 +119,10 @@ public class AddMember extends Fragment  implements View.OnClickListener{
         return view;
     }
 
+    /**
+     * This method is used to initialize elements in the xml file
+     * @param v
+     */
     private void init(View v) {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.addmember_title);
         addMemberTitle = (TextView) v.findViewById(R.id.addMemberTitle);
@@ -142,13 +147,16 @@ public class AddMember extends Fragment  implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.qrError) {
-            setQr();
+            System.exit(0);
         }else if(view.getId() == R.id.scanqrbtn){
             qrReader();
 
         }
     }
 
+    /**
+     * This method is used to generate QR code
+     */
     private void setQr(){
         MultiFormatWriter mfw = new MultiFormatWriter();
         try {
@@ -161,6 +169,10 @@ public class AddMember extends Fragment  implements View.OnClickListener{
         }
     }
 
+    /**
+     * This method is used to open the QR code scanner for specified properties.
+     * After result is cached in onActivityResult();
+     */
     private void qrReader(){
         IntentIntegrator intentIntegrator = new IntentIntegrator(getActivity());
         intentIntegrator.setDesiredBarcodeFormats(intentIntegrator.QR_CODE_TYPES);

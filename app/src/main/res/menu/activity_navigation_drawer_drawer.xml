@@ -2,8 +2,11 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
 
+
+
+    <item android:title="@string/xmlmenu_item1_title" >
+        <menu>
         <item
             android:id="@+id/transactionFrag"
             android:icon="@drawable/ic_menu_camera"
@@ -17,18 +20,15 @@
             android:id="@+id/recurringFrag"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/dashboard_settitle_recurring" />
-        <item
-            android:id="@+id/reportsFrag"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/xmlmenu_reportsFrag_title" />
+
+        </menu>
+    </item>
 
 
 
-
-    </group>
-
-    <item android:title="@string/xmlmenu_item2_title">
+    <item android:title="@string/xmlmenu_item3_title">
         <menu>
+
             <item
                     android:id="@+id/budgetFrag"
                     android:icon="@drawable/ic_menu_share"
@@ -40,9 +40,31 @@
                     android:title="@string/xmlmenu_walletFrag_title"/>
 
             <item
+                    android:id="@+id/backupFrag"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="@string/xmlmenu_backupFrag_title"/>
+
+            <item
+                    android:id="@+id/reportsFrag"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="@string/xmlmenu_reportsFrag_title" />
+
+
+        </menu>
+    </item>
+
+
+    <item android:title="@string/xmlmenu_item4_title">
+        <menu>
+
+
+
+            <item
                     android:id="@+id/settingFrag"
                     android:icon="@drawable/ic_menu_send"
                     android:title="@string/xmlmenu_settingFrag_title"/>
+
+
 
             <item
                     android:id="@+id/helpFrag"
@@ -51,13 +73,31 @@
         </menu>
     </item>
 
-    <item android:title="@string/xmlmenu_item3_title">
+    <item android:title="@string/xmlmenu_item5_title">
         <menu>
+
+
             <item
-                    android:id="@+id/backupFrag"
+                    android:id="@+id/updateFrag"
                     android:icon="@drawable/ic_menu_send"
-                    android:title="@string/xmlmenu_backupFrag_title"/>
+                    android:title="@string/xmlmenu_updateFrag_title"/>
+
+
+
+            <item
+                    android:id="@+id/addMemberFrag"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="@string/xmlmenu_addMemberFrag_title"/>
+
+            <item
+                    android:id="@+id/signOutFrag"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="@string/xmlmenu_signOutFrag_title"/>
+
+
         </menu>
     </item>
+
+
 
 </menu>

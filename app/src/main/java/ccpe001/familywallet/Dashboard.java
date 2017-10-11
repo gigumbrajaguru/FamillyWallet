@@ -87,9 +87,8 @@ public class Dashboard extends AppCompatActivity
     private NavigationView navigationView = null;
     private DrawerLayout drawerLayout = null;
     private FloatingActionButton circleButton;
-    private Spinner navUserDetTxt;
+    private TextView navUserDetTxt;
     private FirebaseAuth mAuth;
-    private Intent signUpIntent;
 
     public String fullname;
     public String propicUrl;
@@ -133,11 +132,9 @@ public class Dashboard extends AppCompatActivity
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_navigation_drawer);
-        navUserDetTxt = (Spinner) headerView.findViewById(R.id.navUserDet);
+        navUserDetTxt = (TextView) headerView.findViewById(R.id.navUserDet);
         circleButton = (FloatingActionButton) headerView.findViewById(R.id.loggedUsrImg);
 
-
-        signUpIntent = getIntent();
 
         //display help menu if app first installed
         pref = getSharedPreferences("First Time",Context.MODE_PRIVATE);
@@ -192,22 +189,26 @@ public class Dashboard extends AppCompatActivity
             new Splash().userLoginFunc(getApplication());
         }
 
-        storageReference = FirebaseStorage.getInstance().getReference();
 
+        //information is loading to propic and username here
+        storageReference = FirebaseStorage.getInstance().getReference();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     userData = new UserData();
+                    //get users firstname
                     if (ds.getKey().equals("firstName")){
                         Log.d("lol", String.valueOf(ds.getValue()));
                         userData.setFirstName(ds.getValue().toString());
                         fullname = userData.getFirstName();
                     }
+                    //get users lastname
                     else if(ds.getKey().equals("lastName")) {
                         userData.setLastName(ds.getValue().toString());
                         fullname = fullname + " "+userData.getLastName();
                     }
+                    //get users propic url when it's from social login
                     else if(ds.getKey().equals("proPic")) {
                         try {
                             userData.setProPic(ds.getValue().toString());
@@ -218,81 +219,11 @@ public class Dashboard extends AppCompatActivity
                     }
                 }
 
-                if (signUpIntent.getStringExtra("firstname") != null
-                        && signUpIntent.getStringExtra("lastname") != null) {
+                navUserDetTxt.setText(fullname);
 
-                    fullname = signUpIntent.getStringExtra("firstname") + " " +
-                            signUpIntent.getStringExtra("lastname");
-                }
+                //get and load users propic image from firebase storage
+                if(propicUrl.equals("Storage")){
 
-                navUserDetTxt.setPrompt(fullname);
-                navUserDetTxt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        if(i==0){
-                            startActivity(new Intent(Dashboard.this,GetInfo.class));
-                        }else if(i==1){
-                            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            AddMember addMember = new AddMember();
-                            fragmentTransaction.replace(R.id.fragmentContainer1,addMember);
-                            fragmentTransaction.commit();
-                            drawerLayout.closeDrawer(GravityCompat.START);
-                        }else if(i==2){
-                            alert = new CustomAlertDialogs();
-                            alert.initLoadingPage(Dashboard.this);
-
-                            //sign out & del daily rem,auto backups,noti icon,clear session
-                            if(mAuth.getCurrentUser().getProviders().toString().equals("[facebook.com]")){
-                                LoginManager.getInstance().logOut();
-                            }else if(mAuth.getCurrentUser().getProviders().toString().equals("[google.com]")){
-                                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                            }
-                            mAuth.signOut();
-                            SharedPreferences sharedPref= getSharedPreferences("fwPrefs",0);
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.clear();      //clear all data.
-                            editor.commit();  //commit change to SharedPreferences.
-                            NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context
-                                    .NOTIFICATION_SERVICE);
-                            mNotificationManager.cancel(PERMENT_NOT);
-
-                            PeriodicBackupCaller.backupRunner(getApplication(),getString(R.string.nobackup));
-
-                            //off noti here
-                            notificationManager = (NotificationManager) getSystemService(Context
-                                    .NOTIFICATION_SERVICE);
-                            notificationManager.cancelAll();
-
-                            finish();
-                            Settings.sessionClear(getApplication());
-                            startActivity(new Intent("ccpe001.familywallet.SIGNIN"));
-                        }
-                        navUserDetTxt.setPrompt(fullname);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-                        navUserDetTxt.setPrompt(fullname);
-                    }
-                });
-
-
-                //cannot use one method for this call are asynchrous
-                if (signUpIntent.getStringExtra("profilepic") != null) {
-                    Picasso.with(getApplication())
-                            .load(Uri.parse(signUpIntent.getStringExtra("profilepic")))
-                            .transform(new CircleTransform())
-                            .into(circleButton);
-
-                }else if(mAuth.getCurrentUser().getProviders().toString().equals("[facebook.com]")
-                        ||mAuth.getCurrentUser().getProviders().toString().equals("[google.com]")){
-
-                    Picasso.with(getApplication())
-                            .load(propicUrl)
-                            .transform(new CircleTransform())
-                            .into(circleButton);
-                }else{
                     storageReference.child("UserPics/" + firebaseUser.getUid() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -302,6 +233,14 @@ public class Dashboard extends AppCompatActivity
                                     .into(circleButton);
                         }
                     });
+                //load uri to circleButton using picasso library
+                }else if(mAuth.getCurrentUser().getProviders().toString().equals("[facebook.com]")
+                        ||mAuth.getCurrentUser().getProviders().toString().equals("[google.com]")) {
+
+                    Picasso.with(getApplication())
+                            .load(propicUrl)
+                            .transform(new CircleTransform())
+                            .into(circleButton);
                 }
 
             }
@@ -604,6 +543,12 @@ public class Dashboard extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**
+     * This method is used to select specific item from navigation drawer
+     * @param item
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -674,6 +619,41 @@ public class Dashboard extends AppCompatActivity
                 fragmentTransaction.commit();
             }
             animateMenu();
+        }else if(id == R.id.updateFrag){
+            startActivity(new Intent(Dashboard.this,GetInfo.class));
+        }else if(id == R.id.addMemberFrag){
+            AddMember addMember = new AddMember();
+            fragmentTransaction.replace(R.id.fragmentContainer1,addMember);
+            fragmentTransaction.commit();
+        }else if(id == R.id.signOutFrag){
+            alert = new CustomAlertDialogs();
+            alert.initLoadingPage(Dashboard.this);
+
+            //sign out & del daily rem,auto backups,noti icon,clear session
+            if(mAuth.getCurrentUser().getProviders().toString().equals("[facebook.com]")){
+                LoginManager.getInstance().logOut();
+            }else if(mAuth.getCurrentUser().getProviders().toString().equals("[google.com]")){
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+            }
+            mAuth.signOut();
+            SharedPreferences sharedPref= getSharedPreferences("fwPrefs",0);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.clear();      //clear all data.
+            editor.commit();  //commit change to SharedPreferences.
+            NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context
+                    .NOTIFICATION_SERVICE);
+            mNotificationManager.cancel(PERMENT_NOT);
+
+            PeriodicBackupCaller.backupRunner(getApplication(),getString(R.string.nobackup));
+
+            //off noti here
+            notificationManager = (NotificationManager) getSystemService(Context
+                    .NOTIFICATION_SERVICE);
+            notificationManager.cancelAll();
+
+            finish();
+            Settings.sessionClear(getApplication());
+            startActivity(new Intent("ccpe001.familywallet.SIGNIN"));
         }
 
 

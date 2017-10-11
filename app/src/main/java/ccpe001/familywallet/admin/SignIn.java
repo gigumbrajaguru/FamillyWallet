@@ -272,7 +272,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
                             Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
                             intent.putExtra("firstname",acct.getFamilyName());
                             intent.putExtra("lastname",acct.getDisplayName());
-                            saveData(acct.getFamilyName(),acct.getDisplayName(),acct.getPhotoUrl().toString());
+                            saveData(acct.getFamilyName(), acct.getDisplayName(), acct.getPhotoUrl().toString());
                             try {
                                 intent.putExtra("profilepic", acct.getPhotoUrl().toString());
                             }catch (Exception e){

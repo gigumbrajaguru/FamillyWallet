@@ -262,11 +262,11 @@
     <string name="xmlgetinfo_editText_hint">First name</string>
     <string name="xmlforgot_textView3_text">Enter your email, we\'ll mail you reset password.</string>
     <string name="xmlforgot_sendMail_text">Send</string>
-    <string name="xmlexportdata_filename_hint">Backup filenames</string>
-    <string name="xmlexportdata_csvCheck_text">CSV format</string>
-    <string name="xmlexportdata_exelCheck_text">Excel format</string>
-    <string name="xmlexportdata_sendBackMail_text">Send files via mail?</string>
-    <string name="xmlexportdata_createBtn_text">Create files</string>
+    <string name="xmlexportdata_filename_hint">Backup Filename</string>
+    <string name="xmlexportdata_csvCheck_text">CSV Format</string>
+    <string name="xmlexportdata_exelCheck_text">Excel Format</string>
+    <string name="xmlexportdata_sendBackMail_text">Send Files via Mail?</string>
+    <string name="xmlexportdata_createBtn_text">Export Recurring Transactions</string>
     <string name="xmladdmember_editText2_text">Can\'t scan QR code?</string>
     <string name="xmladdmember_editText10_text">To add a member scan their QR code.</string>
     <string name="xmlactscreen3_textView4_text">Description String</string>
@@ -277,8 +277,7 @@
     <string name="xmlmenu_transferFrag_title">View Accounts</string>
     <string name="xmlmenu_categoryFrag_title">Categories</string>
     <string name="xmlmenu_recurringFrag_title">Recurring transactions</string>
-    <string name="xmlmenu_item2_title">Preferences</string>
-    <string name="xmlmenu_item3_title">Preferences</string>
+    <string name="xmlmenu_item3_title">Utilities</string>
     <string name="xmlmenu_backupFrag_title">Backup</string>
     <string name="xmlmenu_helpFrag_title">Help and Manual</string>
     <string name="xmlmenu_settingFrag_title">Settings</string>
@@ -419,6 +418,15 @@
     <string name="xml_lang_selector_english">English</string>
     <string name="xml_lang_selector_sinhala">සිංහල</string>
     <string name="app_announce">App Announcemnt</string>
+    <string name="xmlmenu_item1_title">Transactions</string>
+    <string name="xmlmenu_item4_title">Preferences</string>
+    <string name="xmlmenu_updateFrag_title">Update User</string>
+    <string name="xmlmenu_signOutFrag_title">Sign out</string>
+    <string name="xmlmenu_addMemberFrag_title">Add Member</string>
+    <string name="xmlmenu_item5_title">Users</string>
+    <string name="title">Title</string>
+    <string name="recurringPeriod">Recurring Period</string>
+    <string name="xmlexportdata_createBtn2_text">Export Genaral Transactions</string>
 
 
     <string-array name="nav_drwer_arr">
