@@ -74,18 +74,18 @@ public class BudgetList extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChildren()) {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        String xy = child.child("BudgetName").getValue().toString();
-                        String xyz = child.child("status").getValue().toString();
-                        String xxy = child.child("catagory").getValue().toString();
-                        String cvh=child.child("percentage").getValue().toString();
-                        String cvi=child.child("endDays").getValue().toString();
-                        String xyy = child.getKey().toString();
-                        lkey.add(xyy);
-                        lBname.add(xy);
-                        lcat.add(xxy);
-                        lstat.add(xyz);
-                        lpercent.add(cvh);
-                        lend.add(cvi);
+                        String budgetname = child.child("BudgetName").getValue().toString();
+                        String stat = child.child("status").getValue().toString();
+                        String cata = child.child("catagory").getValue().toString();
+                        String percentages=child.child("percentage").getValue().toString();
+                        String ends=child.child("endDays").getValue().toString();
+                        String keys = child.getKey().toString();
+                        lkey.add(keys);
+                        lBname.add(budgetname);
+                        lcat.add(cata);
+                        lstat.add(stat);
+                        lpercent.add(percentages);
+                        lend.add(ends);
                     }
                     /* create arrays and pass data between arrays*/
                     percentage1 = new Object[lkey.size()];

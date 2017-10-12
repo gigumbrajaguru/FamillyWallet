@@ -15,7 +15,7 @@ import com.google.firebase.database.ValueEventListener;
  */
 
 public class AutoTracking {
-    String userID, familyID, InGroup;
+    String userID, familyID, InGroup,notify ;
     boolean updateValidation;
     int budgetcount;
     private static DatabaseReference mDatabase;
@@ -23,6 +23,7 @@ public class AutoTracking {
     public static DataTrackTrasmit[][] budgetArray;
     public  void getTransactionDetail(Context context) {
         updateValidation=true;
+        /**Assigning 2D array with DTO class**/
         TransactionArray = new DataTrackTrasmit[100][];
         for (int i = 0; i < TransactionArray.length; i++) {
             TransactionArray[i] = new DataTrackTrasmit[100];
@@ -38,6 +39,7 @@ public class AutoTracking {
         }
 
         Query querys;
+        /**Get Shared preference data**/
         SharedPreferences sharedPref = context.getSharedPreferences("fwPrefs", 0);
         userID = sharedPref.getString("uniUserID", "");
         familyID = sharedPref.getString("uniFamilyID", "");
@@ -48,6 +50,7 @@ public class AutoTracking {
             querys = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
 
         }
+        /**Get transaction detail after data change event**/
         querys.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -82,6 +85,7 @@ public class AutoTracking {
 
         });
     }
+    /**Get budget detail**/
     public void getBudgetDetail(final String familyID, final int numTrans) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Budget").orderByChild("familyId").equalTo(familyID).addValueEventListener(new ValueEventListener() {
@@ -90,6 +94,7 @@ public class AutoTracking {
                 if (dataSnapshot.hasChildren()) {
                     budgetcount=0;
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        notify = child.child("notification").getValue().toString();
                         String stat = child.child("status").getValue().toString();
                         String budgetAmount=child.child("Amount").getValue().toString();
                         String catagory = child.child("catagory").getValue().toString();
@@ -117,7 +122,7 @@ public class AutoTracking {
                         }
                         budgetcount++;
                     }
-                    percentageCalc(familyID,numTrans,budgetcount);
+                    percentageCalc(familyID,numTrans,budgetcount,notify);
 
                 }
             }
@@ -129,7 +134,8 @@ public class AutoTracking {
 
         });
     }
-    public void percentageCalc(String familyID,int numtrans,int numbudget){
+    /**Calculate percentages and totals transacction amount**/
+    public void percentageCalc(String familyID,int numtrans,int numbudget,String notify){
         double total=0;
             for(int i=0;i<numbudget;i++){
                 String catagory=budgetArray[i][0].catagory;
@@ -160,14 +166,21 @@ public class AutoTracking {
                     }
                 }
                 double percentage=(total/budgetAmount)*100;
-                statusUpdate(percentage,key);
+                statusUpdate(percentage,key,notify);
             }
     }
-    public  void statusUpdate(Double percentage,String key) {
+    /**Update status according to percentage**/
+    public  void statusUpdate(Double percentage,String key,String notify) {
         if(updateValidation) {
             if (percentage > 90 && percentage < 95) {
-                FirebaseDatabase.getInstance().getReference("Budget").child(key).child("status").getRef().setValue("Critical Level");
+                if(notify.equals("On")) {
+
+                }
+                    FirebaseDatabase.getInstance().getReference("Budget").child(key).child("status").getRef().setValue("Critical Level");
             } else if (percentage > 95) {
+                if(notify.equals("On")) {
+
+                }
                 FirebaseDatabase.getInstance().getReference("Budget").child(key).child("status").getRef().setValue("Over Flow");
             }
             else if (percentage < 50) {

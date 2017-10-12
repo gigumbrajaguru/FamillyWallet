@@ -60,12 +60,9 @@ public class AccountViews extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selected = ((TextView) view.findViewById(R.id.txtbudgetId)).getText().toString();
                 setPromptBox(selected);
-
             }
         });
-
     }
-
     public boolean setList() {
         mDatabases = FirebaseDatabase.getInstance().getReference();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -74,19 +71,18 @@ public class AccountViews extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        String xy = child.child("accountName").getValue().toString();
-                        String xyz = child.child("isSaving").getValue().toString();
-                        String xxy = child.child("amount").getValue().toString();
-                        String zzx = child.child("types").getValue().toString();
-                        String xcv = child.child("curType").getValue().toString();
-                        String xyy = child.getKey().toString();
-                        curt.add(xcv);
-                        acctype.add(zzx);
-                        lkey.add(xyy);
-                        lAname.add(xxy);
-                        lAccName.add(xy);
-                        lsaving.add(xyz);
-
+                        String accname = child.child("accountName").getValue().toString();
+                        String save = child.child("isSaving").getValue().toString();
+                        String accamount = child.child("amount").getValue().toString();
+                        String actypes = child.child("types").getValue().toString();
+                        String currencytypes = child.child("curType").getValue().toString();
+                        String keys = child.getKey().toString();
+                        curt.add(currencytypes);
+                        acctype.add(actypes);
+                        lkey.add(keys);
+                        lAname.add(accamount);
+                        lAccName.add(accname);
+                        lsaving.add(save);
                     }
                     curty = new Object[curt.size()];
                     curtyp = new String[curt.size()];
@@ -126,14 +122,12 @@ public class AccountViews extends AppCompatActivity {
                     pushList(arraamonts, accNamearay, arrayIssaving, imgId2, acckey, acTypes, curtyp);
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
         return true;
     }
-
     public void pushList(String amont[], String accN[], String isaving[], Integer imgI[], String accokeys[], String[] typesaccount, String[] cut) {
         Integer[] imgId;
         ListView budList = (ListView) findViewById(R.id.list1);
@@ -148,7 +142,6 @@ public class AccountViews extends AppCompatActivity {
             } else {
                 issaving[x] = "";
             }
-
         }
         imgId = imgI.clone();
         acckeys = accokeys.clone();
@@ -157,8 +150,6 @@ public class AccountViews extends AppCompatActivity {
             budList.setAdapter(addList);
         }
     }
-
-
     private void AutoRefresh() {
         handler.postDelayed(new Runnable() {
             @Override
@@ -168,7 +159,6 @@ public class AccountViews extends AppCompatActivity {
             }
         }, 500);
     }
-
     public void setPromptBox(String passed) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(AccountViews.this);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -189,7 +179,6 @@ public class AccountViews extends AppCompatActivity {
                 else {
                     saving="False";
                 }
-
             }
         });
         if(swe.isChecked()){
@@ -202,7 +191,6 @@ public class AccountViews extends AppCompatActivity {
         mDatabases.child(passed).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 if (dataSnapshot.hasChildren()) {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         if (child.getKey().equals("accountName")) {
@@ -224,19 +212,13 @@ public class AccountViews extends AppCompatActivity {
                         else if (child.getKey().equals("isSaving")) {
                             issaving.setText(child.getValue().toString());
                         }
-
                     }
-
-
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
-
         builder.setPositiveButton("Update",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -259,7 +241,6 @@ public class AccountViews extends AppCompatActivity {
                 });
         builder.setView(alertlayout);
         builder.create().show();
-
     }
     public void alertDel(final String accnam) {
         AlertDialog.Builder builder = new AlertDialog.Builder(AccountViews.this);
@@ -297,7 +278,6 @@ public class AccountViews extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
-
     public void walletDelete(final String acconame) {
 
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();

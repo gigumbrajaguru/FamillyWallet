@@ -22,6 +22,8 @@ public class ActionValidater {
 
     public ActionValidater(){}
 
+    /**Class use to control and validate account withdraws **/
+
     public static boolean amountCheck(final String AccountName, final double amount) {/*this method use to validate transaction if can process transaction this will return true*/
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -44,7 +46,6 @@ public class ActionValidater {
                                 dp.setCheck(false);
                                 checks = dp.getCheck();
                             }
-
                         }
                     }
                     else{
@@ -59,7 +60,8 @@ public class ActionValidater {
         });
         return checks;
     }
-    public static boolean isSaving(final String AccountName) {/* If given account is saving account this method return false*/
+    /** If given account is saving account this method return false**/
+    public static boolean isSaving(final String AccountName) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
@@ -85,6 +87,7 @@ public class ActionValidater {
         });
         return checks;
     }
+    /**Add income to given account**/
     public static boolean addIncome(final String accountName, final Double income) {/*This method use to add income to given account*/
         check=0;
         checks=false;
@@ -107,15 +110,14 @@ public class ActionValidater {
                     }
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
         return checks;
     }
-    public static  boolean getAmount(final String AccountName, final double getamount){/*this method reduce given amount from given account*/
-
+    /**Get amount from account from given account**/
+    public static  boolean getAmount(final String AccountName, final double getamount){
             check=0;
             final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
             mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -144,7 +146,7 @@ public class ActionValidater {
             });
         return checks;
         }
-
+    /**Use to check account availability**/
     public static boolean  accountChecker(){
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -167,7 +169,8 @@ public class ActionValidater {
         });
         return checks;
         }
-    public static boolean accountName(final String accountN){ /* If there is no equal account name for user this method will return true*/
+    /** If there is no equal account name for user this method will return true**/
+    public static boolean accountName(final String accountN){
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase.child("Account").orderByChild("user").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener(){
@@ -202,8 +205,8 @@ public class ActionValidater {
     }
 
 
-
-    public static boolean rectransactionChecker(final String Wallet){/*If there is allocated account for users any recurring transaction this method will return false*/
+    /**If there is allocated account for users any recurring transaction this method will return false**/
+    public static boolean rectransactionChecker(final String Wallet){
         int x=0;
         checks=true;
         mDatabase = FirebaseDatabase.getInstance().getReference("RecurringTransactions");

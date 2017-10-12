@@ -117,22 +117,29 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                 mDatabases.child("Budget").orderByChild("familyId").equalTo(FamilyId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        AlertBox alert=new AlertBox();
                         int i = 0;
-                        if (dataSnapshot.hasChildren()) {
-                            for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                if (child.child("catagory").getValue().toString().equals(selected)) {
-                                    String xy = child.child("BudgetName").getValue().toString();
-                                    String percentage = child.child("percentage").getValue().toString();
-                                    String Amount = child.child("Amount").getValue().toString();
-                                    double percentages = Double.parseDouble(percentage);
-                                    double Amounts = Double.parseDouble(Amount);
-                                    double usedamount = (Amounts * percentages) / 100;
-                                    i = i + 1;
-                                    usedlist.add(usedamount);
-                                    amountlist.add(Amounts);
+                        if(dataSnapshot.getChildrenCount()>2) {
+                            if (dataSnapshot.hasChildren()) {
+                                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                    if (child.child("catagory").getValue().toString().equals(selected)) {
+                                        String xy = child.child("BudgetName").getValue().toString();
+                                        String percentage = child.child("percentage").getValue().toString();
+                                        String Amount = child.child("Amount").getValue().toString();
+                                        double percentages = Double.parseDouble(percentage);
+                                        double Amounts = Double.parseDouble(Amount);
+                                        double usedamount = (Amounts * percentages) / 100;
+                                        i = i + 1;
+                                        usedlist.add(usedamount);
+                                        amountlist.add(Amounts);
+                                    }
                                 }
+                                forecasts(usedlist, amountlist);
                             }
-                            forecasts(usedlist,amountlist);
+                        }
+                        else
+                        {
+                            alert.alertBoxOut(BudgetAdd.this,"Budget forecast","Need at least threee(3) budgets to calculate forecast");
                         }
                     }
 
@@ -160,7 +167,6 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                 }
                 avgdeffdamount=deffbudget/diffrenceTwobudget.length;
                 forecastamount=avgamount+avgdeffdamount;
-                AlertBox alert=new AlertBox();
                 if(avgdeffdamount<0){
                     min= String.format("%.2f",forecastamount);
                     max= String.format("%.2f",avgamount);
@@ -169,6 +175,7 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                     min= String.format("%.2f",avgamount);
                     max= String.format("%.2f",forecastamount);
                 }
+                AlertBox alert=new AlertBox();
                 alert.alertBoxOut(BudgetAdd.this,"Budget forecast","Min. budget forecast amount :"+min+"\nMax budget forecast amount:"+max);
             }
         });

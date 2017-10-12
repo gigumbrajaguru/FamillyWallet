@@ -4,6 +4,7 @@ package ccpe001.familywallet.budget;
  * Created by Gigum on 2017-10-05.
  */
 
+/** DTO class for AutoTracking class**/
 public class DataTrackTrasmit {
     public String catagory;
     public String strYr;

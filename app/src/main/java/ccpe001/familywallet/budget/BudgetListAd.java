@@ -38,6 +38,7 @@ public class BudgetListAd extends ArrayAdapter<String> {
         this.ends=end;
         this.percentage=pert;
     }
+    /**Set budget data on list view layout**/
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View v = inflater.inflate(R.layout.bud_list_view, null, true);

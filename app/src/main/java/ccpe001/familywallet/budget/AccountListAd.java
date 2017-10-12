@@ -38,7 +38,7 @@ public class AccountListAd extends ArrayAdapter{
         this.type=types;
         this.curtype=curtypes;
     }
-
+        /**Set passed data in Inflaters field**/
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View v = inflater.inflate(R.layout.bud_list_view, null, true);
