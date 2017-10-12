@@ -1,15 +1,16 @@
 package ccpe001.familywallet.transaction;
 
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.TextView;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ccpe001.familywallet.Validate;
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -21,6 +22,7 @@ public class CurrencyConverter {
 
     static JSONObject jsnObj = null;
     private static String CURRENCY_API;
+    private static Validate val = new Validate();
 
     /** Asynchronous call back when json file received */
     public interface OnJSONResponseCallback {
@@ -34,8 +36,24 @@ public class CurrencyConverter {
         String exchangeDate = year + "-" + month + "-" + day;
 
         /** Getting the json file to the exchange date */
-        CURRENCY_API = "https://openexchangerates.org/api/historical/" + exchangeDate
-                + ".json?app_id=0dee46c64b7f4d339415facf13e29242";
+        /** when the transaction date is the todays date*/
+        if (exchangeDate.equals(getCurrentDate())){
+            CURRENCY_API = "https://openexchangerates.org/api/latest.json?app_id=0dee46c64b7f4d339415facf13e29242";
+        }
+
+        /** when the transaction date is a date in the future*/
+        else if (val.validFutureDate(exchangeDate)){
+            CURRENCY_API = "https://openexchangerates.org/api/latest.json?app_id=0dee46c64b7f4d339415facf13e29242";
+        }
+
+        /** when the transaction date is a date in the past*/
+        else {
+            CURRENCY_API = "https://openexchangerates.org/api/historical/" + exchangeDate
+                    + ".json?app_id=0dee46c64b7f4d339415facf13e29242";
+        }
+
+
+
 
             AsyncHttpClient client = new AsyncHttpClient();
             client.get(CURRENCY_API, new AsyncHttpResponseHandler() {
@@ -72,5 +90,11 @@ public class CurrencyConverter {
         return jsnObj;
     }
 
+    private static String getCurrentDate(){
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        return dateFormat.format(cal.getTime());
+    }
 }
 

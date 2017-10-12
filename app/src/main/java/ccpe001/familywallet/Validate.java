@@ -7,6 +7,9 @@ import android.os.Build;
 import android.text.Editable;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.util.regex.Matcher;
@@ -51,7 +54,45 @@ public class Validate {
         return name.matches("[a-zA-Z]+");
     }
 
+    /**
+     *
+     * @param inputDate
+     * @return
+     */
+    public static boolean validFutureDate(String inputDate){
 
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date= new Date();
+        String CurrentDate = dateFormat.format(date);
+
+        int difference = (inputDate.compareTo(CurrentDate));
+
+        if (difference<0) {
+            return false;
+        }
+        else
+            return true;
+    }   //Check whether if the date is in the future
+
+    /**
+     *
+     * @param inputDate
+     * @return
+     */
+    public static boolean validPastDate(String inputDate){
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date= new Date();
+        String CurrentDate = dateFormat.format(date);
+
+        int difference = (CurrentDate.compareTo(inputDate));
+
+        if (difference>=0) {
+            return true;
+        }
+        else
+            return false;
+    }
 
 }
 

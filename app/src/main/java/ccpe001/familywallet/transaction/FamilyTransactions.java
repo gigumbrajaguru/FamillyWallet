@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,9 +35,7 @@ import java.util.List;
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Translate;
 
-/**
- *
- */
+
 
 public class FamilyTransactions extends Fragment {
 
@@ -71,9 +68,18 @@ public class FamilyTransactions extends Fragment {
 
         final View view = inflater.inflate(R.layout.transaction_family_list, container, false);
 
+        /**
+         * @grpList - Array to hold group list objects
+         * @tdList - Array to hold transaction list objects
+         * @keys - Array to hold keys of group members
+         *
+         */
         grpList = new ArrayList<>();
         tdList = new ArrayList<>();
         keys = new ArrayList<>();
+        context=getContext();      //getting current context
+        KeyName = new HashMap<>() ;     //Setting hasmap to set user ID and name as key value pair
+
         memberList = (ListView) view.findViewById(R.id.grpList);
         transactionList = (ListView) view.findViewById(R.id.familyTransactions);
 
@@ -81,6 +87,7 @@ public class FamilyTransactions extends Fragment {
         slide = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
         btnAlltransaction = (Button) view.findViewById(R.id.btnAllTransactions);
 
+        /** Listener for Slider panel state changes*/
         slide.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
@@ -98,14 +105,13 @@ public class FamilyTransactions extends Fragment {
             }
         });
         
-        /* getting family, user ID and group status from shred Preferences */
+        /** getting family, user ID and group status from shred Preferences */
         SharedPreferences sharedPref = getContext().getSharedPreferences("fwPrefs",0);
         userID = sharedPref.getString("uniUserID", "");
         familyID = sharedPref.getString("uniFamilyID", "");
         InGroup = sharedPref.getString("InGroup", "");
 
-        context=getContext();      //getting current context
-        KeyName = new HashMap<>() ;     //Setting hasmap to set user ID and name as key value pair
+
 
         /* Getting user details from relevant group */
         FirebaseDatabase.getInstance().getReference("Groups").child(familyID).addValueEventListener(new ValueEventListener() {
@@ -126,7 +132,6 @@ public class FamilyTransactions extends Fragment {
 
 
         Query query = getQuery(familyID, userID, InGroup);
-
         populateTransactions(query);
 
 
@@ -150,6 +155,7 @@ public class FamilyTransactions extends Fragment {
                 }
             });
 
+        /** List all members transactions when members name is clicked*/
         memberList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -160,6 +166,7 @@ public class FamilyTransactions extends Fragment {
             }
         });
 
+        /** When trasaction is clicked to view more details*/
         transactionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -167,6 +174,7 @@ public class FamilyTransactions extends Fragment {
             }
         });
 
+        /** List all transactions on the family when button clicked*/
         btnAlltransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,6 +187,12 @@ public class FamilyTransactions extends Fragment {
         return view;
         }
 
+    /**
+     * @param familyID - family id of current the user
+     * @param userID - user id of the current user
+     * @param inGroup - status of the admin
+     * @return - return the query relevent to the status(In a group or not) of the user
+     */
     private static Query getQuery(String familyID, String userID, String inGroup) {
         Query query ;
 
@@ -191,6 +205,10 @@ public class FamilyTransactions extends Fragment {
         return query;
     }
 
+    /***
+     *  populate list with all family transactions
+     * @param query - input query relevant to the user
+     */
     private void populateTransactions(final Query query) {
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -216,6 +234,11 @@ public class FamilyTransactions extends Fragment {
         });
     }
 
+    /**
+     *  populate list relevant to user id of the member
+     * @param query - input query relevant to the user
+     * @param sortUID - user id the member which is used to filter
+     */
     private void populateUserTransactions(final Query query, final String sortUID) {
 
 
