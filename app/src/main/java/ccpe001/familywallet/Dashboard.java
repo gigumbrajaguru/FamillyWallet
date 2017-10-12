@@ -621,41 +621,6 @@ public class Dashboard extends AppCompatActivity
                 fragmentTransaction.commit();
             }
             animateMenu();
-        }else if(id == R.id.updateFrag){
-            startActivity(new Intent(Dashboard.this,GetInfo.class));
-        }else if(id == R.id.addMemberFrag){
-            AddMember addMember = new AddMember();
-            fragmentTransaction.replace(R.id.fragmentContainer1,addMember);
-            fragmentTransaction.commit();
-        }else if(id == R.id.signOutFrag){
-            alert = new CustomAlertDialogs();
-            alert.initLoadingPage(Dashboard.this);
-
-            //sign out & del daily rem,auto backups,noti icon,clear session
-            if(mAuth.getCurrentUser().getProviders().toString().equals("[facebook.com]")){
-                LoginManager.getInstance().logOut();
-            }else if(mAuth.getCurrentUser().getProviders().toString().equals("[google.com]")){
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-            }
-            mAuth.signOut();
-            SharedPreferences sharedPref= getSharedPreferences("fwPrefs",0);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.clear();      //clear all data.
-            editor.commit();  //commit change to SharedPreferences.
-            NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context
-                    .NOTIFICATION_SERVICE);
-            mNotificationManager.cancel(PERMENT_NOT);
-
-            PeriodicBackupCaller.backupRunner(getApplication(),getString(R.string.nobackup));
-
-            //off noti here
-            notificationManager = (NotificationManager) getSystemService(Context
-                    .NOTIFICATION_SERVICE);
-            notificationManager.cancelAll();
-
-            finish();
-            Settings.sessionClear(getApplication());
-            startActivity(new Intent("ccpe001.familywallet.SIGNIN"));
         }
 
 
