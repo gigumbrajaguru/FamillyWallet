@@ -23,9 +23,9 @@ import java.util.ArrayList;
 
 import ccpe001.familywallet.R;
 
-public class Forecast extends AppCompatActivity {
+public class BudgetCharts extends AppCompatActivity {
     CombinedChart Chart;
-	String budgetcat;
+    String budgetcat;
     ArrayList<BarEntry> group1 = new ArrayList<>();
     ArrayList<Double> usedlist = new ArrayList<>();
     ArrayList<Double> amountlist = new ArrayList<>();
@@ -36,7 +36,7 @@ public class Forecast extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
-		Intent myIntent = getIntent();
+        Intent myIntent = getIntent();
         budgetcat = myIntent.getStringExtra("Category");
         TextView catText=(TextView)findViewById(R.id.viCat) ;
         catText.setText(budgetcat);
@@ -45,7 +45,7 @@ public class Forecast extends AppCompatActivity {
         data.setData(barData());
         Chart.setData(data);
     }
-    
+
     public BarData barData() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Budget").orderByChild("familyId").equalTo(getFamilyId()).addValueEventListener(new ValueEventListener() {
@@ -62,16 +62,13 @@ public class Forecast extends AppCompatActivity {
                             double Amounts = Double.parseDouble(Amount);
                             double usedamount = (Amounts * percentages) / 100;
                             i = i + 1;
-                            usedlist.add(usedamount);
-                            amountlist.add(Amounts);
                             group1.add(new BarEntry(i, (int) usedamount));
                         }
                     }
-                    forecasts(usedlist,amountlist);
                 }
                 BarDataSet barDataSet = new BarDataSet(group1, "Used amount for budget");
                 barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                 barData = new BarData(barDataSet);
+                barData = new BarData(barDataSet);
 
             }
 
@@ -102,28 +99,4 @@ public class Forecast extends AppCompatActivity {
         });
         return getfid;
     }
-    public void forecasts(ArrayList<Double> usedlist,ArrayList<Double> amountlist){
-        double amounttot=0,avgamount=0,deffbudget=0,avgdeffdamount=0;
-        String forecastamount;
-        for(int i=0;i<amountlist.size();i++)
-        {
-            amounttot=amounttot+amountlist.get(i);
-        }
-        avgamount=amounttot/amountlist.size();
-        Double[] diffrenceTwobudget = new Double[usedlist.size()];
-        for(int i=0;i<usedlist.size()-1;i++)
-        {
-            diffrenceTwobudget[i]=usedlist.get(i+1)-usedlist.get(i);
-        }
-        for(int i=0;i<diffrenceTwobudget.length;i++)
-        {
-            deffbudget=deffbudget+diffrenceTwobudget[i];
-        }
-        avgdeffdamount=deffbudget/diffrenceTwobudget.length;
-        forecastamount=String.valueOf(avgamount+avgdeffdamount);
-        TextView textForecast=(TextView)findViewById(R.id.forecastamoount);
-        textForecast.setText("Calculated next budget amount:"+forecastamount);
-
-    }
-
 }

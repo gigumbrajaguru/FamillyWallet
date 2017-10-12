@@ -130,7 +130,6 @@
             android:id="@+id/btnForecast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="nxtForecast"
             android:text="Forecast"
             android:textStyle="bold"/>
 

@@ -1,7 +1,6 @@
 package ccpe001.familywallet.budget;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarEntry;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,18 +26,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import ccpe001.familywallet.R;
 
 public class BudgetAdd extends AppCompatActivity implements View.OnClickListener {
     EditText strDt,endDt,Bname,tAmount;
-    Button smit;
+    Button smit,forcast;
     Switch noty;
+    String budgetcat,max="",min="";
+    ArrayList<BarEntry> group1 = new ArrayList<>();
+    ArrayList<Double> usedlist = new ArrayList<>();
+    ArrayList<Double> amountlist = new ArrayList<>();
+    public static String getfid;
+    public static BarData barData;
     private static DatabaseReference mDatabases;
     private  int day,mon,yr;
     private String[] arraySpinner;
-    String selected,sttDay,endday,bName,amounts,notify="Off",Fname;
+    String selected,sttDay,endday,bName,amounts,notify="Off",FamilyId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +57,7 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Fname=child.child("familyId").getValue().toString();
+                    FamilyId=child.child("familyId").getValue().toString();
                 }
             }
             @Override
@@ -59,6 +67,7 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.budget_handling);
         strDt=(EditText)findViewById(R.id.startDate);
         endDt=(EditText)findViewById(R.id.endDate);
+        forcast=(Button)findViewById(R.id.btnForecast);
         strDt.setOnClickListener(this);
         endDt.setOnClickListener(this);
         Spinner s = (Spinner) findViewById(R.id.catSelect);
@@ -92,13 +101,75 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                 endday=endDt.getText().toString();
                 bName=Bname.getText().toString();
                 amounts=tAmount.getText().toString();
-                Boolean msgBoxOut =(Ctrl.addbdget(currentUser.getUid(),Fname,bName,sttDay,endday,amounts,notify,selected));
+                Boolean msgBoxOut =(Ctrl.addbdget(currentUser.getUid(),FamilyId,bName,sttDay,endday,amounts,notify,selected));
                 if (msgBoxOut) {
                     AlertBox.alertBoxOut(BudgetAdd.this, "Data Stored", "Succeed");
                 }
              else {
                 AlertBox.alertBoxOut(BudgetAdd.this, "Account Name ", "Change your account name");
             }
+            }
+        });
+        forcast.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatabases = FirebaseDatabase.getInstance().getReference();
+                mDatabases.child("Budget").orderByChild("familyId").equalTo(FamilyId).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        int i = 0;
+                        if (dataSnapshot.hasChildren()) {
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                if (child.child("catagory").getValue().toString().equals(selected)) {
+                                    String xy = child.child("BudgetName").getValue().toString();
+                                    String percentage = child.child("percentage").getValue().toString();
+                                    String Amount = child.child("Amount").getValue().toString();
+                                    double percentages = Double.parseDouble(percentage);
+                                    double Amounts = Double.parseDouble(Amount);
+                                    double usedamount = (Amounts * percentages) / 100;
+                                    i = i + 1;
+                                    usedlist.add(usedamount);
+                                    amountlist.add(Amounts);
+                                }
+                            }
+                            forecasts(usedlist,amountlist);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+            public void forecasts(ArrayList<Double> usedlist,ArrayList<Double> amountlist){
+                double amounttot=0,avgamount=0,deffbudget=0,avgdeffdamount=0,forecastamount=0;
+                for(int i=0;i<amountlist.size();i++)
+                {
+                    amounttot=amounttot+amountlist.get(i);
+                }
+                avgamount=amounttot/amountlist.size();
+                Double[] diffrenceTwobudget = new Double[usedlist.size()];
+                for(int i=0;i<usedlist.size()-1;i++)
+                {
+                    diffrenceTwobudget[i]=usedlist.get(i+1)-usedlist.get(i);
+                }
+                for(int i=0;i<diffrenceTwobudget.length-1;i++)
+                {
+                    deffbudget=deffbudget+diffrenceTwobudget[i];
+                }
+                avgdeffdamount=deffbudget/diffrenceTwobudget.length;
+                forecastamount=avgamount+avgdeffdamount;
+                AlertBox alert=new AlertBox();
+                if(avgdeffdamount<0){
+                    min= String.format("%.2f",forecastamount);
+                    max= String.format("%.2f",avgamount);
+                }
+                else{
+                    min= String.format("%.2f",avgamount);
+                    max= String.format("%.2f",forecastamount);
+                }
+                alert.alertBoxOut(BudgetAdd.this,"Budget forecast","Min. budget forecast amount :"+min+"\nMax budget forecast amount:"+max);
             }
         });
     }
@@ -134,9 +205,5 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
             datePickerDialog.show();
         }
     }
-    public void nxtForecast(View v){
-        Intent newInt1 = new Intent(this,Forecast.class);
-        newInt1.putExtra("Category",selected );
-        startActivity(newInt1);
-    }
 }
+
