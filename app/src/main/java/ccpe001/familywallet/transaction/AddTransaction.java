@@ -533,16 +533,9 @@ public class AddTransaction extends AppCompatActivity {
                         mDatabase = FirebaseDatabase.getInstance().getReference();
                         td = new TransactionDetails(userID,userName,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID, recurrPeriod);
                         if(currency.equals("LKR."))  {
-                            if (familyID.equals(userID) && !InGroup.equals("true")){
-                                mDatabase.child("Transactions").child(userID).push();
-                                tId = mDatabase.getKey();
-                                mDatabase.setValue(td);
-                            }
-                            else{
-                                mDatabase.child("Transactions").child("Groups").child(familyID).push();
-                                tId = mDatabase.getKey();
-                                mDatabase.setValue(td);
-                            }
+                            mDatabase = mDatabase.child("RecurringTransactions").child(userID).push();
+                            tId = mDatabase.getKey();
+                            mDatabase.setValue(td);
                         }
                         else {
                             cc.curr(td,InGroup);
@@ -552,15 +545,7 @@ public class AddTransaction extends AppCompatActivity {
                         Toast.makeText(this, R.string.transactionAdded, Toast.LENGTH_LONG).show();
                     }
                     else if (update.equals("True")){
-                        mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID);
-                        if (familyID.equals(userID) && !InGroup.equals("true")){
-                            mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child(userID);
-                            tId = key;
-                        }
-                        else{
-                            mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID);
-                            tId = key;
-                        }
+                        mDatabase = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(familyID);
                         td = new TransactionDetails(eUserID,userName,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID, recurrPeriod);
                         Map<String, Object> postValues = td.toMap();
                         mDatabase.child(key).updateChildren(postValues);
