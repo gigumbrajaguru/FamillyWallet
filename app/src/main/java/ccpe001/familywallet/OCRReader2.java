@@ -64,31 +64,6 @@ public class OCRReader2 extends AppCompatActivity {
         cropImageView = (ImageView) findViewById(R.id.cropImageView);
         layout = (RelativeLayout) findViewById(R.id.layout);
 
-        snackbar = Snackbar
-                .make(layout, R.string.ocrreader_snackbar_takepic, Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.ocrreader_snackbar_takepicbtn, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mAuth = FirebaseAuth.getInstance();
-                        storageReference = FirebaseStorage.getInstance().getReference().child("ScannedBills").child(mAuth.getCurrentUser().getUid());
-                        final String[] CROPCAMPERARR = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
-                        if(!CustomAlertDialogs.hasPermissions(OCRReader2.this,CROPCAMPERARR)){
-                            alert = new CustomAlertDialogs();
-                            alert.initPermissionPage(OCRReader2.this,getString(R.string.permit_only_camera)).setPositiveButton(R.string.customaletdialog_initPermissionPage_posbtn, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.dismiss();
-                                    ActivityCompat.requestPermissions(OCRReader2.this,CROPCAMPERARR,CROP_CAM);
-                                }
-                            }).show();
-                        }else {
-                            CropImage.activity()
-                                    .setGuidelines(CropImageView.Guidelines.ON)
-                                    .start(OCRReader2.this);
-                        }
-                    }
-                });
-        snackbar.show();
 
         camera_view = (SurfaceView) findViewById(R.id.camera_view);
         bill_data = (TextView)  findViewById(R.id.bill_data);
@@ -171,32 +146,7 @@ public class OCRReader2 extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        alert = new CustomAlertDialogs();
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                billImageUri = result.getUri();
-                cropImageView.setImageURI(billImageUri);
-                StorageReference referenceTransId = storageReference.child("putTransIDhere"+".jpg");
-                referenceTransId.putFile(billImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(getApplicationContext(),R.string.ocrreader_onactivityresult_uploaddone,Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        alert.initCommonDialogPage(OCRReader2.this,getString(R.string.common_error),true);                    }
-                });
-
-            } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                alert.initCommonDialogPage(OCRReader2.this,getString(R.string.common_error),true);
-            }
-        }
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -211,15 +161,6 @@ public class OCRReader2 extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }else{
-                alert = new CustomAlertDialogs();
-                alert.initCommonDialogPage(OCRReader2.this,getString(R.string.error_permitting),true);
-            }
-        }else if(requestCode == CROP_CAM){
-            if(grantResults[0]==PackageManager.PERMISSION_GRANTED||grantResults[1]==PackageManager.PERMISSION_GRANTED||grantResults[2]==PackageManager.PERMISSION_GRANTED){
-                CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .start(OCRReader2.this);
-            }else {
                 alert = new CustomAlertDialogs();
                 alert.initCommonDialogPage(OCRReader2.this,getString(R.string.error_permitting),true);
             }

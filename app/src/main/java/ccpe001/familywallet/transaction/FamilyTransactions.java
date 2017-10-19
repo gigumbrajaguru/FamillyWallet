@@ -19,12 +19,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
@@ -34,7 +37,7 @@ import java.util.List;
 
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Translate;
-
+import com.squareup.picasso.Picasso;
 
 
 public class FamilyTransactions extends Fragment {
@@ -56,6 +59,9 @@ public class FamilyTransactions extends Fragment {
     FamilyTransactionsAdapter adapter;
     List<TransactionDetails> tdList;
     List<String> keys;
+
+    private String tId;
+
 
     public FamilyTransactions() {
         // Required empty public constructor
@@ -343,9 +349,11 @@ public class FamilyTransactions extends Fragment {
             final DatabaseReference transaction;
             if (familyID.equals(userID) && !InGroup.equals("true")){
                 transaction = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).child(key);
+                tId = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).child(key).getKey();
             }
             else {
                 transaction = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).child(key);
+                tId = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).child(key).getKey();
             }
         TextView vhFamTitle = (TextView) dialog.findViewById(R.id.vhFamTitle);
         TextView vhFamAmount = (TextView) dialog.findViewById(R.id.vhFamAmount);
@@ -421,6 +429,18 @@ public class FamilyTransactions extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+
+        /*retriving bill image*/
+            final ImageView vScan = (ImageView) dialog.findViewById(R.id.imageview_scan);
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+            storageReference.child("ScannedBills/" + userID+"/"+tId+ ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.with(getContext())
+                            .load(uri)
+                            .into(vScan);
+                }
+            });
     }
 
 

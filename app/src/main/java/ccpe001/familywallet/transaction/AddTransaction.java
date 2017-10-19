@@ -1,19 +1,28 @@
 package ccpe001.familywallet.transaction;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,8 +36,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import ccpe001.familywallet.*;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,15 +49,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import ccpe001.familywallet.R;
-import ccpe001.familywallet.Translate;
-import ccpe001.familywallet.Validate;
+
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+import com.wang.avi.AVLoadingIndicatorView;
 
 
 public class AddTransaction extends AppCompatActivity {
@@ -73,6 +91,15 @@ public class AddTransaction extends AppCompatActivity {
 
     final Validate v = new Validate();
     final Translate trns = new Translate();
+
+    /*Initializations done to scan bill feature*/
+    private EditText editTextScan;
+    private ImageView imageViewScan;
+    private CustomAlertDialogs alert;
+    private StorageReference storageReference;
+    private static final int CROP_CAM = 4;
+    private String tId;
+    private Uri billImageUri;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -104,6 +131,34 @@ public class AddTransaction extends AppCompatActivity {
         imgSave = (ImageButton) findViewById(R.id.btnSave);
         checkRecurring =(CheckBox) findViewById(R.id.chRecurring);
         resources=getResources();
+
+
+        /*Initializations done to scan bill feature*/
+        alert = new CustomAlertDialogs();
+        editTextScan = (EditText) findViewById(R.id.editTextScan);
+        imageViewScan = (ImageView) findViewById(R.id.imageViewScan);
+        editTextScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth = FirebaseAuth.getInstance();
+                storageReference = FirebaseStorage.getInstance().getReference().child("ScannedBills").child(mAuth.getCurrentUser().getUid());
+                final String[] CROPCAMPERARR = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+                if(!CustomAlertDialogs.hasPermissions(AddTransaction.this,CROPCAMPERARR)){
+                    alert.initPermissionPage(AddTransaction.this,getString(R.string.permit_only_camera)).setPositiveButton(R.string.customaletdialog_initPermissionPage_posbtn, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                            ActivityCompat.requestPermissions(AddTransaction.this,CROPCAMPERARR,CROP_CAM);
+                        }
+                    }).show();
+                }else {
+                    CropImage.activity()
+                            .setGuidelines(CropImageView.Guidelines.ON)
+                            .start(AddTransaction.this);
+                }
+            }
+        });
+
 
         /*Setting the hints of the input fields according to the language preferred */
         txtAmount.setHint(resources.getString(R.string.transactionAmount));
@@ -356,6 +411,7 @@ public class AddTransaction extends AppCompatActivity {
                     imgNote.setColorFilter(getResources().getColor(R.color.income));
                     imgCalender.setColorFilter(getResources().getColor(R.color.income));
                     imgLocation.setColorFilter(getResources().getColor(R.color.income));
+                    imageViewScan.setColorFilter(getResources().getColor(R.color.income));
                     imgSave.setImageResource(R.mipmap.check_income);
                 }
             }
@@ -373,6 +429,7 @@ public class AddTransaction extends AppCompatActivity {
                     imgNote.setColorFilter(getResources().getColor(R.color.expense));
                     imgCalender.setColorFilter(getResources().getColor(R.color.expense));
                     imgLocation.setColorFilter(getResources().getColor(R.color.expense));
+                    imageViewScan.setColorFilter(getResources().getColor(R.color.expense));
                     imgSave.setImageResource(R.mipmap.check_expense);
                 }
             }
@@ -477,10 +534,14 @@ public class AddTransaction extends AppCompatActivity {
                         td = new TransactionDetails(userID,userName,amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID, recurrPeriod);
                         if(currency.equals("LKR."))  {
                             if (familyID.equals(userID) && !InGroup.equals("true")){
-                                mDatabase.child("Transactions").child(userID).push().setValue(td);
+                                mDatabase.child("Transactions").child(userID).push();
+                                tId = mDatabase.getKey();
+                                mDatabase.setValue(td);
                             }
                             else{
-                                mDatabase.child("Transactions").child("Groups").child(familyID).push().setValue(td);
+                                mDatabase.child("Transactions").child("Groups").child(familyID).push();
+                                tId = mDatabase.getKey();
+                                mDatabase.setValue(td);
                             }
                         }
                         else {
@@ -494,9 +555,11 @@ public class AddTransaction extends AppCompatActivity {
                         mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID);
                         if (familyID.equals(userID) && !InGroup.equals("true")){
                             mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child(userID);
+                            tId = key;
                         }
                         else{
                             mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID);
+                            tId = key;
                         }
                         td = new TransactionDetails(eUserID,userName,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID, recurrPeriod);
                         Map<String, Object> postValues = td.toMap();
@@ -537,10 +600,14 @@ public class AddTransaction extends AppCompatActivity {
 //                    }
                         if(currency.equals("LKR."))  {
                             if (familyID.equals(userID) && !InGroup.equals("true")){
-                                mDatabase.child("Transactions").child(userID).push().setValue(td);
+                                mDatabase = mDatabase.child("Transactions").child(userID).push();
+                                tId = mDatabase.getKey();
+                                mDatabase.setValue(td);
                             }
                             else{
-                                mDatabase.child("Transactions").child("Groups").child(familyID).push().setValue(td);
+                                mDatabase.child("Transactions").child("Groups").child(familyID).push();
+                                tId = mDatabase.getKey();
+                                mDatabase.setValue(td);
                             }
                         }
                         else {
@@ -554,9 +621,11 @@ public class AddTransaction extends AppCompatActivity {
                     mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child(familyID);
                     if (familyID.equals(userID) && !InGroup.equals("true")){
                         mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child(userID);
+                        tId = key;
                     }
                     else{
                         mDatabase = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID);
+                        tId = key;
                     }
 
                     td = new TransactionDetails(eUserID,userName,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
@@ -588,6 +657,22 @@ public class AddTransaction extends AppCompatActivity {
     }
 
     private void returnToDashboard() {
+        //updating,inserting the bill image
+         if(billImageUri!=null) {
+
+            storageReference.child(tId + ".jpg").putFile(billImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(getApplicationContext(), R.string.ocrreader_onactivityresult_uploaddone, Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    alert.initCommonDialogPage(AddTransaction.this, getString(R.string.common_error), true);
+                }
+            });
+        }
+
         Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
         startActivity(intent);
     }
@@ -611,13 +696,64 @@ public class AddTransaction extends AppCompatActivity {
         txtLocation.setText(name + ", " + address);     //setting the location in location text field
     }
 
-    /* Method run when place is selected*/
+
     @Override
     protected  void onActivityResult(int requestCode, int resultCode, Intent data) {
+        /* Method run when place is selected*/
         if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             displaySelectedPlaceFromPlacePicker(data);
+        /*run when image is cropped*/
+        }else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            final CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                final AlertDialog.Builder nameBuilder = new AlertDialog.Builder(this);
+                View alertDiaView = inflater.inflate(R.layout.scanned_image_view,null);
+                ImageView imageView = (ImageView) alertDiaView.findViewById(R.id.imageView);
+
+                imageView.setImageURI(result.getUri());
+
+                nameBuilder.setNegativeButton(R.string.scan_reject_image, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        billImageUri = null;
+                        dialogInterface.dismiss();
+                    }
+                }).setPositiveButton(R.string.scan_set_image, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        billImageUri = result.getUri();
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                nameBuilder.setView(alertDiaView);
+
+                AlertDialog alertDialog = nameBuilder.show();
+                alertDialog.getWindow().setLayout((int) (300 * Resources.getSystem().getDisplayMetrics().density) ,
+                        (int) (300 * Resources.getSystem().getDisplayMetrics().density));
+            } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                alert.initCommonDialogPage(AddTransaction.this,getString(R.string.common_error),true);
+            }
         }
 
+    }
+
+    /*method run when getting permissions for read,write,camera*/
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == CROP_CAM){
+            if(grantResults[0]==PackageManager.PERMISSION_GRANTED||grantResults[1]==PackageManager.PERMISSION_GRANTED||grantResults[2]==PackageManager.PERMISSION_GRANTED){
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .start(AddTransaction.this);
+            }else {
+                alert = new CustomAlertDialogs();
+                alert.initCommonDialogPage(AddTransaction.this,getString(R.string.error_permitting),true);
+            }
+        }
     }
 
     private boolean networkConnected() {

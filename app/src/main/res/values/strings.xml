@@ -428,6 +428,10 @@
     <string name="title">Title</string>
     <string name="recurringPeriod">Recurring Period</string>
     <string name="xmlexportdata_createBtn2_text">Export Genaral Transactions</string>
+    <string name="scannerHint">Tap to Scan Bill</string>
+    <string name="scan_set_image">Set Image</string>
+    <string name="scan_reject_image">Cancel</string>
+    <string name="bill_image">Bill Image</string>
 
 
     <string-array name="nav_drwer_arr">

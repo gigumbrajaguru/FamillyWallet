@@ -5,7 +5,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/place_autocomplete_search_text"
-    android:gravity="center">
+    android:gravity="center"
+>
+
+
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -14,24 +17,10 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="center"
+        android:paddingTop="20dp"
         android:paddingBottom="20dp">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            android:gravity="center">
 
-            <TextView
-                android:id="@+id/vvTxtTitle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textColor="?android:attr/textColorLink"
-                android:textSize="26sp"
-                android:textStyle="bold" />
-
-        </TableRow>
 
 
         <TableRow
@@ -279,6 +268,9 @@
 
         </TableRow>
 
+
+
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -297,6 +289,33 @@
                 android:textColorLink="#69463d"
                 android:textSize="14sp"
                 android:textStyle="bold|italic" />
+
+        </TableRow>
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:text="@string/bill_image"
+                    android:textColor="@color/com_facebook_likeview_text_color" />
+
+        </TableRow>
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <ImageView
+                    android:id="@+id/imageview_scan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginTop="10dp"
+
+                   />
 
         </TableRow>
 
