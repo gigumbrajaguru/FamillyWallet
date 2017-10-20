@@ -2,6 +2,7 @@ package ccpe001.familywallet.budget;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -10,19 +11,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+import static ccpe001.familywallet.budget.ActionValidater.key;
+
 /**
  * Created by Gigum on 2017-10-03.
  */
 
 public class AutoTracking {
-    String userID, familyID, InGroup,notify="",previouskey="" ;
-    int budgetcount;
+    String userID, familyID, InGroup,notify="",previouskey="";
+    int budgetcount=0,nextitem=0;
     private static DatabaseReference mDatabase;
-    String[][] transactions=new String[10000][];
-    String[] detailTransaction=new String[10];
-    String[][] budgets=new String[10000][];
-    String[] budgetsdetail=new String[10];
+    private String[] budgetsdetail=new String[10000];
+    private String[] detailTransaction=new String[10000];
     public  void getTransactionDetail(Context context) {
+        previouskey="";
         Query querys;
         /**Get Shared preference data**/
         SharedPreferences sharedPref = context.getSharedPreferences("fwPrefs", 0);
@@ -40,23 +45,21 @@ public class AutoTracking {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
-                    int transcount = 0;
                     for (DataSnapshot tdSnapshot : dataSnapshot.getChildren()) {
                         String catName = tdSnapshot.child("categoryName").getValue().toString();
                         String transamount = tdSnapshot.child("amount").getValue().toString();
                         String tranDate = tdSnapshot.child("date").getValue().toString();
                         String subYr = tranDate.substring(0, 4);
                         String subMon = tranDate.substring(4, 6);
-                        String subDate = tranDate.substring(6, 9);
-                        detailTransaction[0]= catName;
-                        detailTransaction[1]= transamount;
-                        detailTransaction[2]= subYr;
-                        detailTransaction[3]= subMon;
-                        detailTransaction[4]= subDate;
-                        transactions[transcount]= detailTransaction;
-                        transcount++;
+                        String subDate = tranDate.substring(6, 8);
+                        detailTransaction[0+nextitem]= catName;
+                        detailTransaction[1+nextitem]= transamount;
+                        detailTransaction[2+nextitem]= subYr;
+                        detailTransaction[3+nextitem]= subMon;
+                        detailTransaction[4+nextitem]= subDate;
+                        nextitem=nextitem+5;
                     }
-                    int numTrasaction = (int)dataSnapshot.getChildrenCount();
+                    int numTrasaction = nextitem-4;
                     getBudgetDetail(familyID,numTrasaction);
                 }
                 else {
@@ -73,12 +76,12 @@ public class AutoTracking {
     }
     /**Get budget detail**/
     public void getBudgetDetail(final String familyID,final int numTrans) {
+        nextitem=0;
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Budget").orderByChild("familyId").equalTo(familyID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
-                        int budgetcounts = 0;
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
                             notify = child.child("notification").getValue().toString();
                             String stat = child.child("status").getValue().toString();
@@ -89,68 +92,70 @@ public class AutoTracking {
                             String key = child.getKey();
                             String[] startdateParts = strtDate.split("/");
                             String strYr = startdateParts[2];
-                            String strMon = startdateParts[0];
-                            String strDate = startdateParts[1];
+                            String strMon = startdateParts[1];
+                            String strDate = startdateParts[0];
                             String[] enddateParts = endDate.split("/");
                             String endYr = enddateParts[2];
-                            String endMon = enddateParts[0];
-                            String endate = enddateParts[1];
+                            String endMon = enddateParts[1];
+                            String endate = enddateParts[0];
                             if (!stat.equals("Closed")) {
-                                budgetsdetail[0]= catagory;
-                                budgetsdetail[1]= strYr;
-                                budgetsdetail[2]= strMon;
-                                budgetsdetail[3]= strDate;
-                                budgetsdetail[4]= endYr;
-                                budgetsdetail[5]= endMon;
-                                budgetsdetail[6]= endate;
-                                budgetsdetail[7]= budgetAmount;
-                                budgetsdetail[8]= key;
-                                budgets[budgetcount]=budgetsdetail;
-                                budgetcounts++;
+                                budgetsdetail[0+nextitem]= catagory;
+                                budgetsdetail[1+nextitem]= strYr;
+                                budgetsdetail[2+nextitem]= strMon;
+                                budgetsdetail[3+nextitem]= strDate;
+                                budgetsdetail[4+nextitem]= endYr;
+                                budgetsdetail[5+nextitem]= endMon;
+                                budgetsdetail[6+nextitem]= endate;
+                                budgetsdetail[7+nextitem]= budgetAmount;
+                                budgetsdetail[8+nextitem]= key;
+                                nextitem=nextitem+9;
 
                             }
-                            budgetcount=(int)dataSnapshot.getChildrenCount();
+                            budgetcount=nextitem-8;
                         }
                         percentageCalc(familyID, numTrans, budgetcount, notify);
                     }
                 }
-
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
-
         });
     }
     /**Calculate percentages and totals transacction amount**/
     public void percentageCalc(String familyID,int numtrans,int numbudget,String notify){
-            for(int i=0;i<numbudget;i++){
+            for(int i=0;i<numbudget;i=i+9){
                 double total=0;
-                budgetsdetail=budgets[i];
-                String catagory=budgetsdetail[0];
-                String key=budgetsdetail[8];
-                int strYr=Integer.parseInt(budgetsdetail[1]);
-                int strMon=Integer.parseInt(budgetsdetail[2]);
-                int strDate=Integer.parseInt(budgetsdetail[3]);
-                int endYr=Integer.parseInt(budgetsdetail[4]);
-                int endMon=Integer.parseInt(budgetsdetail[5]);
-                int endate=Integer.parseInt(budgetsdetail[6]);
-                int budgetAmount=Integer.parseInt(budgetsdetail[7]);
-                for(int f=0;f<numtrans;f++) {
-                    detailTransaction=transactions[f];
-                    if (detailTransaction[0].equals(catagory) ) {
-                            double transamount = Double.parseDouble(detailTransaction[1]);
-                            int subYr = Integer.parseInt(detailTransaction[2]);
-                            int subMon = Integer.parseInt(detailTransaction[3]);
-                            int subDate = Integer.parseInt(detailTransaction[4]);
-                            if ((strYr < subYr && endYr > subYr)) {
+                String catagory=budgetsdetail[0+i];
+                String key=budgetsdetail[8+i];
+                int strYr=Integer.parseInt(budgetsdetail[1+i]);
+                int strMon=Integer.parseInt(budgetsdetail[2+i]);
+                int strDate=Integer.parseInt(budgetsdetail[3+i]);
+                int endYr=Integer.parseInt(budgetsdetail[4+i]);
+                int endMon=Integer.parseInt(budgetsdetail[5+i]);
+                int endate=Integer.parseInt(budgetsdetail[6+i]);
+                int budgetAmount=Integer.parseInt(budgetsdetail[7+i]);
+                total=0;
+                for(int f=0;f<numtrans;f=f+5) {
+                    if (detailTransaction[0 + f] != null) {
+                        if (detailTransaction[0 + f].equals(catagory)) {
+                            double transamount = Double.parseDouble(detailTransaction[1 + f]);
+                            int subYr = Integer.parseInt(detailTransaction[2 + f]);
+                            int subMon = Integer.parseInt(detailTransaction[3 + f]);
+                            int subDate = Integer.parseInt(detailTransaction[4 + f]);
+                            if (strYr < subYr && endYr > subYr) {
                                 total = total + transamount;
-                            } else if ((subYr == strYr) && (strMon < subMon) || (endYr == subYr && subMon < endMon)) {
-                                total = total + transamount;
-                            } else if (((strMon == subMon) && (strDate < subDate)) || ((subMon == endMon) && (subDate < endate))) {
-                                total = total + transamount;
+                            } else if (subYr == strYr || endYr == subYr) {
+                                if (strMon < subMon && subMon < endMon) {
+                                    total = total + transamount;
+                                }
+                                if (strMon == subMon || subMon == endMon) {
+                                    if (strDate < subDate && subDate < endate) {
+                                        total = total + transamount;
+                                    }
+
+                                }
                             }
+                        }
                     }
                 }
                 double percentage=(total/budgetAmount)*100;
@@ -159,33 +164,25 @@ public class AutoTracking {
     }
     /**Update status according to percentage**/
     public  void statusUpdate(Double percentage,String key,String notify) {
-        if(!previouskey.equals(key)) {
+        if (!previouskey.equals(key)) {
             if (percentage > 90 && percentage < 95) {
-                if(notify.equals("On")) {
-
+                if (notify.equals("On")) {
                 }
-                    FirebaseDatabase.getInstance().getReference("Budget").child(key).child("status").getRef().setValue("Critical Level");
+                FirebaseDatabase.getInstance().getReference("Budget").child(key).child("status").getRef().setValue("Critical Level");
             } else if (percentage > 95) {
-                if(notify.equals("On")) {
+                if (notify.equals("On")) {
                 }
                 FirebaseDatabase.getInstance().getReference("Budget").child(key).child("status").getRef().setValue("Over Flow");
-            }
-            else if (percentage < 50) {
+            } else if (percentage < 50) {
                 FirebaseDatabase.getInstance().getReference("Budget").child(key).child("status").getRef().setValue("Good");
-            }  else if (percentage > 50 && percentage<90) {
+            } else if (percentage > 50 && percentage < 90) {
                 FirebaseDatabase.getInstance().getReference("Budget").child(key).child("status").getRef().setValue("Care");
             }
-            String addpercentage=String.format("%.2f",percentage);
+            String addpercentage = String.format("%.2f", percentage);
             FirebaseDatabase.getInstance().getReference("Budget").child(key).child("percentage").getRef().setValue(addpercentage);
             previouskey=key;
-            addpercentage="0";
-
         }
-
-
-
     }
-
 }
 
 
