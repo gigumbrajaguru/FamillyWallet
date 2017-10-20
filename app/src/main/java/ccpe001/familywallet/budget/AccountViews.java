@@ -3,12 +3,15 @@ package ccpe001.familywallet.budget;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton;
@@ -39,6 +42,7 @@ public class AccountViews extends AppCompatActivity {
     String[] arrayIssaving = {}, accNamearay = {}, arraamonts = {}, acckey = {}, acTypes, curtyp;
     String[] amonts, accName, issaving, acckeys, types, curtype;
     Integer[] imgId2 = {};
+    private  String[] arraySpinner,arraySpinner1;
     String accnameD,saving;
     int check;
     AccountListAd addList;
@@ -54,12 +58,20 @@ public class AccountViews extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acc_views);
-        ListView budList = (ListView) findViewById(R.id.list1);
+        ListView accList = (ListView) findViewById(R.id.list1);
         AutoRefresh();
-        budList.setOnItemClickListener(new OnItemClickListener() {
+        accList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selected = ((TextView) view.findViewById(R.id.txtbudgetId)).getText().toString();
                 setPromptBox(selected);
+            }
+        });
+        FloatingActionButton f = (FloatingActionButton)findViewById(R.id.fab1);
+        f.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newInt3 = new Intent(AccountViews.this, AddAccount.class);
+                startActivity(newInt3);
             }
         });
     }
@@ -159,6 +171,7 @@ public class AccountViews extends AppCompatActivity {
             }
         }, 500);
     }
+
     public void setPromptBox(String passed) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(AccountViews.this);
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -326,6 +339,7 @@ public class AccountViews extends AppCompatActivity {
             }
         });
     }
+
 }
 
 

@@ -90,6 +90,21 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".budget.AddAccount"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Dashboard"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="ccpe001.familywallet.budget.AccountViews"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".ccpe001.familywallet.DASHBOARD"/>
+            </intent-filter>
+        </activity>
+        <activity
                 android:name=".budget.BudgetCharts"
                 android:parentActivityName=".Dashboard"
                 android:screenOrientation="portrait"

@@ -90,7 +90,12 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
         noty.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                notify="On";
+                if(isChecked) {
+                    notify = "On";
+                }
+                else{
+                    notify = "Off";
+                }
             }
         });
         final AccountCtrl Ctrl = new AccountCtrl();
@@ -101,13 +106,21 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                 endday=endDt.getText().toString();
                 bName=Bname.getText().toString();
                 amounts=tAmount.getText().toString();
-                Boolean msgBoxOut =(Ctrl.addbdget(currentUser.getUid(),FamilyId,bName,sttDay,endday,amounts,notify,selected));
-                if (msgBoxOut) {
-                    AlertBox.alertBoxOut(BudgetAdd.this, "Data Stored", "Succeed");
+                if(!sttDay.isEmpty() && !endday.isEmpty() && !amounts.isEmpty() && !bName.isEmpty()) {
+                    Boolean msgBoxOut = (Ctrl.addbdget(currentUser.getUid(), FamilyId, bName, sttDay, endday, amounts, notify, selected));
+                    if (msgBoxOut) {
+                        AlertBox.alertBoxOut(BudgetAdd.this, "Data Stored", "Succeed");
+                        strDt.setText("");
+                        endDt.setText("");
+                        Bname.setText("");
+                        tAmount.setText("");
+                    } else {
+                        AlertBox.alertBoxOut(BudgetAdd.this, "Account Name ", "Change your account name");
+                    }
                 }
-             else {
-                AlertBox.alertBoxOut(BudgetAdd.this, "Account Name ", "Change your account name");
-            }
+                else{
+                    AlertBox.alertBoxOut(BudgetAdd.this, "Failed", "Fill all Fields");
+                }
             }
         });
         forcast.setOnClickListener(new OnClickListener() {
@@ -123,7 +136,7 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                             if (dataSnapshot.hasChildren()) {
                                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                                     if (child.child("catagory").getValue().toString().equals(selected)) {
-                                        String xy = child.child("BudgetName").getValue().toString();
+                                        String budgname = child.child("BudgetName").getValue().toString();
                                         String percentage = child.child("percentage").getValue().toString();
                                         String Amount = child.child("Amount").getValue().toString();
                                         double percentages = Double.parseDouble(percentage);
@@ -167,7 +180,7 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                 }
                 avgdeffdamount=deffbudget/diffrenceTwobudget.length;
                 forecastamount=avgamount+avgdeffdamount;
-                if(avgdeffdamount<0){
+                if(forecastamount<avgamount){
                     min= String.format("%.2f",forecastamount);
                     max= String.format("%.2f",avgamount);
                 }
@@ -184,7 +197,7 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v) {
 
         if(v==strDt){
-            final Calendar c= Calendar.getInstance();
+            Calendar c= Calendar.getInstance();
             day=c.get(Calendar.DAY_OF_MONTH);
             mon=c.get(Calendar.MONTH);
             yr=c.get(Calendar.YEAR);
@@ -194,21 +207,21 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                     strDt.setText(dayOfMonth+"/"+(monthOfYear+1)+"/"+year);
                 }
             }
-                    ,day,mon,yr);
+                    ,yr,mon,day);
             datePickerDialog.show();
         }
         if (v==endDt){
-            final Calendar c= Calendar.getInstance();
+            Calendar c= Calendar.getInstance();
             day=c.get(Calendar.DAY_OF_MONTH);
             mon=c.get(Calendar.MONTH);
             yr=c.get(Calendar.YEAR);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    endDt.setText(dayOfMonth+"/"+(monthOfYear+1)+"/"+year);
+                public void onDateSet(DatePicker view, int yr, int mon, int day) {
+                    endDt.setText(day+"/"+(mon+1)+"/"+yr);
                 }
-            },day,mon,yr);
+            },yr,mon,day);
             datePickerDialog.show();
         }
     }

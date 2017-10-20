@@ -8,13 +8,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_marginTop="65dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="13dp"
+        android:layout_marginTop="10dp"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp">
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,18 +25,19 @@
             android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.09"
             android:text="Account Name"
             android:textAlignment="center"
             android:textAllCaps="true"
-            android:textStyle="bold"
-            android:layout_weight="0.09"/>
+            android:textStyle="bold"/>
 
         <EditText
             android:id="@+id/editText5"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="27dp"
+            android:layout_marginTop="30dp"
             android:ems="10"
             android:hint="Account Name"
             android:inputType="textPersonName"
@@ -56,15 +57,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+    android:layout_marginTop="10dp"
     >
 
     <Spinner
         android:id="@+id/curType"
         android:layout_width="150dp"
+        android:layout_marginTop="10dp"
         android:layout_height="match_parent"></Spinner>
 
     <EditText
         android:id="@+id/editText7"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
@@ -85,6 +89,7 @@
             android:id="@+id/swcPrivate"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginTop="10dp"
             android:text="Saving Account"/>
 
         <Button
@@ -94,14 +99,6 @@
             android:layout_marginTop="40dp"
             android:background="@color/success_color"
             android:text="Submit"/>
-
-        <Button
-            android:id="@+id/btnUpdate"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/success_color"
-            android:text="View Existing Account"/>
 
     </LinearLayout>
     </ScrollView>

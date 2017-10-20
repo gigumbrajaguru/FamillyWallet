@@ -21,10 +21,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,9 +68,7 @@ import java.util.Arrays;
 import ccpe001.familywallet.admin.CircleTransform;
 import ccpe001.familywallet.admin.GetInfo;
 import ccpe001.familywallet.admin.UserData;
-import ccpe001.familywallet.budget.ActionValidater;
-import ccpe001.familywallet.budget.AddAccount;
-import ccpe001.familywallet.budget.AutoTracking;
+import ccpe001.familywallet.budget.AccountViews;
 import ccpe001.familywallet.budget.BudgetList;
 import ccpe001.familywallet.summary.SummaryTab;
 import ccpe001.familywallet.transaction.FamilyTransactions;
@@ -405,32 +401,8 @@ public class Dashboard extends AppCompatActivity
                     });
             snackbar.show();
         }
-        /*------------------------Account Availability checker--------------------------------------*/
-        AutoTracking autoTrack=new AutoTracking();
-        autoTrack.getTransactionDetail(this);
-        if (ActionValidater.accountChecker()) {
-            final android.support.v4.app.FragmentTransaction fragmentes = getSupportFragmentManager().beginTransaction();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.app_name);
-            builder.setMessage("Do you want to add new Wallet/Bank account ?");
-            builder.setIcon(R.drawable.ic_launcher);
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    AddAccount addwallet = new AddAccount();
-                    fragmentes.replace(R.id.fragmentContainer1, addwallet);
-                    fragmentes.commit();
 
-                }
-            });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-        /*------------------------Account Availabilty checker--------------------------------------*/
+
     }
 
 
@@ -594,10 +566,8 @@ public class Dashboard extends AppCompatActivity
         }else if (id == R.id.walletFrag) {
             toolbar.setTitle(R.string.dashboard_settitle_wallet);
 
-
-            AddAccount addwallet = new AddAccount();
-            fragmentTransaction.replace(R.id.fragmentContainer1,addwallet);
-            fragmentTransaction.commit();
+            Intent newInt3 = new Intent(Dashboard.this, AccountViews.class);
+            startActivity(newInt3);
         }else if (id == R.id.settingFrag) {
             toolbar.setTitle(R.string.dashboard_settitle_setting);
 

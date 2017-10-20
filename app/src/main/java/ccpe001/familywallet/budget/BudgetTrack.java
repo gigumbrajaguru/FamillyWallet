@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
+import ccpe001.familywallet.Dashboard;
 import ccpe001.familywallet.R;
 
 public class BudgetTrack extends AppCompatActivity{
@@ -35,10 +36,9 @@ public class BudgetTrack extends AppCompatActivity{
     final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference mDatabase;
     private int day,mon,yr,x,y,z;
-    String budgetI;
+    String budgetI,Notify="Off";
     EditText endDys,budam;
     Switch switch1;
-    String Notify;
     private DatabaseReference Mdatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +76,8 @@ public class BudgetTrack extends AppCompatActivity{
                         }
                         if (child.getKey().equals("percentage")) {
                             PercentageTexts.setText(child.getValue().toString());
-                            int x = Integer.parseInt(child.getValue().toString());
-                            progressbar.setProgress(x);
+                            Double percent =Double.parseDouble(child.getValue().toString());
+                            progressbar.setProgress(percent.intValue());
                         }
                         if (child.getKey().equals("startDate")) {
                             strtDates.setText(child.getValue().toString());
@@ -92,10 +92,10 @@ public class BudgetTrack extends AppCompatActivity{
         switch1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    Notify="True";
+                    Notify="On";
                 }
                 else {
-                    Notify="False";
+                    Notify="Off";
                 }
 
             }
@@ -114,7 +114,7 @@ public class BudgetTrack extends AppCompatActivity{
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         endDys.setText(dayOfMonth+"/"+(monthOfYear+1)+"/"+year);
                     }
-                },day,mon,yr);
+                },yr,mon,day);
                 datePickerDialog.show();  }
         });
 
@@ -186,7 +186,7 @@ public class BudgetTrack extends AppCompatActivity{
                     public void onDataChange(final DataSnapshot dataSnapshot) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(BudgetTrack.this);
                         builder.setTitle(R.string.app_name);
-                        builder.setMessage("Do you want proceed ?");
+                        builder.setMessage("Do you want proceed[Delete Budget] ?");
                         builder.setIcon(R.drawable.ic_launcher);
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -213,7 +213,7 @@ public class BudgetTrack extends AppCompatActivity{
 
     }
     public void moveBack(){
-        Intent newInt3 = new Intent(BudgetTrack.this, BudgetAdd.class);
+        Intent newInt3 = new Intent(BudgetTrack.this, Dashboard.class);
         startActivity(newInt3);
     }
 

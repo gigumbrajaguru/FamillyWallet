@@ -41,6 +41,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,9 +53,6 @@ import ccpe001.familywallet.R;
 import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
 import ccpe001.familywallet.budget.AddAccount;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -466,11 +466,8 @@ public class TransactionMain extends Fragment {
                             .setTitle(R.string.noAccTitle);
                     builder.setPositiveButton(R.string.noAccBtnAdd, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
-                                    .beginTransaction();
-                            AddAccount addwallet = new AddAccount();
-                            fragmentTransaction.replace(R.id.fragmentContainer1, addwallet);
-                            fragmentTransaction.commit();
+                            Intent newInt3 = new Intent(getContext(), AddAccount.class);
+                            startActivity(newInt3);
                         }
                     });
                     builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
