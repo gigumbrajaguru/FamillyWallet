@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ccpe001.familywallet.admin.UpdateMember;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -594,7 +595,10 @@ public class Dashboard extends AppCompatActivity
             }
             animateMenu();
         }else if(id == R.id.updateFrag){
-            startActivity(new Intent(Dashboard.this,GetInfo.class));
+            toolbar.setTitle(R.string.update_member);
+            UpdateMember addMember = new UpdateMember();
+            fragmentTransaction.replace(R.id.fragmentContainer1,addMember);
+            fragmentTransaction.commit();
         }else if(id == R.id.addMemberFrag){
             AddMember addMember = new AddMember();
             fragmentTransaction.replace(R.id.fragmentContainer1,addMember);

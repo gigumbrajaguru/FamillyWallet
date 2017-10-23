@@ -1,25 +1,19 @@
 package ccpe001.familywallet.admin;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import ccpe001.familywallet.CustomAlertDialogs;
-import ccpe001.familywallet.Dashboard;
 import ccpe001.familywallet.Validate;
 import com.facebook.*;
 import com.facebook.login.LoginManager;
@@ -269,16 +263,10 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Log.d("Google", "signInWithCredential:oncomplete: " + task.isSuccessful());
-                            Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
-                            intent.putExtra("firstname",acct.getFamilyName());
-                            intent.putExtra("lastname",acct.getDisplayName());
-                            saveData(acct.getFamilyName(), acct.getDisplayName(), acct.getPhotoUrl().toString());
-                            try {
-                                intent.putExtra("profilepic", acct.getPhotoUrl().toString());
-                            }catch (Exception e){
-
+                            if(!UpdateMember.isUpdatedUserInfo(getApplication())) {
+                                saveData(acct.getFamilyName(), acct.getDisplayName(), acct.getPhotoUrl().toString());
                             }
-                            startActivity(intent);
+                            startActivity(new Intent("ccpe001.familywallet.DASHBOARD"));
                         }else {
                             alert.hideLoadingPage();
                             alert.initCommonDialogPage(SignIn.this,getString(R.string.common_error),true).show();
@@ -301,17 +289,11 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                Intent intent = new Intent("ccpe001.familywallet.DASHBOARD");
-                intent.putExtra("firstname",Profile.getCurrentProfile().getFirstName());
-                intent.putExtra("lastname",Profile.getCurrentProfile().getLastName());
-                saveData(Profile.getCurrentProfile().getFirstName(),Profile.getCurrentProfile().getLastName(),
-                        Profile.getCurrentProfile().getProfilePictureUri(500,500).toString());
-                try {
-                    intent.putExtra("profilepic", Profile.getCurrentProfile().getProfilePictureUri(500,500).toString());
-                }catch (Exception e){
-
+                if(!UpdateMember.isUpdatedUserInfo(getApplication())) {
+                    saveData(Profile.getCurrentProfile().getFirstName(), Profile.getCurrentProfile().getLastName(),
+                            Profile.getCurrentProfile().getProfilePictureUri(500, 500).toString());
                 }
-                startActivity(intent);
+                startActivity(new Intent("ccpe001.familywallet.DASHBOARD"));
             }
         }).addOnFailureListener(this, new OnFailureListener() {
             @Override

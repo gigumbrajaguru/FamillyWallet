@@ -140,22 +140,21 @@ public class AddTransaction extends AppCompatActivity {
         editTextScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mAuth = FirebaseAuth.getInstance();
-                storageReference = FirebaseStorage.getInstance().getReference().child("ScannedBills").child(mAuth.getCurrentUser().getUid());
-                final String[] CROPCAMPERARR = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-                if(!CustomAlertDialogs.hasPermissions(AddTransaction.this,CROPCAMPERARR)){
-                    alert.initPermissionPage(AddTransaction.this,getString(R.string.permit_only_camera)).setPositiveButton(R.string.customaletdialog_initPermissionPage_posbtn, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                            ActivityCompat.requestPermissions(AddTransaction.this,CROPCAMPERARR,CROP_CAM);
-                        }
-                    }).show();
-                }else {
-                    CropImage.activity()
-                            .setGuidelines(CropImageView.Guidelines.ON)
-                            .start(AddTransaction.this);
-                }
+                    final String[] CROPCAMPERARR = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+                    if (!CustomAlertDialogs.hasPermissions(AddTransaction.this, CROPCAMPERARR)) {
+                        alert.initPermissionPage(AddTransaction.this, getString(R.string.permit_only_camera)).setPositiveButton(R.string.customaletdialog_initPermissionPage_posbtn, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                ActivityCompat.requestPermissions(AddTransaction.this, CROPCAMPERARR, CROP_CAM);
+                            }
+                        }).show();
+                    } else {
+                        CropImage.activity()
+                                .setGuidelines(CropImageView.Guidelines.ON)
+                                .start(AddTransaction.this);
+                    }
+
             }
         });
 
@@ -644,7 +643,8 @@ public class AddTransaction extends AppCompatActivity {
     private void returnToDashboard() {
         //updating,inserting the bill image
          if(billImageUri!=null) {
-
+             mAuth = FirebaseAuth.getInstance();
+             storageReference = FirebaseStorage.getInstance().getReference().child("ScannedBills").child(mAuth.getCurrentUser().getUid());
             storageReference.child(tId + ".jpg").putFile(billImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -703,12 +703,14 @@ public class AddTransaction extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         billImageUri = null;
                         dialogInterface.dismiss();
+                        editTextScan.setText(R.string.image_no);
                     }
                 }).setPositiveButton(R.string.scan_set_image, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         billImageUri = result.getUri();
                         dialogInterface.dismiss();
+                        editTextScan.setText(R.string.image_yes);
                     }
                 });
 

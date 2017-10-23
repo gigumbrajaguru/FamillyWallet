@@ -432,6 +432,18 @@
     <string name="scan_set_image">Set Image</string>
     <string name="scan_reject_image">Cancel</string>
     <string name="bill_image">Bill Image</string>
+    <string name="image_no">Bill Image Disabled</string>
+    <string name="image_yes">Bill Image Enabled</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="update">Update</string>
+    <string name="update_member">Update Member</string>
+    <string name="change_password">Change Password</string>
+    <string name="change">Change</string>
+    <string name="xmlchange_conf_passwordTxt_hint">Confirm Password</string>
+    <string name="pw_changed">Password Changed Successfully.</string>
+    <string name="pw_not_match">Password does not match</string>
+    <string name="pw_change_error">You cannot change password when you logged from Facebook, Google or Demo User.
+    </string>
 
 
     <string-array name="nav_drwer_arr">

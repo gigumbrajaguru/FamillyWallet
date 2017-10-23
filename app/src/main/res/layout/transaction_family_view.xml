@@ -7,6 +7,12 @@
     android:background="@color/place_autocomplete_search_text"
     android:gravity="center">
 
+
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="match_parent"
@@ -14,6 +20,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="center"
+        android:paddingTop="20dp"
         android:paddingBottom="20dp">
 
 
@@ -363,11 +370,14 @@
 
     </TableLayout>
 
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tableLayout">
+        android:layout_below="@+id/tableLayout"
+
+        android:layout_alignParentBottom="true"
+        >
 
         <TableRow
             android:layout_width="match_parent"
@@ -395,4 +405,7 @@
 
     </TableLayout>
 
+        </RelativeLayout>
+
+    </ScrollView>
 </RelativeLayout>
