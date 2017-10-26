@@ -70,10 +70,10 @@ public class AddTransaction extends AppCompatActivity {
 
 
     /*Initializing layout items*/
-    private static TextView txtLocation;
-    private static EditText txtAmount, txtDate, txtTime, txtTitle,txtCurrency, txtCategory, txtRecurring, txtAccount;
-    private static CheckBox checkRecurring;
-    private static ImageView imgValue, imgAccount, imgCategory, imgNote, imgCalender, imgLocation, imgSave;
+    private TextView txtLocation;
+    private EditText txtAmount, txtDate, txtTime, txtTitle,txtCurrency, txtCategory, txtRecurring, txtAccount;
+    private CheckBox checkRecurring;
+    private ImageView imgValue, imgAccount, imgCategory, imgNote, imgCalender, imgLocation, imgSave;
     /*Initializing variables to hold Extra values passed with intent or values from input fields */
     String categoryName,  title, date, amount, currency, time, location, account, type, update, key,
             userID, familyID, eUserID, eFamilyID, previousAmount, recurrPeriod, InGroup, userName;
@@ -589,7 +589,7 @@ public class AddTransaction extends AppCompatActivity {
                                 mDatabase.setValue(td);
                             }
                             else{
-                                mDatabase.child("Transactions").child("Groups").child(familyID).push();
+                                mDatabase = mDatabase.child("Transactions").child("Groups").child(familyID).push();
                                 tId = mDatabase.getKey();
                                 mDatabase.setValue(td);
                             }
@@ -625,9 +625,6 @@ public class AddTransaction extends AppCompatActivity {
                         mDatabase.child(key).updateChildren(postValues);
                         returnToDashboard();
                         Toast.makeText(this, R.string.transactionUpdated, Toast.LENGTH_LONG).show();
-
-
-
                 }
             }catch (Exception e){
 

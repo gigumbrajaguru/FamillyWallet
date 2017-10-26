@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,6 +118,7 @@ public class FamilyTransactions extends Fragment {
         familyID = sharedPref.getString("uniFamilyID", "");
         InGroup = sharedPref.getString("InGroup", "");
 
+        Log.i("TestFamilyTransactions",userID+" "+familyID+" "+InGroup);
 
 
         /* Getting user details from relevant group */
@@ -141,17 +143,21 @@ public class FamilyTransactions extends Fragment {
         populateTransactions(query);
 
 
-            /* Getting and populating list with group member info */
+            /** Getting and populating list with group member info */
             gDatabase = FirebaseDatabase.getInstance().getReference("Groups").child(familyID);
             gDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     grpList.clear();
                     for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                        Log.i("testFT","+"+tdSnapshot.child("userID").getValue().toString());
+
                         GroupDetails gr = tdSnapshot.getValue(GroupDetails.class);
+                        FamilyExpensesIncomes expensesIncomes = new FamilyExpensesIncomes(gr.getUserID(), familyID);
+
                         grpList.add(gr);
                     }
-                    grpAdapter = new GroupListAdapter(getActivity(),grpList);
+                    grpAdapter = new GroupListAdapter(getActivity(),grpList,familyID);
                     memberList.setAdapter(grpAdapter);
                 }
 
@@ -274,7 +280,7 @@ public class FamilyTransactions extends Fragment {
     }
 
     /* method to populate the a single row from transaction details  */
-        public static class DetailsViewHolder extends RecyclerView.ViewHolder{
+    public static class DetailsViewHolder extends RecyclerView.ViewHolder{
             View mView;
             TextView txtTitle, txtCategory, txtDate, txtAmount, txtName;
             ImageView imageView;
@@ -343,7 +349,7 @@ public class FamilyTransactions extends Fragment {
         }
 
         /* View transaction in a expanded view on a dialog box */
-        private void viewTransaction(final String key) {
+    private void viewTransaction(final String key) {
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.transaction_family_view);
             final DatabaseReference transaction;

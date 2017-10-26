@@ -20,8 +20,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="center"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp">
 
 
 
@@ -64,6 +64,7 @@
         </TableRow>
 
         --
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -289,7 +290,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView26"
+                android:id="@+id/textView27"
                 android:layout_width="wrap_content"
                 android:layout_height="10dp" />
 
@@ -331,29 +332,41 @@
         </TableRow>
 
         <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:text="@string/bill_image"
-                    android:textColor="@color/com_facebook_likeview_text_color" />
+                android:id="@+id/textView26"
+                android:layout_width="wrap_content"
+                android:layout_height="10dp" />
 
         </TableRow>
+
         <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:text="@string/bill_image"
+                android:textColor="@color/com_facebook_likeview_text_color" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <ImageView
-                    android:id="@+id/imageview_scan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginTop="10dp"
+                android:id="@+id/imageview_scan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="10dp"
 
-            />
+                />
 
         </TableRow>
 

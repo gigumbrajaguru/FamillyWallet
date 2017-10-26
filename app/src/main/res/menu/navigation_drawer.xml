@@ -2,15 +2,35 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       >
-    <item android:id="@+id/action_notification"
-          app:actionLayout="@layout/badge_layout"
-          app:showAsAction="always"
-          android:title="Title"/>
+    <item
+        android:id="@+id/action_notification"
+        android:title="Title"
+        app:actionLayout="@layout/badge_layout"
+        app:showAsAction="always" />
 
     <item
-            android:id="@+id/action_search"
-            app:showAsAction="always"
-            android:icon="@android:drawable/ic_menu_search"
-            app:actionViewClass="android.support.v7.widget.SearchView"
-            android:title="Search"/>
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_filter"
+        android:title="Filter"
+        app:showAsAction="collapseActionView">
+        <menu >
+            <item
+                android:id="@+id/filter_date"
+                android:title="@string/vhDate" />
+            <item
+                android:id="@+id/filter_account"
+                android:title="@string/vhAccount" />
+            <item
+                android:id="@+id/filter_amount"
+                android:title="@string/vhAmount" />
+            <item
+                android:id="@+id/filter_category"
+                android:title="@string/vhCategory" />
+        </menu>
+    </item>
 </menu>

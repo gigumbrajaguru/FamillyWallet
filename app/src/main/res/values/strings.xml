@@ -24,6 +24,8 @@
         <item>INR.</item>
     </string-array>
 
+
+    <string name="lkr">LKR.</string>
     <string name="transactionAmount">Amount</string>
     <string name="transactionCategory">Tap to Set Category</string>
     <string name="transactionTitle">Title</string>
@@ -62,6 +64,13 @@
         <item>Dec</item>
     </string-array>
 
+    <string-array name="filterList">
+        <item>Date</item>
+        <item>Category</item>
+        <item>Account</item>
+        <item>Amount</item>
+    </string-array>
+
 
     <string name="tAM">AM</string>
     <string name="tPM">PM</string>
@@ -74,6 +83,14 @@
     <string name="vhDate">Date</string>
     <string name="vhTime">Time</string>
     <string name="vhLocation">Location</string>
+    <string name="filter">Filter</string>
+    <string name="submit">Submit</string>
+
+    <string name="startDate">Start Date</string>
+    <string name="endDate">End Date</string>
+
+    <string name="priceFrom">From</string>
+    <string name="priceTo">To</string>
 
     <string-array name="IncomeCategory">
         <item>Car</item>

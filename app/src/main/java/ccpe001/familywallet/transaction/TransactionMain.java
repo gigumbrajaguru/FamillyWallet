@@ -26,12 +26,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-import ccpe001.familywallet.admin.CircleTransform;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -64,7 +66,7 @@ public class TransactionMain extends Fragment {
     Animation fabOpen, fabClose, fabClockwise, fabAntiClockwise;
     TextView txtIncome,txtExpense;
     boolean isOpen = false;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase, gDatabase;
     Validate v = new Validate();
     Translate trns = new Translate();
     List<TransactionDetails> tdList;
@@ -84,7 +86,8 @@ public class TransactionMain extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         final View view = inflater.inflate(R.layout.transaction_main, container, false);
         fabAddMenu(view);
         list = (ListView) view.findViewById(R.id.transactionList);
@@ -105,7 +108,6 @@ public class TransactionMain extends Fragment {
         InGroup = sharedPref.getString("InGroup", "");
         userID = uid;
         familyID = fid;
-
 
 
 
@@ -288,6 +290,32 @@ public class TransactionMain extends Fragment {
 
         });
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_search) {
+            return true;
+        }
+        else if (id == R.id.filter_date){
+            filterTransaction("date");
+        }
+        else if (id == R.id.filter_account){
+            filterTransaction("account");
+        }
+        else if (id == R.id.filter_amount){
+            filterTransaction("amount");
+        }
+        else if (id == R.id.filter_category){
+            filterTransaction("category");
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void viewTransaction(final String key) {
@@ -532,5 +560,39 @@ public class TransactionMain extends Fragment {
         });
     }
 
+    private void filterTransaction(String filterType) {
+        final Dialog dialog = new Dialog(getContext());
+
+        final Integer[] imgid = {
+                R.drawable.cat1,R.drawable.cat2,R.drawable.cat3,R.drawable.cat4,
+                R.drawable.cat5,R.drawable.cat6,R.drawable.cat7,R.drawable.cat8,R.drawable.cat9,
+                R.drawable.cat10,R.drawable.cat11,R.drawable.cat12,R.drawable.cat13,R.drawable.cat14,
+                R.drawable.cat15,R.drawable.cat16,R.drawable.cat17,R.drawable.cat18,R.drawable.cat19,
+                R.drawable.cat_other,
+        };
+        /*populating itemname array with expense category list */
+        final String[] itemname = res.getStringArray(R.array.IncomeCategory);
+        if (filterType.equals("date")){
+            dialog.setContentView(R.layout.filter_dialog_date);
+        }else if (filterType.equals("account")){
+            dialog.setContentView(R.layout.filter_dialog_account);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+                    android.R.layout.simple_list_item_1,accountsList);
+            ListView lv = (ListView) dialog.findViewById(R.id.filterAccountList);
+            lv.setAdapter(arrayAdapter);
+        }else if (filterType.equals("amount")){
+            dialog.setContentView(R.layout.filter_dialog_amount);
+        }else if (filterType.equals("category")){
+            dialog.setContentView(R.layout.filter_dialog_category);
+            GridView gridd = (GridView) dialog.findViewById(R.id.filterCatergoryGrid);
+            CategoryAdapter adapter = new CategoryAdapter(getActivity(), itemname, imgid);  //Sending list to category adapter
+            gridd.setAdapter(adapter);
+        }
+
+
+
+
+        dialog.show();
+    }
 
 }

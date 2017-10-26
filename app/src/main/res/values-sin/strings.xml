@@ -20,6 +20,7 @@
         <item>ඉන්දීය රු.</item>
     </string-array>
 
+    <string name="lkr">රු.</string>
     <string name="transactionAmount">මුදල</string>
     <string name="transactionCategory">කාන්ඩය තෝරන්න</string>
     <string name="transactionTitle">ශීර්ෂය</string>
@@ -58,6 +59,13 @@
         <item>දෙසැ</item>
     </string-array>
 
+    <string-array name="filterList">
+        <item>දිනය</item>
+        <item>කාන්ඩය</item>
+        <item>ගිණුම</item>
+        <item>මුදල</item>
+    </string-array>
+
     <string name="tAM">පෙ.ව.</string>
     <string name="tPM">ප.ව.</string>
 
@@ -70,6 +78,7 @@
     <string name="vhDate">දිනය</string>
     <string name="vhTime">වෙලාව</string>
     <string name="vhLocation">ස්ථානය</string>
+    <string name="filter">වර්ග කරන්න</string>
 
     <string-array name="IncomeCategory">
         <item>මෝටර් රථ</item>
