@@ -78,16 +78,16 @@
 
             <TextView
                 android:id="@+id/txtTime"
-                android:layout_width="90dp"
+                android:layout_width="wrap_content"
                 android:layout_height="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="28dp"
+                android:layout_toEndOf="@+id/txtCategory"
                 android:clickable="false"
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:inputType="date"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/txtCategory"
-                android:layout_marginStart="28dp" />
+                android:inputType="date" />
         </RelativeLayout>
 
     </RelativeLayout>

@@ -9,19 +9,25 @@ import com.google.android.gms.internal.pi;
 /* Class to make an object for group in firebase */
 public class GroupDetails {
 
-    public String userID;
-    public String familyID;
-    public String firstName;
-    public String proPic;
+    private String userID;
+    private String familyID;
+    private String firstName;
+    private String proPic;
+    private String inGroup;
+    private Double TotalIncome;
+    private Double TotalExpense;
 
     public GroupDetails(){
 
     }
 
-    public GroupDetails(String uid, String fn, String pic){
+    public GroupDetails(String uid, String fn, String pic, String inGrp){
         this.userID=uid;
         this.firstName=fn;
         this.proPic= pic;
+        this.inGroup=inGrp;
+        this.TotalIncome=null;
+        this.TotalExpense=null;
     }
 
     public String getUserID() {
@@ -46,6 +52,23 @@ public class GroupDetails {
 
     public void setProPic(String proPic) {
         this.proPic = proPic;
+    }
+
+    public void setInGroup(String inGroup) {
+        this.inGroup = inGroup;
+    }
+
+
+    public String getInGroup() {
+        return inGroup;
+    }
+
+    public Double getTotalIncome() {
+        return TotalIncome;
+    }
+
+    public Double getTotalExpense() {
+        return TotalExpense;
     }
 
     public String getProPic() {

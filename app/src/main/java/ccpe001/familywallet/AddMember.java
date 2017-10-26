@@ -146,7 +146,7 @@ public class AddMember extends Fragment  implements View.OnClickListener{
         btnLeave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                leaveGroup(userID,familyID);
+                leaveGroup();
             }
         });
         qrError = (TextView) v.findViewById(R.id.qrError);
@@ -207,8 +207,8 @@ public class AddMember extends Fragment  implements View.OnClickListener{
                  /* checking if the scanning qr is valid */
                 if (parts[0].equals("fwValid")) {
                     InGroup="true";
-                    GroupDetails groupDetails = new GroupDetails(parts[1], parts[2],parts[3]);   //new members details
-                    GroupDetails groupHDetails = new GroupDetails(userID, fname, proPic);       //admins details
+                    GroupDetails groupDetails = new GroupDetails(parts[1], parts[2],parts[3],InGroup);   //new members details
+                    GroupDetails groupHDetails = new GroupDetails(userID, fname, proPic,InGroup);       //admins details
                     mDatabase.child("Groups").child(userID).child(parts[1]).setValue(groupDetails); //adding new members details to db
                     mDatabase.child("Groups").child(userID).child(userID).setValue(groupHDetails);  //adding admins  details to db
                     mDatabase.child("UserInfo").child(parts[1]).child("familyId").setValue(userID); //Changing family ID in user details
@@ -256,13 +256,13 @@ public class AddMember extends Fragment  implements View.OnClickListener{
 
         }
     }
-    private void leaveGroup(String uID, String fID) {
+    private void leaveGroup() {
 
         /* change layout and remove node from group db*/
-        changeLayout(uID,fID);
-        mDatabase.child("UserInfo").child(uID).child("familyId").setValue(uID);
-        DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("Groups").child(fID).child(uID);
-        transaction.removeValue();
+        changeLayout(userID,familyID);
+        GroupDetails groupDetails = new GroupDetails(userID, fname, proPic,"false");   //new members details
+        mDatabase.child("Groups").child(familyID).child(userID).setValue(groupDetails); //adding new members details to db
+        mDatabase.child("UserInfo").child(userID).child("familyId").setValue(userID);
         editor.putString("InGroup", "false");
         editor.commit();
         FragmentTransaction ft = getFragmentManager().beginTransaction();

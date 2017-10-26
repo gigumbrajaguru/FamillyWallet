@@ -24,6 +24,8 @@ import ccpe001.familywallet.Translate;
 import ccpe001.familywallet.Validate;
 import ccpe001.familywallet.admin.CircleTransform;
 
+import static ccpe001.familywallet.transaction.FamilyExpensesIncomes.id_total;
+
 /**
  * Created by Knight on 10/3/2017.
  */
@@ -33,14 +35,18 @@ public class GroupListAdapter extends ArrayAdapter<GroupDetails> {
     private Activity context;
     private List<GroupDetails> grList;
     private StorageReference storageReference= FirebaseStorage.getInstance().getReference();
+    private FamilyExpensesIncomes expensesIncomes;
+    private String familyID;
+    private Double[] totalExpensesIncomes ;
 
-
-    public GroupListAdapter(Activity context, List<GroupDetails> grList) {
+    public GroupListAdapter(Activity context, List<GroupDetails> grList,String familyId) {
         super(context, R.layout.transaction_family_slideup, grList);
         // TODO Auto-generated constructor stub
 
         this.context = context;
         this.grList = grList;
+        this.familyID=familyId;
+
     }
 
     public View getView(int position, View view, ViewGroup parent) {
@@ -49,9 +55,17 @@ public class GroupListAdapter extends ArrayAdapter<GroupDetails> {
         GroupDetails grpDetail = grList.get(position);
 
 
-        rowView = inflater.inflate(R.layout.group_row, null, true);
+        rowView = inflater.inflate(R.layout.group_row_leaderboard, null, true);
         TextView txtName = (TextView) rowView.findViewById(R.id.txtGrName);
+        TextView txtTotalIncome = (TextView) rowView.findViewById(R.id.txtIncomeAmount);
+        TextView txtTotalExpense = (TextView) rowView.findViewById(R.id.txtExpenseAmount);
         final ImageView proPic = (ImageView) rowView.findViewById(R.id.proPic);
+        totalExpensesIncomes = id_total.get(grpDetail.getUserID());
+
+        txtTotalIncome.setText(grpDetail.getTotalIncome().toString());
+        txtTotalExpense.setText(grpDetail.getTotalExpense().toString());
+
+
         txtName.setText(grpDetail.getFirstName());
         try {
             if(grpDetail.getProPic().equals("Storage")){
@@ -61,11 +75,9 @@ public class GroupListAdapter extends ArrayAdapter<GroupDetails> {
                     public void onSuccess(Uri uri) {
                         Picasso.with(context.getApplication())
                                 .load(uri)
-                                .transform(new CircleTransform())
                                 .into(proPic);
                     }
                 });
-                //load uri to circleButton using picasso library
             }else{
 
                 Picasso.with(context.getApplication())
