@@ -444,6 +444,15 @@
     <string name="pw_not_match">Password does not match</string>
     <string name="pw_change_error">You cannot change password when you logged from Facebook, Google or Demo User.
     </string>
+    <string name="no_chart_data">No chart data available.</string>
+    <string name="change_date">Select Date Range</string>
+    <string name="xmlgetinfo_editText_startdate">Select Start Date</string>
+    <string name="xmlgetinfo_editText_enddate">Select End Date</string>
+    <string name="set">Set</string>
+    <string name="this_month">This month</string>
+    <string name="last_month">Last month</string>
+    <string name="last_3_month">Last 3 months</string>
+    <string name="custom">Custom</string>
 
 
     <string-array name="nav_drwer_arr">
@@ -451,4 +460,6 @@
         <item>Add member</item>
         <item>Sign out</item>
     </string-array>
+
+
 </resources>

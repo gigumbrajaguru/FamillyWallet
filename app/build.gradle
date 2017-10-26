@@ -32,7 +32,9 @@ android {
 
 allprojects {
     repositories {
-        maven { url "https://jitpack.io" }
+        maven { url "https://jitpack.io"
+             "https://maven.google.com"
+        }
         mavenCentral()
 
     }
@@ -60,7 +62,6 @@ dependencies {
     compile 'com.google.firebase:firebase-storage:11.0.0'
     compile 'com.google.firebase:firebase-auth:11.0.0'
     compile 'com.google.firebase:firebase-messaging:11.0.0'
-
 
     compile 'com.wunderlist:sliding-layer:1.2.5'
     compile 'com.google.firebase:firebase-core:11.0.0'

@@ -64,9 +64,9 @@ public class SummaryTab extends Fragment {
             //return PlaceholderFragment.newInstance(position + 1);
 
             if(position==0){
-                return new sumMain();
+                return new sumMain(position);
             }else if(position==1){
-                return new sumMain();
+                return new sumMain(position);
             }else{
                 return null;
             }
