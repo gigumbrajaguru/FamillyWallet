@@ -1,0 +1,13 @@
+<scheme name="_@user_Darcula" version="142" parent_scheme="Darcula">
+  <option name="FONT_SCALE" value="1.25" />
+  <metaInfo>
+    <property name="created">2017-10-28T21:42:00</property>
+    <property name="ide">AndroidStudio</property>
+    <property name="ideVersion">3.0.0.18</property>
+    <property name="modified">2017-10-28T22:06:24</property>
+    <property name="originalScheme">Darcula</property>
+  </metaInfo>
+  <option name="EDITOR_FONT_SIZE" value="15" />
+  <option name="CONSOLE_FONT_NAME" value="Monospaced" />
+  <option name="EDITOR_FONT_NAME" value="Fira Code" />
+</scheme>
