@@ -49,6 +49,8 @@
     <string name="leaveGroup">Leave Group</string>
     <string name="remove">Remove</string>
 
+    <string name="emptyDate">Please Enter the dates first</string>
+
     <string-array name="Months">
         <item>Jan</item>
         <item>Feb</item>

@@ -440,6 +440,68 @@ public class Translate {
         return year + monthNum + day;
     }
 
+    /* Method to get date day nad month to double digits day =6th > 06 */
+    public static String dateWithDoubleDigit(int year, int inputMonth, int day, Context con) {
+        String month = null;
+        Resources res = con.getResources();
+        String[] monthList = res.getStringArray(R.array.Months);
+        String retDay;/*Converting the day into a double digit value if its not*/
+
+        if (day < 10){
+            retDay="0"+day;
+        }
+        else {
+            retDay=String.valueOf(day);
+        }
+        String convMonth;/*Converting the month into a double digit value if its not*/
+        if (inputMonth < 10){
+            convMonth="0"+ inputMonth;
+        }
+        else {
+            convMonth=String.valueOf(inputMonth);
+        }
+        switch (convMonth) {
+            case "01":
+                month = monthList[0];
+                break;
+            case "02":
+                month = monthList[1];
+                break;
+            case "03":
+                month = monthList[2];
+                break;
+            case "04":
+                month = monthList[3];
+                break;
+            case "05":
+                month = monthList[4];
+                break;
+            case "06":
+                month = monthList[5];
+                break;
+            case "07":
+                month = monthList[6];
+                break;
+            case "08":
+                month = monthList[7];
+                break;
+            case "09":
+                month = monthList[8];
+                break;
+            case "10":
+                month = monthList[9];
+                break;
+            case "11":
+                month = monthList[10];
+                break;
+            case "12":
+                month = monthList[11];
+                break;
+
+        }
+        return day + "-" + month + "-" + year;
+    }
+
     /* Method to get date from all digit format(date) to readable format in language ie- "20170111" --> "2017-Jan-11" */
     public static String valueToDate(String date, Context con) {
         Resources res = con.getResources();

@@ -2,6 +2,7 @@ package ccpe001.familywallet.transaction;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,11 +30,14 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
@@ -48,6 +53,7 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -561,6 +567,7 @@ public class TransactionMain extends Fragment {
     }
 
     private void filterTransaction(String filterType) {
+
         final Dialog dialog = new Dialog(getContext());
 
         final Integer[] imgid = {
@@ -574,14 +581,17 @@ public class TransactionMain extends Fragment {
         final String[] itemname = res.getStringArray(R.array.IncomeCategory);
         if (filterType.equals("date")){
             dialog.setContentView(R.layout.filter_dialog_date);
+            filterDate(dialog,getContext());
         }else if (filterType.equals("account")){
             dialog.setContentView(R.layout.filter_dialog_account);
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
                     android.R.layout.simple_list_item_1,accountsList);
             ListView lv = (ListView) dialog.findViewById(R.id.filterAccountList);
             lv.setAdapter(arrayAdapter);
+            filterAccounts(dialog);
         }else if (filterType.equals("amount")){
             dialog.setContentView(R.layout.filter_dialog_amount);
+            filterAmount(dialog);
         }else if (filterType.equals("category")){
             dialog.setContentView(R.layout.filter_dialog_category);
             GridView gridd = (GridView) dialog.findViewById(R.id.filterCatergoryGrid);
@@ -595,4 +605,201 @@ public class TransactionMain extends Fragment {
         dialog.show();
     }
 
+    public void filterDate(Dialog view, final Context con) {
+
+        DatePicker dp = (DatePicker) view.findViewById(R.id.filterDatepicker);
+        final EditText startDate = (EditText) view.findViewById(R.id.etxtStartDate);
+        final EditText endDate = (EditText) view.findViewById(R.id.etxtEndDate);
+        final Button btnfilter = (Button) view.findViewById(R.id.btnFilterDate);
+
+        Calendar calendar = Calendar.getInstance();
+        dp.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker datePicker, int year, int month, int day) {
+                String date = trns.dateWithDoubleDigit(year,month+1,day,con);
+
+                if(startDate.isFocused()) {
+                    startDate.setText(date);
+                }else {
+                    endDate.setText(date);
+                }
+            }
+        });
+
+
+
+
+        btnfilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (startDate.getText().toString().isEmpty() || endDate.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), R.string.emptyDate, Toast.LENGTH_SHORT).show();
+                }else {
+                    String filterStartdate = trns.dateToValue(startDate.getText().toString());
+                    String filterEnddate = trns.dateToValue(endDate.getText().toString());
+                    Query query;
+                    if (familyID.equals(userID) && !InGroup.equals("true")){
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date").startAt(filterStartdate).endAt(filterEnddate);
+                    }
+                    else {
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date").startAt(filterStartdate).endAt(filterEnddate);
+                    }
+                    filterByQuery(query);
+                }
+            }
+        });
+
+    }
+
+    public void filterByQuery(Query query){
+        try{
+
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    tdList.clear();
+                    for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                        TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
+                        if (td.getUserID().equals(userID)){
+                            tdList.add(tdSnapshot.getValue(TransactionDetails.class));
+                            keys.add(tdSnapshot.getKey());
+                        }
+                    }
+
+                    try{
+                        Collections.reverse(tdList);
+                        Collections.reverse(keys);
+                        adapter = new TransactionListAdapter(getActivity(),tdList);
+                        list.setAdapter(adapter);
+                    }catch (Exception e){
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }catch (Exception e){
+
+        }
+    }
+
+    public void filterAmount(Dialog view){
+
+        final EditText etxtAmountFrom = (EditText) view.findViewById(R.id.amountFrom);
+        final EditText etxtAmountTo = (EditText) view.findViewById(R.id.amountTo);
+        Button btnFilterAmount = (Button) view.findViewById(R.id.btnFilterAmount);
+
+
+        btnFilterAmount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (etxtAmountFrom.getText().toString().isEmpty() || etxtAmountTo.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), R.string.emptyDate, Toast.LENGTH_SHORT).show();
+                }else {
+                    Double amountFrom = Double.parseDouble(etxtAmountFrom.getText().toString());
+                    Double amountTo = Double.parseDouble(etxtAmountTo.getText().toString());
+                    Query query;
+                    Log.i("heloo",amountFrom+"--"+amountTo);
+                    if (familyID.equals(userID) && !InGroup.equals("true")){
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date");
+                    }
+                    else {
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
+                    }
+                    filterByAmountQuery(query,amountFrom,amountTo);
+                }
+            }
+        });
+
+    }
+
+    public void filterByAmountQuery(Query query, final Double amountFrom, final Double amountTo){
+        try{
+
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    tdList.clear();
+                    for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                        TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
+                        if (td.getUserID().equals(userID)){
+                            Double amount = Double.parseDouble(td.getAmount());
+                            if ((amountFrom<=amount) &&(amount<=amountTo)){
+                                tdList.add(tdSnapshot.getValue(TransactionDetails.class));
+                                keys.add(tdSnapshot.getKey());
+                            }
+                        }
+                    }
+
+                    try{
+                        Collections.reverse(tdList);
+                        Collections.reverse(keys);
+                        adapter = new TransactionListAdapter(getActivity(),tdList);
+                        list.setAdapter(adapter);
+                    }catch (Exception e){
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }catch (Exception e){
+
+        }
+    }
+
+    public void filterAccounts(Dialog view){
+        ListView filterAccountList = (ListView) view.findViewById(R.id.filterAccountList);
+        filterAccountList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
+
+        filterAccountList.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+
+
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+                int checkedItems = list.getCheckedItemCount();
+
+                mode.setTitle(String.valueOf(checkedItems)+ " Selected");
+                if (checked==true) {
+                    checkedPosition.add(String.valueOf(position));
+                }
+                else if (checked==false) {
+                    checkedPosition.remove(String.valueOf(position));
+
+                }
+
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+
+            }
+
+
+        });
+    }
 }
