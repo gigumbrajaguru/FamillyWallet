@@ -399,8 +399,10 @@
 
             <Button
                 android:id="@+id/btnFamCancel"
+                style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/bright_blue"
                 android:text="@string/cancel"
                 android:textSize="12sp" />
 

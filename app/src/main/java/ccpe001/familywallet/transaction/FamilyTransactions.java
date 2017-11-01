@@ -2,12 +2,18 @@ package ccpe001.familywallet.transaction;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -15,10 +21,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -38,6 +47,8 @@ import java.util.List;
 
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Translate;
+import ccpe001.familywallet.budget.AddAccount;
+
 import com.squareup.picasso.Picasso;
 
 
@@ -46,6 +57,14 @@ public class FamilyTransactions extends Fragment {
     static Translate trns = new Translate();
     static HashMap<String,String> KeyName;
     String userID, familyID, InGroup;
+    FloatingActionButton fab_income, fab_expense,fab_main;
+    Animation fabOpen, fabClose, fabClockwise, fabAntiClockwise;
+    TextView txtIncome,txtExpense;
+    CoordinatorLayout fabLayout;
+    boolean isOpen = false;
+    RelativeLayout backgroundLayout;
+
+    List<String> accountsList;
 
 
     private DatabaseReference mDatabase, gDatabase;
@@ -74,7 +93,7 @@ public class FamilyTransactions extends Fragment {
                              Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.transaction_family_list, container, false);
-
+        fabAddMenu(view);
         /**
          * @grpList - Array to hold group list objects
          * @tdList - Array to hold transaction list objects
@@ -89,6 +108,7 @@ public class FamilyTransactions extends Fragment {
 
         memberList = (ListView) view.findViewById(R.id.grpList);
         transactionList = (ListView) view.findViewById(R.id.familyTransactions);
+        backgroundLayout = (RelativeLayout) view.findViewById(R.id.backgroundLayout);
 
         imgSlide = (ImageView) view.findViewById(R.id.imgSlide);
         slide = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
@@ -105,9 +125,11 @@ public class FamilyTransactions extends Fragment {
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
                 if (newState.equals(SlidingUpPanelLayout.PanelState.COLLAPSED)){
                     imgSlide.setImageResource(R.mipmap.slide_up);
+                    fabLayout.setVisibility(View.VISIBLE);
                 }
                 else if (newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED)){
                     imgSlide.setImageResource(R.mipmap.slide_down);
+                    fabLayout.setVisibility(View.GONE);
                 }
             }
         });
@@ -166,6 +188,24 @@ public class FamilyTransactions extends Fragment {
 
                 }
             });
+
+            /** Setting up account list to check there are any accounts before adding a transaction*/
+        accountsList = new ArrayList<>();
+        Query query2 = FirebaseDatabase.getInstance().getReference("Account").orderByChild("user").equalTo(userID);
+        query2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                accountsList.clear();
+                for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                    accountsList.add(tdSnapshot.child("accountName").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         /** List all members transactions when members name is clicked*/
         memberList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -462,5 +502,96 @@ public class FamilyTransactions extends Fragment {
             txtName.setText(name);
         }
 
+    }
+
+    private void fabAddMenu(View view){
+        txtExpense = (TextView) view.findViewById(R.id.txtExpense);
+        txtIncome = (TextView) view.findViewById(R.id.txtIncome);
+        fabLayout = (CoordinatorLayout) view.findViewById(R.id.fabLayout);
+        fab_main = (FloatingActionButton) view.findViewById(R.id.fabMain);
+        fab_expense = (FloatingActionButton) view.findViewById(R.id.fabExpense);
+        fab_income = (FloatingActionButton) view.findViewById(R.id.fabIncome);
+        fabOpen = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_open);
+        fabClose = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_close);
+        fabClockwise = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.rotate_clockwise);
+        fabAntiClockwise = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.rotate_anticlockwise);
+        fab_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (accountsList.isEmpty()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                    builder.setMessage(R.string.noAccMsg)
+                            .setTitle(R.string.noAccTitle);
+                    builder.setPositiveButton(R.string.noAccBtnAdd, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent newInt3 = new Intent(getContext(), AddAccount.class);
+                            startActivity(newInt3);
+                        }
+                    });
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+
+                    if (isOpen) {
+                        fab_income.startAnimation(fabClose);
+                        fab_expense.startAnimation(fabClose);
+                        txtExpense.setAnimation(fabClose);
+                        txtIncome.setAnimation(fabClose);
+                        txtExpense.setClickable(false);
+                        txtIncome.setClickable(false);
+                        fab_main.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#1976d2")));
+                        fab_main.setScaleType(ImageView.ScaleType.CENTER);
+                        fab_main.setImageResource(R.mipmap.add_transaction);
+                        fab_income.setClickable(false);
+                        fab_expense.setClickable(false);
+                        fabLayout.setBackgroundColor(Color.parseColor("#00000000"));
+                        backgroundLayout.setVisibility(View.VISIBLE);
+                        isOpen = false;
+                    } else {
+                        fab_income.startAnimation(fabOpen);
+                        fab_expense.startAnimation(fabOpen);
+                        txtExpense.setAnimation(fabOpen);
+                        txtIncome.setAnimation(fabOpen);
+                        txtExpense.setClickable(true);
+                        txtIncome.setClickable(true);
+                        fab_main.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffcc0000")));
+                        fab_main.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                        fab_main.setImageResource(R.mipmap.cancel);
+                        fab_income.setClickable(true);
+                        fab_expense.setClickable(true);
+                        fabLayout.setBackgroundColor(Color.parseColor("#BF000000"));
+                        backgroundLayout.setVisibility(View.GONE);
+                        isOpen = true;
+                    }
+                    if (isOpen) {
+                        fab_income.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent("ccpe001.familywallet.AddTransaction");
+                                intent.putExtra("transactionType", "Income");
+                                intent.putExtra("Update", "False");
+                                startActivity(intent);
+                            }
+                        });
+                        fab_expense.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent("ccpe001.familywallet.AddTransaction");
+                                intent.putExtra("transactionType", "Expense");
+                                intent.putExtra("Update", "False");
+                                startActivity(intent);
+
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 }

@@ -25,15 +25,15 @@ android {
     }
 
 
-
 }
 
 
 
 allprojects {
     repositories {
-        maven { url "https://jitpack.io"
-             "https://maven.google.com"
+        maven {
+            url "https://jitpack.io"
+            "https://maven.google.com"
         }
         mavenCentral()
 

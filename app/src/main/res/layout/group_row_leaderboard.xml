@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/blue_gray"
+    android:background="@color/lightBlue"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -55,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_x="131dp"
         android:layout_y="37dp"
-        android:text="Total Income"
+        android:text="@string/totalInc"
         android:textColor="@color/income"
         android:textStyle="bold"
         android:visibility="visible" />
@@ -108,7 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_x="275dp"
         android:layout_y="37dp"
-        android:text="Total Expense"
+        android:text="@string/totalExp"
         android:textColor="@color/expense"
         android:textStyle="bold"
         android:visibility="visible" />

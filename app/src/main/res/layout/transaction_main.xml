@@ -8,6 +8,13 @@
     android:orientation="horizontal"
     tools:context="ccpe001.familywallet.transaction.TransactionMain">
 
+    <ProgressBar
+        android:id="@+id/trnsMainProgressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="fill" />
+
     <ListView
         android:id="@+id/transactionList"
         android:layout_width="match_parent"
@@ -24,12 +31,14 @@
         android:focusableInTouchMode="false" />
 
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/layout"
+        android:id="@+id/fabLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="bottom|end"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_gravity="bottom|end"
+        android:backgroundTintMode="src_over"
+        android:clickable="false">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabIncome"
@@ -75,6 +84,7 @@
             android:layout_marginBottom="105dp"
             android:layout_marginRight="90dp"
             android:text="@string/income"
+            android:textColor="@android:color/white"
             android:visibility="invisible" />
 
         <TextView
@@ -85,6 +95,7 @@
             android:layout_marginBottom="45dp"
             android:layout_marginRight="140dp"
             android:text="@string/expense"
+            android:textColor="@android:color/white"
             android:visibility="invisible" />
 
 

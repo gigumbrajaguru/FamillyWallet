@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.widget.Spinner;
 import android.widget.AdapterView;
 import android.support.annotation.NonNull;
@@ -81,6 +83,7 @@ import ccpe001.familywallet.transaction.TransactionRecurring;
 
 public class Dashboard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+
 
     private Toolbar toolbar = null;
     private NavigationView navigationView = null;
@@ -172,6 +175,7 @@ public class Dashboard extends AppCompatActivity
                 editor.putString("proPic", proPic);
                 editor.commit();
                 groupStatus(userID,familyID);
+
             }
 
             @Override
@@ -735,6 +739,12 @@ public class Dashboard extends AppCompatActivity
                         final SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("InGroup", "true");
                         editor.commit();
+                        Fragment frg = null;
+                        frg = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer1);
+                        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.detach(frg);
+                        ft.attach(frg);
+                        ft.commit();
                     }
                 }
             }

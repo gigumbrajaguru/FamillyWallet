@@ -3,103 +3,109 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="200dp">
 
-    <RelativeLayout
+    <AbsoluteLayout
         android:id="@+id/layout1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/transaction_main_block"
-        android:backgroundTintMode="src_over"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:background="@drawable/transaction_main_block"
+        android:backgroundTintMode="src_over">
 
-        <RelativeLayout
+        <AbsoluteLayout
             android:id="@+id/layout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_height="match_parent"
+            android:layout_x="0dp"
+            android:layout_y="0dp"
             android:background="?android:attr/activatedBackgroundIndicator"
             android:drawable="@android:color/transparent">
 
             <TextView
-                android:id="@+id/txtRecurring"
-                android:layout_width="wrap_content"
+                android:id="@+id/txtTitle"
+                android:layout_width="142dp"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/txtCategory"
-                android:layout_alignStart="@+id/txtCategory"
                 android:layout_marginRight="10dp"
+                android:layout_marginStart="25dp"
+                android:layout_x="89dp"
+                android:layout_y="60dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:text="TextView"
-                android:textSize="13sp"
-                android:textStyle="bold|italic" />
+                android:text="Title"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/txtCategory"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
-                android:layout_above="@+id/txtTitle"
-                android:layout_marginStart="11dp"
-                android:layout_toEndOf="@+id/img"
+                android:layout_centerHorizontal="true"
+                android:layout_x="82dp"
+                android:layout_y="5dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:text="TextView"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:text="Category"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:typeface="serif" />
 
             <TextView
                 android:id="@+id/txtAmount"
-                android:layout_width="wrap_content"
+                android:layout_width="106dp"
                 android:layout_height="30dp"
-                android:layout_alignStart="@+id/txtTime"
-                android:layout_below="@+id/txtTime"
+                android:layout_marginStart="12dp"
+                android:layout_x="275dp"
+                android:layout_y="26dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:fontFamily="sans-serif"
-                android:text="TextView"
+                android:fontFamily="sans-serif-smallcaps"
+                android:text="5612.01"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/img"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="13dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_weight="1"
+                android:layout_x="8dp"
+                android:layout_y="8dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                app:srcCompat="@drawable/round"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true" />
+                app:srcCompat="@drawable/round" />
 
             <TextView
                 android:id="@+id/txtTime"
-                android:layout_width="90dp"
+                android:layout_width="109dp"
                 android:layout_height="20dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="28dp"
-                android:layout_toEndOf="@+id/txtCategory"
+                android:layout_alignParentTop="false"
+                android:layout_x="273dp"
+                android:layout_y="2dp"
                 android:clickable="false"
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:inputType="date" />
+                android:fontFamily="monospace"
+                android:inputType="date"
+                android:text="2017-01-01" />
 
             <TextView
-                android:id="@+id/txtTitle"
+                android:id="@+id/txtRecurring"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/txtCategory"
-                android:layout_below="@+id/img"
-                android:layout_marginBottom="5dp"
-                android:text="TextView" />
-        </RelativeLayout>
+                android:layout_x="88dp"
+                android:layout_y="38dp"
+                android:fontFamily="serif"
+                android:text="Recurring Daily"
+                tools:layout_editor_absoluteX="59dp"
+                tools:layout_editor_absoluteY="0dp" />
+        </AbsoluteLayout>
 
-    </RelativeLayout>
+    </AbsoluteLayout>
 
 </RelativeLayout>

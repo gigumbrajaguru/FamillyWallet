@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#1533df</color>
     <color name="colorPrimaryDark">#0308c2</color>
-    <color name="colorAccent">#0071ea</color>
+    <color name="colorAccent">#167bec</color>
     <color name="pressed_color">#4d90fe</color>
     <color name="default_color">#ffffff</color>
     <color name="income">#249726</color>
@@ -10,7 +10,7 @@
     <color name="expense">#d62121</color>
     <color name="expenseDark">#bf1e1e</color>
     <color name="lightBlue">#5400ddff</color>
-    <color name="DarkerBlue">#c000ddff</color>
-    <color name="lighter">#abb4b7b8</color>
+    <color name="DarkerBlue">#bf000000</color>
+    <color name="lighter">#ab8a8e8f</color>
 
 </resources>

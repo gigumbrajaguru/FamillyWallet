@@ -79,6 +79,18 @@
     <string name="vhTime">වෙලාව</string>
     <string name="vhLocation">ස්ථානය</string>
     <string name="filter">වර්ග කරන්න</string>
+    <string name="submit">Submit</string>
+
+    <string name="startDate">ආරම්භ දිනය</string>
+    <string name="endDate">අවසාන දිනය</string>
+
+    <string name="priceFrom">සිට</string>
+    <string name="priceTo">දක්වා</string>
+
+    <string name="totalInc">ආදායම් එකතුව</string>
+    <string name="totalExp">වියදම් එකතුව</string>
+
+    <string name="titleEmpty">Title not available</string>
 
     <string-array name="IncomeCategory">
         <item>මෝටර් රථ</item>

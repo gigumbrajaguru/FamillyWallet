@@ -348,11 +348,12 @@
                         android:gravity="center">
 
                     <Button
-                            android:id="@+id/btnEdit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/updateTransaction"
-                            android:textSize="12sp" />
+                        android:id="@+id/btnEdit"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/updateTransaction"
+                        android:textSize="12sp" />
 
                     <TextView
                             android:id="@+id/textView37"
@@ -360,11 +361,12 @@
                             android:layout_height="wrap_content" />
 
                     <Button
-                            android:id="@+id/btnCancel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/cancel"
-                            android:textSize="12sp" />
+                        android:id="@+id/btnCancel"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cancel"
+                        android:textSize="12sp" />
 
                 </TableRow>
 

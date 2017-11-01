@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -35,6 +36,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,6 +72,8 @@ public class TransactionMain extends Fragment {
     ListView list;
     FloatingActionButton fab_income, fab_expense,fab_main;
     Animation fabOpen, fabClose, fabClockwise, fabAntiClockwise;
+    CoordinatorLayout fabLayout;
+    ProgressBar trnsMainProgressBar;
     TextView txtIncome,txtExpense;
     boolean isOpen = false;
     private DatabaseReference mDatabase, gDatabase;
@@ -78,7 +82,7 @@ public class TransactionMain extends Fragment {
     List<TransactionDetails> tdList;
     List<String> keys, checkedPosition, accountsList, groupKeys;
     TransactionListAdapter adapter;
-    String userID, familyID, InGroup;
+    String userID = "uid", familyID="fid", InGroup="false";
     Resources res;
 
     private String tId;
@@ -95,6 +99,7 @@ public class TransactionMain extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         final View view = inflater.inflate(R.layout.transaction_main, container, false);
+        trnsMainProgressBar = (ProgressBar) view.findViewById(R.id.trnsMainProgressBar);
         fabAddMenu(view);
         list = (ListView) view.findViewById(R.id.transactionList);
         tdList = new ArrayList<>();
@@ -108,10 +113,11 @@ public class TransactionMain extends Fragment {
 
         }
 
+
         SharedPreferences sharedPref = getContext().getSharedPreferences("fwPrefs",0);
-        String uid = sharedPref.getString("uniUserID", "");
-        String fid = sharedPref.getString("uniFamilyID", "");
-        InGroup = sharedPref.getString("InGroup", "");
+        String uid = sharedPref.getString("uniUserID", "uid");
+        String fid = sharedPref.getString("uniFamilyID", "fid");
+        InGroup = sharedPref.getString("InGroup", "false");
         userID = uid;
         familyID = fid;
 
@@ -176,33 +182,7 @@ public class TransactionMain extends Fragment {
                    query3 = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
 
                }
-                query3.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        tdList.clear();
-                        for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
-                            TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
-                            if (td.getUserID().equals(userID)){
-                                tdList.add(tdSnapshot.getValue(TransactionDetails.class));
-                                keys.add(tdSnapshot.getKey());
-                            }
-                        }
-
-                        try{
-                            Collections.reverse(tdList);
-                            Collections.reverse(keys);
-                            adapter = new TransactionListAdapter(getActivity(),tdList);
-                            list.setAdapter(adapter);
-                        }catch (Exception e){
-
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+               filterByQuery(query3);
 
            }catch (Exception e){
 
@@ -483,6 +463,7 @@ public class TransactionMain extends Fragment {
     private void fabAddMenu(View view){
         txtExpense = (TextView) view.findViewById(R.id.txtExpense);
         txtIncome = (TextView) view.findViewById(R.id.txtIncome);
+        fabLayout = (CoordinatorLayout) view.findViewById(R.id.fabLayout);
         fab_main = (FloatingActionButton) view.findViewById(R.id.fabMain);
         fab_expense = (FloatingActionButton) view.findViewById(R.id.fabExpense);
         fab_income = (FloatingActionButton) view.findViewById(R.id.fabIncome);
@@ -525,6 +506,8 @@ public class TransactionMain extends Fragment {
                         fab_main.setImageResource(R.mipmap.add_transaction);
                         fab_income.setClickable(false);
                         fab_expense.setClickable(false);
+                        fabLayout.setBackgroundColor(Color.parseColor("#00000000"));
+                        list.setVisibility(View.VISIBLE);
                         isOpen = false;
                     } else {
                         fab_income.startAnimation(fabOpen);
@@ -538,6 +521,8 @@ public class TransactionMain extends Fragment {
                         fab_main.setImageResource(R.mipmap.cancel);
                         fab_income.setClickable(true);
                         fab_expense.setClickable(true);
+                        fabLayout.setBackgroundColor(Color.parseColor("#BF000000"));
+                        list.setVisibility(View.GONE);
                         isOpen = true;
                     }
                     if (isOpen) {
@@ -597,6 +582,7 @@ public class TransactionMain extends Fragment {
             GridView gridd = (GridView) dialog.findViewById(R.id.filterCatergoryGrid);
             CategoryAdapter adapter = new CategoryAdapter(getActivity(), itemname, imgid);  //Sending list to category adapter
             gridd.setAdapter(adapter);
+            filterCategory(dialog,itemname);
         }
 
 
@@ -756,50 +742,123 @@ public class TransactionMain extends Fragment {
         }
     }
 
-    public void filterAccounts(Dialog view){
+    public void filterAccounts(final Dialog view){
         ListView filterAccountList = (ListView) view.findViewById(R.id.filterAccountList);
-        filterAccountList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
-
-        filterAccountList.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
-
-
+        filterAccountList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        filterAccountList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                int checkedItems = list.getCheckedItemCount();
-
-                mode.setTitle(String.valueOf(checkedItems)+ " Selected");
-                if (checked==true) {
-                    checkedPosition.add(String.valueOf(position));
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Query query;
+                if (familyID.equals(userID) && !InGroup.equals("true")){
+                    query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date");
                 }
-                else if (checked==false) {
-                    checkedPosition.remove(String.valueOf(position));
-
+                else {
+                    query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
+                    Toast.makeText(getActivity(), "-"+accountsList.get(i), Toast.LENGTH_SHORT).show();
                 }
-
+                filterByAccounyQuery(query,accountsList.get(i));
             }
-
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                return true;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-
-            }
-
-
         });
+
+
+    }
+
+    public void filterByAccounyQuery(Query query, final String accountName){
+        try{
+
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    tdList.clear();
+                    for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                        TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
+                        if (td.getUserID().equals(userID)){
+                            if (td.getAccount().equals(accountName)){
+                                tdList.add(tdSnapshot.getValue(TransactionDetails.class));
+                                keys.add(tdSnapshot.getKey());
+                            }
+
+                        }
+                    }
+
+                    try{
+                        Collections.reverse(tdList);
+                        Collections.reverse(keys);
+                        adapter = new TransactionListAdapter(getActivity(),tdList);
+                        list.setAdapter(adapter);
+                    }catch (Exception e){
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }catch (Exception e){
+
+        }
+    }
+
+    public void filterCategory(final Dialog view, final String[] itemname){
+        GridView filterCategoryList = (GridView) view.findViewById(R.id.filterCatergoryGrid);
+        filterCategoryList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        filterCategoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Query query;
+                if (familyID.equals(userID) && !InGroup.equals("true")){
+                    query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date");
+                }
+                else {
+                    query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
+                }
+                filterByCategoryQuery(query,itemname[i].toString());
+            }
+        });
+
+
+    }
+
+    public void filterByCategoryQuery(Query query, final String categoryName){
+        try{
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    tdList.clear();
+                    for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                        TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
+                        if (td.getUserID().equals(userID)){
+
+
+                            if (td.getCategoryName().equals(categoryName)){
+                                tdList.add(tdSnapshot.getValue(TransactionDetails.class));
+                                keys.add(tdSnapshot.getKey());
+                            }
+
+                        }
+                    }
+
+                    try{
+                        Collections.reverse(tdList);
+                        Collections.reverse(keys);
+                        adapter = new TransactionListAdapter(getActivity(),tdList);
+                        list.setAdapter(adapter);
+                    }catch (Exception e){
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }catch (Exception e){
+
+        }
     }
 }

@@ -5,18 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <AbsoluteLayout
         android:id="@+id/layout1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:background="@drawable/transaction_main_block"
         android:backgroundTintMode="src_over">
 
-        <RelativeLayout
+        <AbsoluteLayout
             android:id="@+id/layout2"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:background="?android:attr/activatedBackgroundIndicator"
@@ -24,81 +24,88 @@
 
             <TextView
                 android:id="@+id/txtFamTitle"
-                android:layout_width="100dp"
+                android:layout_width="142dp"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/FamImg"
-                android:layout_alignStart="@+id/txtFamCategory"
                 android:layout_marginRight="10dp"
+                android:layout_marginStart="25dp"
+                android:layout_x="98dp"
+                android:layout_y="53dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:text="TextView" />
+                android:text="Title"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/txtFamCategory"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="11dp"
-                android:layout_toEndOf="@+id/FamImg"
+                android:layout_centerHorizontal="true"
+                android:layout_x="91dp"
+                android:layout_y="16dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:text="TextView"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:text="Category"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:typeface="serif" />
 
             <TextView
                 android:id="@+id/txtFamAmount"
-                android:layout_width="150dp"
+                android:layout_width="106dp"
                 android:layout_height="30dp"
+                android:layout_marginStart="12dp"
+                android:layout_x="275dp"
+                android:layout_y="26dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:fontFamily="sans-serif"
-                android:text="TextView"
+                android:fontFamily="sans-serif-smallcaps"
+                android:text="5612.01"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_above="@+id/txtFamTitle"
-                android:layout_alignParentEnd="true" />
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/FamImg"
-                android:layout_width="50dp"
+                android:layout_width="55dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="15dp"
                 android:layout_weight="1"
+                android:layout_x="26dp"
+                android:layout_y="24dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                app:srcCompat="@drawable/round"
-                android:layout_alignTop="@+id/txtFamCategory"
-                android:layout_alignParentStart="true" />
+                app:srcCompat="@drawable/round" />
 
             <TextView
                 android:id="@+id/txtFamTime"
-                android:layout_width="100dp"
+                android:layout_width="109dp"
                 android:layout_height="20dp"
-                android:layout_above="@+id/txtFamCategory"
-                android:layout_marginStart="32dp"
-                android:layout_toEndOf="@+id/txtFamCategory"
+                android:layout_alignParentTop="false"
+                android:layout_x="273dp"
+                android:layout_y="2dp"
                 android:clickable="false"
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:inputType="date" />
-        </RelativeLayout>
+                android:fontFamily="monospace"
+                android:inputType="date"
+                android:text="2017-01-01" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/txtFamName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:paddingStart="5dp"
+                android:text="TextView"
+                android:textStyle="bold|italic" />
+        </AbsoluteLayout>
 
-    <TextView
-        android:id="@+id/txtFamName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="14dp"
-        android:text="TextView"
-        android:textStyle="bold|italic" />
+    </AbsoluteLayout>
+
+
 
 </RelativeLayout>

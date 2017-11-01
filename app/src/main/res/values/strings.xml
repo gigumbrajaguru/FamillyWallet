@@ -94,6 +94,11 @@
     <string name="priceFrom">From</string>
     <string name="priceTo">To</string>
 
+    <string name="totalInc">Total Income</string>
+    <string name="totalExp">Total Expense</string>
+
+    <string name="titleEmpty">Title not available</string>
+
     <string-array name="IncomeCategory">
         <item>Car</item>
         <item>Travel</item>
@@ -403,7 +408,7 @@
         <item>3</item>
     </string-array>
 
-    <string-array name="multi_select_list_preference_default_value"/>
+    <string-array name="multi_select_list_preference_default_value" />
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
 

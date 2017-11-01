@@ -97,7 +97,6 @@ public class CategoryTab01 extends Fragment {
                 intent.putExtra("previousAmount",previousAmount);
                 intent.putExtra("templateChecked",templateChecked);
                 intent.putExtra("recurrPeriod",recurrPeriod);
-                Toast.makeText(getActivity(), ""+templateChecked, Toast.LENGTH_SHORT).show();
                 getActivity().finish();
                 startActivity(intent);
             }

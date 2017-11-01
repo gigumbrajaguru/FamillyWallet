@@ -5,33 +5,112 @@
     android:layout_height="match_parent">
 
 
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/sliding_layout"
+    <RelativeLayout
+        android:id="@+id/backgroundLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="56dp"
-        android:backgroundTint="@color/bright_blue"
-        android:gravity="bottom"
-        sothree:umanoPanelHeight="40dp"
-        sothree:umanoShadowHeight="4dp">
+        android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/familyTransactions"
+        <com.sothree.slidinguppanel.SlidingUpPanelLayout
+            android:id="@+id/sliding_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="5dp"
-            android:paddingTop="5dp" />
+            android:layout_marginTop="56dp"
+            android:backgroundTint="@color/bright_blue"
+            android:gravity="bottom"
+            app:umanoPanelHeight="40dp"
+            app:umanoShadowHeight="4dp">
 
-        <include
-            layout="@layout/transaction_family_slideup"
+            <ListView
+                android:id="@+id/familyTransactions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:paddingTop="5dp" />
+
+            <include
+                layout="@layout/transaction_family_slideup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/fabLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="bottom|end"
+            android:paddingBottom="30dp">
 
-    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabIncome"
+                android:layout_width="394dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="85dp"
+                android:layout_marginRight="35dp"
+                android:scaleType="center"
+                android:src="@mipmap/add_transaction"
+                android:visibility="invisible"
+                app:backgroundTint="@color/success_color"
+                app:pressedTranslationZ="12dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabExpense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="25dp"
+                android:layout_marginRight="85dp"
+                android:src="@mipmap/minus"
+                android:visibility="invisible"
+                app:backgroundTint="@color/warning_color"
+                app:pressedTranslationZ="12dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabMain"
+                android:layout_width="394dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:scaleType="center"
+                android:src="@mipmap/add_transaction"
+                app:backgroundTint="@color/zxing_custom_viewfinder_laser"
+                app:pressedTranslationZ="12dp" />
+
+            <TextView
+                android:id="@+id/txtIncome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="105dp"
+                android:layout_marginRight="90dp"
+                android:text="@string/income"
+                android:textColor="@android:color/white"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/txtExpense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="45dp"
+                android:layout_marginRight="140dp"
+                android:text="@string/expense"
+                android:textColor="@android:color/white"
+                android:visibility="invisible" />
 
 
+        </android.support.design.widget.CoordinatorLayout>
+    </RelativeLayout>
 
 
 </RelativeLayout>
