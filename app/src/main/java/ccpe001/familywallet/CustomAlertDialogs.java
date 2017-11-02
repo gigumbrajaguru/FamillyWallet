@@ -126,13 +126,7 @@ public class CustomAlertDialogs {
         nameBuilder.setView(alertDiaView);
 
         txtVw = (TextView) alertDiaView.findViewById(R.id.textView27);
-        lblVw = (ImageView) alertDiaView.findViewById(R.id.bgBVw);
         txtVw.setText(str);
-        lblVw.setImageResource(R.drawable.permit_dialog);
-
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) lblVw.getLayoutParams();
-        lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        lblVw.setLayoutParams(lp);
 
         nameBuilder.setNegativeButton(R.string.customaletdialog_initPermissionPage_negbtn, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {

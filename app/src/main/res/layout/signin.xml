@@ -3,6 +3,7 @@
               xmlns:app="http://schemas.android.com/apk/lib/ccpe001.familywallet"
               xmlns:facebook="http://schemas.android.com/apk/res-auto"
               android:focusable="true"
+
               android:focusableInTouchMode="true"
               android:orientation="vertical"
               android:layout_width="match_parent"

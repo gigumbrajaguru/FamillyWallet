@@ -1,5 +1,6 @@
 package ccpe001.familywallet.summary;
 
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,13 @@ public class SummaryTab extends Fragment {
      */
     private ViewPager mViewPager;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
@@ -44,6 +53,9 @@ public class SummaryTab extends Fragment {
 
         TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        setRetainInstance(true);
+
         return v;
     }
 

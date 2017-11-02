@@ -33,7 +33,7 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by harithaperera on 7/31/17.
@@ -41,9 +41,9 @@ import java.io.IOException;
 public class OCRReader2 extends AppCompatActivity {
 
 
+    private static final int ARR_LEN = 3;
     private SurfaceView camera_view;
-    private TextView bill_data;
-    private ImageView cropImageView;
+    private TextView bill_data,bill_data2;
     private CameraSource cameraSource;
     private static final int GENARAL_CAM = 3;
     private static final int CROP_CAM = 4;
@@ -61,12 +61,13 @@ public class OCRReader2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle(R.string.ocrreader2_setttile);
         setContentView(R.layout.ocrreader);
-        cropImageView = (ImageView) findViewById(R.id.cropImageView);
         layout = (RelativeLayout) findViewById(R.id.layout);
 
 
         camera_view = (SurfaceView) findViewById(R.id.camera_view);
         bill_data = (TextView)  findViewById(R.id.bill_data);
+        bill_data2 = (TextView)  findViewById(R.id.bill_data2);
+
 
         TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
         if (!textRecognizer.isOperational()) {
@@ -81,6 +82,7 @@ public class OCRReader2 extends AppCompatActivity {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void surfaceCreated(SurfaceHolder surfaceHolder) {
+
                     final String[] CAMPERARR = {Manifest.permission.CAMERA};
                     if (!CustomAlertDialogs.hasPermissions(OCRReader2.this,CAMPERARR)) {
                         alert = new CustomAlertDialogs();
@@ -121,18 +123,21 @@ public class OCRReader2 extends AppCompatActivity {
 
                 @Override
                 public void receiveDetections(final Detector.Detections<TextBlock> detections) {
+                    //get detected item
                     final SparseArray<TextBlock> items = detections.getDetectedItems();
 
+                    //if item detected
                     if(items.size()!= 0){
                         bill_data.post(new Runnable() {
                             @Override
                             public void run() {
+                                //create string
                                 StringBuilder str = new StringBuilder();
 
                                 for(int i=0;i<items.size();i++) {
-                                    Log.d("fdf", "fd");
-
                                     TextBlock item = items.valueAt(i);
+                                    Log.d("done", "done"+item.getValue());
+
                                     str.append(item.getValue());
                                     str.append("\n");
                                 }
@@ -141,12 +146,56 @@ public class OCRReader2 extends AppCompatActivity {
                             }
                         });
                     }
+
+
+                    //if item detected
+                    try {
+                        if(getAmount(detections.getDetectedItems())){
+                            Log.d("done", "done 4");
+
+                            bill_data2.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //create string
+                                    StringBuilder str = new StringBuilder();
+
+                                    for(int i=0;i<items.size();i++) {
+                                        TextBlock item = items.valueAt(i);
+
+                                        str.append(item.getValue());
+                                        str.append("\n");
+                                    }
+
+                                    bill_data2.setText(str);
+                                }
+                            });
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
                 }
             });
         }
     }
 
 
+
+
+    private boolean getAmount(SparseArray<TextBlock> items) throws IOException {
+        //String[] arr = fileOpener();
+        //Log.d("done", "done"+arr[0]);
+
+            for(int i=0;i<items.size();i++) {
+                if (items.valueAt(i).getValue().contains("Bank")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        return false;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -165,6 +214,22 @@ public class OCRReader2 extends AppCompatActivity {
                 alert.initCommonDialogPage(OCRReader2.this,getString(R.string.error_permitting),true);
             }
         }
+    }
+
+    private String[] fileOpener() throws IOException {
+        String[] arr = new String[ARR_LEN];
+
+        int i = 0;
+        String str;
+        InputStream stream = getResources().openRawResource(R.raw.scan_attr);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+        if(bufferedReader != null){
+            while((str = bufferedReader.readLine()) != null){
+                arr[++i] = str;
+            }
+        }
+        stream.close();
+        return arr;
     }
 
 }

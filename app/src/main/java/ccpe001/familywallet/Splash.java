@@ -54,7 +54,6 @@ public class Splash extends PinActivity {
 
 
         /*CaocConfig.Builder.create()
-                //.errorDrawable(R.drawable.ic_custom_drawable) //default: bug image
                 .apply();*/
 
         Thread t1 = new Thread(new Runnable() {
@@ -104,13 +103,10 @@ public class Splash extends PinActivity {
 
     }
 
+
+
     protected void userLoginFunc(Context c){
-            Notification noti = new Notification();
-            noti.statusIcon(c);
-
             rateApi(c);
-            //noti.dailyReminder(c); //setting null itemMessagesBadgeTextView
-
 
             //localisation
             Locale locale = null;
@@ -124,7 +120,6 @@ public class Splash extends PinActivity {
             Configuration config = new Configuration();
             config.locale = locale;
             c.getResources().updateConfiguration(config, c.getResources().getDisplayMetrics());
-
     }
 
     protected void rateApi(final Context c)  {

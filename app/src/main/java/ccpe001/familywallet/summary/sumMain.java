@@ -2,64 +2,53 @@ package ccpe001.familywallet.summary;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.FloatProperty;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 
-/*import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;*/
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 import android.widget.*;
-import ccpe001.familywallet.CustomAlertDialogs;
-import ccpe001.familywallet.Validate;
+import ccpe001.familywallet.Translate;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.*;
 
 import ccpe001.familywallet.R;
+import org.apache.poi.util.ArrayUtil;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static android.media.CamcorderProfile.get;
 
 public class sumMain extends Fragment {
 
     private  PieChart charts;
     private Spinner spinner;
     // creating database referrence to read data
-    private DatabaseReference rtrvdata;
+    private DatabaseReference databaseReference;
     // List to add transaction data
     private final ArrayList<String> transAmount = new ArrayList<String>();
     // List to add category
     private final ArrayList<String> transCat = new ArrayList<String>();
-    private String []testcat;
-    private Float[]testtransac;
+    private String [] transCatChart;
+    private Float[] transAmountChart;
+    private Query query;
+    private Translate translate;
 
+    private String startDateVal,endDateVal,InGroup,familyID,uid;
     private int position;
+    private SharedPreferences sharedPref;
 
 
     public sumMain(int position) {
@@ -68,23 +57,41 @@ public class sumMain extends Fragment {
         this.position = position;
     }
 
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
         View view = inflater.inflate(R.layout.sum_main, container, false);
         charts = (PieChart) view.findViewById(R.id.chart);
         spinner = (Spinner) view.findViewById(R.id.spinner);
+        translate = new Translate();
 
         ArrayList<String> rangesArr = new ArrayList<>();
+        rangesArr.add(getString(R.string.this_week));
         rangesArr.add(getString(R.string.this_month));
         rangesArr.add(getString(R.string.last_month));
         rangesArr.add(getString(R.string.last_3_month));
+        rangesArr.add(getString(R.string.last_year));
         rangesArr.add(getString(R.string.custom));
         CustomSpinner customSpinnerAdapter=new CustomSpinner(getActivity(),rangesArr);
         spinner.setAdapter(customSpinnerAdapter);
 
-        rtrvdata= FirebaseDatabase.getInstance().getReference();
-        rtrvdata.child("Transactions").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+
+        sharedPref = getContext().getSharedPreferences("fwPrefs",0);
+        InGroup = sharedPref.getString("InGroup", "");
+        familyID = sharedPref.getString("uniFamilyID", "");
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+        databaseReference= FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("Transactions").child(uid);
+        if (familyID.equals(uid) && !InGroup.equals("true")){
+            databaseReference = databaseReference.child("Transactions").child(uid);
+        }else {
+            databaseReference =  databaseReference.child("Transactions").child("Groups").child(familyID);
+        }
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 transAmount.clear();
@@ -92,28 +99,46 @@ public class sumMain extends Fragment {
                 for (DataSnapshot Transacdata : dataSnapshot.getChildren()) {
                     if(position==0) {
                         if(Transacdata.child("type").getValue(String.class).toString().equals("Income")) {
-
                             transAmount.add((Transacdata.child("amount").getValue(String.class)).toString());
-                            transCat.add((Transacdata.child("categoryName").getValue(String.class)).toString());
+                            transCat.add(translate.categoryView((Transacdata.child("categoryName").getValue(String.class)).toString(),getActivity()));
                         }
                     }else if(position==1){
                         if(Transacdata.child("type").getValue(String.class).toString().equals("Expense")) {
                             transAmount.add((Transacdata.child("amount").getValue(String.class)).toString());
-                            transCat.add((Transacdata.child("categoryName").getValue(String.class)).toString());
+                            transCat.add(translate.categoryView((Transacdata.child("categoryName").getValue(String.class)).toString(),getActivity()));
                         }
                     }
 
                 }
 
-                testtransac=new Float[transAmount.size()];
-                testcat=new String[transCat.size()];
+                //getting rid of duplicate categories
+                Set<String> lump = new HashSet<String>();
+                int z=0;
+                try {
+                    for (String i : transCat) {
+                        z++;
+                        if (!lump.contains(i)) {
+                            float t = Float.parseFloat(transAmount.get(z)) + Float.parseFloat(transAmount.get(z + 1));
+                            transAmount.set(z, String.valueOf(t));
+                            transAmount.remove(z + 1);
+                            lump.add(i);
+                        }
+                    }
+                }catch(Exception e){
+
+                }
+
+                transAmountChart =new Float[transAmount.size()];
+                transCatChart =new String[transCat.size()];
 
                 for (int i = 0; i < transAmount.size(); i++) {
-                    testtransac[i] = Float.parseFloat(transAmount.get(i));
+                    Log.d("LOG",""+transAmount.get(i)+" "+i);
+                    transAmountChart[i] = Float.parseFloat(transAmount.get(i));
                 }
 
                 for (int j = 0; j < transCat.size(); j++) {
-                    testcat[j] = transCat.get(j);
+                    Log.d("LOG",""+transCat.get(j)+" "+j);
+                    transCatChart[j] = transCat.get(j);
                 }
 
                 //Pie chart method to populate
@@ -130,13 +155,49 @@ public class sumMain extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Calendar calendar = Calendar.getInstance();
+
+                String todayDate = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
+
+
                 if (i == 0) {
+                    calendar.setTimeInMillis(calendar.getTimeInMillis());
+                    while (calendar.get(Calendar.DATE) > 1) {
+                        calendar.add(Calendar.DATE, -1); // Substract 1 day until first day of month.
+                    }
 
-                } else if (i == 1) {
+                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
+                    endDateVal = todayDate;
 
+                    filter(startDateVal,endDateVal);
+                }else if (i == 1) {
+                    calendar.setTimeInMillis(calendar.getTimeInMillis());
+                    while (calendar.get(Calendar.DATE) > 1) {
+                        calendar.add(Calendar.DATE, -1); // Substract 1 day until first day of month.
+                    }
+                    startDateVal = String.valueOf(calendar.get(Calendar.YEAR)+calendar.get(Calendar.MONTH)+calendar.get(Calendar.DAY_OF_MONTH));
+                    endDateVal = todayDate;
+
+                    filter(startDateVal,endDateVal);
                 } else if (i == 2) {
+                    calendar.add(Calendar.MONTH, -1);
+                    startDateVal = String.valueOf(calendar.get(Calendar.YEAR)+calendar.get(Calendar.MONTH)+calendar.get(Calendar.DAY_OF_MONTH));
+                    endDateVal = todayDate;
+                    filter(startDateVal,endDateVal);
 
                 } else if (i == 3) {
+                    calendar.add(Calendar.MONTH, -3);
+                    startDateVal = String.valueOf(calendar.get(Calendar.YEAR)+calendar.get(Calendar.MONTH)+calendar.get(Calendar.DAY_OF_MONTH));
+                    endDateVal = todayDate;
+                    filter(startDateVal,endDateVal);
+
+                }else if (i == 4) {
+                    calendar.add(Calendar.MONTH, -3);
+                    startDateVal = String.valueOf(calendar.get(Calendar.YEAR)+calendar.get(Calendar.MONTH)+calendar.get(Calendar.DAY_OF_MONTH));
+                    endDateVal = todayDate;
+                    filter(startDateVal,endDateVal);
+
+                }  else if (i == 5) {
                     LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
                     final AlertDialog.Builder nameBuilder = new AlertDialog.Builder(getActivity());
                     View alertDiaView = inflater.inflate(R.layout.date_setter, null);
@@ -153,30 +214,24 @@ public class sumMain extends Fragment {
                     final EditText startDate = (EditText) alertDiaView.findViewById(R.id.startDate);
                     final EditText endDate = (EditText) alertDiaView.findViewById(R.id.endDate);
 
-                    Calendar calendar = Calendar.getInstance();
                     datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
                         @Override
                         public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
-                            int day = datePicker.getDayOfMonth();
-                            int month = datePicker.getMonth() + 1;
-                            int year = datePicker.getYear();
-                            String date = (day+"/"+month+"/"+year);
-
+                            String date = translate.dateWithDoubleDigit(i,i1+1,i2,getActivity());
                             if(startDate.isFocused()) {
                                 startDate.setText(date);
+                                startDateVal = translate.dateToValue(date);
                             }else {
                                 endDate.setText(date);
+                                endDateVal = translate.dateToValue(date);
                             }
                         }
                     });
 
-
-
                     nameBuilder.setPositiveButton(R.string.set, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-
-
+                            filter(startDateVal,endDateVal);
                         }
                     });
 
@@ -198,18 +253,97 @@ public class sumMain extends Fragment {
     }
 
 
+     private void filter(final String startDateVal, final String endDateVal){
+        Log.d("LOG", "onDataChange"+startDateVal+"  "+endDateVal);
+
+        if (familyID.equals(uid) && !InGroup.equals("true")){
+            query = FirebaseDatabase.getInstance().getReference("Transactions").child(uid).orderByChild("date").startAt(startDateVal).endAt(endDateVal);
+        }else {
+            query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date").startAt(startDateVal).endAt(endDateVal);
+        }
+
+
+        String amonut,cat;
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                        transAmount.clear();
+                        transCat.clear();
+                        if (position == 0) {
+                            if (dataSnapshot1.child("type").getValue(String.class).toString().equals("Income")) {
+                                transAmount.add(dataSnapshot1.child("amount").getValue(String.class).toString());
+                                transCat.add(translate.categoryView((dataSnapshot1.child("categoryName").getValue(String.class)).toString(),getActivity()));
+                            }
+                        } else if (position == 1) {
+                            if (dataSnapshot1.child("type").getValue(String.class).toString().equals("Expense")) {
+                                transAmount.add((dataSnapshot1.child("amount").getValue(String.class)).toString());
+                                transCat.add(translate.categoryView((dataSnapshot1.child("categoryName").getValue(String.class)).toString(),getActivity()));
+                            }
+                        }
+                }
+
+                if(dataSnapshot.exists()) {
+                    transAmountChart = new Float[transAmount.size()];
+                    transCatChart = new String[transCat.size()];
+
+                    for (int i = 0; i < transAmount.size(); i++) {
+                        transAmountChart[i] = Float.parseFloat(transAmount.get(i));
+                    }
+
+                    for (int j = 0; j < transCat.size(); j++) {
+                        transCatChart[j] = transCat.get(j);
+                    }
+
+                    SetupChart();
+                }else{
+                    charts.clear();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
 
 
     /**
      * Pie chart method implementation
      * https://www.youtube.com/watch?v=iS7EgKnyDeY
      */
-    private void SetupChart()
-    {
+    private void SetupChart() {
 
-       ArrayList<PieEntry> pieEntries = new ArrayList<>();
-        for (int i = 0; i < testtransac.length; i++) {
-            pieEntries.add(new PieEntry(testtransac[i], testcat[i]));
+       /*try {
+           for (int i = 0; i < transAmountChart.length; i++) {
+               //Log.d("LOG", "outer" + i + transCatChart[i] + transAmountChart[i]);
+
+               if (i == transAmountChart.length) {
+                   Log.d("LOG", "if" + i + transCatChart[i] + transAmountChart[i]);
+
+                   return;
+               } else if (transCatChart[i].equals(transCatChart[i + 1])) {
+                   Log.d("LOG", "else if" + i + transCatChart[i] + transAmountChart[i]+"//njb"+transAmountChart.length);
+                   transAmountChart[i] = transAmountChart[i] + transAmountChart[i + 1];
+               }
+           }
+       }catch (Exception e){
+           Log.d("LOG", "error" +e.getMessage());
+       }*/
+
+
+
+
+        //showing pieEntries in chart
+        ArrayList<PieEntry> pieEntries = new ArrayList<>();
+        for (int i = 0; i < transAmountChart.length; i++) {
+            pieEntries.add(new PieEntry(transAmountChart[i], transCatChart[i]));
         }
 
         PieDataSet dataSet = new PieDataSet(pieEntries, null);
@@ -228,6 +362,17 @@ public class sumMain extends Fragment {
 
         charts.invalidate();
 
+    }
+
+    boolean duplicates(String[] zipcodelist)
+    {
+        Set<String> lump = new HashSet<String>();
+        for (String i : zipcodelist)
+        {
+            if (lump.contains(i)) return true;
+            lump.add(i);
+        }
+        return false;
     }
 
     //http://blog.nkdroidsolutions.com/android-custom-spinner-dropdown-example-programmatically/

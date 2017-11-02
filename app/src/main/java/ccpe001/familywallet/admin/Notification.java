@@ -22,6 +22,8 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.joanzapata.iconify.widget.IconButton;
 import me.leolin.shortcutbadger.ShortcutBadger;
+import org.w3c.dom.Text;
+
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,64 +41,59 @@ public class Notification {
     private SharedPreferences prefs;
     private android.app.Notification.Builder notification;
     private NotificationManager nm;
-    private final static int STATUS_ICON = 33;
     private final static int DAILY_REMINDER = 11;
     private final static int NOTI_PPROTOTYPE = 22;
 
     private Calendar calendar;
-    protected static TextView itemMessagesBadgeTextView;////////////////////
+    private static TextView itemMessagesBadgeTextView;////////////////////
+    TextView itemMessagesBadgeTextViewC;
 
     public Notification(TextView itemMessagesBadgeTextView){
         this.itemMessagesBadgeTextView = itemMessagesBadgeTextView;
     }
 
+    //used only in addNotification
     public Notification(){
-        if(itemMessagesBadgeTextView == null){
 
-        }
     }
 
+    //displaing status icon
     public void statusIcon(Context c){
-        //displaing status icon
-        PendingIntent addExpense = PendingIntent.getActivity(c,STATUS_ICON,new Intent(c, AddTransaction.class).
-                putExtra("transactionType",R.string.transaction_expense_settitle),STATUS_ICON);//update here
-        PendingIntent scanBill = PendingIntent.getActivity(c,STATUS_ICON,new Intent(c, OCRReader2.class),STATUS_ICON);//update here
+        PendingIntent addExpense = PendingIntent.getActivity(c,PendingIntent.FLAG_UPDATE_CURRENT,new Intent(c, AddTransaction.class).
+                putExtra("transactionType","Expense").putExtra("Update","False").setAction("ccpe001.familywallet.AddTransaction"),PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent addIncome = PendingIntent.getActivity(c,PendingIntent.FLAG_UPDATE_CURRENT,new Intent(c, AddTransaction.class).
+                putExtra("transactionType","Income").putExtra("Update","False"),PendingIntent.FLAG_UPDATE_CURRENT);
         notification = new android.app.Notification.Builder(c)
                 .setContentTitle(c.getString(R.string.noti_statusicon_setcontenttitle))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setPriority(android.app.Notification.PRIORITY_MIN)
                 .setOngoing(true)
-                .addAction(R.mipmap.email,c.getString(R.string.noti_statusicon_setaction_expense),addExpense)
-                .addAction(R.mipmap.email,c.getString(R.string.noti_statusicon_setaction_scanbill),scanBill);
+                .addAction(R.mipmap.minus,c.getString(R.string.noti_statusicon_setaction_expense),addExpense)
+                .addAction(R.mipmap.add_transaction,c.getString(R.string.noti_statusicon_setaction_income),addIncome);
 
         nm = (NotificationManager)c.getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.notify(STATUS_ICON,notification.build());
+        nm.notify(PendingIntent.FLAG_UPDATE_CURRENT,notification.build());
     }
 
+    //t is null default
 
     //THIS FUNC PROTOTYPE IMPLEMENTED TO USE WITH BUDGET LIMITS
     //This method returns true if notification successfully created and added to DB
-
-    /**
-     *
-     * @param context
-     * @param title
-     * @param body
-     * @return
-     */
-    public boolean addNotification(Context context,String title,String body){
+    public boolean addNotification(Context context,String title,String body,TextView t) {
         NotificationCompat.Builder notiBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
                 .setContentText(body);
 
-        nm = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.notify(NOTI_PPROTOTYPE,notiBuilder.build());
-        new SQLiteHelper(context).addNoti(title,new SimpleDateFormat("yyyy-MM-dd").
-                format(GregorianCalendar.getInstance().getTime()),body);
+        nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.notify(NOTI_PPROTOTYPE, notiBuilder.build());
+        new SQLiteHelper(context).addNoti(title, new SimpleDateFormat("yyyy-MM-dd").
+                format(GregorianCalendar.getInstance().getTime()), body);
         badgeCount++;
-        //setBadgeCount(badgeCount,itemMessagesBadgeTextView);//setting null for itemMessagesBadgeTextView
+        if (t != null){
+            setBadgeCount(badgeCount, t);//setting null for itemMessagesBadgeTextView
+        }
         ShortcutBadger.applyCount(context, badgeCount);
         return true;
     }
@@ -107,7 +104,7 @@ public class Notification {
         String remTime = prefs.getString("appDailyRem", "09:00");
 
         String[] arr = remTime.split(":");
-        Log.d("badcount","dfdf"+Integer.parseInt(arr[0])+Integer.parseInt(arr[1]));
+        Log.d("badcount","dfdf"+Integer.parseInt(arr[0])+"   "+Integer.parseInt(arr[1]));
 
         calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(arr[0]));
@@ -142,20 +139,30 @@ public class Notification {
             new SQLiteHelper(context).addNoti(context.getString(R.string.noti_onrecieve_setcontenttitle),new SimpleDateFormat("yyyy-MM-dd").
                     format(GregorianCalendar.getInstance().getTime()),context.getString(R.string.noti_onrecieve_setcontenttext));
             badgeCount++;
-            Log.d("badcount","add on noti rec"+badgeCount);
             setBadgeCount(badgeCount,itemMessagesBadgeTextView);
             ShortcutBadger.applyCount(context, badgeCount);
+
         }
     }
 
-    public static class UpdateNotification extends FirebaseMessagingService{
+    public static class UpdateNotification extends FirebaseMessagingService {
+
+        private TextView v;
+
+        public UpdateNotification(){
+        }
+
+        public UpdateNotification(TextView v){
+            this.v = v;
+        }
 
         @Override
         public void onMessageReceived(RemoteMessage remoteMessage) {
             super.onMessageReceived(remoteMessage);
-            new Notification().addNotification(this,getString(R.string.app_announce),remoteMessage.getNotification().getBody());
+            new Notification(v).addNotification(this,getString(R.string.app_announce),remoteMessage.getNotification().getBody(),v);
         }
     }
+
 }
 
 

@@ -50,8 +50,9 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
     private WritableWorkbook workbook;
     private File file;
     private WritableSheet sheet;
-    private SharedPreferences prefs;
+    private SharedPreferences prefs,prefs2;
     private CustomAlertDialogs alert;
+    private String InGroup,familyID,uid;
 
 
 
@@ -59,8 +60,21 @@ public class ExportData extends Fragment implements View.OnClickListener,CheckBo
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.exportdata, container, false);
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Transactions").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        recurrDatabaseReference = FirebaseDatabase.getInstance().getReference().child("RecurringTransactions").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        prefs2 = getContext().getSharedPreferences("fwPrefs",0);
+        InGroup = prefs2.getString("InGroup", "");
+        familyID = prefs2.getString("uniFamilyID", "");
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+        databaseReference= FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("Transactions").child(uid);
+        if (familyID.equals(uid) && !InGroup.equals("true")){
+            databaseReference = databaseReference.child("Transactions").child(uid);
+        }else {
+            databaseReference =  databaseReference.child("Transactions").child("Groups").child(familyID);
+        }
+        recurrDatabaseReference = FirebaseDatabase.getInstance().getReference().child("RecurringTransactions").child(uid);
         recurrDatabaseReference.keepSynced(true);
         databaseReference.keepSynced(true);
         init(view);

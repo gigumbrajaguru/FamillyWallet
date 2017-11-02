@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ccpe001.familywallet.CustomAlertDialogs;
+import ccpe001.familywallet.OCRReader2;
 import ccpe001.familywallet.Validate;
 import com.facebook.*;
 import com.facebook.login.LoginManager;
@@ -149,7 +150,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
                                         }
                                     }
                                 }
-                            });//alert.initPermissionPage(SignIn.this,"ssdsd").show();
+                            });
                 }else{
                     passTxt.setError(getString(R.string.signup_onclick_passerr));
                 }
@@ -161,6 +162,7 @@ public class SignIn extends PinActivity implements View.OnClickListener, GoogleA
         }else if(view.getId()== R.id.textView2){
             startActivity(new Intent(this,SignUp.class));
         }else if(view.getId()== R.id.textView){
+
             Intent intent = new Intent(this,Forgot.class);
             startActivity(intent);
         }else if(view.getId()== R.id.googleOptBtn){

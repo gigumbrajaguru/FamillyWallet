@@ -1,6 +1,8 @@
 package ccpe001.familywallet;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,7 +32,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ccpe001.familywallet.admin.UpdateMember;
+import ccpe001.familywallet.admin.*;
+import ccpe001.familywallet.transaction.AddTransaction;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -63,6 +66,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.joanzapata.iconify.widget.IconButton;
@@ -70,9 +75,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
 
-import ccpe001.familywallet.admin.CircleTransform;
-import ccpe001.familywallet.admin.GetInfo;
-import ccpe001.familywallet.admin.UserData;
 import ccpe001.familywallet.budget.AccountViews;
 import ccpe001.familywallet.budget.BudgetList;
 import ccpe001.familywallet.summary.SummaryTab;
@@ -115,7 +117,6 @@ public class Dashboard extends AppCompatActivity
     private CustomAlertDialogs alert;
     private NotificationManager notificationManager;
     private GoogleApiClient mGoogleApiClient;
-
 
 
     @Override
@@ -412,7 +413,20 @@ public class Dashboard extends AppCompatActivity
 
     }
 
+    private void notificationCalls(Context c){
+        Log.d("LOG","sdsd");
 
+        Notification noti;
+        if(itemMessagesBadgeTextView==null){
+             noti = new Notification();
+        }else {
+             noti = new Notification(itemMessagesBadgeTextView);
+        }
+
+        new Notification.UpdateNotification(itemMessagesBadgeTextView);
+        noti.statusIcon(c);
+        noti.dailyReminder(c);
+    }
 
     @Override
     public void onStart() {
@@ -455,7 +469,6 @@ public class Dashboard extends AppCompatActivity
                                         alert.initCommonDialogPage(Dashboard.this,getString(R.string.dashboard_accountcollide_text),true).show();
                                     } catch (Exception e) {
                                         alert.initCommonDialogPage(Dashboard.this,getString(R.string.common_error),true).show();
-                                        Log.d("rror", ""+e.getMessage());
                                     }
                                 }
 
@@ -488,7 +501,7 @@ public class Dashboard extends AppCompatActivity
         RelativeLayout badgeLayout = (RelativeLayout) itemMessages.getActionView();
         itemMessagesBadgeTextView = (TextView) badgeLayout.findViewById(R.id.badge_textView);
         IconButton iconButtonMessages = (IconButton) badgeLayout.findViewById(R.id.badge_icon_button);
-        Log.d("badgeCount","onCreateOptionsMenu"+badgeCount);
+        Log.d("badgeCount","onCreateOptionsMenu"+badgeCount+itemMessagesBadgeTextView);
         setBadgeCount(badgeCount,itemMessagesBadgeTextView);
 
         iconButtonMessages.setOnClickListener(new View.OnClickListener() {
@@ -511,8 +524,19 @@ public class Dashboard extends AppCompatActivity
                 }
             }
         });
+
+
+
+        //if notification are on
+        prefs = getSharedPreferences("App Settings", MODE_PRIVATE);
+        if(prefs.getBoolean("appNoty",true)) {
+            notificationCalls(getApplication());
+        }
+
         return true;
     }
+
+
 
 
     @Override
@@ -624,7 +648,7 @@ public class Dashboard extends AppCompatActivity
             editor.commit();  //commit change to SharedPreferences.
             NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context
                     .NOTIFICATION_SERVICE);
-            mNotificationManager.cancel(PERMENT_NOT);
+            mNotificationManager.cancel(PendingIntent.FLAG_UPDATE_CURRENT);
 
             PeriodicBackupCaller.backupRunner(getApplication(),getString(R.string.nobackup));
 
@@ -700,6 +724,8 @@ public class Dashboard extends AppCompatActivity
                     showcaseView.setButtonText(getString(R.string.dashboard_onclick_3_setbtntext));
                     break;
 
+
+
                 case 4:
                     showcaseView.hide();
                     animateCounter = 0;
@@ -755,4 +781,6 @@ public class Dashboard extends AppCompatActivity
             }
         });
     }
+
+
 }
