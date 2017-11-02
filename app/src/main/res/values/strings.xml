@@ -94,11 +94,6 @@
     <string name="priceFrom">From</string>
     <string name="priceTo">To</string>
 
-    <string name="totalInc">Total Income</string>
-    <string name="totalExp">Total Expense</string>
-
-    <string name="titleEmpty">Title not available</string>
-
     <string-array name="IncomeCategory">
         <item>Car</item>
         <item>Travel</item>
@@ -173,8 +168,7 @@
     <string name="splash_rateapi_setcancelbtntxt">No, Thanks</string>
     <string name="splash_rateapi_setyesbtntxt">Rate It Now</string>
     <string name="splash_rateapi_setnobtntxt">Remind me later</string>
-    <string name="splash_rateapi_setmsg">If you enjoy using this app, would you mind take moment and rate it? Thanks.
-    </string>
+    <string name="splash_rateapi_setmsg">If you enjoy using this app, would you mind take moment and rate it? Thanks.</string>
     <string name="intropage_onPageSelected_setext">Welcome</string>
     <string name="intropage_onPageSelected_else_setext">Next</string>
     <string name="noticards_onBindViewHolder_snackbar">Notification deleted</string>
@@ -188,15 +182,15 @@
     <string name="settings_feedbackmail_elsetoast">There are no email clients.</string>
     <string name="addmember_title">Add member</string>
     <string name="dashboard_animatemenu_setcontitle">Dashboard Help</string>
-    <string name="dashboard_animatemenu_setcontext">You don\'t always need a target to showcase</string>
+    <string name="dashboard_animatemenu_setcontext">Use this help menu to view the usages of the keys in the app.</string>
     <string name="dashboard_onclick_0_setcontitle">Navigation Drawer</string>
-    <string name="dashboard_onclick_0_setconttext">You don\'t always need a target to showcase</string>
+    <string name="dashboard_onclick_0_setconttext">This contains all the sub systems in the app.</string>
     <string name="dashboard_onclick_1_setcontitle">Notification Badge</string>
-    <string name="dashboard_onclick_1_setconttext">You don\'t always need a target to showcase</string>
+    <string name="dashboard_onclick_1_setconttext">Unseen notification count is displayed here.</string>
     <string name="dashboard_onclick_2_setcontitle">Search Bar</string>
-    <string name="dashboard_onclick_2_setconttext">You don\'t always need a target to showcase</string>
+    <string name="dashboard_onclick_2_setconttext">Used to search transactions using entered keyword</string>
     <string name="dashboard_onclick_3_setcontitle">Add transaction</string>
-    <string name="dashboard_onclick_3_setconttext">You don\'t always need a target to showcase</string>
+    <string name="dashboard_onclick_3_setconttext">User can add new income or expenses from here</string>
     <string name="dashboard_onclick_3_setbtntext">Close</string>
     <string name="forgot_oncomplete_toast">Reset link send to your mail</string>
     <string name="forgot_emailerr">Invalid email</string>
@@ -218,9 +212,9 @@
     <string name="common_error">Some unknown error occured. Please restart the app.</string>
     <string name="noti_statusicon_setcontenttitle">Family Wallet</string>
     <string name="noti_statusicon_setaction_expense">Add expense</string>
-    <string name="noti_statusicon_setaction_scanbill">Scan Bill</string>
+    <string name="noti_statusicon_setaction_income">Add income</string>
     <string name="noti_onrecieve_setticker">Daily reminder</string>
-    <string name="noti_onrecieve_setcontenttitle">We missing you</string>
+    <string name="noti_onrecieve_setcontenttitle">Add daily transaction</string>
     <string name="noti_onrecieve_setcontenttext">Add your daily transactions to the wallet..</string>
     <string name="setting_setlangBuilderOpener_positive">Yes</string>
     <string name="setting_langBuilderOpener_setmsg">This will restart your app. Sure you want to continue?</string>
@@ -294,9 +288,9 @@
     <string name="xmlexportdata_createBtn_text">Export Recurring Transactions</string>
     <string name="xmladdmember_editText2_text">Can\'t scan QR code?</string>
     <string name="xmladdmember_editText10_text">To add a member scan their QR code.</string>
-    <string name="xmlactscreen3_textView4_text">Description String</string>
-    <string name="xmlactscreen2_textView4_text">Description String</string>
-    <string name="xmlactscreen1_textView4_text">Description String</string>
+    <string name="xmlactscreen3_textView4_text">Your transactions can be summarized using different types of charts and can them filter accordingly.</string>
+    <string name="xmlactscreen2_textView4_text">All the members in the family can be in a one group. So that each can view their transactions.</string>
+    <string name="xmlactscreen1_textView4_text">Sinhala language can be used as default language.</string>
     <string name="xmlmenu_transactionFrag_title">Overview</string>
     <string name="xmlmenu_reportsFrag_title">Reports</string>
     <string name="xmlmenu_transferFrag_title">View Accounts</string>
@@ -350,77 +344,7 @@
     </string-array>
     <string name="title_activity_kjkjkjk">Settings</string>
 
-    <!-- Strings related to Settings -->
 
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact based on your message
-        history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
     <string name="xmlactivity_loading_dialog_pageTxt">LOADING..</string>
     <string name="customaletdialog_initCommonDialogPage_posbtn">Report</string>
     <string name="customaletdialog_initCommonDialogPage_negbtn">Cancel</string>
@@ -441,7 +365,7 @@
     <string name="error_permitting">Something is wrong when granting permissions.Please try again.</string>
     permit_only_backup
     <string name="xml_lang_selector_english">English</string>
-    <string name="xml_lang_selector_sinhala">සිංහල</string>
+    <string name="xml_lang_selector_sinhala">Sinhala</string>
     <string name="app_announce">App Announcemnt</string>
     <string name="xmlmenu_item1_title">Transactions</string>
     <string name="xmlmenu_item4_title">Preferences</string>
@@ -477,6 +401,13 @@
     <string name="last_month">Last month</string>
     <string name="last_3_month">Last 3 months</string>
     <string name="custom">Custom</string>
+    <string name="dashboard_onclick_4_setconttext"/>
+    <string name="last_year">This year</string>
+    <string name="this_week">This week</string>
+    <string name="backup_created">Backups Created</string>
+    <string name="report_desc">Please visit your specified backup location to see the reports. Default is Internal
+        Memory.
+    </string>
 
 
     <string-array name="nav_drwer_arr">

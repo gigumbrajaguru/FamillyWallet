@@ -84,7 +84,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener,Go
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        getSupportActionBar().setTitle(R.string.signup_title);
+        setTitle(R.string.signup_title);
         signUpBtn= (Button)findViewById(R.id.signupBtn);
         emailTxt= (EditText)findViewById(R.id.emailTxt);
         progressBar = new ProgressDialog(this);

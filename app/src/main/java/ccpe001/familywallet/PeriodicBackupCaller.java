@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
+import ccpe001.familywallet.admin.Notification;
 import ccpe001.familywallet.transaction.TransactionDetails;
 import com.google.android.gms.gcm.*;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +45,7 @@ public class PeriodicBackupCaller extends GcmTaskService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        new Notification().addNotification(getApplication(),getString(R.string.backup_created),getString(R.string.report_desc),null);
         return 0;
     }
 

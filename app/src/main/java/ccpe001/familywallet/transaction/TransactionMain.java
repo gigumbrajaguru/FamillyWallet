@@ -603,6 +603,7 @@ public class TransactionMain extends Fragment {
             @Override
             public void onDateChanged(DatePicker datePicker, int year, int month, int day) {
                 String date = trns.dateWithDoubleDigit(year,month+1,day,con);
+                Log.d("LOG",""+year+"  "+month+"  "+day);
 
                 if(startDate.isFocused()) {
                     startDate.setText(date);
@@ -623,6 +624,7 @@ public class TransactionMain extends Fragment {
                 }else {
                     String filterStartdate = trns.dateToValue(startDate.getText().toString());
                     String filterEnddate = trns.dateToValue(endDate.getText().toString());
+
                     Query query;
                     if (familyID.equals(userID) && !InGroup.equals("true")){
                         query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date").startAt(filterStartdate).endAt(filterEnddate);

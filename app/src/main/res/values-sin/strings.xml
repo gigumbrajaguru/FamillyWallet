@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Family Wallet</string>
-    <string name="noti_statusicon_setaction_scanbill">්පප්ාිො</string>
-    <string name="dashboard_animatemenu_setcontitle">sadasdasssssssssssssssssa sdsdsda</string>
 
 
     <string-array name="spinnerRecurring">
@@ -126,4 +124,268 @@
     <string name="dashboard_settitle_overview">මගේ ගනුදෙනු</string>
     <string name="dashboard_settitle_recurring">"පුනරාවර්තනය ගනුදෙනු"</string>
     <string name="dashboard_settitle_family">පවුලේ ගනුදෙනු</string>
+
+
+    <string name="signup_title">ගිණුමක් තනන්න</string>
+    <string name="action_settings">සැකසුම්</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="signin_title">ගිණුමට පුරනය වන්න</string>
+    <string name="title_activity_get_info">තොරතුරු ලබා.</string>
+
+    <string-array name="spinnerDateFor">
+        <item>2001/03/14</item>
+        <item>14/03/2001</item>
+        <item>මාර් 14,2001</item>
+    </string-array>
+
+
+    <string-array name="spinnerLanguage">
+        <item>සිංහල</item>
+        <item>English</item>
+    </string-array>
+    <string name="title_activity_transaction_main">transaction_main</string>
+    <string name="hello_round">Hello Round World!</string>
+    <string name="hello_square">Hello Square World!</string>
+    <string name="title_activity_transaction_category">transaction_category</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="splash_rateapi_settitle">ඇප් එක අගයන්න</string>
+    <string name="splash_rateapi_setcancelbtntxt">නැ, ස්තුතියි</string>
+    <string name="splash_rateapi_setyesbtntxt">දැන් ඒක කරන්න</string>
+    <string name="splash_rateapi_setnobtntxt">පසුව මතක් කරන්න</string>
+    <string name="splash_rateapi_setmsg">මෙම යෙදුම භාවිතා කිරීමෙන් සතුටක් ලබන්නේ නම්, මොහොතකට මොහොතකට එය අගයන්න? ස්තුතියි.</string>
+    <string name="intropage_onPageSelected_setext">ආයුබෝවන්</string>
+    <string name="intropage_onPageSelected_else_setext">ඊලඟ</string>
+    <string name="noticards_onBindViewHolder_snackbar">නිවේදනය මකාදමන ලදී</string>
+    <string name="setting_langbuilder_settitle">භාෂා</string>
+    <string name="setting_currbuilder_settitle">මුදල්</string>
+    <string name="setting_datebuilder_settitle">දිනය ආකෘතිය</string>
+    <string name="permitgranted">අවසර ලබා දී ඇත</string>
+    <string name="setting_pinbuilder_settitle">PIN ඇතුලත් කරන්න</string>
+    <string name="setting_pinbuilder_negbtn">අවලංගු කරන්න</string>
+    <string name="setting_reminderbuilder_settitle">මතක් කරන්න</string>
+    <string name="settings_feedbackmail_elsetoast">විද්යුත් තැපැල් සේවාදායකයන් නොමැත.</string>
+    <string name="addmember_title">සාමාජිකයෙක් එක්.</string>
+    <string name="dashboard_animatemenu_setcontitle">ප්‍රදාන පුවරුව උදව්</string>
+    <string name="dashboard_animatemenu_setcontext">මෙම උපකාරක මෙනුවන්, ඇප් ඇති යතුරු භාවිතයන් බැලීම සඳහා භාවිතා කරන්න.</string>
+    <string name="dashboard_onclick_0_setcontitle">අදිනය</string>
+    <string name="dashboard_onclick_0_setconttext">මෙහි ඇප් තුළ සියලු උප පද්ධතීන් අඩංගු වේ.</string>
+    <string name="dashboard_onclick_1_setcontitle">දැනුම්දීමේ ලාංඡුනය</string>
+    <string name="dashboard_onclick_1_setconttext">නොපෙනෙන දැනුම් දීම් ගණන් මෙහි දැක්වේ.</string>
+    <string name="dashboard_onclick_2_setcontitle">සෙවුම් තීරුව</string>
+    <string name="dashboard_onclick_2_setconttext">ඇතුළත් කළ වචනය භාවිතයෙන් ගණුදෙනු සොයන්න</string>
+    <string name="dashboard_onclick_3_setcontitle">ගනුදෙනුව එක් කරන්න</string>
+    <string name="dashboard_onclick_3_setconttext">පරිශීලකයන්ට නව ආදායම් හෝ වියදම් එකතු කළ හැකිය</string>
+    <string name="dashboard_onclick_3_setbtntext">වසන්න</string>
+    <string name="forgot_oncomplete_toast">නැවතත් සබැඳිය ඔබගේ තැපැල වෙත යවන ලදී</string>
+    <string name="forgot_emailerr">අවලංගු ඊමේල්</string>
+    <string name="getinfo_title">විස්තර ඇතුළත් ක.</string>
+    <string name="getinfo_cameraopt_settitle">විකල්පයක් තෝරන්න</string>
+    <string name="getinfo_cameraopt1">පින්තුරයක් ගන්න</string>
+    <string name="getinfo_cameraopt2">ගැලරියකින් තෝරන්න</string>
+    <string name="getinfo_lastname_errmsg">අවලංගු අන්තිම නම</string>
+    <string name="getinfo_firstname_errmsg">අවලංගු පළමු නමe</string>
+    <string name="signup_onclick_passerr">අවලංගු මුරපදයක්</string>
+    <string name="signup_onclick_emailerr">අවලංගු ඊමේල්</string>
+    <string name="signup_onclickprogressbar_msg">පරිශීලකයා ලියාපදිංචි කිරීම</string>
+    <string name="signup_oncomplete_sucesstoast">ලියාපදිංචිය සාර්ථකයි</string>
+    <string name="signup_cancel_toast">ඔබ අවලංගු කළා</string>
+    <string name="signin_scan_setpromt">ස්කෑන්</string>
+    <string name="error_dialogbox_title">අනතුරු ඇඟවීම!</string>
+    <string name="common_error">කිසියම් නොදන්නා දෝෂයක් සිදුවිය. කරුණාකර යෙදුම නැවත අරඹන්න.</string>
+    <string name="noti_statusicon_setcontenttitle">Family Wallet</string>
+    <string name="noti_statusicon_setaction_expense">වියදම් එකතු ක.</string>
+    <string name="noti_statusicon_setaction_income">ආදායම් එකතු ක.</string>
+    <string name="noti_onrecieve_setticker">දෛනික සිහි කැඳවුම</string>
+    <string name="noti_onrecieve_setcontenttitle">දෛනික ගනුදෙනු එකතු කරන්න</string>
+    <string name="noti_onrecieve_setcontenttext">ඔබගේ දෛනික ගනුදෙනු මුදල් පසුම්බියට එකතු කරන්න.</string>
+    <string name="setting_setlangBuilderOpener_positive">ඔව්</string>
+    <string name="setting_langBuilderOpener_setmsg">මෙය ඔබගේ යෙදුම නැවත ආරම්භ වේ. දිගටම කරගෙන යාමට අවශ්යද?</string>
+    <string name="setting_setNegativeButton">නැත</string>
+    <string name="setting_onCheckedChanged_langBuilderOpener_setmsg">මෙය ඔබගේ යෙදුම් වෙනස් කරනු ඇත.
+        දිනය ආකෘතිය, භාෂාව සහ ව්යවහාර මුදල් දේශීය වශයෙන්. එසේම ඔබගේ යෙදුම නැවත ආරම්භ වේ. දිගටම කරගෙන යාමට අවශ්යද?
+    </string>
+    <string name="setting_appnotiswitch_on_toast">සෑම යෙදුම් දැනුම්දීමක්ම හැරී ඇත.
+        දිනපතා සිහිගැන්වීම් ඇතුලත්ය.
+    </string>
+    <string name="id">අංකය</string>
+    <string name="type">වර්ගය</string>
+    <string name="userid">පරිශීලක අංකය</string>
+    <string name="datetime">දිනය වෙලාව</string>
+    <string name="category">කාන්ඩය</string>
+    <string name="amount">ප්රමාණය</string>
+    <string name="account">ගිණුම</string>
+    <string name="currency">මුදල්</string>
+    <string name="location">ස්ථානය</string>
+    <string name="periodicbackupcaller_createsheet">හුවමාරු සුරැකුම්</string>
+    <string name="transaction_expense_settitle">වියදම්</string>
+    <string name="signin_waitmsg">ඉන්න..</string>
+    <string name="connectionfailed">කරුණාකර ඔබගේ සම්බන්ධතාවය පරික්ෂා කරන්න.</string>
+    <string name="exportdata_onclick_invalidfilename">අවලංගු ගොනු නාමයක්</string>
+    <string name="exportdata_onclick_checkticks">අවම වශයෙන් එක් විකල්පයක්තොරන්න.</string>
+    <string name="exportdata_onclick_backupdone">සුරැකුම් නිර්මාණය සාර්තකයි</string>
+    <string name="exportdata_ismailcreator_createchooser">ඊමේල් යවන්න</string>
+    <string name="daily">දිනපතා</string>
+    <string name="weekly">සතිපතා</string>
+    <string name="monthly">මාසික</string>
+    <string name="annualy">වාර්ෂිකව</string>
+    <string name="nobackup">ස්වයං සුරැකුම් නොමැත</string>
+    <string name="ocrreader_onactivityresult_uploaddone">උඩුගතකිරීම සාර්තකයි</string>
+    <string name="xmlsignup_emailTxt_hint">විද්යුත් තැපැල් ලිපිනය</string>
+    <string name="xmlsignup_passwordTxt_hint">මුරපදය</string>
+    <string name="xmlsignup_signupBtn_text">ඊ-තැපෑල හරහා ලියාපදිංචි වන්න</string>
+    <string name="xmlsignup_googleOptBtn_text">ගූගල් හරහා ලියාපදිංචි වන්න</string>
+    <string name="xmlsignup_fbOptBtn_text">ෆේස්බුක් හරහා ලියාපදිංචි වන්න</string>
+    <string name="xmlsignin_textView_text">අමතකද?</string>
+    <string name="xmlsignin_textView2_text">සාමාජිකයෙක් නොවේ ද?</string>
+    <string name="xmlsignin_signInBtn_text">ඊ-තැපෑල තැපෑල හරහා පුරනය වන්න</string>
+    <string name="xmlsetting_head1">භාෂාව සහ ආකෘතිය</string>
+    <string name="xmlsetting_localModeSwitch_text">දේශීය මාදිලිය</string>
+    <string name="xmlsetting_selectLang_text">භාෂාව තෝරන්න</string>
+    <string name="xmlsetting_selectDateRow_text">දින ආකෘතිය තෝරන්න</string>
+    <string name="xmlsetting_selectCurrRow_text">මුදල් ආකෘතිය තෝරාගන්න</string>
+    <string name="xmlsetting_statusCurrLay_text">නිවේදන</string>
+    <string name="xmlsetting_appNotySwitch_text">යෙදුම් දැනුම්දීම්</string>
+    <string name="xmlsetting_statusIconSwitch_text">තත්ත්ව තීරුව තුළ widget පෙන්වන්න</string>
+    <string name="xmlsetting_remTimeRow_text">දෛනික සිහි කැඳවුම් කාලය (පැය 24)</string>
+    <string name="xmlsetting_head5_text">පද්ධතිය</string>
+    <string name="xmlsetting_autoSyncSwitch_text">ස්වයං Sync</string>
+    <string name="xmlsetting_backupRemRow_text">ස්වයං සුරැකුම්</string>
+    <string name="xmlsetting_backupLocRow_text">සුරැකුම් ස්ථානය</string>
+    <string name="xmlsetting_checkBox_text">යෙදුම් මුරපදය</string>
+    <string name="xmlsetting_head9_text">යෙදුම ගැන</string>
+    <string name="xmlsetting_feedbackRow_text">ප්රතිපෝෂණ යවන්න</string>
+    <string name="xmlsetting_rateRow_text">යෙදුම අගයන්න</string>
+    <string name="xmlsetting_signOutBtn_text">වරන්න</string>
+    <string name="xmlpasswordsetter_setPinBtn_text">PIN අංකය සකසන්න</string>
+    <string name="xmlpasswordsetter_enDisPinSwitch_text">PIN අංකය සක්රීය කරන්න</string>
+    <string name="xmlocrreader_billdata_text">NO TEXT</string>
+    <string name="xmlintrocontainer_skipBtn_text">මගහරින්න</string>
+    <string name="xmlgetinfo_editText4_hint">අවසන් නම</string>
+    <string name="xmlgetinfo_editText_hint">මුල් නම</string>
+    <string name="xmlforgot_textView3_text">ඔබගේ විද්යුත් ලිපිනය ඇතුළත් කරන්න, අපි ඔබට නැවත පිහිටුවන්න මුරපදය යවනු ඇත</string>
+    <string name="xmlforgot_sendMail_text">යවන්න</string>
+    <string name="xmlexportdata_filename_hint">සුරැකුම් ගොනුවේ නම</string>
+    <string name="xmlexportdata_csvCheck_text">CSV ආකෘතිය</string>
+    <string name="xmlexportdata_exelCheck_text">Excel ආකෘතිය</string>
+    <string name="xmlexportdata_sendBackMail_text">විද්යුත් තැපැල් මගින් ලිපි යවන්න?</string>
+    <string name="xmlexportdata_createBtn_text">පුනරාවර්තන ගනුදෙනු අපනයනය</string>
+    <string name="xmladdmember_editText2_text">QR කේතය ස්කෑන් කි කළ නොහැකිද?</string>
+    <string name="xmladdmember_editText10_text">සාමාජිකයෙකු එකතු කිරීමට, ඔවුන්ගේ QR කේතය ස්කෑන් කිරීම කරන්න.</string>
+    <string name="xmlactscreen3_textView4_text">විවිධාකාර ප්රස්තාර භාවිතා කිරීමෙන් ඔබේ ගනුදෙනු සාරාංශගත කර ඒවාට පෙරහන කළ හැකිය.</string>
+    <string name="xmlactscreen2_textView4_text">සෑම පවුලේ සාමාජිකයන් එකම කණ්ඩායමක් විය හැකිය. එබැවින් ඔවුන්ගේ ගනුදෙනු බැලිය හැකිය.</string>
+    <string name="xmlactscreen1_textView4_text">සිංහල භාෂාව පෙරනිමි භාෂාවක් ලෙස භාවිතා කළ හැක</string>
+    <string name="xmlmenu_transactionFrag_title">Overview</string>
+    <string name="xmlmenu_reportsFrag_title">වාර්තා</string>
+    <string name="xmlmenu_transferFrag_title">View Accounts</string>
+    <string name="xmlmenu_categoryFrag_title">Categories</string>
+    <string name="xmlmenu_recurringFrag_title">Recurring transactions</string>
+    <string name="xmlmenu_item3_title">උපයෝගිතා</string>
+    <string name="xmlmenu_backupFrag_title">සුරැකුම්</string>
+    <string name="xmlmenu_helpFrag_title">උපකාර සහ අත්පොත</string>
+    <string name="xmlmenu_settingFrag_title">සැකසුම්</string>
+    <string name="xmlmenu_walletFrag_title">පසුම්බිය</string>
+    <string name="xmlmenu_budgetFrag_title">අයවැය</string>
+    <string name="summarytab_settitle_1">ආදායම්</string>
+    <string name="summarytab_settitle_2">වියදම්</string>
+    <string name="xmladdmember_scanqrbtn_text">QR කේතය ස්කෑන් කරන්න</string>
+    <string name="dashboard_settitle_summary">වාර්තා</string>
+    <string name="dashboard_settitle_tranfer">Accounts</string>
+    <string name="dashboard_settitle_budget">Budget</string>
+    <string name="dashboard_settitle_wallet">Wallet</string>
+    <string name="dashboard_settitle_backup">සුරැකුම්</string>
+    <string name="dashboard_settitle_setting">සැකසුම්</string>
+    <string name="xmlsignup_or_text">-----------------\tහෝ\t-----------------</string>
+    <string name="signup_incorrect_email_text">අවලංගු ඊමේල්</string>
+    <string name="signup_incorrect_pw_text">අවලංගු මුරපදයක්</string>
+    <string name="signup_already_email_text">පරිශීලකයා දැනටමත් ලියාපදිංචි කර ඇත</string>
+    <string name="xmlsignin_googleOptBtn_text">ගූගල් හරහා පුරනය වන්න</string>
+    <string name="xmlsignin_fbOptBtn_text">ෆේස්බුක් හරහා පුරනය වන්න</string>
+    <string name="ocrreader_snackbar_takepicbtn">පින්තූරයක් ගන්න</string>
+    <string name="ocrreader_snackbar_takepic">බිල්පත ගබඩා කිරීමට ඔබ කැමතිද?</string>
+    <string name="ocrreader2_setttile">බිල් ස්කෑනර්</string>
+    <string name="dashboard_settitle_notifications">දැනුම්දීම්</string>
+    <string name="xmlsignin_noSignInBtn_text">අත්සන් නොමැතිව ඉදිරියට යන්න</string>
+    <string name="dashboard_snackbar_demopermanent">ස්ථිර පරිශීලකයෙකු වීමට ඔබ කැමතිද?</string>
+    <string name="dashboard_snackbar_demopermanentBtn">ඔව්..!</string>
+    <string name="dashboard_socialbuilder_settitle">පිවිසීම තෝරන්න</string>
+    <string name="dashboard_social_demo_signup">ලියාපදිංචි වන්න</string>
+    <string name="dashboard_accountcollide_text">මෙම ගිණුම දැනටමත් ලියාපදිංචි කර ඇත. කරුණාකර ගිණුම යළි සකස් කිරීම හෝ
+        වෙනත් ගිණුමක් සමඟ ලියාපදිංචි වන්න.
+    </string>
+
+
+
+
+
+
+    <string name="xmlactivity_loading_dialog_pageTxt">සිටින්න..</string>
+    <string name="customaletdialog_initCommonDialogPage_posbtn">වාර්තා කරන්න</string>
+    <string name="customaletdialog_initCommonDialogPage_negbtn">අවලංගු කරන්න</string>
+    <string name="common_sucessful">සාර්ථකයි..!</string>
+    <string name="customaletdialog_initPermissionPage_negbtn">පසු</string>
+    <string name="customaletdialog_initPermissionPage_posbtn">දැන්</string>
+    <string name="xml_getpermit_title">අවසර ලබා දීම..!</string>
+    <string name="network_error">කරුණාකර පුරනය වීම සඳහා ජංගම දත්ත හෝ Wifi ක්රියාත්මක කරන්න</string>
+    <string name="forgot_FirebaseAuthInvalidUserException">මෙම අනන්යතාවයට අනුරූප විද්යුත් තැපැල් ලිපිනයක් නොමැත.</string>
+    <string name="dashboard_permentmem_sucess">දැන් ඔබ අපගේ ස්ථීර සාමාජිකයෙකි. ඔබට ස්තුතියි..</string>
+    <string name="permit_only_read">ඔබේ ගබඩාව කියවීමට අවසර දීමට ඔබ කැමතිද?</string>
+    <string name="permit_only_camera">ඔබගේ කැමරාවට ප්රවේශ වීමට ඔබට කැමතිද?</string>
+    <string name="permit_only_backup">ඔබේ ගබඩාව කියවීමට සහ ලිවීමට අවසර දීමට ඔබ කැමතිද?
+    </string>
+
+    <string name="error_permitting">අවසර ලබාදීෙම්දී යම් වරදක් සිදුවී ඇත. කරුණාකර නැවත උත්සාහ කරන්න.</string>
+
+    <string name="xml_lang_selector_english">English</string>
+    <string name="xml_lang_selector_sinhala">සිංහල</string>
+    <string name="app_announce">යෙදුමේ නිවේදන
+    </string>
+    <string name="xmlmenu_item1_title">ගනුදෙනු</string>
+    <string name="xmlmenu_item4_title">මනාපයන්</string>
+    <string name="xmlmenu_updateFrag_title">පරිශීලක යාවත්කාලීන කරන්න</string>
+    <string name="xmlmenu_signOutFrag_title">වරන්න</string>
+    <string name="xmlmenu_addMemberFrag_title">සාමාජිකයෙක් එකතු</string>
+    <string name="xmlmenu_item5_title">පරිශීලකයන්</string>
+    <string name="recurringPeriod">පුනරාවර්තන කාලය</string>
+    <string name="xmlexportdata_createBtn2_text">සාමාන්ය ගනුදෙනු අපනයන</string>
+    <string name="scannerHint">බිල තෝරන්න</string>
+    <string name="scan_set_image">රූපය සකසන්න</string>
+    <string name="scan_reject_image">අවලංගු කරන්න</string>
+    <string name="bill_image">බිල් පින්තූරය</string>
+    <string name="image_no">බිල් රූපය අවලංගුයි</string>
+    <string name="image_yes">බිල් රූපය වලංගුයි</string>
+    <string name="sign_up">ලියාපදිංචි වන්න</string>
+    <string name="update">යාවත්කාලීන කිරීම</string>
+    <string name="update_member">සාමාජිකයා යාවත්කාලීන කරන්න</string>
+    <string name="change_password">මුරපදය වෙනස් කරන්න</string>
+    <string name="change">වෙනස් කිරීම</string>
+    <string name="xmlchange_conf_passwordTxt_hint">තහවුරු මුරපදය</string>
+    <string name="pw_changed">මුරපදය සාර්ථක වෙනස් විය.</string>
+    <string name="pw_not_match">මුරපදය ගැලපෙන්නේ නැත</string>
+    <string name="pw_change_error">ඔබ ෆේස්බුක්, ගූගල් හෝ ඩෙමෝ පරිශීලකයාගෙන් ලොග් වී සිටියදී ඔබට මුරපදය වෙනස් කළ නොහැක.
+    </string>
+    <string name="no_chart_data">සටහනක් නොමැත.</string>
+    <string name="change_date">කාල පරාසය තෝරන්න</string>
+    <string name="xmlgetinfo_editText_startdate">ආරම්භක දිනය තෝරන්න</string>
+    <string name="xmlgetinfo_editText_enddate">අවසානය දිනය තෝරන්න</string>
+    <string name="set">සකසන්න</string>
+    <string name="this_month">මේ මාසය</string>
+    <string name="last_month">පසුගිය මාසය</string>
+    <string name="last_3_month">පසුගිය මාස 3</string>
+    <string name="custom">අභිරුචි</string>
+    <string name="dashboard_onclick_4_setconttext"/>
+    <string name="last_year">මේ වසරේ</string>
+    <string name="this_week">මේ සතියේ</string>
+    <string name="backup_created">සුරැකුම් සෑදුවා</string>
+    <string name="report_desc">සුරැකුම් වාර්තා බැලීම සඳහා කරුණාකර ඔබගේ නිශ්චිත බැකප් ස්ථානය වෙත පිවිසෙන්න. පෙරනිමි යනු අභ්යන්තර මතකය.
+    </string>
+
+
+    <string-array name="nav_drwer_arr">
+        <item>යාවත්කාලීන කිරීම</item>
+        <item>සාමාජිකයෙක් එක් කරන්න</item>
+        <item>වරන්න</item>
+    </string-array>
+
 </resources>

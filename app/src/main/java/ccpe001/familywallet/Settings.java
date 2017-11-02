@@ -2,6 +2,7 @@ package ccpe001.familywallet;
 
 import android.Manifest;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.*;
@@ -64,7 +65,6 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     private static final int SET_PIN = 0;
     private static final int ENABLE_PIN = 1;
     private static final int DIR_CHOOSER = 2;
-    private final static int PERMENT_NOT = 33;
     private final static int DAILY_REMINDER = 11;
     private final static int NOTI_PPROTOTYPE = 22;
     private static final int BACKUP_PERM = 3;
@@ -231,7 +231,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
             editor.commit();  //commit change to SharedPreferences.
             NotificationManager mNotificationManager = (NotificationManager)getActivity().getSystemService(Context
                     .NOTIFICATION_SERVICE);
-            mNotificationManager.cancel(PERMENT_NOT);
+            mNotificationManager.cancel(PendingIntent.FLAG_UPDATE_CURRENT);
 
             PeriodicBackupCaller.backupRunner(getActivity(),getString(R.string.nobackup));
 
@@ -347,7 +347,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                         //enable lock
                         Toast.makeText(getContext(),"FamilyWallet Backups",Toast.LENGTH_LONG).show();
                         LockManager<CustomPinActivity> lockManager = LockManager.getInstance();
-                        lockManager.enableAppLock(getContext(),CustomPinActivity.class);
+                        lockManager.enableAppLock(getActivity(),CustomPinActivity.class);
                         lockManager.getAppLock().setTimeout(5000000);
                         startActivityForResult(intent, ENABLE_PIN);
                     }else{
@@ -463,10 +463,10 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
             }
         }else if(requestCode == ENABLE_PIN){
-            Toast.makeText(getContext(),"enabled pin",Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),"enabled pin",Toast.LENGTH_LONG).show();
         }
         else if(requestCode == SET_PIN){
-            Toast.makeText(getContext(),"set pin",Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),"set pin",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -507,15 +507,14 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
 
                 Notification noti = new Notification(itemMessagesBadgeTextView);
                 noti.dailyReminder(getActivity());
-                new Notification.UpdateNotification();
+                new Notification.UpdateNotification(itemMessagesBadgeTextView);
 
             }else{
                 dailyRemRow.setVisibility(View.GONE);
 
                 notificationManager = (NotificationManager)getActivity().getSystemService(Context
                         .NOTIFICATION_SERVICE);
-                notificationManager.cancel(DAILY_REMINDER);
-                notificationManager.cancel(NOTI_PPROTOTYPE);
+                notificationManager.cancelAll();
 
                 appNoty = false;
                 storePWSharedPref();
@@ -524,13 +523,13 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
             if(!b) {
                 appIcon = true;
                 storePWSharedPref();
-                NotificationManager mNotificationManager = (NotificationManager)getActivity().getSystemService(Context
+                notificationManager = (NotificationManager)getActivity().getSystemService(Context
                         .NOTIFICATION_SERVICE);
-                mNotificationManager.cancel(PERMENT_NOT);
+                notificationManager.cancel(PendingIntent.FLAG_UPDATE_CURRENT);
             }else{
                 appIcon = false;
                 storePWSharedPref();
-                new ccpe001.familywallet.admin.Notification().statusIcon(getActivity());
+                new ccpe001.familywallet.admin.Notification(itemMessagesBadgeTextView).statusIcon(getActivity());
             }
         }
     }
