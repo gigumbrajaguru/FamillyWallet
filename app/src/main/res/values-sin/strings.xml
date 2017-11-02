@@ -126,4 +126,50 @@
     <string name="dashboard_settitle_overview">මගේ ගනුදෙනු</string>
     <string name="dashboard_settitle_recurring">"පුනරාවර්තනය ගනුදෙනු"</string>
     <string name="dashboard_settitle_family">පවුලේ ගනුදෙනු</string>
+
+    <string name="xmlmenu_walletFrag_title">මුදල් තැන්පතු</string>
+    <string name="xmlmenu_budgetFrag_title">අය වැය</string>
+
+    <string name="accountName">ගිණුමේ නම</string>
+    <string name="accamount">මුදල් ප්‍රමානය</string>
+    <string name="availableamount">ගිනුමේ ඇති මුදල් ප්‍රමානය</string>
+    <string name="savingaccount">ඉතිරිකිරීමේ ගිණුම</string>
+    <string name="submitted">ඉදිරිපත් කරන්න</string>
+    <string name="budgetname">අයවැය නම</string>
+    <string name="startdate">ආරම්භක දිනය</string>
+    <string name="endate">අවසාන දිනය</string>
+    <string name="catagory">මුදල් වෙන් කල කාර්යය</string>
+    <string name="amountlkr">මුදල් ප්‍රමානය[රු.]</string>
+    <string name="notification">නිවේදනය</string>
+    <string name="budgetamount">අයවැය ප්‍රමානය</string>
+    <string name="updates">යාවත්කාලීන කිරීම</string>
+    <string name="deletes">ඉවත් කරන්න</string>
+    <string name="forecast">අනාවැකිය</string>
+    <string name="success">සම්පූර්ණ කරන ලදි</string>
+    <string name="error">නවතන ලදී</string>
+    <string name="storedaccount">දත්ත ගබඩාවේ තැන්පත් කරන ලදී</string>
+    <string name="storeaccountdetail">ඔබගේ ගිණුමේ නම වෙනස් කර නැවත උත්සහ කරන්න</string>
+    <string name="errormsg">ඔබ නැවත නැවත සිදු කරන ගනුදෙනු මකා දැමිය යුතුයි</string>
+    <string name="updatedmsg">Wallet යාවත්කාලීන කර ඇත</string>
+    <string name="deletedmsg">Wallet මකා දමන ලදී</string>
+    <string name="ctritical">විවේචනාත්මක මට්ටම</string>
+    <string name="criticalmsg">අයවැය 95% මට්ටම පසුකරන ලදී</string>
+    <string name="budgetcriticalmsg">අයවැය දත්ත ගබඩාවේ තැන්පත් කරන ලදී</string>
+    <string name="namecheckmsg">ඔබගේ ගිණුමේ නම වෙනස් කර නැවත උත්සහ කරන්න</string>
+    <string name="emptymsg">සියලු ක්ෂේත්ර පිරවිය යතුයි</string>
+    <string name="budgetforecast">අයවැය අනාවැකිය</string>
+    <string name="errorforecastmsg">ප්රක්ශේපණය ගණනය කිරීම සඳහා අඩුම වශයෙන් අයවැය තුනක් (3) අවශ්ය වේ</string>
+    <string name="lowvalueforecast">Min. budget forecast amount :</string>
+    <string name="highvalueforecast">Max budget forecast amount:</string>
+    <string name="deletemsg">පියවර තහවුරු කරන්න ?</string>
+    <string name="bankaccount">බැංකු ගිනුම ඇතුලත් කරන ලදී</string>
+    <string name="acctype">ගිණුම් වර්ගය</string>
+    <string name="bnknumber">බැංකු ගිනුම් අංකය:</string>
+    <string name="currencytype">මුදල් වර්ගය</string>
+    <string name="updated">දත්ත යාවත්කාලීන කිරීම තහවුරු කරන්න</string>
+    <string name="deletebudget">අයවැය ඉවත් කිරීම තහවුරු කරන්න</string>
+    <string name="percentage">ප්‍රතිශතයක් ලෙස(%)</string>
+
+
+
 </resources>

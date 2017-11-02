@@ -39,7 +39,7 @@
                 android:id="@+id/catText"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:text="Category"
+                android:text="@string/catagory"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textStyle="bold"/>
@@ -76,7 +76,7 @@
                 android:id="@+id/perText"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:text="Percentage"
+                android:text="@string/percentage"
                 android:textAlignment="center"
                 android:textStyle="bold"/>
 
@@ -102,7 +102,7 @@
                 android:id="@+id/strtdt"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:text="Start Date"
+                android:text="@string/startdate"
                 android:textAlignment="center"
                 android:textStyle="bold"/>
 
@@ -127,7 +127,7 @@
                 android:id="@+id/endTextDate"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:text="End Date"
+                android:text="@string/endate"
                 android:textAlignment="center"
                 android:textStyle="bold"/>
 
@@ -154,7 +154,7 @@
                 android:id="@+id/budamounttxt"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:text="Reserved amount"
+                android:text="@string/budgetamount"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textStyle="bold"/>
@@ -174,7 +174,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Notification"
+            android:text="@string/notification"
             android:textSize="14sp"
             android:textStyle="bold"/>
 
@@ -183,7 +183,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Update"
+            android:text="@string/updates"
             android:textStyle="bold"/>
 
         <Button
@@ -191,7 +191,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Delete"
+            android:text="@string/deletes"
             android:textStyle="bold"/>
     </LinearLayout>
     </ScrollView>

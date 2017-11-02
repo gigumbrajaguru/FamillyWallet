@@ -108,18 +108,19 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                 amounts=tAmount.getText().toString();
                 if(!sttDay.isEmpty() && !endday.isEmpty() && !amounts.isEmpty() && !bName.isEmpty()) {
                     Boolean msgBoxOut = (Ctrl.addbdget(currentUser.getUid(), FamilyId, bName, sttDay, endday, amounts, notify, selected));
+
                     if (msgBoxOut) {
-                        AlertBox.alertBoxOut(BudgetAdd.this, "Data Stored", "Succeed");
+                        AlertBox.alertBoxOut(BudgetAdd.this, getString(R.string.success), getString(R.string.budgetcriticalmsg));
                         strDt.setText("");
                         endDt.setText("");
                         Bname.setText("");
                         tAmount.setText("");
                     } else {
-                        AlertBox.alertBoxOut(BudgetAdd.this, "Account Name ", "Change your account name");
+                        AlertBox.alertBoxOut(BudgetAdd.this, getString(R.string.error), getString(R.string.namecheckmsg));
                     }
                 }
                 else{
-                    AlertBox.alertBoxOut(BudgetAdd.this, "Failed", "Fill all Fields");
+                    AlertBox.alertBoxOut(BudgetAdd.this, getString(R.string.error), getString(R.string.emptymsg));
                 }
             }
         });
@@ -152,7 +153,7 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                         }
                         else
                         {
-                            alert.alertBoxOut(BudgetAdd.this,"Budget forecast","Need at least threee(3) budgets to calculate forecast");
+                            alert.alertBoxOut(BudgetAdd.this,getString(R.string.budgetforecast),getString(R.string.errorforecastmsg));
                         }
                     }
 
@@ -189,7 +190,7 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                     max= String.format("%.2f",forecastamount);
                 }
                 AlertBox alert=new AlertBox();
-                alert.alertBoxOut(BudgetAdd.this,"Budget forecast","Min. budget forecast amount :"+min+"\nMax budget forecast amount:"+max);
+                alert.alertBoxOut(BudgetAdd.this,getString(R.string.budgetforecast),getString(R.string.lowvalueforecast)+" "+min+"\n"+getString(R.string.highvalueforecast)+" "+max);
             }
         });
     }

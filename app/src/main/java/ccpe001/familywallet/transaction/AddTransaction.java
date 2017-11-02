@@ -37,6 +37,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import ccpe001.familywallet.*;
+import ccpe001.familywallet.budget.ActionValidater;
+
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -575,13 +577,14 @@ public class AddTransaction extends AppCompatActivity {
                     mDatabase = FirebaseDatabase.getInstance().getReference();
                     td = new TransactionDetails(userID,userName, amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID);
                     Double amountDouble =Double.parseDouble(amount);
-//                    if (type.equals("Expense")){
-//                        validExpense = av.amountCheck(account, amountDouble);
-//
-//                    }
-//                    else if(type.equals("Income")){
-//                        validIncome = av.addIncome(account, amountDouble);
-//                    }
+                    ActionValidater actionValidater=new ActionValidater();
+                    if (type.equals("Expense")){
+  //                    actionValidater.amountCheck(account, amountDouble);
+
+                    }
+                    else if(type.equals("Income")){
+  //                      actionValidater.addIncome(account, amountDouble);
+                    }
                         if(currency.equals("LKR."))  {
                             if (familyID.equals(userID) && !InGroup.equals("true")){
                                 mDatabase = mDatabase.child("Transactions").child(userID).push();
@@ -614,12 +617,12 @@ public class AddTransaction extends AppCompatActivity {
 
                     td = new TransactionDetails(eUserID,userName,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
                     Double amountDouble =Double.parseDouble(amount)-Double.parseDouble(previousAmount);
-
+                    ActionValidater actionValidater=new ActionValidater();
 //                    if (type.equals("Expense")){
-//                        validExpense = av.amountCheck(account, amountDouble);
+//                        actionValidater.amountCheck(account, amountDouble);
 //                    }
 //                    else if(type.equals("Income")){
-//                        validIncome = av.addIncome(account, amountDouble);
+//                        actionValidater.addIncome(account, amountDouble);
 //                    }
                         Map<String, Object> postValues = td.toMap();
                         mDatabase.child(key).updateChildren(postValues);

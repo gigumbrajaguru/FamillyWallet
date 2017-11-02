@@ -14,6 +14,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import ccpe001.familywallet.admin.Notification;
+
 import static ccpe001.familywallet.budget.ActionValidater.key;
 
 /**
@@ -26,7 +28,7 @@ public class AutoTracking {
     private static DatabaseReference mDatabase;
     private String[] budgetsdetail=new String[10000];
     private String[] detailTransaction=new String[10000];
-    public  void getTransactionDetail(Context context) {
+    public  void getTransactionDetail(final Context context) {
         previouskey="";
         Query querys;
         /**Get Shared preference data**/
@@ -60,10 +62,10 @@ public class AutoTracking {
                         nextitem=nextitem+5;
                     }
                     int numTrasaction = nextitem-4;
-                    getBudgetDetail(familyID,numTrasaction);
+                    getBudgetDetail(context,familyID,numTrasaction);
                 }
                 else {
-                    getBudgetDetail(familyID,0);
+                    getBudgetDetail(context,familyID,0);
                 }
             }
 
@@ -75,7 +77,7 @@ public class AutoTracking {
         });
     }
     /**Get budget detail**/
-    public void getBudgetDetail(final String familyID,final int numTrans) {
+    public void getBudgetDetail(final Context context,final String familyID,final int numTrans) {
         nextitem=0;
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Budget").orderByChild("familyId").equalTo(familyID).addValueEventListener(new ValueEventListener() {
@@ -113,7 +115,7 @@ public class AutoTracking {
                             }
                             budgetcount=nextitem-8;
                         }
-                        percentageCalc(familyID, numTrans, budgetcount, notify);
+                        percentageCalc(context,familyID, numTrans, budgetcount, notify);
                     }
                 }
             @Override
@@ -122,7 +124,7 @@ public class AutoTracking {
         });
     }
     /**Calculate percentages and totals transacction amount**/
-    public void percentageCalc(String familyID,int numtrans,int numbudget,String notify){
+    public void percentageCalc(Context context,String familyID,int numtrans,int numbudget,String notify){
             for(int i=0;i<numbudget;i=i+9){
                 double total=0;
                 String catagory=budgetsdetail[0+i];
@@ -159,18 +161,21 @@ public class AutoTracking {
                     }
                 }
                 double percentage=(total/budgetAmount)*100;
-                statusUpdate(percentage,key,notify);
+                statusUpdate(context,percentage,key,notify);
             }
     }
     /**Update status according to percentage**/
-    public  void statusUpdate(Double percentage,String key,String notify) {
+    public  void statusUpdate(Context context,Double percentage,String key,String notify) {
+        Notification not=new Notification();
         if (!previouskey.equals(key)) {
             if (percentage > 90 && percentage < 95) {
                 if (notify.equals("On")) {
+                    not.addNotification(context,"Critical level","Budget went over 95%");
                 }
                 FirebaseDatabase.getInstance().getReference("Budget").child(key).child("status").getRef().setValue("Critical Level");
             } else if (percentage > 95) {
                 if (notify.equals("On")) {
+                    not.addNotification(context,"Critical level","Budget went over 90%");
                 }
                 FirebaseDatabase.getInstance().getReference("Budget").child(key).child("status").getRef().setValue("Over Flow");
             } else if (percentage < 50) {

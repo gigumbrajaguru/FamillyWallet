@@ -2,6 +2,7 @@ package ccpe001.familywallet.budget;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -84,11 +85,11 @@ public class AddAccount extends AppCompatActivity {
                             if(m_txt.matches(".*[a-z0-9].*")){
                                 check=true;
                                 validbank=m_txt;
-                                AlertBox.alertBoxOut(AddAccount.this,"Succeed","Bank account added");
+                                AlertBox.alertBoxOut(AddAccount.this,getString(R.string.success),getString(R.string.bankaccount));
                             }
                             else{
                                 check=false;
-                                AlertBox.alertBoxOut(AddAccount.this,"Failed","Wrong input");
+                                AlertBox.alertBoxOut(AddAccount.this,getString(R.string.error),getString(R.string.emptymsg));
                             }
                         }
                     });
@@ -138,25 +139,30 @@ public class AddAccount extends AppCompatActivity {
         btnSubmit.setOnClickListener(new OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
-                                             AccountCtrl Ctrl = new AccountCtrl();
+                                             final AccountCtrl Ctrl = new AccountCtrl();
                                              final String accountName = accName.getText().toString();
-                                             Double amount = Double.parseDouble(accAmountss.getText().toString());
-                                             boolean xyzx= ActionValidater.accountName(accountName);
-                                             if (xyzx) {
-                                                 if (check) {
-                                                     msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, currtype, familyId));
-                                                 } else {
-                                                     msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Wallet", "Wallet", isPrivate, currtype, familyId));
+                                             final Double amount = Double.parseDouble(accAmountss.getText().toString());
+                                             ActionValidater actionValidater=new ActionValidater();
+                                             if(amount!=null && accountName!=null) {
+                                                 if (actionValidater.accountName(accountName)) {
+                                                     if (check) {
+                                                         msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, currtype, familyId));
+                                                     } else {
+                                                         msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Wallet", "Wallet", isPrivate, currtype, familyId));
 
+                                                     }
+                                                     if (msgBoxOut) {
+                                                         AlertBox.alertBoxOut(AddAccount.this, getString(R.string.success), getString(R.string.storedaccount));
+                                                         accName.setText("");
+                                                         accAmountss.setText("");
+                                                     }
+                                                 } else {
+                                                     AlertBox.alertBoxOut(AddAccount.this, getString(R.string.error), getString(R.string.storeaccountdetail));
                                                  }
-                                                 if (msgBoxOut) {
-                                                     AlertBox.alertBoxOut(AddAccount.this, "Data Stored", "Succeed");
-                                                     accName.setText("");
-                                                     accAmountss.setText("");
-                                                 }
-                                             } else {
-                                                 AlertBox.alertBoxOut(AddAccount.this, "Account Name ", "Change your account name");
+                                             }else{
+                                                 AlertBox.alertBoxOut(AddAccount.this, getString(R.string.error), getString(R.string.emptymsg));
                                              }
+
                                          }
                                      });
             }

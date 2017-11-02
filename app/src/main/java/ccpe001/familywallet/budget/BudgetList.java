@@ -48,6 +48,9 @@ public class BudgetList extends Fragment {
         ListView budList = (ListView) view.findViewById(R.id.list);
         AutoTracking autoTrack=new AutoTracking();
         autoTrack.getTransactionDetail(getContext());
+        ActionValidater actionValidater=new ActionValidater();
+        actionValidater.amountCheck("test",100);
+
         AutoRefresh(view);
         budList.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

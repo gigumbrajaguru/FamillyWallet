@@ -5,7 +5,16 @@
               android:layout_height="match_parent"
               android:weightSum="1">
 
-<LinearLayout
+    <LinearLayout
+        android:layout_width="384dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
+        android:orientation="horizontal">
+
+
+    </LinearLayout>
+
+    <LinearLayout
     android:layout_marginTop="10dp"
     android:layout_width="match_parent"
     android:orientation="horizontal"
@@ -16,7 +25,7 @@
         android:id="@+id/accN"
         android:layout_width="158dp"
         android:layout_height="match_parent"
-        android:text="Account name"
+        android:text="@string/accountName"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textStyle="bold"/>
@@ -40,7 +49,7 @@
                 android:id="@+id/accAmount"
                 android:layout_width="158dp"
                 android:layout_height="match_parent"
-                android:text="Amount"
+                android:text="@string/availableamount"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textStyle="bold"/>
@@ -64,7 +73,7 @@
                 android:id="@+id/acctypes"
                 android:layout_width="158dp"
                 android:layout_height="match_parent"
-                android:text="Account type"
+                android:text="@string/acctype"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textStyle="bold"/>
@@ -88,7 +97,7 @@
                 android:id="@+id/bankId"
                 android:layout_width="158dp"
                 android:layout_height="match_parent"
-                android:text="Bank Number"
+                android:text="@string/bnknumber"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textStyle="bold"/>
@@ -112,37 +121,13 @@
                 android:id="@+id/curty"
                 android:layout_width="158dp"
                 android:layout_height="match_parent"
-                android:text="Currency type"
+                android:text="@string/currencytype"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/curtyp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="TextView"
-                android:textAlignment="center"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginLeft="5dp"
-            android:layout_height="40dp">
-
-            <TextView
-                android:id="@+id/saving"
-                android:layout_width="158dp"
-                android:layout_height="match_parent"
-                android:text="Saving Account"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/isSaving"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="TextView"
@@ -159,9 +144,11 @@
 
         <Switch
             android:id="@+id/swet"
-            android:layout_width="match_parent"
+            android:layout_width="241dp"
             android:layout_height="wrap_content"
-            android:text="Saving account"/>
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:text="@string/savingaccount"/>
 
     </LinearLayout>
 

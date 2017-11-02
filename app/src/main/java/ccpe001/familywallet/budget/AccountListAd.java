@@ -50,7 +50,9 @@ public class AccountListAd extends ArrayAdapter{
         TextView budID=(TextView)v.findViewById(R.id.txtbudgetId);
         budID.setVisibility(TextView.INVISIBLE);
         ttype.setText(type[position]);
+        ttype.setTextSize(20);
         accAmount.setText(curtype[position]+" "+accAmounts[position]);
+        accAmount.setTextSize(20);
         accname.setText(accountName[position]);
         isavings.setText(status[position]);
         budID.setText(key[position]);

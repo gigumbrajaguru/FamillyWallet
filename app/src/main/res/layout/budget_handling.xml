@@ -23,7 +23,7 @@
             android:id="@+id/textView14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Budget Name"
+            android:text="@string/budgetname"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textSize="14sp"
@@ -34,7 +34,7 @@
             android:id="@+id/txtBname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Budget Name"
+            android:hint="@string/budgetname"
             android:inputType="textPersonName"
             android:layout_marginTop="10dp"
             android:textSize="14sp"/>
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Start Date"
+            android:text="@string/startdate"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textSize="14sp"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:focusableInTouchMode="false"
-            android:hint="Start Date"
+            android:hint="25/12/2017"
             android:inputType="text"
             android:textSize="14sp"/>
 
@@ -64,7 +64,7 @@
             android:id="@+id/textView16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="End Date"
+            android:text="@string/endate"
             android:layout_marginTop="10dp"
             android:textAlignment="center"
             android:textAllCaps="true"
@@ -78,7 +78,7 @@
             android:layout_marginTop="10dp"
             android:ems="10"
             android:focusableInTouchMode="false"
-            android:hint="End Date"
+            android:hint="25/12/2017"
             android:inputType="text"
             android:textSize="14sp"/>
 
@@ -87,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Category"
+            android:text="@string/catagory"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textSize="14sp"
@@ -104,7 +104,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Amount[LKR]"
+            android:text="@string/amountlkr"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textSize="14sp"
@@ -115,7 +115,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Amount[LKR]"
+            android:hint="LKR. 100"
             android:inputType="number"
             android:textSize="14sp"/>
 
@@ -124,20 +124,20 @@
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:text="Notification"/>
+            android:text="@string/notification"/>
 
         <Button
             android:id="@+id/btnForecast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Forecast"
+            android:text="@string/forecast"
             android:textStyle="bold"/>
 
         <Button
             android:id="@+id/btnSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Submit"
+            android:text="@string/submitted"
             android:textAlignment="center"
             android:textStyle="bold"/>
 

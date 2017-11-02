@@ -82,6 +82,14 @@ public class BudgetTrack extends AppCompatActivity{
                         if (child.getKey().equals("startDate")) {
                             strtDates.setText(child.getValue().toString());
                         }
+                        if (child.getKey().equals("notification")) {
+                            if(child.getValue().toString().equals("On")){
+                                switch1.setChecked(true);
+                            }
+                            else{
+                                switch1.setChecked(false);
+                            }
+                        }
                     }
                 }
             }
@@ -127,7 +135,7 @@ public class BudgetTrack extends AppCompatActivity{
             mDatabase = FirebaseDatabase.getInstance().getReference("Budget");
             AlertDialog.Builder builder = new AlertDialog.Builder(BudgetTrack.this);
             builder.setTitle(R.string.app_name);
-            builder.setMessage("Do you want proceed ?");
+            builder.setMessage(R.string.deletemsg);
             builder.setIcon(R.drawable.ic_launcher);
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -186,7 +194,7 @@ public class BudgetTrack extends AppCompatActivity{
                     public void onDataChange(final DataSnapshot dataSnapshot) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(BudgetTrack.this);
                         builder.setTitle(R.string.app_name);
-                        builder.setMessage("Do you want proceed[Delete Budget] ?");
+                        builder.setMessage(R.string.deletemsg);
                         builder.setIcon(R.drawable.ic_launcher);
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {

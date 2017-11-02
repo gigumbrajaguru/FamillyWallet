@@ -19,7 +19,6 @@
             android:src="@drawable/ic_action_create"
             app:fabSize="normal"
             android:id="@+id/fab1"
-            android:onClick="addaccount"
             />
 
         <ListView
