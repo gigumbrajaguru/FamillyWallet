@@ -170,12 +170,12 @@ public class AutoTracking {
         if (!previouskey.equals(key)) {
             if (percentage > 90 && percentage < 95) {
                 if (notify.equals("On")) {
-                    not.addNotification(context,"Critical level","Budget went over 95%");
+                  //  not.addNotification(context,"Critical level","Budget went over 95%");
                 }
                 FirebaseDatabase.getInstance().getReference("Budget").child(key).child("status").getRef().setValue("Critical Level");
             } else if (percentage > 95) {
                 if (notify.equals("On")) {
-                    not.addNotification(context,"Critical level","Budget went over 90%");
+                  //  not.addNotification(context,"Critical level","Budget went over 90%");
                 }
                 FirebaseDatabase.getInstance().getReference("Budget").child(key).child("status").getRef().setValue("Over Flow");
             } else if (percentage < 50) {
