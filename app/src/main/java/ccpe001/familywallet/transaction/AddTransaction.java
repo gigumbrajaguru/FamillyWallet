@@ -583,7 +583,7 @@ public class AddTransaction extends AppCompatActivity {
 
                     }
                     else if(type.equals("Income")){
-  //                      actionValidater.addIncome(account, amountDouble);
+                        actionValidater.addIncome(account, amountDouble);
                     }
                         if(currency.equals("LKR."))  {
                             if (familyID.equals(userID) && !InGroup.equals("true")){
@@ -618,12 +618,12 @@ public class AddTransaction extends AppCompatActivity {
                     td = new TransactionDetails(eUserID,userName,amount, title, categoryName, date, categoryID, time, account, location, type, currency,eFamilyID);
                     Double amountDouble =Double.parseDouble(amount)-Double.parseDouble(previousAmount);
                     ActionValidater actionValidater=new ActionValidater();
-//                    if (type.equals("Expense")){
+                    if (type.equals("Expense")){
 //                        actionValidater.amountCheck(account, amountDouble);
-//                    }
-//                    else if(type.equals("Income")){
-//                        actionValidater.addIncome(account, amountDouble);
-//                    }
+                    }
+                    else if(type.equals("Income")){
+                        actionValidater.addIncome(account, amountDouble);
+                    }
                         Map<String, Object> postValues = td.toMap();
                         mDatabase.child(key).updateChildren(postValues);
                         returnToDashboard();
