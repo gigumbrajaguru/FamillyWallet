@@ -73,8 +73,8 @@ public class AddAccount extends AppCompatActivity {
                 String selected = parent.getItemAtPosition(pos).toString();
                 if(selected=="Bank account"){
                     box = new AlertDialog.Builder(AddAccount.this);
-                    box.setTitle("Attention");
-                    box.setMessage("Enter bank account ID :");
+                    box.setTitle(getString(R.string.attention));
+                    box.setMessage(getString(R.string.addbank));
                     final EditText input = new EditText(AddAccount.this);
                     input.setInputType(InputType.TYPE_CLASS_TEXT );
                     box.setView(input);
@@ -141,9 +141,10 @@ public class AddAccount extends AppCompatActivity {
                                          public void onClick(View v) {
                                              final AccountCtrl Ctrl = new AccountCtrl();
                                              final String accountName = accName.getText().toString();
-                                             final Double amount = Double.parseDouble(accAmountss.getText().toString());
+                                             final String amountsString= accAmountss.getText().toString();
+                                             if(!amountsString.isEmpty() && !accountName.isEmpty()) {
+                                             final Double amount = Double.parseDouble(amountsString);
                                              ActionValidater actionValidater=new ActionValidater();
-                                             if(amount!=null && accountName!=null) {
                                                  if (actionValidater.accountName(accountName)) {
                                                      if (check) {
                                                          msgBoxOut = (Ctrl.addDataAcc(currentUser.getUid(), accountName, amount, "Bank Account", validbank, isPrivate, currtype, familyId));

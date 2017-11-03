@@ -455,7 +455,8 @@
     <string name="updated">Update Budget Detail</string>
     <string name="deletebudget">Delete Budget Detail</string>
     <string name="percentage">Percentage (%)</string>
-
+    <string name="attention">Attention[Optional}</string>
+    <string name="addbank">Bank Account No :</string>
 
 
 

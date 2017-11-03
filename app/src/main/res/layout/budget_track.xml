@@ -183,6 +183,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:background="@android:color/holo_green_light"
             android:text="@string/updates"
             android:textStyle="bold"/>
 
@@ -191,6 +192,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:background="@color/expense"
             android:text="@string/deletes"
             android:textStyle="bold"/>
     </LinearLayout>

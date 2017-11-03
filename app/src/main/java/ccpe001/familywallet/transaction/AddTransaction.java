@@ -579,7 +579,7 @@ public class AddTransaction extends AppCompatActivity {
                     Double amountDouble =Double.parseDouble(amount);
                     ActionValidater actionValidater=new ActionValidater();
                     if (type.equals("Expense")){
-  //                    actionValidater.amountCheck(account, amountDouble);
+                    //  actionValidater.amountCheck(account, amountDouble);
 
                     }
                     else if(type.equals("Income")){
@@ -619,7 +619,7 @@ public class AddTransaction extends AppCompatActivity {
                     Double amountDouble =Double.parseDouble(amount)-Double.parseDouble(previousAmount);
                     ActionValidater actionValidater=new ActionValidater();
                     if (type.equals("Expense")){
-//                        actionValidater.amountCheck(account, amountDouble);
+                    //    actionValidater.amountCheck(account, amountDouble);
                     }
                     else if(type.equals("Income")){
                         actionValidater.addIncome(account, amountDouble);
