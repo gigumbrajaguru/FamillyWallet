@@ -1,5 +1,6 @@
 package ccpe001.familywallet;
 
+import android.annotation.TargetApi;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -8,7 +9,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.service.notification.NotificationListenerService;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.Spinner;
@@ -189,7 +193,7 @@ public class Dashboard extends AppCompatActivity
         databaseReference.keepSynced(true);
 
         prefs = getSharedPreferences("App Settings", Context.MODE_PRIVATE);
-        PeriodicBackupCaller.backupRunner(getApplication(),prefs.getString("appBackUp","No Auto Backups"));
+        new PeriodicBackupCaller(getApplication()).backupRunner(getApplication(),prefs.getString("appBackUp","No Auto Backups"));
 
         if (mAuth.getCurrentUser() != null) {
             new Splash().userLoginFunc(getApplication());
@@ -526,12 +530,7 @@ public class Dashboard extends AppCompatActivity
         });
 
 
-
-        //if notification are on
-        prefs = getSharedPreferences("App Settings", MODE_PRIVATE);
-        if(prefs.getBoolean("appNoty",true)) {
-            notificationCalls(getApplication());
-        }
+        notificationCalls(getApplication());
 
         return true;
     }
@@ -554,6 +553,8 @@ public class Dashboard extends AppCompatActivity
      * @param item
      * @return
      */
+    @TargetApi(Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -650,7 +651,7 @@ public class Dashboard extends AppCompatActivity
                     .NOTIFICATION_SERVICE);
             mNotificationManager.cancel(PendingIntent.FLAG_UPDATE_CURRENT);
 
-            PeriodicBackupCaller.backupRunner(getApplication(),getString(R.string.nobackup));
+            new PeriodicBackupCaller(getApplication()).backupRunner(getApplication(),getString(R.string.nobackup));
 
             //off noti here
             notificationManager = (NotificationManager) getSystemService(Context
