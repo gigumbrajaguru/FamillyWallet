@@ -1,98 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-
-
-    <item android:title="@string/xmlmenu_item1_title" >
+    <item
+        android:id="@+id/navTransaction"
+        android:title="@string/xmlmenu_item1_title">
         <menu>
-        <item
-            android:id="@+id/transactionFrag"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/dashboard_settitle_overview" />
-        <item
-            android:id="@+id/categoryFrag"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/dashboard_settitle_family" />
+            <item
+                android:id="@+id/transactionFrag"
+                android:icon="@mipmap/user"
+                android:title="@string/dashboard_settitle_overview" />
+            <item
+                android:id="@+id/categoryFrag"
+                android:icon="@mipmap/family"
+                android:title="@string/dashboard_settitle_family" />
 
-        <item
-            android:id="@+id/recurringFrag"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/dashboard_settitle_recurring" />
+            <item
+                android:id="@+id/recurringFrag"
+                android:icon="@mipmap/recurring"
+                android:title="@string/dashboard_settitle_recurring" />
 
         </menu>
     </item>
 
 
-
-    <item android:title="@string/xmlmenu_item3_title">
+    <item
+        android:id="@+id/navUtilities"
+        android:title="@string/xmlmenu_item3_title">
         <menu>
 
             <item
-                    android:id="@+id/budgetFrag"
-                    android:icon="@drawable/ic_menu_share"
-                    android:title="@string/xmlmenu_budgetFrag_title"/>
+                android:id="@+id/budgetFrag"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/xmlmenu_budgetFrag_title" />
 
             <item
-                    android:id="@+id/walletFrag"
-                    android:icon="@drawable/ic_menu_slideshow"
-                    android:title="@string/xmlmenu_walletFrag_title"/>
+                android:id="@+id/walletFrag"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="@string/xmlmenu_walletFrag_title" />
 
             <item
-                    android:id="@+id/backupFrag"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="@string/xmlmenu_backupFrag_title"/>
+                android:id="@+id/backupFrag"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/xmlmenu_backupFrag_title" />
 
             <item
-                    android:id="@+id/reportsFrag"
-                    android:icon="@drawable/ic_menu_gallery"
-                    android:title="@string/xmlmenu_reportsFrag_title" />
+                android:id="@+id/reportsFrag"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="@string/xmlmenu_reportsFrag_title" />
 
 
         </menu>
     </item>
 
 
-    <item android:title="@string/xmlmenu_item4_title">
+    <item
+        android:id="@+id/navPreferences"
+        android:title="@string/xmlmenu_item4_title">
         <menu>
 
 
-
             <item
-                    android:id="@+id/settingFrag"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="@string/xmlmenu_settingFrag_title"/>
-
+                android:id="@+id/settingFrag"
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="@string/xmlmenu_settingFrag_title" />
 
 
             <item
-                    android:id="@+id/helpFrag"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="@string/xmlmenu_helpFrag_title"/>
+                android:id="@+id/helpFrag"
+                android:icon="@android:drawable/ic_menu_help"
+                android:title="@string/xmlmenu_helpFrag_title" />
         </menu>
     </item>
 
-    <item android:title="@string/xmlmenu_item5_title">
+    <item
+        android:id="@+id/navUsers"
+        android:title="@string/xmlmenu_item5_title">
         <menu>
 
 
             <item
-                    android:id="@+id/updateFrag"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="@string/xmlmenu_updateFrag_title"/>
-
+                android:id="@+id/updateFrag"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/xmlmenu_updateFrag_title" />
 
 
             <item
-                    android:id="@+id/addMemberFrag"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="@string/xmlmenu_addMemberFrag_title"/>
+                android:id="@+id/addMemberFrag"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/xmlmenu_addMemberFrag_title" />
 
             <item
-                    android:id="@+id/signOutFrag"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="@string/xmlmenu_signOutFrag_title"/>
+                android:id="@+id/signOutFrag"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/xmlmenu_signOutFrag_title" />
 
 
         </menu>

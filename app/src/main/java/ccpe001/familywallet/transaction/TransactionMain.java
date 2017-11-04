@@ -74,7 +74,7 @@ public class TransactionMain extends Fragment {
     Animation fabOpen, fabClose, fabClockwise, fabAntiClockwise;
     CoordinatorLayout fabLayout;
     ProgressBar trnsMainProgressBar;
-    TextView txtIncome,txtExpense;
+    TextView txtIncome,txtExpense, emptyList;
     boolean isOpen = false;
     private DatabaseReference mDatabase, gDatabase;
     Validate v = new Validate();
@@ -82,7 +82,8 @@ public class TransactionMain extends Fragment {
     List<TransactionDetails> tdList;
     List<String> keys, checkedPosition, accountsList, groupKeys;
     TransactionListAdapter adapter;
-    String userID = "uid", familyID="fid", InGroup="false";
+    String userID = "uid", familyID="fid", InGroup="false", time="0000";
+
     Resources res;
 
     private String tId;
@@ -102,6 +103,8 @@ public class TransactionMain extends Fragment {
         trnsMainProgressBar = (ProgressBar) view.findViewById(R.id.trnsMainProgressBar);
         fabAddMenu(view);
         list = (ListView) view.findViewById(R.id.transactionList);
+        emptyList = (TextView) view.findViewById(R.id.emptyList);
+        list.setEmptyView(emptyList);
         tdList = new ArrayList<>();
         groupKeys = new ArrayList<>();
         keys = new ArrayList<>();
@@ -286,10 +289,8 @@ public class TransactionMain extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_search) {
-            return true;
-        }
-        else if (id == R.id.filter_date){
+
+        if (id == R.id.filter_date){
             filterTransaction("date");
         }
         else if (id == R.id.filter_account){
@@ -297,6 +298,9 @@ public class TransactionMain extends Fragment {
         }
         else if (id == R.id.filter_amount){
             filterTransaction("amount");
+        }
+        else if (id == R.id.filter_category){
+            filterTransaction("category");
         }
         else if (id == R.id.filter_category){
             filterTransaction("category");
@@ -345,7 +349,7 @@ public class TransactionMain extends Fragment {
                 Button vEdit = (Button) dialog.findViewById(R.id.btnEdit);
                 Button vCancel = (Button) dialog.findViewById(R.id.btnCancel);
                 if (td.getTitle().isEmpty())
-                    vTitle.setText("Title Not Available");
+                    vTitle.setText(R.string.titleEmpty);
                 else
                     vTitle.setText(td.getTitle());
                 vAmount.setText(trns.currencyView(td.getCurrency(),getActivity())+td.getAmount());
@@ -559,11 +563,12 @@ public class TransactionMain extends Fragment {
                 R.drawable.cat1,R.drawable.cat2,R.drawable.cat3,R.drawable.cat4,
                 R.drawable.cat5,R.drawable.cat6,R.drawable.cat7,R.drawable.cat8,R.drawable.cat9,
                 R.drawable.cat10,R.drawable.cat11,R.drawable.cat12,R.drawable.cat13,R.drawable.cat14,
-                R.drawable.cat15,R.drawable.cat16,R.drawable.cat17,R.drawable.cat18,R.drawable.cat19,
-                R.drawable.cat_other,
+                R.drawable.cat15,R.drawable.cat16,R.drawable.cat17,R.drawable.cat18,R.drawable.cat19
+                ,R.drawable.cat100,R.drawable.cat101,R.drawable.cat103,R.drawable.cat104,
+                R.drawable.cat_other
         };
         /*populating itemname array with expense category list */
-        final String[] itemname = res.getStringArray(R.array.IncomeCategory);
+        final String[] itemname = res.getStringArray(R.array.FilterCategory);
         if (filterType.equals("date")){
             dialog.setContentView(R.layout.filter_dialog_date);
             filterDate(dialog,getContext());
@@ -627,10 +632,10 @@ public class TransactionMain extends Fragment {
 
                     Query query;
                     if (familyID.equals(userID) && !InGroup.equals("true")){
-                        query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date").startAt(filterStartdate).endAt(filterEnddate);
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date").startAt(filterStartdate+time).endAt(filterEnddate+time);
                     }
                     else {
-                        query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date").startAt(filterStartdate).endAt(filterEnddate);
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date").startAt(filterStartdate+time).endAt(filterEnddate+time);
                     }
                     filterByQuery(query);
                 }

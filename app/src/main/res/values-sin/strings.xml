@@ -88,7 +88,38 @@
     <string name="totalInc">ආදායම් එකතුව</string>
     <string name="totalExp">වියදම් එකතුව</string>
 
-    <string name="titleEmpty">Title not available</string>
+    <string name="titleEmpty">&lt;ශීර්ෂය ඇතුලත් කර නැත&gt;</string>
+
+    <string name="listEmpty">List is Empty</string>
+
+
+    <string-array name="FilterCategory">
+        <item>මෝටර් රථ</item>
+        <item>ගමන්</item>
+        <item>ආහාර පාන</item>
+        <item>ප්‍රරවාහනයයි</item>
+        <item>තෑගි</item>
+        <item>බිල්</item>
+        <item>විනෝදාස්වාදය</item>
+        <item>ගෙදර</item>
+        <item>උපයෝගිතා</item>
+        <item>සාප්පු සවාරි</item>
+        <item>නවාතැන්</item>
+        <item>සෞඛ්ය සත්කාර</item>
+        <item>ඇඳුම්</item>
+        <item>සිල්ලර බඩු</item>
+        <item>බීම</item>
+        <item>සුරතල් සතුන්</item>
+        <item>අධ්යාපන</item>
+        <item>චිත්රපට</item>
+        <item>දරුවන්</item>
+        <item>ණය</item>
+        <item>ව්යාපාර</item>
+        <item>වැටුප්</item>
+        <item>අමතර ආදායම</item>
+        <item>වෙනත්</item>
+    </string-array>
+
 
     <string-array name="IncomeCategory">
         <item>මෝටර් රථ</item>

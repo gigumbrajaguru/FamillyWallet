@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.widget.Spinner;
 import android.widget.AdapterView;
 import android.support.annotation.NonNull;
@@ -79,6 +81,7 @@ import ccpe001.familywallet.budget.AccountViews;
 import ccpe001.familywallet.budget.BudgetList;
 import ccpe001.familywallet.summary.SummaryTab;
 import ccpe001.familywallet.transaction.FamilyTransactions;
+import ccpe001.familywallet.transaction.GroupDetails;
 import ccpe001.familywallet.transaction.TransactionMain;
 import ccpe001.familywallet.transaction.TransactionRecurring;
 
@@ -89,6 +92,7 @@ public class Dashboard extends AppCompatActivity
 
     private Toolbar toolbar = null;
     private NavigationView navigationView = null;
+    private Menu navMenu=null;
     private DrawerLayout drawerLayout = null;
     private FloatingActionButton circleButton;
     private TextView navUserDetTxt;
@@ -132,6 +136,24 @@ public class Dashboard extends AppCompatActivity
 
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navMenu = navigationView.getMenu();
+        MenuItem navTransaction= navMenu.findItem(R.id.navTransaction);
+        MenuItem navUtilities= navMenu.findItem(R.id.navUtilities);
+        MenuItem navPreferences= navMenu.findItem(R.id.navPreferences);
+        MenuItem navUsers= navMenu.findItem(R.id.navUsers);
+
+        SpannableString s1 = new SpannableString(navTransaction.getTitle());
+        SpannableString s2 = new SpannableString(navUtilities.getTitle());
+        SpannableString s3 = new SpannableString(navPreferences.getTitle());
+        SpannableString s4 = new SpannableString(navUsers.getTitle());
+        s1.setSpan(new TextAppearanceSpan(this, R.style.TextAppearanceNav), 0, s1.length(), 0);
+        s2.setSpan(new TextAppearanceSpan(this, R.style.TextAppearanceNav), 0, s2.length(), 0);
+        s3.setSpan(new TextAppearanceSpan(this, R.style.TextAppearanceNav), 0, s3.length(), 0);
+        s4.setSpan(new TextAppearanceSpan(this, R.style.TextAppearanceNav), 0, s4.length(), 0);
+        navTransaction.setTitle(s1);
+        navUtilities.setTitle(s2);
+        navPreferences.setTitle(s3);
+        navUsers.setTitle(s4);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.inflateHeaderView(R.layout.nav_header_navigation_drawer);
@@ -542,9 +564,6 @@ public class Dashboard extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_search) {
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -712,9 +731,9 @@ public class Dashboard extends AppCompatActivity
                     break;
 
                 case 2:
-                    showcaseView.setShowcase(new ViewTarget(findViewById(R.id.action_search)), true);
-                    showcaseView.setContentTitle(getString(R.string.dashboard_onclick_2_setcontitle));
-                    showcaseView.setContentText(getString(R.string.dashboard_onclick_2_setconttext));
+//                    showcaseView.setShowcase(new ViewTarget(findViewById(R.id.action_search)), true);
+//                    showcaseView.setContentTitle(getString(R.string.dashboard_onclick_2_setcontitle));
+//                    showcaseView.setContentText(getString(R.string.dashboard_onclick_2_setconttext));
                     break;
 
                 case 3:
@@ -760,10 +779,13 @@ public class Dashboard extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot tdSnapshot:dataSnapshot.getChildren()) {
+
+                    GroupDetails gr = tdSnapshot.getValue(GroupDetails.class);
+
                     if (tdSnapshot.getKey().equals(uID)) {
                         SharedPreferences sharedPref = getSharedPreferences("fwPrefs", 0);
                         final SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("InGroup", "true");
+                        editor.putString("InGroup", gr.getInGroup());
                         editor.commit();
                         Fragment frg = null;
                         frg = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer1);

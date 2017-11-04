@@ -383,7 +383,7 @@ public class Translate {
     public static String dateToValue(String date) {
         String[] parts = date.split("-");
         String month = parts[1];
-        String day = parts[0];
+        String strDay = parts[0];
         String year = parts[2];
         String monthNum = "";
         switch (month) {
@@ -437,7 +437,15 @@ public class Translate {
                 break;
 
         }
-        return year + monthNum + day;
+        String retDay;
+        Integer intDay = Integer.parseInt(strDay);
+        if (intDay < 10){
+            retDay="0"+intDay;
+        }
+        else {
+            retDay=String.valueOf(intDay);
+        }
+        return year + monthNum + retDay;
     }
 
     /* Method to get date day nad month to double digits day =6th > 06 */

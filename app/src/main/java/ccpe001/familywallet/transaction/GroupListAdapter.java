@@ -62,8 +62,12 @@ public class GroupListAdapter extends ArrayAdapter<GroupDetails> {
         final ImageView proPic = (ImageView) rowView.findViewById(R.id.proPic);
         totalExpensesIncomes = id_total.get(grpDetail.getUserID());
 
-        txtTotalIncome.setText(grpDetail.getTotalIncome().toString());
-        txtTotalExpense.setText(grpDetail.getTotalExpense().toString());
+        try {
+            txtTotalIncome.setText(grpDetail.getTotalIncome().toString());
+            txtTotalExpense.setText(grpDetail.getTotalExpense().toString());
+        }catch (Exception e){
+
+        }
 
 
         txtName.setText(grpDetail.getFirstName());

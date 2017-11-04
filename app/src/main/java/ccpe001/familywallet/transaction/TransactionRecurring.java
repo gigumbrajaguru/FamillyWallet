@@ -58,7 +58,7 @@ public class TransactionRecurring extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.transaction_recurring_list, container, false);
         list = (ListView) view.findViewById(R.id.transactionListR);
-        emptyText = (TextView) view.findViewById(android.R.id.empty);
+        emptyText = (TextView) view.findViewById(R.id.emptyList);
         try {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         }catch (Exception e){

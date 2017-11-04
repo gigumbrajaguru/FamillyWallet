@@ -94,6 +94,42 @@
     <string name="priceFrom">From</string>
     <string name="priceTo">To</string>
 
+    <string name="totalInc">Total Income</string>
+    <string name="totalExp">Total Expense</string>
+
+    <string name="titleEmpty">&lt;Title not Available&gt;</string>
+
+
+    <string name="listEmpty">List is Empty</string>
+
+
+    <string-array name="FilterCategory">
+        <item>Car</item>
+        <item>Travel</item>
+        <item>Food &amp; Drinks</item>
+        <item>Transportation</item>
+        <item>Gifts</item>
+        <item>Bill</item>
+        <item>Entertainment</item>
+        <item>Home</item>
+        <item>Utilities</item>
+        <item>Shopping</item>
+        <item>Accommodation</item>
+        <item>Healthcare</item>
+        <item>Clothing</item>
+        <item>Groceries</item>
+        <item>Drinks</item>
+        <item>Pets</item>
+        <item>Education</item>
+        <item>Cinema</item>
+        <item>Kids</item>
+        <item>Loan</item>
+        <item>Business</item>
+        <item>Salary</item>
+        <item>Extra Income</item>
+        <item>Other</item>
+    </string-array>
+
     <string-array name="IncomeCategory">
         <item>Car</item>
         <item>Travel</item>
@@ -408,6 +444,7 @@
     <string name="report_desc">Please visit your specified backup location to see the reports. Default is Internal
         Memory.
     </string>
+    <string name="emptyRecur">Empty</string>
 
 
     <string-array name="nav_drwer_arr">

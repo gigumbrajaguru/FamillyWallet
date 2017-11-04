@@ -17,9 +17,6 @@
                 android:id="@+id/filter_date"
                 android:title="@string/vhDate" />
             <item
-                android:id="@+id/filter_account"
-                android:title="@string/vhAccount" />
-            <item
                 android:id="@+id/filter_amount"
                 android:title="@string/vhAmount" />
             <item

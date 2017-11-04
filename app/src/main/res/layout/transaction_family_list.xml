@@ -27,12 +27,20 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginStart="5dp"
-                android:paddingTop="5dp" />
+                android:paddingTop="5dp">
 
-            <include
-                layout="@layout/transaction_family_slideup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+            </ListView>
+
+            <RelativeLayout
+                android:id="@+id/includeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <include
+                    layout="@layout/transaction_family_slideup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
 
         </com.sothree.slidinguppanel.SlidingUpPanelLayout>
     </RelativeLayout>
@@ -40,6 +48,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/emptyList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/transactionListR"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="80dp"
+            android:gravity="center"
+            android:text="@string/listEmpty"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/fabLayout"
