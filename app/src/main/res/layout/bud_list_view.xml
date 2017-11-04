@@ -56,6 +56,7 @@
             android:text="TextView"
             android:textAlignment="center"
             android:textAllCaps="true"
+            android:textColor="@android:color/black"
             android:textSize="14sp"
             android:textStyle="bold"/>
 
@@ -70,6 +71,7 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:text="TextView"
+            android:textColor="@android:color/black"
             android:textSize="18sp"/>
 
         <TextView
@@ -92,7 +94,8 @@
             android:layout_alignBaseline="@+id/budName"
             android:layout_alignBottom="@+id/budName"
             android:layout_alignParentEnd="true"
-            android:text="TextView"/>
+            android:text="TextView"
+            android:textColor="@android:color/black"/>
 
     </RelativeLayout>
 

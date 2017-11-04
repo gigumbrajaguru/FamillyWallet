@@ -1,6 +1,8 @@
 package ccpe001.familywallet.budget;
 
 
+
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,13 +37,13 @@ public class ActionValidater {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if(isSaving(AccountName)) {
                         if (child.child("accountName").getValue().toString().equals(AccountName)) {
+                            if (checkam == 0) {
+                                getAmount(AccountName, amount);
+                                checkam = 1;
+                            }
                             if ((Double.parseDouble(child.child("amount").getValue().toString()) - amount) >= 0) {
                                 dp.setCheck(true);
                                 checks = dp.getCheck();
-                                if (checkam == 0) {
-                                    getAmount(AccountName, amount);
-                                    checkam = 1;
-                                }
                             } else {
                                 dp.setCheck(false);
                                 checks = dp.getCheck();

@@ -27,7 +27,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:layout_weight="0.09"
-            android:text="Account Name"
+            android:text="@string/accountName"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textStyle="bold"/>
@@ -35,11 +35,10 @@
         <EditText
             android:id="@+id/editText5"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="18dp"
             android:ems="10"
-            android:hint="Account Name"
             android:inputType="textPersonName"
             tools:layout_editor_absoluteX="30dp"
             tools:layout_editor_absoluteY="16dp"/>
@@ -49,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="22dp"
-            android:text="Amount"
+            android:text="@string/accamount"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textStyle="bold"/>
@@ -72,7 +71,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
-        android:hint="Available Amount "
         android:inputType="numberDecimal"
         tools:layout_editor_absoluteX="30dp"
         tools:layout_editor_absoluteY="83dp"/>
@@ -90,15 +88,15 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
-            android:text="Saving Account"/>
+            android:text="@string/savingaccount"/>
 
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="40dp"
-            android:background="@color/success_color"
-            android:text="Submit"/>
+            android:background="@android:color/holo_green_dark"
+            android:text="@string/submitted"/>
 
     </LinearLayout>
     </ScrollView>

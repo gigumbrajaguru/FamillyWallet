@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.*;
 
 
+import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
 import android.widget.*;
@@ -111,33 +113,14 @@ public class sumMain extends Fragment {
 
                 }
 
-                //getting rid of duplicate categories
-                Set<String> lump = new HashSet<String>();
-                int z=0;
-                try {
-                    for (String i : transCat) {
-                        z++;
-                        if (!lump.contains(i)) {
-                            float t = Float.parseFloat(transAmount.get(z)) + Float.parseFloat(transAmount.get(z + 1));
-                            transAmount.set(z, String.valueOf(t));
-                            transAmount.remove(z + 1);
-                            lump.add(i);
-                        }
-                    }
-                }catch(Exception e){
-
-                }
-
                 transAmountChart =new Float[transAmount.size()];
                 transCatChart =new String[transCat.size()];
 
                 for (int i = 0; i < transAmount.size(); i++) {
-                    Log.d("LOG",""+transAmount.get(i)+" "+i);
                     transAmountChart[i] = Float.parseFloat(transAmount.get(i));
                 }
 
                 for (int j = 0; j < transCat.size(); j++) {
-                    Log.d("LOG",""+transCat.get(j)+" "+j);
                     transCatChart[j] = transCat.get(j);
                 }
 
@@ -156,47 +139,49 @@ public class sumMain extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Calendar calendar = Calendar.getInstance();
-
                 String todayDate = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
-
-
                 if (i == 0) {
-                    calendar.setTimeInMillis(calendar.getTimeInMillis());
-                    while (calendar.get(Calendar.DATE) > 1) {
-                        calendar.add(Calendar.DATE, -1); // Substract 1 day until first day of month.
-                    }
-
-                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
                     endDateVal = todayDate;
-
+                    calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
+                    Log.d("LOG",""+startDateVal+"   "+endDateVal);
                     filter(startDateVal,endDateVal);
                 }else if (i == 1) {
-                    calendar.setTimeInMillis(calendar.getTimeInMillis());
-                    while (calendar.get(Calendar.DATE) > 1) {
-                        calendar.add(Calendar.DATE, -1); // Substract 1 day until first day of month.
-                    }
-                    startDateVal = String.valueOf(calendar.get(Calendar.YEAR)+calendar.get(Calendar.MONTH)+calendar.get(Calendar.DAY_OF_MONTH));
+                    calendar.set(Calendar.DAY_OF_MONTH, 1);
+                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
                     endDateVal = todayDate;
 
                     filter(startDateVal,endDateVal);
+                    Log.d("LOG",""+startDateVal+"   "+endDateVal);
+
                 } else if (i == 2) {
+                    calendar.set(Calendar.DAY_OF_MONTH, 1);
                     calendar.add(Calendar.MONTH, -1);
-                    startDateVal = String.valueOf(calendar.get(Calendar.YEAR)+calendar.get(Calendar.MONTH)+calendar.get(Calendar.DAY_OF_MONTH));
-                    endDateVal = todayDate;
+                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
+                    if (31 == new GregorianCalendar().getActualMaximum(Calendar.DAY_OF_MONTH)){
+                        calendar.add(Calendar.DAY_OF_MONTH, +31);//check this 31 or n30
+                    }else if (30 == new GregorianCalendar().getActualMaximum(Calendar.DAY_OF_MONTH)){
+                        calendar.add(Calendar.DAY_OF_MONTH, +30);//check this 31 or n30
+                    }else{
+                        calendar.add(Calendar.DAY_OF_MONTH, +28);//check this 31 or n30
+                    }
+                    endDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
                     filter(startDateVal,endDateVal);
-
+                    Log.d("LOG",""+startDateVal+"   "+endDateVal);
                 } else if (i == 3) {
+                    calendar.set(Calendar.DAY_OF_MONTH, 1);
                     calendar.add(Calendar.MONTH, -3);
-                    startDateVal = String.valueOf(calendar.get(Calendar.YEAR)+calendar.get(Calendar.MONTH)+calendar.get(Calendar.DAY_OF_MONTH));
-                    endDateVal = todayDate;
+                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
+                    calendar.add(Calendar.MONTH, +3);
+                    endDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
                     filter(startDateVal,endDateVal);
-
+                    Log.d("LOG",""+startDateVal+"   "+endDateVal);
                 }else if (i == 4) {
-                    calendar.add(Calendar.MONTH, -3);
-                    startDateVal = String.valueOf(calendar.get(Calendar.YEAR)+calendar.get(Calendar.MONTH)+calendar.get(Calendar.DAY_OF_MONTH));
+                    calendar.set(Calendar.DAY_OF_YEAR, 1);
+                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
                     endDateVal = todayDate;
                     filter(startDateVal,endDateVal);
-
+                    Log.d("LOG",""+startDateVal+"   "+endDateVal);
                 }  else if (i == 5) {
                     LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
                     final AlertDialog.Builder nameBuilder = new AlertDialog.Builder(getActivity());
@@ -254,7 +239,6 @@ public class sumMain extends Fragment {
 
 
      private void filter(final String startDateVal, final String endDateVal){
-        Log.d("LOG", "onDataChange"+startDateVal+"  "+endDateVal);
 
         if (familyID.equals(uid) && !InGroup.equals("true")){
             query = FirebaseDatabase.getInstance().getReference("Transactions").child(uid).orderByChild("date").startAt(startDateVal).endAt(endDateVal);
@@ -262,33 +246,31 @@ public class sumMain extends Fragment {
             query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date").startAt(startDateVal).endAt(endDateVal);
         }
 
-
-        String amonut,cat;
-
+        //clear earlier ones
+         transAmount.clear();
+         transCat.clear();
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                        transAmount.clear();
-                        transCat.clear();
-                        if (position == 0) {
-                            if (dataSnapshot1.child("type").getValue(String.class).toString().equals("Income")) {
-                                transAmount.add(dataSnapshot1.child("amount").getValue(String.class).toString());
-                                transCat.add(translate.categoryView((dataSnapshot1.child("categoryName").getValue(String.class)).toString(),getActivity()));
+                for(DataSnapshot Transacdata : dataSnapshot.getChildren()){
+                        if(position==0) {
+                            if(Transacdata.child("type").getValue(String.class).toString().equals("Income")) {
+                                transAmount.add((Transacdata.child("amount").getValue(String.class)).toString());
+                                transCat.add(translate.categoryView((Transacdata.child("categoryName").getValue(String.class)).toString(),getActivity()));
                             }
-                        } else if (position == 1) {
-                            if (dataSnapshot1.child("type").getValue(String.class).toString().equals("Expense")) {
-                                transAmount.add((dataSnapshot1.child("amount").getValue(String.class)).toString());
-                                transCat.add(translate.categoryView((dataSnapshot1.child("categoryName").getValue(String.class)).toString(),getActivity()));
+                        }else if(position==1){
+                            if(Transacdata.child("type").getValue(String.class).toString().equals("Expense")) {
+                                transAmount.add((Transacdata.child("amount").getValue(String.class)).toString());
+                                transCat.add(translate.categoryView((Transacdata.child("categoryName").getValue(String.class)).toString(),getActivity()));
                             }
                         }
                 }
 
+
+                //if data is there create chart
                 if(dataSnapshot.exists()) {
-                    transAmountChart = new Float[transAmount.size()];
-                    transCatChart = new String[transCat.size()];
+                    transAmountChart =new Float[transAmount.size()];
+                    transCatChart =new String[transCat.size()];
 
                     for (int i = 0; i < transAmount.size(); i++) {
                         transAmountChart[i] = Float.parseFloat(transAmount.get(i));
@@ -320,26 +302,6 @@ public class sumMain extends Fragment {
      */
     private void SetupChart() {
 
-       /*try {
-           for (int i = 0; i < transAmountChart.length; i++) {
-               //Log.d("LOG", "outer" + i + transCatChart[i] + transAmountChart[i]);
-
-               if (i == transAmountChart.length) {
-                   Log.d("LOG", "if" + i + transCatChart[i] + transAmountChart[i]);
-
-                   return;
-               } else if (transCatChart[i].equals(transCatChart[i + 1])) {
-                   Log.d("LOG", "else if" + i + transCatChart[i] + transAmountChart[i]+"//njb"+transAmountChart.length);
-                   transAmountChart[i] = transAmountChart[i] + transAmountChart[i + 1];
-               }
-           }
-       }catch (Exception e){
-           Log.d("LOG", "error" +e.getMessage());
-       }*/
-
-
-
-
         //showing pieEntries in chart
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
         for (int i = 0; i < transAmountChart.length; i++) {
@@ -364,16 +326,6 @@ public class sumMain extends Fragment {
 
     }
 
-    boolean duplicates(String[] zipcodelist)
-    {
-        Set<String> lump = new HashSet<String>();
-        for (String i : zipcodelist)
-        {
-            if (lump.contains(i)) return true;
-            lump.add(i);
-        }
-        return false;
-    }
 
     //http://blog.nkdroidsolutions.com/android-custom-spinner-dropdown-example-programmatically/
     public class CustomSpinner extends BaseAdapter implements SpinnerAdapter {

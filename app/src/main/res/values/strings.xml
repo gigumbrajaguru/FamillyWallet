@@ -453,5 +453,49 @@
         <item>Sign out</item>
     </string-array>
 
+    <string name="accountName">Account Name</string>
+    <string name="accamount">Amount</string>
+    <string name="availableamount">Available amount</string>
+    <string name="savingaccount">Saving Account</string>
+    <string name="submitted">Submit</string>
+    <string name="budgetname">Budget Name</string>
+    <string name="startdate">Start date</string>
+    <string name="endate">End date</string>
+    <string name="catagory">Category</string>
+    <string name="acctype">Account Type</string>
+    <string name="bnknumber">Bank account no:</string>
+    <string name="currencytype">Currency type</string>
+    <string name="amountlkr">Amount [Sri Lankan Rupee]</string>
+    <string name="notification">Notification</string>
+    <string name="budgetamount">Budget amount</string>
+    <string name="updates">Update</string>
+    <string name="deletes">Delete</string>
+    <string name="forecast">Forecast</string>
+    <string name="success">Completed</string>
+    <string name="error">Process Terminated</string>
+    <string name="storedaccount">Account store in database</string>
+    <string name="storeaccountdetail">Change your account name and try again</string>
+    <string name="errormsg">You must delete recurring transactions first</string>
+    <string name="updatedmsg">Wallet Updated</string>
+    <string name="deletedmsg">Wallet Deleted</string>
+    <string name="ctritical">Critical Level</string>
+    <string name="criticalmsg">Budget went over 95%</string>
+    <string name="budgetcriticalmsg">Budget store in database</string>
+    <string name="namecheckmsg">Change your account name and try again</string>
+    <string name="emptymsg">Fill all Fields with correct information</string>
+    <string name="budgetforecast">Budget forecast</string>
+    <string name="errorforecastmsg">Need at least threee(3) budgets to calculate forecast</string>
+    <string name="lowvalueforecast">Min. budget forecast amount :</string>
+    <string name="highvalueforecast">Max budget forecast amount:</string>
+    <string name="deletemsg">Do you want proceed ?</string>
+    <string name="bankaccount">Bank account saved</string>
+    <string name="updated">Update Budget Detail</string>
+    <string name="deletebudget">Delete Budget Detail</string>
+    <string name="percentage">Percentage (%)</string>
+    <string name="attention">Attention[Optional}</string>
+    <string name="addbank">Bank Account No :</string>
+
+
+
 
 </resources>

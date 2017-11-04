@@ -183,7 +183,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 builder.setTitle(R.string.setting_reminderbuilder_settitle);
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
-                        PeriodicBackupCaller.backupRunner(getActivity(),items[item]);
+                        new PeriodicBackupCaller(getActivity()).backupRunner(getActivity(),items[item]);
                         backupRemText.setText(items[item]);
                         appBackUp = items[item];
                         storePWSharedPref();
@@ -233,7 +233,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                     .NOTIFICATION_SERVICE);
             mNotificationManager.cancel(PendingIntent.FLAG_UPDATE_CURRENT);
 
-            PeriodicBackupCaller.backupRunner(getActivity(),getString(R.string.nobackup));
+            new PeriodicBackupCaller(getActivity()).backupRunner(getActivity(),getString(R.string.nobackup));
 
             //off noti here
             notificationManager = (NotificationManager)getActivity().getSystemService(Context
@@ -400,7 +400,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 builder.setTitle(R.string.setting_reminderbuilder_settitle);
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
-                        PeriodicBackupCaller.backupRunner(getActivity(),items[item]);
+                        new PeriodicBackupCaller(getActivity()).backupRunner(getActivity(),items[item]);
                         backupRemText.setText(items[item]);
                         appBackUp = items[item];
                         storePWSharedPref();
