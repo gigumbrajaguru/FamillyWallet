@@ -70,6 +70,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:elevation="5dp"
-        android:text="@string/filter" />
+        android:text="@string/filter"
+        android:backgroundTint="@color/buttontint"
+        android:textColor="@color/colorPrimary" />
 
 </LinearLayout>

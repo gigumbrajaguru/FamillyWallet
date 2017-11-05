@@ -1,11 +1,15 @@
 package ccpe001.familywallet.transaction;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,15 +18,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,6 +57,7 @@ public class TransactionRecurring extends Fragment {
     Validate v = new Validate();
     Translate trns = new Translate();
 
+    private String tId;
 
     private DatabaseReference mDatabase;
 
@@ -106,6 +118,12 @@ public class TransactionRecurring extends Fragment {
 
         }
         list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                viewTransaction(keys.get(position));
+            }
+        });
         list.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             MenuItem deleteIcon, editIcon;
 
@@ -222,5 +240,83 @@ public class TransactionRecurring extends Fragment {
             }
         });
     }
+    /* View transaction in a expanded view on a dialog box */
+    private void viewTransaction(final String key) {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.transaction_recurring_view);
+        final DatabaseReference transaction;
+            transaction = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(userID).child(key);
+            tId = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(userID).child(key).getKey();
+
+        transaction.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TransactionDetails td = dataSnapshot.getValue(TransactionDetails.class);
+                TextView vTitle = (TextView) dialog.findViewById(R.id.vRecurTitle);
+                TextView vAmount = (TextView) dialog.findViewById(R.id.vRecurTxtAmount);
+                TextView vCategory = (TextView) dialog.findViewById(R.id.vRecurTxtCategory);
+                TextView vAccount = (TextView) dialog.findViewById(R.id.vRecurTxtAccount);
+                TextView vDate = (TextView) dialog.findViewById(R.id.vRecurTxtDate);
+                TextView vTime = (TextView) dialog.findViewById(R.id.vRecurTxtTime);
+                TextView vRecur = (TextView) dialog.findViewById(R.id.vRecurTxtName);
+                TextView vLocation = (TextView) dialog.findViewById(R.id.vRecurTxtLocation);
+                Button vCancel = (Button) dialog.findViewById(R.id.btnRecurCancel);
+                if (td.getTitle().isEmpty())
+                    vTitle.setText(R.string.titleEmpty);
+                else
+                    vTitle.setText(td.getTitle());
+                vAmount.setText(trns.currencyView(td.getCurrency(),getActivity())+td.getAmount());
+                vCategory.setText(trns.categoryView(td.getCategoryName(),getActivity()));
+                vAccount.setText(td.getAccount());
+                vDate.setText(trns.dateView(td.getDate(),getContext()));
+                vTime.setText(trns.timeView(td.getTime(),getActivity()));
+                vRecur.setText(trns.recurringView(td.getRecurringPeriod(),getContext()));
+                SpannableString content = new SpannableString(td.getLocation());
+                content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                vLocation.setText(content);
+                if (vLocation.getText().equals(null)){
+                    vLocation.setClickable(false);
+                }
+                else {
+                    vLocation.setClickable(true);
+                }
+
+                final String location = td.getLocation();
+                vLocation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String map = "http://maps.google.co.in/maps?q=" + location;
+                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(map));
+                        startActivity(intent);
+                    }
+                });
+                vCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        /*retriving bill image*/
+        final ImageView vScan = (ImageView) dialog.findViewById(R.id.imageview_scan);
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        storageReference.child("ScannedBills/" + userID+"/"+tId+ ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.with(getContext())
+                        .load(uri)
+                        .into(vScan);
+            }
+        });
+    }
+
 
 }

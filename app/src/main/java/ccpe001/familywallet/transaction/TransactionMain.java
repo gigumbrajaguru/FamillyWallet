@@ -37,7 +37,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,7 +81,7 @@ public class TransactionMain extends Fragment {
     List<TransactionDetails> tdList;
     List<String> keys, checkedPosition, accountsList, groupKeys;
     TransactionListAdapter adapter;
-    String userID = "uid", familyID="fid", InGroup="false", time="0000";
+    String userID = "uid", familyID="fid", InGroup="false", startTime ="0000", endTime="2359";
 
     Resources res;
 
@@ -632,10 +631,10 @@ public class TransactionMain extends Fragment {
 
                     Query query;
                     if (familyID.equals(userID) && !InGroup.equals("true")){
-                        query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date").startAt(filterStartdate+time).endAt(filterEnddate+time);
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date").startAt(filterStartdate+ startTime).endAt(filterEnddate+ endTime);
                     }
                     else {
-                        query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date").startAt(filterStartdate+time).endAt(filterEnddate+time);
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date").startAt(filterStartdate+ startTime).endAt(filterEnddate+ endTime);
                     }
                     filterByQuery(query);
                 }

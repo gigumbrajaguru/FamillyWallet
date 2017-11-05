@@ -21,7 +21,6 @@ import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +71,7 @@ public class FamilyTransactions extends Fragment {
 
     static Translate trns = new Translate();
     static HashMap<String,String> KeyName;
-    String userID, familyID, InGroup,time="0000";
+    String userID, familyID, InGroup, startTime ="0000", endTime="2359";
     FloatingActionButton fab_income, fab_expense,fab_main;
     Animation fabOpen, fabClose, fabClockwise, fabAntiClockwise;
     TextView txtIncome,txtExpense, emptyList;
@@ -671,12 +670,7 @@ public class FamilyTransactions extends Fragment {
             dialog.setContentView(R.layout.filter_dialog_date);
             filterDate(dialog,getContext());
         }else if (filterType.equals("account")){
-            dialog.setContentView(R.layout.filter_dialog_account);
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_list_item_1,accountsList);
-            ListView lv = (ListView) dialog.findViewById(R.id.filterAccountList);
-            lv.setAdapter(arrayAdapter);
-            filterAccounts(dialog);
+            Toast.makeText(context, "Not available", Toast.LENGTH_SHORT).show();
         }else if (filterType.equals("amount")){
             dialog.setContentView(R.layout.filter_dialog_amount);
             filterAmount(dialog);
@@ -727,23 +721,21 @@ public class FamilyTransactions extends Fragment {
                 }else {
                     String filterStartdate = trns.dateToValue(startDate.getText().toString());
                     String filterEnddate = trns.dateToValue(endDate.getText().toString());
-
-                    Log.i("helow",filterStartdate+" - "+filterEnddate);
                     Query query;
                     if (familyID.equals(userID) && !InGroup.equals("true")){
-                        query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date").startAt(filterStartdate+time).endAt(filterEnddate+time);
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date").startAt(filterStartdate+ startTime).endAt(filterEnddate+endTime);
                     }
                     else {
-                        query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date").startAt(filterStartdate+time).endAt(filterEnddate+time);
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date").startAt(filterStartdate+ startTime).endAt(filterEnddate+endTime);
                     }
-                    filterByQuery(query);
+                    filterByQuery(query,filterStartdate+ startTime,filterEnddate+ startTime);
                 }
             }
         });
 
     }
 
-    public void filterByQuery(Query query){
+    public void filterByQuery(Query query, String sDate, String eDate){
         try{
 
             query.addValueEventListener(new ValueEventListener() {
@@ -844,62 +836,6 @@ public class FamilyTransactions extends Fragment {
         }
     }
 
-    public void filterAccounts(final Dialog view){
-        ListView filterAccountList = (ListView) view.findViewById(R.id.filterAccountList);
-        filterAccountList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
-        filterAccountList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Query query;
-                if (familyID.equals(userID) && !InGroup.equals("true")){
-                    query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date");
-                }
-                else {
-                    query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
-                    Toast.makeText(getActivity(), "-"+accountsList.get(i), Toast.LENGTH_SHORT).show();
-                }
-                filterByAccounyQuery(query,accountsList.get(i));
-            }
-        });
-
-
-    }
-
-    public void filterByAccounyQuery(Query query, final String accountName){
-        try{
-
-            query.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    tdList.clear();
-                    for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
-                        TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
-                            if (td.getAccount().equals(accountName)){
-                                tdList.add(tdSnapshot.getValue(TransactionDetails.class));
-                                keys.add(tdSnapshot.getKey());
-                            }
-                    }
-
-                    try{
-                        Collections.reverse(tdList);
-                        Collections.reverse(keys);
-                        adapter = new FamilyTransactionsAdapter(getActivity(),tdList);
-                        transactionList.setAdapter(adapter);
-                    }catch (Exception e){
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-        }catch (Exception e){
-
-        }
-    }
 
     public void filterCategory(final Dialog view, final String[] itemname){
         GridView filterCategoryList = (GridView) view.findViewById(R.id.filterCatergoryGrid);

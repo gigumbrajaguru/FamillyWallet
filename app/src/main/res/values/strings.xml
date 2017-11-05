@@ -100,7 +100,7 @@
     <string name="titleEmpty">&lt;Title not Available&gt;</string>
 
 
-    <string name="listEmpty">List is Empty</string>
+    <string name="listEmpty">No Transactions available</string>
 
 
     <string-array name="FilterCategory">
@@ -169,10 +169,6 @@
         <item>Annually</item>
     </string-array>
 
-    <string-array name="spinnerAccount">
-        <item>Account 1</item>
-        <item>Account 2</item>
-    </string-array>
 
     <string-array name="spinnerDateFor">
         <item>2001/03/14</item>

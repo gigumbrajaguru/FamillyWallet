@@ -10,7 +10,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/action_filter"
-        android:title="Filter"
+        android:title="@string/filter"
         app:showAsAction="collapseActionView">
         <menu>
             <item

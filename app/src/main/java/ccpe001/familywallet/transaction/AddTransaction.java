@@ -227,7 +227,7 @@ public class AddTransaction extends AppCompatActivity {
                     }
                 });
 
-        /* Getting recurring time periods from l */
+        /* Getting recurring startTime periods from l */
         final String[] recurringPeriod = resources.getStringArray(R.array.spinnerRecurring);
 
         /* Making recurring transaction selection visible and invisible according to the selection from the checkbox*/
@@ -389,7 +389,7 @@ public class AddTransaction extends AppCompatActivity {
             txtDate.setText(dateString);
         }
 
-        /*if time isn't set set the current time*/
+        /*if startTime isn't set set the current startTime*/
         if (time==null){
             long Cdate = System.currentTimeMillis();
             SimpleDateFormat stf = new SimpleDateFormat("h:mm a");
@@ -449,7 +449,7 @@ public class AddTransaction extends AppCompatActivity {
             }
         });
 
-        /* opening time dialog box to set time */
+        /* opening startTime dialog box to set startTime */
         txtTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -458,6 +458,11 @@ public class AddTransaction extends AppCompatActivity {
                 dialog.show(ft,"TimePicker");
             }
         });
+
+//        if (!type.equals("Expense") || !type.equals("Income")){
+//            Toast.makeText(context, "Error Occured, Please Try again", Toast.LENGTH_SHORT).show();
+//            returnToDashboard();
+//        }
 
     }
 
@@ -497,6 +502,10 @@ public class AddTransaction extends AppCompatActivity {
         amount = txtAmount.getText().toString();
         date = txtDate.getText().toString();
         time = txtTime.getText().toString();
+        /** Values to compare today date with recurring transactions date when adding*/
+        String dateToCompare = trns.dateToValue(date);
+        String todayDate = trns.getCurrentDate();
+        /****************************************/
         date = trns.dateToDB(date,time);
         time = trns.timeToDB(time);
         title = txtTitle.getText().toString();
@@ -528,7 +537,25 @@ public class AddTransaction extends AppCompatActivity {
             }
             else {
                 TransactionDetails td;
+                TransactionDetails today;
                 try {
+                    /** if the recurring transaction added today then add a entry to the main list as well*/
+                    if (dateToCompare.equals(todayDate)){
+                        mDatabase = FirebaseDatabase.getInstance().getReference();
+                        today = new TransactionDetails(userID,userName, amount, title, categoryName, date, categoryID, time, account, location, type, currency,familyID);
+                        if(currency.equals("LKR."))  {
+                            if (familyID.equals(userID) && !InGroup.equals("true")){
+                                mDatabase = mDatabase.child("Transactions").child(userID).push();
+                                tId = mDatabase.getKey();
+                                mDatabase.setValue(today);
+                            }
+                            else{
+                                mDatabase = mDatabase.child("Transactions").child("Groups").child(familyID).push();
+                                tId = mDatabase.getKey();
+                                mDatabase.setValue(today);
+                            }
+                        }
+                    }
                     if (update.equals("False")){
 
                         mDatabase = FirebaseDatabase.getInstance().getReference();
