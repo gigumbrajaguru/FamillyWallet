@@ -22,5 +22,12 @@
 
     <style name="Theme.Material.NoActionBar.Light.NoActionBar.TestTheme" parent="android:Theme.Material.NoActionBar"/>
 
+    <style name="TextAppearanceNav">
+        <item name="android:textColor">#100e0e</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:background">#d4626262</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
 
 </resources>

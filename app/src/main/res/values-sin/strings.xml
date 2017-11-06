@@ -41,8 +41,8 @@
     <string name="noAccBtnAdd">ගිණුමක් සාදන්න</string>
     <string name="cancel">අවලංගු කරන්න</string>
     <string name="updateTransaction">සංස්කරණය කරන්න</string>
-    <string name="leaveGroup">Leave Group</string>
-    <string name="remove">Remove(s)</string>
+    <string name="leaveGroup">කණ්ඩායමෙන් ඉවත්වන්න</string>
+    <string name="remove">ඉවත් කරන්න</string>
 
     <string-array name="Months">
         <item>ජන</item>
@@ -79,7 +79,7 @@
     <string name="vhTime">වෙලාව</string>
     <string name="vhLocation">ස්ථානය</string>
     <string name="filter">වර්ග කරන්න</string>
-    <string name="submit">Submit</string>
+    <string name="submit">ඇතුලත් කරන්න</string>
 
     <string name="startDate">ආරම්භ දිනය</string>
     <string name="endDate">අවසාන දිනය</string>
@@ -90,7 +90,38 @@
     <string name="totalInc">ආදායම් එකතුව</string>
     <string name="totalExp">වියදම් එකතුව</string>
 
-    <string name="titleEmpty">Title not available</string>
+    <string name="titleEmpty">&lt;ශීර්ෂය ඇතුලත් කර නැත&gt;</string>
+
+    <string name="listEmpty">ගනුදෙනු ඇතුලත් කර නැත</string>
+
+
+    <string-array name="FilterCategory">
+        <item>මෝටර් රථ</item>
+        <item>ගමන්</item>
+        <item>ආහාර පාන</item>
+        <item>ප්‍රරවාහනයයි</item>
+        <item>තෑගි</item>
+        <item>බිල්</item>
+        <item>විනෝදාස්වාදය</item>
+        <item>ගෙදර</item>
+        <item>උපයෝගිතා</item>
+        <item>සාප්පු සවාරි</item>
+        <item>නවාතැන්</item>
+        <item>සෞඛ්ය සත්කාර</item>
+        <item>ඇඳුම්</item>
+        <item>සිල්ලර බඩු</item>
+        <item>බීම</item>
+        <item>සුරතල් සතුන්</item>
+        <item>අධ්යාපන</item>
+        <item>චිත්රපට</item>
+        <item>දරුවන්</item>
+        <item>ණය</item>
+        <item>ව්යාපාර</item>
+        <item>වැටුප්</item>
+        <item>අමතර ආදායම</item>
+        <item>වෙනත්</item>
+    </string-array>
+
 
     <string-array name="IncomeCategory">
         <item>මෝටර් රථ</item>

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,16 +20,25 @@ import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,9 +51,12 @@ import com.google.firebase.storage.StorageReference;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Translate;
@@ -51,19 +64,21 @@ import ccpe001.familywallet.budget.AddAccount;
 
 import com.squareup.picasso.Picasso;
 
+import static android.view.View.GONE;
+
 
 public class FamilyTransactions extends Fragment {
 
     static Translate trns = new Translate();
     static HashMap<String,String> KeyName;
-    String userID, familyID, InGroup;
+    String userID, familyID, InGroup, startTime ="0000", endTime="2359";
     FloatingActionButton fab_income, fab_expense,fab_main;
     Animation fabOpen, fabClose, fabClockwise, fabAntiClockwise;
-    TextView txtIncome,txtExpense;
+    TextView txtIncome,txtExpense, emptyList;
     CoordinatorLayout fabLayout;
     boolean isOpen = false;
-    RelativeLayout backgroundLayout;
-
+    static RelativeLayout backgroundLayout, includeLayout;
+    public static Set<String> familyIDs = new LinkedHashSet<String>();
     List<String> accountsList;
 
 
@@ -79,6 +94,7 @@ public class FamilyTransactions extends Fragment {
     FamilyTransactionsAdapter adapter;
     List<TransactionDetails> tdList;
     List<String> keys;
+    Resources res;
 
     private String tId;
 
@@ -94,6 +110,9 @@ public class FamilyTransactions extends Fragment {
 
         final View view = inflater.inflate(R.layout.transaction_family_list, container, false);
         fabAddMenu(view);
+        setHasOptionsMenu(true);
+        res = getResources();
+
         /**
          * @grpList - Array to hold group list objects
          * @tdList - Array to hold transaction list objects
@@ -108,8 +127,10 @@ public class FamilyTransactions extends Fragment {
 
         memberList = (ListView) view.findViewById(R.id.grpList);
         transactionList = (ListView) view.findViewById(R.id.familyTransactions);
+        emptyList = (TextView) view.findViewById(R.id.emptyList);
+        transactionList.setEmptyView(emptyList);
         backgroundLayout = (RelativeLayout) view.findViewById(R.id.backgroundLayout);
-
+        includeLayout = (RelativeLayout) view.findViewById(R.id.includeLayout);
         imgSlide = (ImageView) view.findViewById(R.id.imgSlide);
         slide = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
         btnAlltransaction = (Button) view.findViewById(R.id.btnAllTransactions);
@@ -129,7 +150,7 @@ public class FamilyTransactions extends Fragment {
                 }
                 else if (newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED)){
                     imgSlide.setImageResource(R.mipmap.slide_down);
-                    fabLayout.setVisibility(View.GONE);
+                    fabLayout.setVisibility(GONE);
                 }
             }
         });
@@ -239,6 +260,38 @@ public class FamilyTransactions extends Fragment {
         return view;
         }
 
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.removeItem(R.id.filter_account);
+        super.onPrepareOptionsMenu(menu);
+    }
+
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        inflater.inflate(R.menu.navigation_drawer_family,menu);
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.filter_date){
+            filterTransaction("date");
+        }
+        else if (id == R.id.filter_account){
+            filterTransaction("account");
+        }
+        else if (id == R.id.filter_amount){
+            filterTransaction("amount");
+        }
+        else if (id == R.id.filter_category){
+            filterTransaction("category");
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     /**
      * @param familyID - family id of current the user
      * @param userID - user id of the current user
@@ -250,9 +303,11 @@ public class FamilyTransactions extends Fragment {
 
         if (familyID.equals(userID) && !inGroup.equals("true")){
             query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date");
+            includeLayout.setVisibility(GONE);
         }
         else {
             query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
+            includeLayout.setVisibility(View.VISIBLE);
         }
         return query;
     }
@@ -271,6 +326,8 @@ public class FamilyTransactions extends Fragment {
                     TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
                         tdList.add(tdSnapshot.getValue(TransactionDetails.class));
                         keys.add(tdSnapshot.getKey());
+                        familyIDs.add(td.getUserID());
+
 
                 }
                 Collections.reverse(tdList);
@@ -432,7 +489,7 @@ public class FamilyTransactions extends Fragment {
                 TextView vLocation = (TextView) dialog.findViewById(R.id.vFamTxtLocation);
                 Button vCancel = (Button) dialog.findViewById(R.id.btnFamCancel);
                 if (td.getTitle().isEmpty())
-                    vTitle.setText("Title Not Available");
+                    vTitle.setText(R.string.titleEmpty);
                 else
                     vTitle.setText(td.getTitle());
                 vAmount.setText(trns.currencyView(td.getCurrency(),getActivity())+td.getAmount());
@@ -566,7 +623,7 @@ public class FamilyTransactions extends Fragment {
                         fab_income.setClickable(true);
                         fab_expense.setClickable(true);
                         fabLayout.setBackgroundColor(Color.parseColor("#BF000000"));
-                        backgroundLayout.setVisibility(View.GONE);
+                        backgroundLayout.setVisibility(GONE);
                         isOpen = true;
                     }
                     if (isOpen) {
@@ -594,4 +651,247 @@ public class FamilyTransactions extends Fragment {
             }
         });
     }
+
+    private void filterTransaction(String filterType) {
+
+        final Dialog dialog = new Dialog(getContext());
+
+        final Integer[] imgid = {
+                R.drawable.cat1,R.drawable.cat2,R.drawable.cat3,R.drawable.cat4,
+                R.drawable.cat5,R.drawable.cat6,R.drawable.cat7,R.drawable.cat8,R.drawable.cat9,
+                R.drawable.cat10,R.drawable.cat11,R.drawable.cat12,R.drawable.cat13,R.drawable.cat14,
+                R.drawable.cat15,R.drawable.cat16,R.drawable.cat17,R.drawable.cat18,R.drawable.cat19
+                ,R.drawable.cat100,R.drawable.cat101,R.drawable.cat103,R.drawable.cat104,
+                R.drawable.cat_other
+        };
+        /*populating itemname array with expense category list */
+        final String[] itemname = res.getStringArray(R.array.FilterCategory);
+        if (filterType.equals("date")){
+            dialog.setContentView(R.layout.filter_dialog_date);
+            filterDate(dialog,getContext());
+        }else if (filterType.equals("account")){
+            Toast.makeText(context, "Not available", Toast.LENGTH_SHORT).show();
+        }else if (filterType.equals("amount")){
+            dialog.setContentView(R.layout.filter_dialog_amount);
+            filterAmount(dialog);
+        }else if (filterType.equals("category")){
+            dialog.setContentView(R.layout.filter_dialog_category);
+            GridView gridd = (GridView) dialog.findViewById(R.id.filterCatergoryGrid);
+            CategoryAdapter adapter = new CategoryAdapter(getActivity(), itemname, imgid);  //Sending list to category adapter
+            gridd.setAdapter(adapter);
+            filterCategory(dialog,itemname);
+        }
+
+
+
+
+        dialog.show();
+    }
+
+    public void filterDate(Dialog view, final Context con) {
+
+        DatePicker dp = (DatePicker) view.findViewById(R.id.filterDatepicker);
+        final EditText startDate = (EditText) view.findViewById(R.id.etxtStartDate);
+        final EditText endDate = (EditText) view.findViewById(R.id.etxtEndDate);
+        final Button btnfilter = (Button) view.findViewById(R.id.btnFilterDate);
+
+        Calendar calendar = Calendar.getInstance();
+        dp.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker datePicker, int year, int month, int day) {
+                String date = trns.dateWithDoubleDigit(year,month+1,day,con);
+                Log.d("LOG",""+year+"  "+month+"  "+day);
+
+                if(startDate.isFocused()) {
+                    startDate.setText(date);
+                }else {
+                    endDate.setText(date);
+                }
+            }
+        });
+
+
+
+
+        btnfilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (startDate.getText().toString().isEmpty() || endDate.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), R.string.emptyDate, Toast.LENGTH_SHORT).show();
+                }else {
+                    String filterStartdate = trns.dateToValue(startDate.getText().toString());
+                    String filterEnddate = trns.dateToValue(endDate.getText().toString());
+                    Query query;
+                    if (familyID.equals(userID) && !InGroup.equals("true")){
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date").startAt(filterStartdate+ startTime).endAt(filterEnddate+endTime);
+                    }
+                    else {
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date").startAt(filterStartdate+ startTime).endAt(filterEnddate+endTime);
+                    }
+                    filterByQuery(query,filterStartdate+ startTime,filterEnddate+ startTime);
+                }
+            }
+        });
+
+    }
+
+    public void filterByQuery(Query query, String sDate, String eDate){
+        try{
+
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    tdList.clear();
+                    for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                        TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
+                            tdList.add(tdSnapshot.getValue(TransactionDetails.class));
+                            keys.add(tdSnapshot.getKey());
+                    }
+
+                    try{
+                        Collections.reverse(tdList);
+                        Collections.reverse(keys);
+                        adapter = new FamilyTransactionsAdapter(getActivity(),tdList);
+                        transactionList.setAdapter(adapter);
+                    }catch (Exception e){
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }catch (Exception e){
+
+        }
+    }
+
+    public void filterAmount(Dialog view){
+
+        final EditText etxtAmountFrom = (EditText) view.findViewById(R.id.amountFrom);
+        final EditText etxtAmountTo = (EditText) view.findViewById(R.id.amountTo);
+        Button btnFilterAmount = (Button) view.findViewById(R.id.btnFilterAmount);
+
+
+        btnFilterAmount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (etxtAmountFrom.getText().toString().isEmpty() || etxtAmountTo.getText().toString().isEmpty()){
+                    Toast.makeText(getActivity(), R.string.emptyDate, Toast.LENGTH_SHORT).show();
+                }else {
+                    Double amountFrom = Double.parseDouble(etxtAmountFrom.getText().toString());
+                    Double amountTo = Double.parseDouble(etxtAmountTo.getText().toString());
+                    Query query;
+                    Log.i("heloo",amountFrom+"--"+amountTo);
+                    if (familyID.equals(userID) && !InGroup.equals("true")){
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date");
+                    }
+                    else {
+                        query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
+                    }
+                    filterByAmountQuery(query,amountFrom,amountTo);
+                }
+            }
+        });
+
+    }
+
+    public void filterByAmountQuery(Query query, final Double amountFrom, final Double amountTo){
+        try{
+
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    tdList.clear();
+                    for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                        TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
+                            Double amount = Double.parseDouble(td.getAmount());
+                            if ((amountFrom<=amount) &&(amount<=amountTo)){
+                                tdList.add(tdSnapshot.getValue(TransactionDetails.class));
+                                keys.add(tdSnapshot.getKey());
+                            }
+                    }
+
+                    try{
+                        Collections.reverse(tdList);
+                        Collections.reverse(keys);
+                        adapter = new FamilyTransactionsAdapter(getActivity(),tdList);
+                        transactionList.setAdapter(adapter);
+                    }catch (Exception e){
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }catch (Exception e){
+
+        }
+    }
+
+
+    public void filterCategory(final Dialog view, final String[] itemname){
+        GridView filterCategoryList = (GridView) view.findViewById(R.id.filterCatergoryGrid);
+        filterCategoryList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        filterCategoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Query query;
+                if (familyID.equals(userID) && !InGroup.equals("true")){
+                    query = FirebaseDatabase.getInstance().getReference("Transactions").child(userID).orderByChild("date");
+                }
+                else {
+                    query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
+                }
+                filterByCategoryQuery(query,itemname[i].toString());
+            }
+        });
+
+
+    }
+
+    public void filterByCategoryQuery(Query query, final String categoryName){
+        try{
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    tdList.clear();
+                    for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
+                        TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
+
+                            if (td.getCategoryName().equals(categoryName)){
+                                tdList.add(tdSnapshot.getValue(TransactionDetails.class));
+                                keys.add(tdSnapshot.getKey());
+                            }
+                    }
+
+                    try{
+                        Collections.reverse(tdList);
+                        Collections.reverse(keys);
+                        adapter = new FamilyTransactionsAdapter(getActivity(),tdList);
+                        transactionList.setAdapter(adapter);
+                    }catch (Exception e){
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }catch (Exception e){
+
+        }
+    }
+
+
 }

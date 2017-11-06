@@ -31,11 +31,11 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhFamName"
+                android:id="@+id/vhRecurName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:text="@string/vhName"
+                android:text="@string/recurring"
                 android:textColor="@color/com_facebook_likeview_text_color" />
         </TableRow>
 
@@ -44,7 +44,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vFamTxtName"
+                android:id="@+id/vRecurTxtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -70,7 +70,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhFamTitle"
+                android:id="@+id/vhRecurTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -83,7 +83,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vFamTitle"
+                android:id="@+id/vRecurTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -108,7 +108,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhFamAmount"
+                android:id="@+id/vhRecurAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -121,7 +121,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vFamTxtAmount"
+                android:id="@+id/vRecurTxtAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -145,7 +145,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhFamCategory"
+                android:id="@+id/vhRecurCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -158,7 +158,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vFamTxtCategory"
+                android:id="@+id/vRecurTxtCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -182,7 +182,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhFamAccount"
+                android:id="@+id/vhRecurAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -196,7 +196,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vFamTxtAccount"
+                android:id="@+id/vRecurTxtAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -222,7 +222,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhFamDate"
+                android:id="@+id/vhRecurDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -236,7 +236,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vFamTxtDate"
+                android:id="@+id/vRecurTxtDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -261,7 +261,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhFamTime"
+                android:id="@+id/vhRecurTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -275,7 +275,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vFamTxtTime"
+                android:id="@+id/vRecurTxtTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -301,7 +301,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vhFamLocation"
+                android:id="@+id/vhRecurLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -315,7 +315,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/vFamTxtLocation"
+                android:id="@+id/vRecurTxtLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="45dp"
@@ -398,7 +398,7 @@
             android:gravity="center">
 
             <Button
-                android:id="@+id/btnFamCancel"
+                android:id="@+id/btnRecurCancel"
                 style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

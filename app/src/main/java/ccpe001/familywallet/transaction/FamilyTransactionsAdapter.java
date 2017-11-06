@@ -2,6 +2,7 @@ package ccpe001.familywallet.transaction;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import ccpe001.familywallet.R;
 import ccpe001.familywallet.Translate;
@@ -26,7 +28,14 @@ public class FamilyTransactionsAdapter extends ArrayAdapter<TransactionDetails> 
     private List<TransactionDetails> tdList;
     Translate trns = new Translate();
     Resources res= getContext().getResources();
+    int[] colorList = {Color.parseColor("#FF00FF"),Color.parseColor("#B8860B"),
+            Color.parseColor("#00FA9A"),Color.parseColor("#4C0099"),
+            Color.parseColor("#800000"),Color.parseColor("#00FFFF"),
+            Color.parseColor("#008080"),Color.parseColor("#C0C0C0"),
+            Color.parseColor("#2F4F4F"),Color.parseColor("#4B0082")};
 
+
+    List list = new ArrayList(FamilyTransactions.familyIDs);
 
     public FamilyTransactionsAdapter(Activity context, List<TransactionDetails> tdList) {
         super(context, R.layout.transaction_family_list, tdList);
@@ -49,6 +58,7 @@ public class FamilyTransactionsAdapter extends ArrayAdapter<TransactionDetails> 
         TextView txtDate = (TextView) rowView.findViewById(R.id.txtFamTime);
         TextView txtAmount = (TextView) rowView.findViewById(R.id.txtFamAmount);
         TextView txtName = (TextView) rowView.findViewById(R.id.txtFamName);
+        TextView memberColor = (TextView) rowView.findViewById(R.id.memberColor);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.FamImg);
 
 
@@ -74,7 +84,8 @@ public class FamilyTransactionsAdapter extends ArrayAdapter<TransactionDetails> 
             txtCategory.setTextColor(ContextCompat.getColor(getContext(),R.color.expense));
             txtDate.setTextColor(ContextCompat.getColor(getContext(),R.color.expense));
         }
-
+        memberColor.setBackgroundColor(colorList[list.indexOf(td.getUserID())]);
+        txtName.setTextColor(colorList[list.indexOf(td.getUserID())]);
         return rowView;
 
     }

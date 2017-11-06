@@ -47,7 +47,7 @@ import ccpe001.familywallet.transaction.TransactionDetails;
 
 /**
  * Created by harithaperera on 5/10/17.
- * Updated by Knight.
+ * Updated by Sachindra.
  */
 public class AddMember extends Fragment  implements View.OnClickListener{
 

@@ -95,11 +95,11 @@ public class AutoRecurringTransactions {
     /* Method to add recurring transactions according to the specific period automatically*/
     public void addRecurring(TransactionDetails td){
 
-        String dbDate = td.getDate();   //getting date and time of the recurring transaction
+        String dbDate = td.getDate();   //getting date and startTime of the recurring transaction
         String dbMonth = dbDate.substring(4,6); //getting month of the recurring transaction
         String dbDay = dbDate.substring(6,8);   //getting day of the recurring transaction
         String dbYear = dbDate.substring(0,4);  //getting year of the recurring transaction
-        String dbTime= dbDate.substring(8);  //getting time of the recurring transaction
+        String dbTime= dbDate.substring(8);  //getting startTime of the recurring transaction
         String dbReccur = td.getRecurringPeriod();  //getting recurring period of the recurring transaction
 
         /* Creating a transaction date object */
@@ -139,7 +139,7 @@ public class AutoRecurringTransactions {
                 /*Converting the day into a double digit value if its not*/
         retDay = getDayAsTwoDigits();
 
-        retDate=String.valueOf(TODAY_YEAR)+retMonth+retDay+transactionDate.getTime(); //return date converted to format (year+month+day+time ie-201709241245)
+        retDate=String.valueOf(TODAY_YEAR)+retMonth+retDay+transactionDate.getTime(); //return date converted to format (year+month+day+startTime ie-201709241245)
         addTransaction(td, retDate);
     }
 
@@ -168,7 +168,7 @@ public class AutoRecurringTransactions {
 
         if (dbDayOfWeek==TODAY_DAY_OF_WEEK){
 
-            retDate=String.valueOf(TODAY_YEAR)+retMonth+retDay+transactionDate.getTime(); //return date converted to format (year+month+day+time ie-201709241245)
+            retDate=String.valueOf(TODAY_YEAR)+retMonth+retDay+transactionDate.getTime(); //return date converted to format (year+month+day+startTime ie-201709241245)
             addTransaction(td, retDate);
 
         }

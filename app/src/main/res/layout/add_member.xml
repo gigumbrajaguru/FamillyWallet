@@ -64,10 +64,12 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
+                android:backgroundTint="@color/buttontint"
                 android:gravity="center_vertical"
                 android:text="@string/xmladdmember_scanqrbtn_text"
                 android:textAlignment="center"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary" />
 
             <Button
                 android:id="@+id/btnLeave"
@@ -82,10 +84,11 @@
                 android:text="@string/leaveGroup"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:backgroundTint="@color/buttontint"
+                android:textColor="@color/colorPrimary"/>
 
         </LinearLayout>
     </ScrollView>
-
 
 </LinearLayout>

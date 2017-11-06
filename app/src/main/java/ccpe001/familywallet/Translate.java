@@ -2,12 +2,26 @@ package ccpe001.familywallet;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by Knight on 8/25/2017.
  */
 
 public class Translate {
+
+    /** get the current date according to the format used*/
+    public String getCurrentDate(){
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        Calendar cal = Calendar.getInstance();
+        String currentDate = dateFormat.format(cal.getTime());
+        return currentDate;
+    }
 
     /* Method to get category name in english to save in database  */
     public String categoryToDB(String cat) {
@@ -381,9 +395,10 @@ public class Translate {
 
     /* Method to convert date in to all digit format ie- "2017-Jan-11" --> "20170111"*/
     public static String dateToValue(String date) {
+        Log.i("helloWW1",date);
         String[] parts = date.split("-");
         String month = parts[1];
-        String day = parts[0];
+        String strDay = parts[0];
         String year = parts[2];
         String monthNum = "";
         switch (month) {
@@ -437,7 +452,15 @@ public class Translate {
                 break;
 
         }
-        return year + monthNum + day;
+        String retDay;
+        Integer intDay = Integer.parseInt(strDay);
+        if (intDay < 10){
+            retDay="0"+intDay;
+        }
+        else {
+            retDay=String.valueOf(intDay);
+        }
+        return year + monthNum + retDay;
     }
 
     /* Method to get date day nad month to double digits day =6th > 06 */

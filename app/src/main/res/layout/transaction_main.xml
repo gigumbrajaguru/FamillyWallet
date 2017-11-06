@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F4F5"
+    android:foregroundGravity="center"
     android:orientation="horizontal"
     tools:context="ccpe001.familywallet.transaction.TransactionMain">
 
@@ -28,7 +29,27 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="1.5sp"
         android:focusable="false"
-        android:focusableInTouchMode="false" />
+        android:focusableInTouchMode="false">
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/emptyList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/transactionListR"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="80dp"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:text="@string/listEmpty"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/fabLayout"
