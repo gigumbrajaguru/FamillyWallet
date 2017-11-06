@@ -428,7 +428,7 @@
     <string name="acctype">Account Type</string>
     <string name="bnknumber">Bank account no:</string>
     <string name="currencytype">Currency type</string>
-    <string name="amountlkr">Amount [Sri Lankan Rupee]</string>
+    <string name="amountlkr">Amount  [Sri Lankan Rupee]</string>
     <string name="notification">Notification</string>
     <string name="budgetamount">Budget amount</string>
     <string name="updates">Update</string>
@@ -455,9 +455,43 @@
     <string name="updated">Update Budget Detail</string>
     <string name="deletebudget">Delete Budget Detail</string>
     <string name="percentage">Percentage (%)</string>
-    <string name="attention">Attention[Optional}</string>
+    <string name="attention">Attention  [Optional]</string>
     <string name="addbank">Bank Account No :</string>
+    <string name="budgettitle">Budget</string>
+    <string name="accounttitle">Account</string>
+    <string name="budgettrack">Budget Track</string>
+    <string name="accountview">Account list</string>
+    <string name="cancels">Cancel</string>
+    <string-array name="categorylist">
+        <item>Food and Drinks</item>
+        <item>Travel</item>
+        <item>Entertainment</item>
+        <item>Healthcare</item>
+        <item>Gifts</item>
+        <item>Bill</item>
+        <item>Utilities</item>
+        <item>Shopping</item>
+        <item>Clothing</item>
+        <item>Groceries</item>
+        <item>Pets</item>
+        <item>Education</item>
+        <item>Kids</item>
+        <item>Loan</item>
+        <item>Business</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="listCurrency">
+        <item>LKR.</item>
+        <item>USD.</item>
+        <item>EUR.</item>
+        <item>GBP.</item>
+        <item>INR.</item>
+    </string-array>
+    <string-array name="accounttype">
+        <item>Wallet</item>
+        <item>Bank account</item>
 
+    </string-array>
 
 
 

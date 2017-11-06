@@ -52,9 +52,9 @@ public class AccountListAd extends ArrayAdapter{
         ttype.setText(type[position]);
         ttype.setTextSize(15);
         accAmount.setText(curtype[position]+" "+accAmounts[position]);
-        accAmount.setTextSize(15);
+        accAmount.setTextSize(20);
         accname.setText(accountName[position]);
-        accname.setTextSize(20);
+        accname.setTextSize(15);
         isavings.setText(status[position]);
         budID.setText(key[position]);
         img.setImageResource(imgId[position]);

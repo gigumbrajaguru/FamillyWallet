@@ -3,6 +3,7 @@ package ccpe001.familywallet.budget;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -39,18 +40,18 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
     ArrayList<BarEntry> group1 = new ArrayList<>();
     ArrayList<Double> usedlist = new ArrayList<>();
     ArrayList<Double> amountlist = new ArrayList<>();
-    public static String getfid;
-    public static BarData barData;
     private static DatabaseReference mDatabases;
     private  int day,mon,yr;
     private String[] arraySpinner;
-    String selected,sttDay,endday,bName,amounts,notify="Off",FamilyId;
+    String pickeditem,selected,sttDay,endday,bName,amounts,notify="Off",FamilyId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.arraySpinner = new String[] {
+        this.arraySpinner = getResources().getStringArray(R.array.categorylist);
+        final DataStores ds=new DataStores();
+        /*this.arraySpinner = new String[] {
                 "Food & Drinks", "Travel", "Gifts","Bill","Entertainment","Home","Utilities","Shopping","Accommodation","Healthcare","Clothing","Groceries","Pets","Education","Kids","Loan","Business"
-        };
+        };*/
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabases = FirebaseDatabase.getInstance().getReference();
         mDatabases.child("UserInfo").orderByChild("userId").equalTo(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
@@ -65,6 +66,7 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
             }
         });
         setContentView(R.layout.budget_handling);
+        setTitle(getString(R.string.budgettitle));
         strDt=(EditText)findViewById(R.id.startDate);
         endDt=(EditText)findViewById(R.id.endDate);
         forcast=(Button)findViewById(R.id.btnForecast);
@@ -79,7 +81,9 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
         s.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selected = parent.getItemAtPosition(position).toString();
+                pickeditem = parent.getItemAtPosition(position).toString();
+                selected=ds.datachange(pickeditem);
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -107,6 +111,7 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                 bName=Bname.getText().toString();
                 amounts=tAmount.getText().toString();
                 if(!sttDay.isEmpty() && !endday.isEmpty() && !amounts.isEmpty() && !bName.isEmpty()) {
+                    Log.i("asd",selected);
                     Boolean msgBoxOut = (Ctrl.addbdget(currentUser.getUid(), FamilyId, bName, sttDay, endday, amounts, notify, selected));
 
                     if (msgBoxOut) {
@@ -133,8 +138,9 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         AlertBox alert=new AlertBox();
                         int i = 0;
-                        if(dataSnapshot.getChildrenCount()>2) {
-                            if (dataSnapshot.hasChildren()) {
+                        if (dataSnapshot.hasChildren()) {
+                            if(dataSnapshot.getChildrenCount()>2) {
+
                                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                                     if (child.child("catagory").getValue().toString().equals(selected)) {
                                         String budgname = child.child("BudgetName").getValue().toString();
@@ -148,7 +154,15 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                                         amountlist.add(Amounts);
                                     }
                                 }
-                                forecasts(usedlist, amountlist);
+                                if(i>1) {
+                                    forecasts(usedlist, amountlist);
+                                }
+                                else{
+                                    alert.alertBoxOut(BudgetAdd.this,getString(R.string.budgetforecast),getString(R.string.errorforecastmsg));
+                                }
+                            }
+                            else{
+                                alert.alertBoxOut(BudgetAdd.this,getString(R.string.budgetforecast),getString(R.string.errorforecastmsg));
                             }
                         }
                         else
