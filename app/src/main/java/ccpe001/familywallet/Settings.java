@@ -1,10 +1,7 @@
 package ccpe001.familywallet;
 
 import android.Manifest;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
+import android.app.*;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -106,7 +103,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
     }
 
     private void init(View v){
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Settings");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.xmlmenu_settingFrag_title);
 
         c = Calendar.getInstance();
         langArr = getActivity().getResources().getStringArray(R.array.spinnerLanguage);
@@ -183,7 +180,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 builder.setTitle(R.string.setting_reminderbuilder_settitle);
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
-                        new PeriodicBackupCaller(getActivity()).backupRunner(getActivity(),items[item]);
+                        PeriodicBackupCaller.backupRunner(getActivity(),items[item]);
                         backupRemText.setText(items[item]);
                         appBackUp = items[item];
                         storePWSharedPref();
@@ -232,8 +229,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
             NotificationManager mNotificationManager = (NotificationManager)getActivity().getSystemService(Context
                     .NOTIFICATION_SERVICE);
             mNotificationManager.cancel(PendingIntent.FLAG_UPDATE_CURRENT);
-
-            new PeriodicBackupCaller(getActivity()).backupRunner(getActivity(),getString(R.string.nobackup));
+            PeriodicBackupCaller.backupRunner(getActivity(),getString(R.string.nobackup));
 
             //off noti here
             notificationManager = (NotificationManager)getActivity().getSystemService(Context
@@ -400,7 +396,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 builder.setTitle(R.string.setting_reminderbuilder_settitle);
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
-                        new PeriodicBackupCaller(getActivity()).backupRunner(getActivity(),items[item]);
+                        PeriodicBackupCaller.backupRunner(getActivity(),items[item]);
                         backupRemText.setText(items[item]);
                         appBackUp = items[item];
                         storePWSharedPref();
@@ -511,7 +507,7 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
 
             }else{
                 dailyRemRow.setVisibility(View.GONE);
-
+                stopNotifications();
                 notificationManager = (NotificationManager)getActivity().getSystemService(Context
                         .NOTIFICATION_SERVICE);
                 notificationManager.cancelAll();
@@ -520,17 +516,26 @@ public class Settings extends Fragment implements View.OnClickListener,Switch.On
                 storePWSharedPref();
             }
         }else if(switchs.getId()==R.id.statusIconSwitch){
-            if(!b) {
+            if(b) {
                 appIcon = true;
+                storePWSharedPref();
+                new ccpe001.familywallet.admin.Notification(itemMessagesBadgeTextView).statusIcon(getActivity());
+            }else{
+                appIcon = false;
                 storePWSharedPref();
                 notificationManager = (NotificationManager)getActivity().getSystemService(Context
                         .NOTIFICATION_SERVICE);
                 notificationManager.cancel(PendingIntent.FLAG_UPDATE_CURRENT);
-            }else{
-                appIcon = false;
-                storePWSharedPref();
-                new ccpe001.familywallet.admin.Notification(itemMessagesBadgeTextView).statusIcon(getActivity());
             }
+        }
+    }
+
+    private void stopNotifications(){
+        Intent intent = new Intent(getActivity(), Notification.Notification_Receiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),DAILY_REMINDER,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getActivity().ALARM_SERVICE);
+        if(alarmManager!=null){
+            alarmManager.cancel(pendingIntent);
         }
     }
 

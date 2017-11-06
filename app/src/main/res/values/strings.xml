@@ -5,7 +5,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="signup_title">Create an Account</string>
-    <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -374,7 +373,6 @@
         <item>Google</item>
         <item>Facebook</item>
     </string-array>
-    <string name="title_activity_kjkjkjk">Settings</string>
 
 
     <string name="xmlactivity_loading_dialog_pageTxt">LOADING..</string>
@@ -397,7 +395,7 @@
     <string name="error_permitting">Something is wrong when granting permissions.Please try again.</string>
     permit_only_backup
     <string name="xml_lang_selector_english">English</string>
-    <string name="xml_lang_selector_sinhala">Sinhala</string>
+    <string name="xml_lang_selector_sinhala">සිංහල</string>
     <string name="app_announce">App Announcemnt</string>
     <string name="xmlmenu_item1_title">Transactions</string>
     <string name="xmlmenu_item4_title">Preferences</string>

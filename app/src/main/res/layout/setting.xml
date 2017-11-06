@@ -435,8 +435,9 @@
                         android:layout_height="match_parent"
                         android:padding="10dp">
                     <Button
+                            android:textColor="@color/colorPrimary"
                             android:layout_weight="1"
-android:background="@drawable/roundbutton"
+                            style="@style/Widget.AppCompat.Button.Colored"
                             android:text="@string/xmlsetting_signOutBtn_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

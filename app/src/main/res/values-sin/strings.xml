@@ -255,6 +255,7 @@
     </string-array>
 
 
+
     <string-array name="spinnerLanguage">
         <item>සිංහල</item>
         <item>English</item>
@@ -436,8 +437,8 @@
     <string name="customaletdialog_initCommonDialogPage_posbtn">වාර්තා කරන්න</string>
     <string name="customaletdialog_initCommonDialogPage_negbtn">අවලංගු කරන්න</string>
     <string name="common_sucessful">සාර්ථකයි..!</string>
-    <string name="customaletdialog_initPermissionPage_negbtn">පසු</string>
-    <string name="customaletdialog_initPermissionPage_posbtn">දැන්</string>
+    <string name="customaletdialog_initPermissionPage_negbtn">නැත පසුව</string>
+    <string name="customaletdialog_initPermissionPage_posbtn">ඔව් දැන්</string>
     <string name="xml_getpermit_title">අවසර ලබා දීම..!</string>
     <string name="network_error">කරුණාකර පුරනය වීම සඳහා ජංගම දත්ත හෝ Wifi ක්රියාත්මක කරන්න</string>
     <string name="forgot_FirebaseAuthInvalidUserException">මෙම අනන්යතාවයට අනුරූප විද්යුත් තැපැල් ලිපිනයක් නොමැත.</string>

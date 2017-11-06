@@ -34,12 +34,13 @@
             android:text="@string/xmlforgot_sendMail_text"
             android:gravity="center_vertical"
             android:layout_marginTop="10dp"
-            android:background="@drawable/roundbutton"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:textAllCaps="false"
             android:textAlignment="center"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:textColor="@color/colorPrimary"
 
 
             android:layout_height="47dp"
