@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import ccpe001.familywallet.admin.Notification;
 import ccpe001.familywallet.transaction.TransactionDetails;
@@ -35,20 +36,8 @@ public class PeriodicBackupCaller extends GcmTaskService {
     private WritableSheet sheet;
     private String finalLoc;
 
-    private String InGroup,familyID,uid;
-    private SharedPreferences sharedPref;
 
 
-    public PeriodicBackupCaller(Context c){
-        sharedPref = c.getSharedPreferences("fwPrefs",0);
-        InGroup = sharedPref.getString("InGroup", "");
-        familyID = sharedPref.getString("uniFamilyID", "");
-        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    }
-
-    public PeriodicBackupCaller(){
-
-    }
 
     @Override
     public int onRunTask(TaskParams taskParams) {
@@ -62,7 +51,7 @@ public class PeriodicBackupCaller extends GcmTaskService {
         return 0;
     }
 
-    public void backupRunner(Context c,String runTime){
+    public static void backupRunner(Context c, String runTime){
         if(timeConverter(runTime,c)==0){
             if(gcmNetworkManager!=null) {
                 gcmNetworkManager.cancelTask("backupTask", PeriodicBackupCaller.class);
@@ -101,6 +90,11 @@ public class PeriodicBackupCaller extends GcmTaskService {
 
 
     private void export() throws IOException {
+        SharedPreferences sharedPref = getApplication().getSharedPreferences("fwPrefs",0);
+        String InGroup = sharedPref.getString("InGroup", "");
+        String familyID = sharedPref.getString("uniFamilyID", "");
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         databaseReference= FirebaseDatabase.getInstance().getReference();
         databaseReference.child("Transactions").child(uid);
         if (familyID.equals(uid) && !InGroup.equals("true")){

@@ -39,6 +39,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="18dp"
             android:ems="10"
+            android:hint="@string/accountName"
             android:inputType="textPersonName"
             tools:layout_editor_absoluteX="30dp"
             tools:layout_editor_absoluteY="16dp"/>
@@ -67,11 +68,12 @@
 
     <EditText
         android:id="@+id/editText7"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
-        android:inputType="numberDecimal"
+        android:layout_marginTop="10dp"
+        android:hint="1000"
+        android:inputType="number"
         tools:layout_editor_absoluteX="30dp"
         tools:layout_editor_absoluteY="83dp"/>
 

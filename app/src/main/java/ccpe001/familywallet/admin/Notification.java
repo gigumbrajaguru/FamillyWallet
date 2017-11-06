@@ -46,7 +46,6 @@ public class Notification {
 
     private Calendar calendar;
     private static TextView itemMessagesBadgeTextView;////////////////////
-    TextView itemMessagesBadgeTextViewC;
 
     public Notification(TextView itemMessagesBadgeTextView){
         this.itemMessagesBadgeTextView = itemMessagesBadgeTextView;
@@ -76,7 +75,6 @@ public class Notification {
     }
 
     //t is null default
-
     //THIS FUNC PROTOTYPE IMPLEMENTED TO USE WITH BUDGET LIMITS
     //This method returns true if notification successfully created and added to DB
     public boolean addNotification(Context context,String title,String body,TextView t) {
@@ -114,6 +112,8 @@ public class Notification {
         AlarmManager alarmManager = (AlarmManager) c.getSystemService(ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
     }
+
+
 
 
     public static class Notification_Receiver extends BroadcastReceiver {

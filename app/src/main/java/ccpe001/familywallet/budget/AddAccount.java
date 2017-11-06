@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import ccpe001.familywallet.R;
 
 public class AddAccount extends AppCompatActivity {
-    String m_txt="",validbank,isPrivate="False",Notify="False",currtype;
+    String m_txt="",validbank,isPrivate="False",Notify="False",currtype,currtypes;
     String familyId="not assigned";
     boolean check=false,msgBoxOut=false;
     private static DatabaseReference mDatabases;
@@ -41,25 +41,24 @@ public class AddAccount extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_account);
+        setTitle(getString(R.string.accounttitle));
         // Inflate the layout for this fragment
-        this.arraySpinner = new String[] {
-                "Wallet", "Bank account"
-        };
-        this.arraySpinner1 = new String[] {
-                "LKR", "USD"
-        };
+        this.arraySpinner=getResources().getStringArray(R.array.accounttype);
+        this.arraySpinner1=getResources().getStringArray(R.array.listCurrency);
         /*database*/
+        final DataStores ds=new DataStores();
         final ArrayList<String> providerlist1= new ArrayList<String>();
         Spinner s1 = (Spinner)findViewById(R.id.curType);
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arraySpinner1);
         s1.setAdapter(adapter1);
         s1.setOnItemSelectedListener(new OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                 currtype = parent.getItemAtPosition(pos).toString();
+                currtypes = parent.getItemAtPosition(pos).toString();
+                currtype=ds.datachange(currtypes);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                 currtype ="LKR";
+                 currtype ="LKR.";
             }
         });
         final ArrayList<String> providerlist= new ArrayList<String>();
@@ -71,6 +70,7 @@ public class AddAccount extends AppCompatActivity {
             private AlertDialog.Builder box=null;
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 String selected = parent.getItemAtPosition(pos).toString();
+                selected=ds.datachange(selected);
                 if(selected=="Bank account"){
                     box = new AlertDialog.Builder(AddAccount.this);
                     box.setTitle(getString(R.string.attention));

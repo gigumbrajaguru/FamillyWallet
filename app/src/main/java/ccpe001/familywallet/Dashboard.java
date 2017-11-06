@@ -1,6 +1,7 @@
 package ccpe001.familywallet;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -126,6 +127,7 @@ public class Dashboard extends AppCompatActivity
     private NotificationManager notificationManager;
     private GoogleApiClient mGoogleApiClient;
 
+    private final static int DAILY_REMINDER = 11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,7 +217,7 @@ public class Dashboard extends AppCompatActivity
         databaseReference.keepSynced(true);
 
         prefs = getSharedPreferences("App Settings", Context.MODE_PRIVATE);
-        new PeriodicBackupCaller(getApplication()).backupRunner(getApplication(),prefs.getString("appBackUp","No Auto Backups"));
+        PeriodicBackupCaller.backupRunner(getApplication(),prefs.getString("appBackUp","No Auto Backups"));
 
         if (mAuth.getCurrentUser() != null) {
             new Splash().userLoginFunc(getApplication());
@@ -509,14 +511,26 @@ public class Dashboard extends AppCompatActivity
 
 
     public static void setBadgeCount(int badgeCount,TextView tVw){
-        if(badgeCount<=0) {
-            tVw.setVisibility(View.GONE); // initially hidden
-        }else {
-            tVw.setVisibility(View.VISIBLE);
-            tVw.setText(" "+badgeCount);
+        try {
+            if (badgeCount <= 0) {
+                tVw.setVisibility(View.GONE); // initially hidden
+            } else {
+                tVw.setVisibility(View.VISIBLE);
+                tVw.setText(" " + badgeCount);
+            }
+        }catch(RuntimeException r){
+
         }
     }
 
+    private void stopNotifications(){
+        Intent intent = new Intent(Dashboard.this, Notification.Notification_Receiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(Dashboard.this,DAILY_REMINDER,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Dashboard.this.ALARM_SERVICE);
+        if(alarmManager!=null){
+            alarmManager.cancel(pendingIntent);
+        }
+    }
 
 
     @Override
@@ -551,8 +565,10 @@ public class Dashboard extends AppCompatActivity
             }
         });
 
-
-        notificationCalls(getApplication());
+        prefs = getSharedPreferences("App Settings",Context.MODE_PRIVATE);
+        if(prefs.getBoolean("appNoty",true)) {
+            notificationCalls(getApplication());
+        }
 
         return true;
     }
@@ -670,9 +686,10 @@ public class Dashboard extends AppCompatActivity
                     .NOTIFICATION_SERVICE);
             mNotificationManager.cancel(PendingIntent.FLAG_UPDATE_CURRENT);
 
-            new PeriodicBackupCaller(getApplication()).backupRunner(getApplication(),getString(R.string.nobackup));
+            PeriodicBackupCaller.backupRunner(getApplication(),getString(R.string.nobackup));
 
             //off noti here
+            stopNotifications();
             notificationManager = (NotificationManager) getSystemService(Context
                     .NOTIFICATION_SERVICE);
             notificationManager.cancelAll();

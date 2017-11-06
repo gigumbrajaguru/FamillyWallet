@@ -44,6 +44,7 @@ public class BudgetTrack extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.budget_track);
+        setTitle(getString(R.string.budgettitle));
         Intent myIntent = getIntent();
         budgetI = myIntent.getStringExtra("budgetID");
         final ProgressBar progressbar=(ProgressBar) findViewById(R.id.progressBar3);

@@ -67,24 +67,25 @@
                 android:layout_marginTop="80dp"
                 android:text="@string/update"
                 android:gravity="center_vertical"
-                android:background="@drawable/roundbutton"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:textAllCaps="false"
                 android:textAlignment="center"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
 
-
+                android:textColor="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/signUPGetInfo"/>
         <Button
                 android:text="@string/change_password"
                 android:gravity="center_vertical"
-                android:background="@drawable/roundbutton"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:textAllCaps="false"
                 android:textAlignment="center"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimary"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

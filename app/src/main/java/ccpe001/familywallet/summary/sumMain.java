@@ -135,6 +135,7 @@ public class sumMain extends Fragment {
             }
         });
 
+        spinner.setSelection(1);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -143,12 +144,12 @@ public class sumMain extends Fragment {
                 if (i == 0) {
                     endDateVal = todayDate;
                     calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
-                    Log.d("LOG",""+startDateVal+"   "+endDateVal);
+                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)+1),calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
+                    Log.d("LOG","sd"+startDateVal+"   "+endDateVal);
                     filter(startDateVal,endDateVal);
                 }else if (i == 1) {
                     calendar.set(Calendar.DAY_OF_MONTH, 1);
-                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
+                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)+1),calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
                     endDateVal = todayDate;
 
                     filter(startDateVal,endDateVal);
@@ -171,14 +172,14 @@ public class sumMain extends Fragment {
                 } else if (i == 3) {
                     calendar.set(Calendar.DAY_OF_MONTH, 1);
                     calendar.add(Calendar.MONTH, -3);
-                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
+                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)+1),calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
                     calendar.add(Calendar.MONTH, +3);
-                    endDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
+                    endDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)+1),calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
                     filter(startDateVal,endDateVal);
                     Log.d("LOG",""+startDateVal+"   "+endDateVal);
                 }else if (i == 4) {
                     calendar.set(Calendar.DAY_OF_YEAR, 1);
-                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
+                    startDateVal = translate.dateToValue(translate.dateWithDoubleDigit(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)+1),calendar.get(Calendar.DAY_OF_MONTH),getActivity()));
                     endDateVal = todayDate;
                     filter(startDateVal,endDateVal);
                     Log.d("LOG",""+startDateVal+"   "+endDateVal);
@@ -234,11 +235,14 @@ public class sumMain extends Fragment {
         });
 
 
+        setRetainInstance(true);
+
+
         return view;
     }
 
 
-     private void filter(final String startDateVal, final String endDateVal){
+    private void filter(final String startDateVal, final String endDateVal){
 
         if (familyID.equals(uid) && !InGroup.equals("true")){
             query = FirebaseDatabase.getInstance().getReference("Transactions").child(uid).orderByChild("date").startAt(startDateVal).endAt(endDateVal);
@@ -247,23 +251,23 @@ public class sumMain extends Fragment {
         }
 
         //clear earlier ones
-         transAmount.clear();
-         transCat.clear();
+        transAmount.clear();
+        transCat.clear();
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot Transacdata : dataSnapshot.getChildren()){
-                        if(position==0) {
-                            if(Transacdata.child("type").getValue(String.class).toString().equals("Income")) {
-                                transAmount.add((Transacdata.child("amount").getValue(String.class)).toString());
-                                transCat.add(translate.categoryView((Transacdata.child("categoryName").getValue(String.class)).toString(),getActivity()));
-                            }
-                        }else if(position==1){
-                            if(Transacdata.child("type").getValue(String.class).toString().equals("Expense")) {
-                                transAmount.add((Transacdata.child("amount").getValue(String.class)).toString());
-                                transCat.add(translate.categoryView((Transacdata.child("categoryName").getValue(String.class)).toString(),getActivity()));
-                            }
+                    if(position==0) {
+                        if(Transacdata.child("type").getValue(String.class).toString().equals("Income")) {
+                            transAmount.add((Transacdata.child("amount").getValue(String.class)).toString());
+                            transCat.add(translate.categoryView((Transacdata.child("categoryName").getValue(String.class)).toString(),getActivity()));
                         }
+                    }else if(position==1){
+                        if(Transacdata.child("type").getValue(String.class).toString().equals("Expense")) {
+                            transAmount.add((Transacdata.child("amount").getValue(String.class)).toString());
+                            transCat.add(translate.categoryView((Transacdata.child("categoryName").getValue(String.class)).toString(),getActivity()));
+                        }
+                    }
                 }
 
 
@@ -378,4 +382,3 @@ public class sumMain extends Fragment {
     }
 
 }
-

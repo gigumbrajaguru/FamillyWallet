@@ -20,6 +20,7 @@
             android:background="@drawable/custom_spinner_background"
             android:spinnerMode="dropdown"
 
+
             android:layout_height="wrap_content" android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:id="@+id/spinner"/>

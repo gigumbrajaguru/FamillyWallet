@@ -58,6 +58,7 @@ public class AccountViews extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acc_views);
+        setTitle(getString(R.string.accountview));
         ListView accList = (ListView) findViewById(R.id.list1);
         AutoRefresh();
         accList.setOnItemClickListener(new OnItemClickListener() {
@@ -236,21 +237,21 @@ public class AccountViews extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        builder.setPositiveButton("Update",
+        builder.setPositiveButton(getString(R.string.updates),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         alertupdate(accnameD,saving);
                     }
                 });
 
-        builder.setNeutralButton("Delete",
+        builder.setNeutralButton(getString(R.string.deletes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         alertDel(accnameD);
                     }
                 });
 
-        builder.setNegativeButton("Cancel",
+        builder.setNegativeButton(getString(R.string.cancels),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
