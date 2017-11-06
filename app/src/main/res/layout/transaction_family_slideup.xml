@@ -14,12 +14,18 @@
 
     <Button
         android:id="@+id/btnAllTransactions"
-        style="@style/Widget.AppCompat.Button"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@color/lightBlue"
-        android:text="@string/allTransactions" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/transaction_main_block"
+        android:backgroundTint="@color/learderboard"
+        android:text="@string/allTransactions"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -34,6 +40,8 @@
                 android:id="@+id/grpList"
                 android:layout_width="match_parent"
                 android:layout_height="202dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_marginTop="2dp"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="2sp" />

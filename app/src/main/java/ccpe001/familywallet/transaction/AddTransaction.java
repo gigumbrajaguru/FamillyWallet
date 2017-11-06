@@ -459,10 +459,12 @@ public class AddTransaction extends AppCompatActivity {
             }
         });
 
-//        if (!type.equals("Expense") || !type.equals("Income")){
-//            Toast.makeText(context, "Error Occured, Please Try again", Toast.LENGTH_SHORT).show();
-//            returnToDashboard();
-//        }
+        if (type.equals("Expense") || type.equals("Income")){
+
+        }else{
+            Toast.makeText(context, R.string.addError, Toast.LENGTH_SHORT).show();
+            returnToDashboard();
+        }
 
     }
 
@@ -654,7 +656,7 @@ public class AddTransaction extends AppCompatActivity {
                         Map<String, Object> postValues = td.toMap();
                         mDatabase.child(key).updateChildren(postValues);
                         returnToDashboard();
-                        Toast.makeText(this, R.string.transactionUpdated, Toast.LENGTH_LONG).show();
+                                Toast.makeText(this, R.string.transactionUpdated, Toast.LENGTH_LONG).show();
                 }
             }catch (Exception e){
 

@@ -1,6 +1,7 @@
 package ccpe001.familywallet.transaction;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -103,10 +104,14 @@ public class TransactionRecurring extends Fragment {
                         tdList.add(td);
                         keys.add(tdSnapshot.getKey());
                     }
-                    Collections.reverse(tdList);
-                    Collections.reverse(keys);
-                    adapter = new TransactionRecurListAdapter(getActivity(), tdList);
-                    list.setAdapter(adapter);
+                    try {
+                        Collections.reverse(tdList);
+                        Collections.reverse(keys);
+                        adapter = new TransactionRecurListAdapter(getActivity(), tdList);
+                        list.setAdapter(adapter);
+                    }catch (Exception e){
+
+                    }
                 }
 
                 @Override

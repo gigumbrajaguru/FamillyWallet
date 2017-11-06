@@ -50,6 +50,8 @@
     <string name="remove">Remove</string>
 
     <string name="emptyDate">Please Enter the dates first</string>
+    <string name="notAvailable">Feature not yet Available</string>
+    <string name="addError">Error Occurred, Please Try again</string>
 
     <string-array name="Months">
         <item>Jan</item>

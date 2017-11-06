@@ -4,8 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/lightBlue"
+    android:background="@drawable/transaction_main_block"
+    android:backgroundTint="@color/learderboard"
     android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
     android:weightSum="1">
 
     <ImageView
@@ -27,6 +30,7 @@
         android:fontFamily="serif"
         android:paddingStart="10dp"
         android:text="Name"
+        android:textColor="@color/cardview_light_background"
         android:textSize="21sp"
         android:textStyle="bold|italic" />
 

@@ -330,10 +330,14 @@ public class FamilyTransactions extends Fragment {
 
 
                 }
-                Collections.reverse(tdList);
-                Collections.reverse(keys);
-                adapter = new FamilyTransactionsAdapter(getActivity(),tdList);
-                transactionList.setAdapter(adapter);
+                try {
+                    Collections.reverse(tdList);
+                    Collections.reverse(keys);
+                    adapter = new FamilyTransactionsAdapter(getActivity(),tdList);
+                    transactionList.setAdapter(adapter);
+                }catch (Exception e){
+
+                }
             }
 
             @Override
@@ -363,10 +367,14 @@ public class FamilyTransactions extends Fragment {
                         keys.add(tdSnapshot.getKey());
                     }
                 }
-                Collections.reverse(tdList);
-                Collections.reverse(keys);
-                adapter = new FamilyTransactionsAdapter(getActivity(),tdList);
-                transactionList.setAdapter(adapter);
+                try {
+                    Collections.reverse(tdList);
+                    Collections.reverse(keys);
+                    adapter = new FamilyTransactionsAdapter(getActivity(),tdList);
+                    transactionList.setAdapter(adapter);
+                }catch (Exception e){
+
+                }
             }
 
             @Override
@@ -670,7 +678,8 @@ public class FamilyTransactions extends Fragment {
             dialog.setContentView(R.layout.filter_dialog_date);
             filterDate(dialog,getContext());
         }else if (filterType.equals("account")){
-            Toast.makeText(context, "Not available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.notAvailable, Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
         }else if (filterType.equals("amount")){
             dialog.setContentView(R.layout.filter_dialog_amount);
             filterAmount(dialog);
@@ -857,8 +866,9 @@ public class FamilyTransactions extends Fragment {
 
     }
 
-    public void filterByCategoryQuery(Query query, final String categoryName){
+    public void filterByCategoryQuery(Query query, String categoryName){
         try{
+            final String catName= trns.categoryToDB(categoryName);
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -866,7 +876,7 @@ public class FamilyTransactions extends Fragment {
                     for(DataSnapshot tdSnapshot : dataSnapshot.getChildren()){
                         TransactionDetails td = tdSnapshot.getValue(TransactionDetails.class);
 
-                            if (td.getCategoryName().equals(categoryName)){
+                            if (td.getCategoryName().equals(catName)){
                                 tdList.add(tdSnapshot.getValue(TransactionDetails.class));
                                 keys.add(tdSnapshot.getKey());
                             }

@@ -39,7 +39,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,7 +51,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -760,7 +758,6 @@ public class TransactionMain extends Fragment {
                 }
                 else {
                     query = FirebaseDatabase.getInstance().getReference("Transactions").child("Groups").child(familyID).orderByChild("date");
-                    Toast.makeText(getActivity(), "-"+accountsList.get(i), Toast.LENGTH_SHORT).show();
                 }
                 filterByAccounyQuery(query,accountsList.get(i));
             }
@@ -828,8 +825,9 @@ public class TransactionMain extends Fragment {
 
     }
 
-    public void filterByCategoryQuery(Query query, final String categoryName){
+    public void filterByCategoryQuery(Query query, String categoryName){
         try{
+            final String catName= trns.categoryToDB(categoryName);
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -839,7 +837,7 @@ public class TransactionMain extends Fragment {
                         if (td.getUserID().equals(userID)){
 
 
-                            if (td.getCategoryName().equals(categoryName)){
+                            if (td.getCategoryName().equals(catName)){
                                 tdList.add(tdSnapshot.getValue(TransactionDetails.class));
                                 keys.add(tdSnapshot.getKey());
                             }

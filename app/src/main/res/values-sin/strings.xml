@@ -35,7 +35,6 @@
     <string name="transactionUpdated">ගනුදෙනුව සාර්ථකත්වය වෙනස් විය</string>
     <string name="allTransactions">සියලු පවුලේ ගනුදෙනු</string>
     <string name="noConnection">විදේශ මුදල් එකතු කරන විට අන්තර්ජාලයට සම්බන්ද වි සිටිය යුතුය</string>
-
     <string name="noAccTitle">ගිණුමක් සාදා නොමැත</string>
     <string name="noAccMsg">ගනුදෙනුවක් ඇතුලත් කිරීමට ගිණුමක් සැදිය යුතුයි</string>
     <string name="noAccBtnAdd">ගිණුමක් සාදන්න</string>
@@ -43,6 +42,10 @@
     <string name="updateTransaction">සංස්කරණය කරන්න</string>
     <string name="leaveGroup">කණ්ඩායමෙන් ඉවත්වන්න</string>
     <string name="remove">ඉවත් කරන්න</string>
+
+    <string name="emptyDate">දිනය අතුලත් කරන්න</string>
+    <string name="notAvailable">විශේෂාංගය වලන්ගු නැත</string>
+    <string name="addError">දෝෂයක් සිදුවිය. කරුණාකර යෙදුම නැවත අරඹන්න.</string>
 
     <string-array name="Months">
         <item>ජන</item>
@@ -54,7 +57,7 @@
         <item>ජූලි</item>
         <item>අගෝ</item>
         <item>සැප්</item>
-        <item>නොවැ</item>
+        <item>ඔක්</item>
         <item>නොවැ</item>
         <item>දෙසැ</item>
     </string-array>
