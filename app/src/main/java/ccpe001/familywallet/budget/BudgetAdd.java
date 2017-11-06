@@ -16,9 +16,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
-
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarEntry;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,7 +34,6 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
     Button smit,forcast;
     Switch noty;
     String budgetcat,max="",min="";
-    ArrayList<BarEntry> group1 = new ArrayList<>();
     ArrayList<Double> usedlist = new ArrayList<>();
     ArrayList<Double> amountlist = new ArrayList<>();
     private static DatabaseReference mDatabases;
@@ -132,6 +128,8 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
         forcast.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                usedlist.clear();
+                amountlist.clear();
                 mDatabases = FirebaseDatabase.getInstance().getReference();
                 mDatabases.child("Budget").orderByChild("familyId").equalTo(FamilyId).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -187,7 +185,7 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                 Double[] diffrenceTwobudget = new Double[usedlist.size()];
                 for(int i=0;i<usedlist.size()-1;i++)
                 {
-                    diffrenceTwobudget[i]=usedlist.get(i+1)-usedlist.get(i);
+                        diffrenceTwobudget[i] = usedlist.get(i + 1) - usedlist.get(i);
                 }
                 for(int i=0;i<diffrenceTwobudget.length-1;i++)
                 {

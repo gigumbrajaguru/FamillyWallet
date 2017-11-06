@@ -193,9 +193,9 @@
     <string name="emptymsg">සියලු ක්ෂේත්ර පිරවිය යතුයි</string>
     <string name="budgetforecast">අයවැය අනාවැකිය</string>
     <string name="errorforecastmsg">ප්රක්ශේපණය ගණනය කිරීම සඳහා අඩුම වශයෙන් අයවැය තුනක් (3) අවශ්ය වේ</string>
-    <string name="lowvalueforecast">අවම වියදම් අනාවැකිය :</string>
-    <string name="highvalueforecast">උපරිම වියදම් අනාවැකිය :</string>
-    <string name="deletemsg">පියවර තහවුරු කරන්න ?</string>
+    <string name="lowvalueforecast">අවම අනාවැකිය[රු.]:</string>
+    <string name="highvalueforecast">උපරිම අනාවැකිය[රු.]:</string>
+    <string name="deletemsg">පියවර තහවුරු කරන්න </string>
     <string name="bankaccount">බැංකු ගිනුම ඇතුලත් කරන ලදී</string>
     <string name="acctype">ගිණුම් වර්ගය</string>
     <string name="bnknumber">බැංකු ගිනුම් අංකය:</string>
