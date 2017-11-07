@@ -270,6 +270,7 @@ public class Translate {
                 ampmAfter = "PM";
                 break;
         }
+        int hourCheck = Integer.parseInt(timeParts[0]);
         if (ampmAfter.equals("PM")) {
             hour = Integer.parseInt(timeParts[0]);
             if (hour != 12) {
@@ -280,7 +281,11 @@ public class Translate {
         } else if (ampmAfter.equals("AM")) {
             if (timeParts[0].equals("12")) {
                 rethours = "00";
-            } else {
+            }
+            else if(hourCheck<10){
+                rethours="0"+String.valueOf(hourCheck);
+            }
+            else {
                 rethours = timeParts[0];
             }
 

@@ -89,7 +89,7 @@ dependencies {
     compile 'javax.mail:mail:1.4.7'
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.sothree.slidinguppanel:library:3.3.1'
-    compile 'de.hdodenhof:circleimageview:1.2.1'
+    compile 'de.hdodenhof:circleimageview:2.2.0'
     testCompile 'junit:junit:4.12'
 
 

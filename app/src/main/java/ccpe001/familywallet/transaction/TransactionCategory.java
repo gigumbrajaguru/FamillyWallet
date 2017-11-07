@@ -25,7 +25,7 @@ public class TransactionCategory extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private Toolbar categoryToolbar;
-    String type;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

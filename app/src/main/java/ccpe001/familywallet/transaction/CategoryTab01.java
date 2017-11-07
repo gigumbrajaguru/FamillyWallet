@@ -21,12 +21,12 @@ import ccpe001.familywallet.R;
 public class CategoryTab01 extends Fragment {
 
     /*Initializing variables to hold layout items */
-    GridView grid;
+    private GridView grid;
     TextView txtCategory;
     /*Initializing variables to hold Extra values passed with intent */
-    String  categoryName, account, currency, title, date, time, amount, location, type, update, key,
+    private String  categoryName, account, currency, title, date, time, amount, location, type, update, key,
             eUserID, eFamilyID, currencyIndex, previousAmount, recurrPeriod;
-    int  accountIndex, categoryID;
+    private int  accountIndex, categoryID;
     Boolean templateChecked;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

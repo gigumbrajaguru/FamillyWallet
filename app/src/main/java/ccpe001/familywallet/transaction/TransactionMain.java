@@ -66,22 +66,22 @@ import ccpe001.familywallet.budget.AddAccount;
  */
 public class TransactionMain extends Fragment {
 
-    ListView list;
-    FloatingActionButton fab_income, fab_expense,fab_main;
-    Animation fabOpen, fabClose, fabClockwise, fabAntiClockwise;
-    CoordinatorLayout fabLayout;
-    ProgressBar trnsMainProgressBar;
-    TextView txtIncome,txtExpense, emptyList;
-    boolean isOpen = false;
+    /** Initializing global variables*/
+    private ListView list;
+    private FloatingActionButton fab_income, fab_expense,fab_main;
+    private Animation fabOpen, fabClose, fabClockwise, fabAntiClockwise;
+    private CoordinatorLayout fabLayout;
+    private ProgressBar trnsMainProgressBar;
+    private TextView txtIncome,txtExpense, emptyList;
+    private boolean isOpen = false;
     private DatabaseReference mDatabase, gDatabase;
-    Validate v = new Validate();
-    Translate trns = new Translate();
-    List<TransactionDetails> tdList;
-    List<String> keys, checkedPosition, accountsList, groupKeys;
-    TransactionListAdapter adapter;
-    String userID = "uid", familyID="fid", InGroup="false", startTime ="0000", endTime="2359";
-
-    Resources res;
+    private Validate v = new Validate();
+    private Translate trns = new Translate();
+    private List<TransactionDetails> tdList;
+    private List<String> keys, checkedPosition, accountsList, groupKeys;
+    private TransactionListAdapter adapter;
+    private String userID = "uid", familyID="fid", InGroup="false", startTime ="0000", endTime="2359";
+    private Resources res;
 
     private String tId;
 
@@ -113,7 +113,7 @@ public class TransactionMain extends Fragment {
 
         }
 
-
+        getActivity().setTitle(R.string.dashboard_settitle_overview);
         SharedPreferences sharedPref = getContext().getSharedPreferences("fwPrefs",0);
         String uid = sharedPref.getString("uniUserID", "uid");
         String fid = sharedPref.getString("uniFamilyID", "fid");
@@ -305,6 +305,10 @@ public class TransactionMain extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * method to view transactions
+     * @param key - transaction ID
+     */
     private void viewTransaction(final String key) {
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.transaction_view);
@@ -408,6 +412,10 @@ public class TransactionMain extends Fragment {
         });
     }
 
+    /***
+     * method to delete transactions
+     * @param key - transaction id
+     */
     private void deleteTransaction(String key){
         final DatabaseReference transaction;
         if (familyID.equals(userID) && !InGroup.equals("true")){
@@ -423,6 +431,10 @@ public class TransactionMain extends Fragment {
         storageReference.child("ScannedBills/" + userID+"/"+key+ ".jpg").delete();
     }
 
+    /**
+     * method to edit transactions
+     * @param key -  transaction ID
+     */
     private void editTransaction(final String key){
         final DatabaseReference transaction;
         if (familyID.equals(userID) && !InGroup.equals("true")){
@@ -461,6 +473,7 @@ public class TransactionMain extends Fragment {
         });
     }
 
+    /** Animations and action for add button */
     private void fabAddMenu(View view){
         txtExpense = (TextView) view.findViewById(R.id.txtExpense);
         txtIncome = (TextView) view.findViewById(R.id.txtIncome);
@@ -552,6 +565,7 @@ public class TransactionMain extends Fragment {
         });
     }
 
+    /** method to get the list of filter actions*/
     private void filterTransaction(String filterType) {
 
         final Dialog dialog = new Dialog(getContext());
@@ -593,6 +607,7 @@ public class TransactionMain extends Fragment {
         dialog.show();
     }
 
+    /** method to get date name from dialog box and call query */
     public void filterDate(Dialog view, final Context con) {
 
         DatePicker dp = (DatePicker) view.findViewById(R.id.filterDatepicker);
@@ -641,6 +656,7 @@ public class TransactionMain extends Fragment {
 
     }
 
+    /** method to get the entire transaction list specific to user */
     public void filterByQuery(Query query){
         try{
 
@@ -677,6 +693,7 @@ public class TransactionMain extends Fragment {
         }
     }
 
+    /** method to get amount name from dialog box and call query */
     public void filterAmount(Dialog view){
 
         final EditText etxtAmountFrom = (EditText) view.findViewById(R.id.amountFrom);
@@ -707,6 +724,7 @@ public class TransactionMain extends Fragment {
 
     }
 
+    /** Query to filter by amount and get data and load it to list*/
     public void filterByAmountQuery(Query query, final Double amountFrom, final Double amountTo){
         try{
 
@@ -766,6 +784,7 @@ public class TransactionMain extends Fragment {
 
     }
 
+    /** Query to filter by account and get data and load it to list*/
     public void filterByAccounyQuery(Query query, final String accountName){
         try{
 
@@ -805,6 +824,7 @@ public class TransactionMain extends Fragment {
         }
     }
 
+    /** method to get category name from dialog box and call query */
     public void filterCategory(final Dialog view, final String[] itemname){
         GridView filterCategoryList = (GridView) view.findViewById(R.id.filterCatergoryGrid);
         filterCategoryList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
@@ -825,6 +845,7 @@ public class TransactionMain extends Fragment {
 
     }
 
+    /** Query to filter by category and get data and load it to list*/
     public void filterByCategoryQuery(Query query, String categoryName){
         try{
             final String catName= trns.categoryToDB(categoryName);

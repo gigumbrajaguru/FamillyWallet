@@ -26,9 +26,9 @@ import ccpe001.familywallet.Validate;
 public class FamilyTransactionsAdapter extends ArrayAdapter<TransactionDetails> {
     private Activity context;
     private List<TransactionDetails> tdList;
-    Translate trns = new Translate();
-    Resources res= getContext().getResources();
-    int[] colorList = {Color.parseColor("#FF00FF"),Color.parseColor("#B8860B"),
+    private Translate trns = new Translate();
+    private Resources res= getContext().getResources();
+    private int[] colorList = {Color.parseColor("#FF00FF"),Color.parseColor("#B8860B"),
             Color.parseColor("#00FA9A"),Color.parseColor("#4C0099"),
             Color.parseColor("#800000"),Color.parseColor("#00FFFF"),
             Color.parseColor("#008080"),Color.parseColor("#C0C0C0"),

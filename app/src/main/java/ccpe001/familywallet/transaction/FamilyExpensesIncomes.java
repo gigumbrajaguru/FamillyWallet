@@ -18,8 +18,8 @@ import java.util.HashMap;
 
 public class FamilyExpensesIncomes {
 
-    Double totalIncome;
-    Double totalExpense;
+    private Double totalIncome;
+    private Double totalExpense;
     public static HashMap<String , Double[]> id_total;
 
     private DatabaseReference mDatabase;

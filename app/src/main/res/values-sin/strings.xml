@@ -46,6 +46,7 @@
     <string name="emptyDate">දිනය අතුලත් කරන්න</string>
     <string name="notAvailable">විශේෂාංගය වලන්ගු නැත</string>
     <string name="addError">දෝෂයක් සිදුවිය. කරුණාකර යෙදුම නැවත අරඹන්න.</string>
+    <string name="loading">කරුණාකර රැඳී සිටින්න...</string>
 
     <string-array name="Months">
         <item>ජන</item>

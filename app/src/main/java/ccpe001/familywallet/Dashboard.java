@@ -1,9 +1,11 @@
 package ccpe001.familywallet;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +20,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.AdapterView;
 import android.support.annotation.NonNull;
@@ -105,7 +108,7 @@ public class Dashboard extends AppCompatActivity
 
     public String fullname;
     public String propicUrl;
-    private String userID, familyID, fname, proPic;
+    private String userID, familyID, fname, proPic,userName, InGroup="";
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser;
@@ -126,6 +129,7 @@ public class Dashboard extends AppCompatActivity
     private CustomAlertDialogs alert;
     private NotificationManager notificationManager;
     private GoogleApiClient mGoogleApiClient;
+    private ProgressDialog dashboardProgressbar;
 
     private final static int DAILY_REMINDER = 11;
 
@@ -136,8 +140,11 @@ public class Dashboard extends AppCompatActivity
         setContentView(R.layout.activity_navigation_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         layout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        toolbar.setTitle(R.string.dashboard_settitle_overview);
+        dashboardProgressbar = new ProgressDialog(this);
+        dashboardProgressbar.setCancelable(true);
+        dashboardProgressbar.setMessage(getString(R.string.loading));
+        dashboardProgressbar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dashboardProgressbar.show();
         setSupportActionBar(toolbar);
 
 
@@ -166,7 +173,6 @@ public class Dashboard extends AppCompatActivity
         navUserDetTxt = (TextView) headerView.findViewById(R.id.navUserDet);
         circleButton = (FloatingActionButton) headerView.findViewById(R.id.loggedUsrImg);
         circleButton.setOnClickListener(this);
-
         //display help menu if app first installed
         pref = getSharedPreferences("First Time",Context.MODE_PRIVATE);
         if(pref.getBoolean("isFirst",true)){
@@ -174,7 +180,15 @@ public class Dashboard extends AppCompatActivity
         }
         setFirst(false);
 
-
+        /* Getting the user id and family id from shared prefered  */
+        SharedPreferences sharedPref = getSharedPreferences("fwPrefs",0);
+        String uid = sharedPref.getString("uniUserID", "");
+        String fid = sharedPref.getString("uniFamilyID", "");
+        String uname = sharedPref.getString("uniFname", "");
+        userID = uid;
+        familyID = fid;
+        userName = uname;
+        InGroup = sharedPref.getString("InGroup", "");
 
         badgeCount = new SQLiteHelper(getApplication()).viewNoti().size();//LOAD ONCE
 
@@ -187,7 +201,6 @@ public class Dashboard extends AppCompatActivity
         }
 
         /*Setting up shared preferences*/
-        SharedPreferences sharedPref= getSharedPreferences("fwPrefs", 0);
         final SharedPreferences.Editor editor= sharedPref.edit();
 
         userID = firebaseUser.getUid();
@@ -286,10 +299,27 @@ public class Dashboard extends AppCompatActivity
 
         //initialize dashboard fragment 1st
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        final android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         TransactionMain transaction = new TransactionMain();
         fragmentTransaction.replace(R.id.fragmentContainer1,transaction);
-        fragmentTransaction.commit();
+        Thread thread  =  new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while(InGroup.equals("")){
+                    try {
+                        Thread.sleep(5000);
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                fragmentTransaction.commit();
+                dashboardProgressbar.dismiss();
+            }
+        });
+        thread.start();
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -803,14 +833,10 @@ public class Dashboard extends AppCompatActivity
                     if (tdSnapshot.getKey().equals(uID)) {
                         SharedPreferences sharedPref = getSharedPreferences("fwPrefs", 0);
                         final SharedPreferences.Editor editor = sharedPref.edit();
+                        InGroup=gr.getInGroup();
                         editor.putString("InGroup", gr.getInGroup());
                         editor.commit();
-                        Fragment frg = null;
-                        frg = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer1);
-                        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.detach(frg);
-                        ft.attach(frg);
-                        ft.commit();
+
                     }
                 }
             }
@@ -821,6 +847,7 @@ public class Dashboard extends AppCompatActivity
             }
         });
     }
+
 
 
 }
