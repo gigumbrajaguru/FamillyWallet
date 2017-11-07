@@ -54,11 +54,11 @@
 
             <TextView
                 android:id="@+id/txtAmount"
-                android:layout_width="106dp"
+                android:layout_width="143dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="12dp"
-                android:layout_x="275dp"
-                android:layout_y="26dp"
+                android:layout_x="240dp"
+                android:layout_y="25dp"
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
