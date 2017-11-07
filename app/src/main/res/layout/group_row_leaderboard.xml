@@ -11,14 +11,14 @@
     android:paddingRight="5dp"
     android:weightSum="1">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/proPic"
-        android:layout_width="56dp"
+        android:layout_width="59dp"
         android:layout_height="56dp"
-        android:layout_x="34dp"
-        android:layout_y="10dp"
-        android:contentDescription="@string/abc_action_bar_home_description"
-        app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
+        android:layout_x="22dp"
+        android:layout_y="9dp"
+        android:src="@drawable/com_facebook_profile_picture_blank_square"
+        app:civ_border_width="0dp" />
 
     <TextView
         android:id="@+id/txtGrName"

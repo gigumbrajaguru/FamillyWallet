@@ -69,17 +69,17 @@ import static android.view.View.GONE;
 
 public class FamilyTransactions extends Fragment {
 
-    static Translate trns = new Translate();
-    static HashMap<String,String> KeyName;
-    String userID, familyID, InGroup, startTime ="0000", endTime="2359";
-    FloatingActionButton fab_income, fab_expense,fab_main;
-    Animation fabOpen, fabClose, fabClockwise, fabAntiClockwise;
-    TextView txtIncome,txtExpense, emptyList;
-    CoordinatorLayout fabLayout;
-    boolean isOpen = false;
-    static RelativeLayout backgroundLayout, includeLayout;
+    private static Translate trns = new Translate();
+    private static HashMap<String,String> KeyName;
+    private String userID, familyID, InGroup, startTime ="0000", endTime="2359";
+    private FloatingActionButton fab_income, fab_expense,fab_main;
+    private Animation fabOpen, fabClose, fabClockwise, fabAntiClockwise;
+    private TextView txtIncome,txtExpense, emptyList;
+    private CoordinatorLayout fabLayout;
+    private boolean isOpen = false;
+    private static RelativeLayout backgroundLayout, includeLayout;
     public static Set<String> familyIDs = new LinkedHashSet<String>();
-    List<String> accountsList;
+    private List<String> accountsList;
 
 
     private DatabaseReference mDatabase, gDatabase;
@@ -200,8 +200,12 @@ public class FamilyTransactions extends Fragment {
 
                         grpList.add(gr);
                     }
-                    grpAdapter = new GroupListAdapter(getActivity(),grpList,familyID);
-                    memberList.setAdapter(grpAdapter);
+                    try {
+                        grpAdapter = new GroupListAdapter(getActivity(),grpList,familyID);
+                        memberList.setAdapter(grpAdapter);
+                    }catch (Exception e){
+
+                    }
                 }
 
                 @Override
@@ -569,6 +573,7 @@ public class FamilyTransactions extends Fragment {
 
     }
 
+    /** Animations and action for add button */
     private void fabAddMenu(View view){
         txtExpense = (TextView) view.findViewById(R.id.txtExpense);
         txtIncome = (TextView) view.findViewById(R.id.txtIncome);
@@ -660,6 +665,7 @@ public class FamilyTransactions extends Fragment {
         });
     }
 
+    /**method to filter transactions*/
     private void filterTransaction(String filterType) {
 
         final Dialog dialog = new Dialog(getContext());
@@ -697,6 +703,7 @@ public class FamilyTransactions extends Fragment {
         dialog.show();
     }
 
+    /** method to filter by date */
     public void filterDate(Dialog view, final Context con) {
 
         DatePicker dp = (DatePicker) view.findViewById(R.id.filterDatepicker);
@@ -744,6 +751,7 @@ public class FamilyTransactions extends Fragment {
 
     }
 
+    /**  Query to filer by date */
     public void filterByQuery(Query query, String sDate, String eDate){
         try{
 
@@ -778,6 +786,7 @@ public class FamilyTransactions extends Fragment {
         }
     }
 
+    /** method to get amount name from dialog box and call query */
     public void filterAmount(Dialog view){
 
         final EditText etxtAmountFrom = (EditText) view.findViewById(R.id.amountFrom);
@@ -808,6 +817,7 @@ public class FamilyTransactions extends Fragment {
 
     }
 
+    /** Query to filter by amount and get data and load it to list*/
     public void filterByAmountQuery(Query query, final Double amountFrom, final Double amountTo){
         try{
 
@@ -845,7 +855,7 @@ public class FamilyTransactions extends Fragment {
         }
     }
 
-
+    /** method to get category name from dialog box and call query */
     public void filterCategory(final Dialog view, final String[] itemname){
         GridView filterCategoryList = (GridView) view.findViewById(R.id.filterCatergoryGrid);
         filterCategoryList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
@@ -866,6 +876,7 @@ public class FamilyTransactions extends Fragment {
 
     }
 
+    /** Query to filter by category and get data and load it to list*/
     public void filterByCategoryQuery(Query query, String categoryName){
         try{
             final String catName= trns.categoryToDB(categoryName);

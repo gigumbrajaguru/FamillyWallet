@@ -47,19 +47,16 @@ import ccpe001.familywallet.Validate;
 
 public class TransactionRecurring extends Fragment {
 
-    ListView list;
-    TextView emptyText;
-
-    List<TransactionDetails> tdList;
-    List<String> keys;
-    List<String> checkedPosition;
-    TransactionRecurListAdapter adapter;
-    String userID, familyID;
-    Validate v = new Validate();
-    Translate trns = new Translate();
-
+    private ListView list;
+    private TextView emptyText;
+    private List<TransactionDetails> tdList;
+    private List<String> keys;
+    private List<String> checkedPosition;
+    private TransactionRecurListAdapter adapter;
+    private String userID, familyID;
+    private Validate v = new Validate();
+    private Translate trns = new Translate();
     private String tId;
-
     private DatabaseReference mDatabase;
 
     public TransactionRecurring() {
@@ -72,6 +69,7 @@ public class TransactionRecurring extends Fragment {
         final View view = inflater.inflate(R.layout.transaction_recurring_list, container, false);
         list = (ListView) view.findViewById(R.id.transactionListR);
         emptyText = (TextView) view.findViewById(R.id.emptyList);
+        setHasOptionsMenu(false);
         try {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         }catch (Exception e){
@@ -207,7 +205,11 @@ public class TransactionRecurring extends Fragment {
 
         return view;
     }
-
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_filter).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+    }
     private void deleteTransaction(String key){
         DatabaseReference transaction = FirebaseDatabase.getInstance().getReference("RecurringTransactions").child(familyID).child(key);
         transaction.removeValue();

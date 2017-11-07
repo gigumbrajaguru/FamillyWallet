@@ -20,8 +20,8 @@ import ccpe001.familywallet.Translate;
 
 public class DateDialog  extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
-    TextView txtDate;
-    Translate trns = new Translate();
+    private TextView txtDate;
+    private Translate trns = new Translate();
 
     public DateDialog(){
 

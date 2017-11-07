@@ -23,7 +23,7 @@ public class TransactionListAdapter extends ArrayAdapter<TransactionDetails> {
 
     private Activity context;
     private List<TransactionDetails> tdList;
-    Translate trns = new Translate();
+    private Translate trns = new Translate();
 
 
     public TransactionListAdapter(Activity context, List<TransactionDetails> tdList) {

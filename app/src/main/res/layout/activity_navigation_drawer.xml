@@ -24,7 +24,9 @@
         android:backgroundTintMode="src_over"
         android:fitsSystemWindows="true"
         app:itemBackground="@color/DarkerBlue"
-        app:menu="@menu/activity_navigation_drawer_drawer" />
+        app:menu="@menu/activity_navigation_drawer_drawer" >
+
+    </android.support.design.widget.NavigationView>
 
 
 </android.support.v4.widget.DrawerLayout>

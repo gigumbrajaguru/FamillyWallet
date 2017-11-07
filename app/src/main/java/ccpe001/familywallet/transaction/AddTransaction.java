@@ -77,22 +77,22 @@ public class AddTransaction extends AppCompatActivity {
     private CheckBox checkRecurring;
     private ImageView imgValue, imgAccount, imgCategory, imgNote, imgCalender, imgLocation, imgSave;
     /*Initializing variables to hold Extra values passed with intent or values from input fields */
-    String categoryName,  title, date, amount, currency, time, location, account, type, update, key,
+    private String categoryName,  title, date, amount, currency, time, location, account, type, update, key,
             userID, familyID, eUserID, eFamilyID, previousAmount, recurrPeriod, InGroup, userName;
-    Integer   categoryID;
-    Boolean templateChecked;
+    private Integer   categoryID;
+    private Boolean templateChecked;
     List<String> accountsList;
     /*Initializing firebase variables */
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
     private Integer count=1;
-    Resources resources;
-    int PLACE_PICKER_REQUEST=1;
-    final Context context = this;
+    private Resources resources;
+    private int PLACE_PICKER_REQUEST=1;
+    private final Context context = this;
 
-    final Validate v = new Validate();
-    final Translate trns = new Translate();
+    private final Validate v = new Validate();
+    private final Translate trns = new Translate();
 
     /*Initializations done to scan bill feature*/
     private EditText editTextScan;

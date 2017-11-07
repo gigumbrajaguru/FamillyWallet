@@ -20,8 +20,8 @@ import ccpe001.familywallet.Translate;
 
 public class TimeDialog extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
-    TextView txtTime;
-    Translate tran = new Translate();
+    private TextView txtTime;
+    private Translate tran = new Translate();
 
     public TimeDialog(View view) {
         txtTime = (TextView) view;
