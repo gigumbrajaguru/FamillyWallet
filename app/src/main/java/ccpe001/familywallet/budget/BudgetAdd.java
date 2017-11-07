@@ -32,6 +32,7 @@ import ccpe001.familywallet.R;
 public class BudgetAdd extends AppCompatActivity implements View.OnClickListener {
     EditText strDt,endDt,Bname,tAmount;
     Button smit,forcast;
+    boolean pass=true;
     Switch noty;
     String budgetcat,max="",min="";
     ArrayList<Double> usedlist = new ArrayList<>();
@@ -107,17 +108,52 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                 bName=Bname.getText().toString();
                 amounts=tAmount.getText().toString();
                 if(!sttDay.isEmpty() && !endday.isEmpty() && !amounts.isEmpty() && !bName.isEmpty()) {
-                    Log.i("asd",selected);
-                    Boolean msgBoxOut = (Ctrl.addbdget(currentUser.getUid(), FamilyId, bName, sttDay, endday, amounts, notify, selected));
+                    String[] startdateParts = sttDay.split("/");
+                    int strYr = Integer.parseInt(startdateParts[2]);
+                    int strMon = Integer.parseInt(startdateParts[1]);
+                    int strDate = Integer.parseInt(startdateParts[0]);
+                    String[] enddateParts = endday.split("/");
+                    int endYr = Integer.parseInt(enddateParts[2]);
+                    int endMon = Integer.parseInt(enddateParts[1]);
+                    int endate = Integer.parseInt(enddateParts[0]);
+                    if(strYr==endYr){
+                        if(strMon==endMon){
+                            if(strDate<endate || strDate==endate){
+                                pass=true;
+                            }
+                            else{
+                                pass=false;
+                            }
 
-                    if (msgBoxOut) {
-                        AlertBox.alertBoxOut(BudgetAdd.this, getString(R.string.success), getString(R.string.budgetcriticalmsg));
-                        strDt.setText("");
-                        endDt.setText("");
-                        Bname.setText("");
-                        tAmount.setText("");
-                    } else {
-                        AlertBox.alertBoxOut(BudgetAdd.this, getString(R.string.error), getString(R.string.namecheckmsg));
+                        }
+                        else if(strMon<endMon){
+                            pass=true;
+                        }
+                        else{
+                            pass=false;
+                        }
+                    }
+                    else if(strYr<endYr){
+                        pass=true;
+                    }
+                    else{
+                        pass=false;
+                    }
+                    if(pass) {
+                        Boolean msgBoxOut = (Ctrl.addbdget(currentUser.getUid(), FamilyId, bName, sttDay, endday, amounts, notify, selected));
+
+                        if (msgBoxOut) {
+                            AlertBox.alertBoxOut(BudgetAdd.this, getString(R.string.success), getString(R.string.budgetcriticalmsg));
+                            strDt.setText("");
+                            endDt.setText("");
+                            Bname.setText("");
+                            tAmount.setText("");
+                        } else {
+                            AlertBox.alertBoxOut(BudgetAdd.this, getString(R.string.error), getString(R.string.namecheckmsg));
+                        }
+                    }
+                    else{
+                        AlertBox.alertBoxOut(BudgetAdd.this, getString(R.string.error), getString(R.string.checkdate));
                     }
                 }
                 else{
@@ -176,7 +212,7 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                 });
             }
             public void forecasts(ArrayList<Double> usedlist,ArrayList<Double> amountlist){
-                double amounttot=0,avgamount=0,deffbudget=0,avgdeffdamount=0,forecastamount=0;
+                double amounttot=0,avgamount=0,deffbudget=0,avgdeffdamount=0,forecastamount=0,usedtotal=0,avgused=0;
                 for(int i=0;i<amountlist.size();i++)
                 {
                     amounttot=amounttot+amountlist.get(i);
@@ -187,18 +223,23 @@ public class BudgetAdd extends AppCompatActivity implements View.OnClickListener
                 {
                         diffrenceTwobudget[i] = usedlist.get(i + 1) - usedlist.get(i);
                 }
+                for(int i=0;i<usedlist.size();i++)
+                {
+                    usedtotal = usedtotal + usedlist.get(i);
+                }
                 for(int i=0;i<diffrenceTwobudget.length-1;i++)
                 {
                     deffbudget=deffbudget+diffrenceTwobudget[i];
                 }
+                avgused=usedtotal/usedlist.size();
                 avgdeffdamount=deffbudget/diffrenceTwobudget.length;
-                forecastamount=avgamount+avgdeffdamount;
-                if(forecastamount<avgamount){
+                forecastamount=avgused+avgdeffdamount;
+                if(forecastamount<avgused){
                     min= String.format("%.2f",forecastamount);
-                    max= String.format("%.2f",avgamount);
+                    max= String.format("%.2f",avgused);
                 }
                 else{
-                    min= String.format("%.2f",avgamount);
+                    min= String.format("%.2f",avgused);
                     max= String.format("%.2f",forecastamount);
                 }
                 AlertBox alert=new AlertBox();

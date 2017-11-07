@@ -210,6 +210,7 @@
     <string name="budgettrack">වැය නීරීක්ෂකය</string>
     <string name="accountview">තැන්පතු ලැයිස්තුව</string>
     <string name="cancels">අවලංගු කරන්න</string>
+    <string name="checkdate">ආරම්භක දිනය හා අවසාන දිනයන් නැවත පරීක්ෂා කරන්න.</string>
     <string-array name="categorylist">
         <item>කෑම සහ බීම</item>
         <item>ගමන්</item>

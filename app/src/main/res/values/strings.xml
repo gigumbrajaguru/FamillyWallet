@@ -496,7 +496,7 @@
     <string name="budgettrack">Budget Track</string>
     <string name="accountview">Account list</string>
     <string name="cancels">Cancel</string>
-
+    <string name="checkdate">Please check start date and end date</string>
     <string-array name="categorylist">
         <item>Food and Drinks</item>
         <item>Travel</item>
