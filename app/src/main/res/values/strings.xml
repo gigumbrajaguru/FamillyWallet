@@ -489,14 +489,14 @@
     <string name="updated">Update Budget Detail</string>
     <string name="deletebudget">Delete Budget Detail</string>
     <string name="percentage">Percentage (%)</string>
-    <string name="attention">Attention  [Optional]</string>
-    <string name="addbank">Bank Account No :</string>
+    <string name="attention">Attention  </string>
+    <string name="addbank">Bank Account :</string>
     <string name="budgettitle">Budget</string>
     <string name="accounttitle">Account</string>
     <string name="budgettrack">Budget Track</string>
     <string name="accountview">Account list</string>
     <string name="cancels">Cancel</string>
-
+    <string name="checkdate">Please check start date and end date</string>
     <string-array name="categorylist">
         <item>Food and Drinks</item>
         <item>Travel</item>
