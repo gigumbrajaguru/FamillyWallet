@@ -489,8 +489,8 @@
     <string name="updated">Update Budget Detail</string>
     <string name="deletebudget">Delete Budget Detail</string>
     <string name="percentage">Percentage (%)</string>
-    <string name="attention">Attention  [Optional]</string>
-    <string name="addbank">Bank Account No :</string>
+    <string name="attention">Attention  </string>
+    <string name="addbank">Bank Account :</string>
     <string name="budgettitle">Budget</string>
     <string name="accounttitle">Account</string>
     <string name="budgettrack">Budget Track</string>
