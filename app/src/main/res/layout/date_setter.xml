@@ -15,33 +15,35 @@
     <android.support.design.widget.TextInputLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
+
         <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/xmlgetinfo_editText_startdate"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:inputType="date"
-                android:ems="10"
-                android:maxLines="1"
-                android:editable="false"
-                android:id="@+id/startDate"/>
+            android:id="@+id/startDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:editable="false"
+            android:ems="10"
+            android:hint="@string/xmlgetinfo_editText_startdate"
+            android:inputType="date"
+            android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
     >
+
         <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/xmlgetinfo_editText_enddate"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:inputType="date"
-                android:ems="10"
-                android:maxLines="1"
-                android:editable="false"
-                android:id="@+id/endDate"/>
+            android:id="@+id/endDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:editable="false"
+            android:ems="10"
+            android:hint="@string/xmlgetinfo_editText_enddate"
+            android:inputType="date"
+            android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
 </LinearLayout>

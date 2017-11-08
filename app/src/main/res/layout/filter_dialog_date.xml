@@ -33,6 +33,7 @@
             android:layout_weight="0.07"
             android:editable="false"
             android:ems="10"
+            android:hint="@string/xmlgetinfo_editText_startdate"
             android:inputType="none"
             android:textAlignment="center" />
     </LinearLayout>
@@ -59,6 +60,7 @@
             android:layout_weight="0.07"
             android:editable="false"
             android:ems="10"
+            android:hint="@string/xmlgetinfo_editText_enddate"
             android:inputType="none"
             android:textAlignment="center" />
     </LinearLayout>
