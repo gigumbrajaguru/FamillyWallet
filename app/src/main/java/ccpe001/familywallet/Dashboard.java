@@ -306,7 +306,7 @@ public class Dashboard extends AppCompatActivity
             @Override
             public void run() {
 
-                while(InGroup.equals("")){
+                while(familyID.equals("")){
                     try {
                         Thread.sleep(5000);
 

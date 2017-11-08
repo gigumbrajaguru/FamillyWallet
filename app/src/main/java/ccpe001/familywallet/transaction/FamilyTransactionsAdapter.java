@@ -1,6 +1,7 @@
 package ccpe001.familywallet.transaction;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
@@ -84,7 +85,8 @@ public class FamilyTransactionsAdapter extends ArrayAdapter<TransactionDetails> 
             txtCategory.setTextColor(ContextCompat.getColor(getContext(),R.color.expense));
             txtDate.setTextColor(ContextCompat.getColor(getContext(),R.color.expense));
         }
-        memberColor.setBackgroundColor(colorList[list.indexOf(td.getUserID())]);
+        ColorStateList csl = new ColorStateList(new int[][]{new int[0]}, new int[]{colorList[list.indexOf(td.getUserID())]});
+        memberColor.setBackgroundTintList(csl);
         txtName.setTextColor(colorList[list.indexOf(td.getUserID())]);
         return rowView;
 
